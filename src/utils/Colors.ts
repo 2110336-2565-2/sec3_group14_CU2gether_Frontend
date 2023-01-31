@@ -1,13 +1,36 @@
-const PRIMARY = '#E16D62'; 
-const SECONDARY = '#B8564D'; 
-const TEXT_PRIMARY = '#E7D6D6';
-const WHITE = '#FFFFFF';
+const ORANGE = '#E16D62' 
+const ORANGE2 = '#B8564D' 
+const GREEN = '#8FF6CE'
+const PINK = '#F96491'
+const GRAY1 = 'B4B4B4'
+const GRAY2 = '5F5555'
+const GRAY3 = '454545'
+const PINKGRAY = '#E7D6D6'
+const WHITE = '#FFFFFF'
+const BLACK = '#000000'
+
+const BUTTON = {
+	PRIMARY: ORANGE,
+	PRIMARY_HOVER: ORANGE2,
+	SECONDARY: WHITE,
+	SECONDARY_HOVER: GRAY2,
+}
+
+const TEXT = {
+	PRIMARY: WHITE,
+	PRIMARY_HOVER: PINKGRAY,
+	SECONDARY: BLACK,
+}
 
 const Colors = {
-    PRIMARY,
-    SECONDARY,
-    TEXT_PRIMARY,
-    WHITE,
-};
+	BUTTON,
+	TEXT,
+	GREEN,
+	PINK,
+	WHITE,
+	GRAY1,
+	GRAY2,
+	GRAY3,
+}
 
-export default Colors;
+export default Colors

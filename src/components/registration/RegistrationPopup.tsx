@@ -21,6 +21,13 @@ const RegistrationWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	padding-left: 10%;
+	padding-right: 10%;
+
+	${theme.media.mobile} = {
+		padding-left: 0%;
+		padding-right: 0%;
+	}
 `;
 
 const DoneWrapper = styled.div`
@@ -28,6 +35,7 @@ const DoneWrapper = styled.div`
 	align-items: center;
 	flex-direction: column;
 	justify-content: center;
+	padding-top: 30%;
 `;
 
 const OperationButtonWrapper = styled.div`
@@ -73,10 +81,6 @@ const SubtitleText2 = styled.h3`
 	${theme.media.mobile} {
 		font-size: 16px;
 	}
-`;
-
-const bodyStyle = styled.div`
-
 `;
 
 const MODE = {
@@ -287,13 +291,13 @@ const Registration: React.FC<{
 				mode === MODE.SELECTROLE ? 
 					(<SelectRoleButtonWrapper>
 						<Button
-							style={{borderRadius: 6, width: '100%', height: 200, marginBottom: 20}}
+							style={{width: '100%', height: 200, marginBottom: 20, backgroundColor: '#F96491', color:'white'}}
 							onClick={() => onSelectRole(USER_ROLE_REF.STUDENT)}
 						>
 							<SelectRoleButtonText>CU Student</SelectRoleButtonText>
 						</Button>
 						<Button
-							style={{borderRadius: 6, width: '100%', height: 200}}
+							style={{width: '100%', height: 200, backgroundColor: '#BABABA', color: '#454545'}}
 							onClick={() => onSelectRole(USER_ROLE_REF.ORGANIZER)}
 						>
 							<SelectRoleButtonText>Organizer</SelectRoleButtonText>

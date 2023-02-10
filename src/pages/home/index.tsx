@@ -2,11 +2,19 @@ import React from "react";
 
 import LoginButton from "@/components/login/LoginButton";
 
+import { ConfigProvider } from "antd";
+
 const home: React.FC<{}> = () => {
     return (
-        <div>
+        <ConfigProvider
+            theme={{
+                token: {
+                    colorPrimary: "#E16D62",
+                },
+            }}
+        >
             <LoginButton />
-        </div>
+        </ConfigProvider>
     );
 };
 

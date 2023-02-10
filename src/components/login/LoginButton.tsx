@@ -51,20 +51,12 @@ const Login: React.FC<{}> = () => {
         setPassword(password.target.value);
     };
 
-    const loginHandler = () => {
-        if (!email) {
-            setIsEmailError(true);
-        }
-        if (!password) {
-            setIsPasswordError(true);
-        }
-        if (email && password) {
-            setIsShow(false);
-        }
+    const signupHandler = () => {
+        console.log("sign up");
     };
 
-    const signupHandler = () => {
-        console.log("eiei");
+    const forgotPasswordHandler = () => {
+        console.log("forgot password");
     };
 
     return (
@@ -72,16 +64,6 @@ const Login: React.FC<{}> = () => {
             <Button onClick={() => setIsShow(true)}>Log in</Button>
             <Modal
                 open={isShow}
-                // onOk={loginHandler}
-                // okText="Log in"
-                // okButtonProps={{
-                //     style: {
-                //         backgroundColor: "#E16D62",
-                //         fontWeight: 800,
-                //         borderRadius: 600,
-                //     },
-                // }}
-                // onCancel={() => setIsShow(false)}
                 centered={true}
                 footer={null}
                 bodyStyle={{ height: 750 }}
@@ -93,15 +75,15 @@ const Login: React.FC<{}> = () => {
                     2Gether
                 </LoginTitle>
                 <Form
-                    onFinish={() => console.log("eiei")}
-                    onFinishFailed={() => console.log("failed")}
+                    onFinish={() => console.log("log in success")}
+                    onFinishFailed={() => console.log("log in failed")}
                 >
                     <Form.Item
-                        name="email"
+                        name="Email"
                         rules={[
                             {
                                 required: true,
-                                message: "Please enter your Email!",
+                                message: `Please enter your Email`,
                             },
                         ]}
                     >
@@ -112,11 +94,11 @@ const Login: React.FC<{}> = () => {
                     </Form.Item>
 
                     <Form.Item
-                        name="password"
+                        name="Password"
                         rules={[
                             {
                                 required: true,
-                                message: "Please enter your Password!",
+                                message: "Please enter your Password",
                             },
                         ]}
                     >
@@ -124,6 +106,20 @@ const Login: React.FC<{}> = () => {
                             placeholder="password"
                             onChange={passwordChangeHandler}
                         />
+                    </Form.Item>
+
+                    <Form.Item>
+                        <SignUpLink onClick={forgotPasswordHandler}>
+                            Forgot Password?
+                        </SignUpLink>
+                    </Form.Item>
+
+                    <Form.Item>
+                        <ButtonWrapper>
+                            <Button type="primary" htmlType="submit">
+                                Log in
+                            </Button>
+                        </ButtonWrapper>
                     </Form.Item>
 
                     <Form.Item>
@@ -138,12 +134,6 @@ const Login: React.FC<{}> = () => {
                                 Sign up
                             </SignUpLink>
                         </div>
-                    </Form.Item>
-
-                    <Form.Item>
-                        <ButtonWrapper>
-                            <Button htmlType="submit">Log in</Button>
-                        </ButtonWrapper>
                     </Form.Item>
                 </Form>
             </Modal>

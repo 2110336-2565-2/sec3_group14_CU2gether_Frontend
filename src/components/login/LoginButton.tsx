@@ -68,6 +68,8 @@ const Login: React.FC<{}> = () => {
                 footer={null}
                 bodyStyle={{ height: 750 }}
                 width={600}
+                closable={true}
+                onCancel={() => setIsShow(false)}
             >
                 <LoginTitle>
                     Log in to

@@ -1,6 +1,9 @@
-import React from 'react'
-import styled from 'styled-components'
-import theme from '@/utils/theme'
+import React, { useState } from "react";
+import styled from "styled-components";
+import theme from "@/utils/theme";
+import { Button, ConfigProvider } from "antd";
+import Registration from "@/components/registration/RegistrationPopup";
+import LoginButton from "../components/login/LoginButton";
 
 const ButtonJoin = styled.button`
     height: 50px;
@@ -9,7 +12,7 @@ const ButtonJoin = styled.button`
     color: white;
     margin-right: 50px;
     border-radius: 6px;
-    background-color: #E16D62;
+    background-color: #e16d62;
     border: none;
     :hover{
         background-color: #b8574e;
@@ -62,13 +65,29 @@ const ButCon = styled.div`
         text-align: center;
         vertical-align: middle;
     }
-`
+`;
 
 export default function ButonJoinLog() {
+    const [onRegistration, setOnRegistration] = useState(false);
+
+    const toggleRegistrationModal = (): void => {
+        setOnRegistration(!onRegistration);
+    };
+
     return (
-        <ButCon>
-            <ButtonJoin><b>Join Us</b></ButtonJoin>
-            <ButtonLog><b>Log in</b></ButtonLog>
-        </ButCon>
-    )
-  }
+        <ConfigProvider
+            theme={{
+                token: {
+                    colorPrimary: "#E16D62",
+                },
+            }}
+        >
+            <Button onClick={() => toggleRegistrationModal()}>Join Us</Button>
+            <Registration
+                toggleRegistrationModal={toggleRegistrationModal}
+                onRegistration={onRegistration}
+            />
+            <LoginButton />
+        </ConfigProvider>
+    );
+}

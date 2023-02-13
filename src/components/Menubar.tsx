@@ -56,8 +56,8 @@ const Li2 = styled.li`
 `
 
 const CU = styled.div`
-  color: #F96491;
-`
+    color: #f96491;
+`;
 
 const Container = styled.div`
     width: 100%;

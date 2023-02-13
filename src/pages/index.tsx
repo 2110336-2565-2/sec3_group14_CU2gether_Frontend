@@ -17,7 +17,7 @@ export default function Home() {
                     backgroundPosition: `center center`,
                     backgroundRepeat: `no-repeat`,
                     backgroundAttachment: `fixed`,
-                    // height: `3876px`
+                    height: `3876px`,
                 }}
             >
                 <Menubar />

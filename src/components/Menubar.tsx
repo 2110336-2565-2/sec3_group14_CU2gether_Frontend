@@ -58,9 +58,10 @@ export default function Menubar() {
                         <CU>CU</CU>2Gether
                     </Li>
                 </b>
-                <Li2>Product</Li2>
-                <Li2>Learn</Li2>
-                <Li2>Support</Li2>
+                <Li2>Home</Li2>
+                <Li2>Explore Events</Li2>
+                <Li2>My Events</Li2>
+                <Li2>Create Event</Li2>
             </Ul>
             {/* <Butcon> */}
             <ButonJoinLog />

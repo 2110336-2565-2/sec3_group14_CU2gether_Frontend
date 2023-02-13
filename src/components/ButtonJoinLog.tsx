@@ -59,11 +59,6 @@ export default function ButonJoinLog() {
     };
 
     return (
-        // <ButCon>
-        //     <ButtonJoin><b>Join Us</b></ButtonJoin>
-        //     <ButtonLog><b>Log in</b></ButtonLog>
-        // </ButCon>
-
         <ConfigProvider
             theme={{
                 token: {
@@ -71,7 +66,7 @@ export default function ButonJoinLog() {
                 },
             }}
         >
-            <Button onClick={() => toggleRegistrationModal()} />
+            <Button onClick={() => toggleRegistrationModal()}>Join Us</Button>
             <Registration
                 toggleRegistrationModal={toggleRegistrationModal}
                 onRegistration={onRegistration}

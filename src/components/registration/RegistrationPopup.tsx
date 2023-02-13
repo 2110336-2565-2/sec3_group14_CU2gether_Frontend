@@ -198,7 +198,7 @@ const Registration: React.FC<{
 			</Form.Item>
 			<Form.Item 
 				name="phone"
-				rules={[{required: true, message: 'Please enter your phone number.'}, {type: 'string', min:10, max: 10, message: 'Please enter valid phone number.'}]}
+				rules={[{required: true, message: 'Please enter your phone number.'}, {type: 'string', min:9, max: 9, message: 'Please enter valid phone number.'}]}
 			>
 				<Input placeholder="Tel."/>
 			</Form.Item>

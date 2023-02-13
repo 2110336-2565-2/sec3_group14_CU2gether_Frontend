@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react"
 
+import axios from "axios";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Modal, Form, Input, DatePicker, Select } from 'antd'
-import { USER_ROLE_REF, GENDER_REF } from "@/utils/Enum";
+import { Button, Modal, Form, Input, DatePicker } from 'antd'
+import { USER_ROLE_REF } from "@/utils/Enum";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import theme from '@/utils/theme'
 
@@ -41,7 +42,7 @@ const DoneWrapper = styled.div`
 const OperationButtonWrapper = styled.div`
 	display: flex;
 	justify-content: center;
-	gap: 10px;
+	gap: 20px;
 `;
 
 const SelectRoleButtonWrapper = styled.div`
@@ -106,6 +107,44 @@ const Registration: React.FC<{
 
 	const onFinish = (values: any) => {
 		console.log('Success:', values);
+		if(role === USER_ROLE_REF.STUDENT) {
+			const studentId = values.studentId;
+			const email = values.email;
+			const password = values.password;
+			const firstName = values.firstname;
+			const lastName = values.lastname;
+			const image = "image1";
+			const cardId = "cardID1";
+
+			axios.post("http://localhost:3001/register/student", { 
+				studentId,
+				email,
+				password,
+				firstName,
+				lastName,
+				image,
+				cardId,
+			})
+				.then((res) => {console.log(res)})
+				.catch((err) => console.log(err));
+		} else if(role === USER_ROLE_REF.ORGANIZER){
+			const email = values.organizerEmail;
+			const name = values.organizerName;
+			const coorName = values.coordinatorName;
+			const phone = values.phone;
+			const description = values.description;
+
+			axios.post("http://localhost:3001/register/organizer", { 
+				email,
+				name,
+				coorName,
+				phone,
+				description,
+			})
+				.then((res) => {console.log(res)})
+				.catch((err) => console.log(err));
+		}
+		
 		setMode(MODE.DONE);
 	 };
 
@@ -159,7 +198,7 @@ const Registration: React.FC<{
 			</Form.Item>
 			<Form.Item 
 				name="phone"
-				rules={[{required: true, message: 'Please enter your phone number.'}, {type: 'string', min:10, max: 10, message: 'Please enter valid phone number.'}]}
+				rules={[{required: true, message: 'Please enter your phone number.'}, {type: 'string', min:9, max: 9, message: 'Please enter valid phone number.'}]}
 			>
 				<Input placeholder="Tel."/>
 			</Form.Item>
@@ -170,12 +209,14 @@ const Registration: React.FC<{
 				<OperationButtonWrapper>
 					<Button 
 						type="primary"
+						style={{width: 150}}
 						onClick={() => setMode(MODE.SELECTROLE)}
 					>
 						Back
 					</Button>
 					<Button 
-						type="primary" 
+						type="primary"
+						style={{width: 150}}
 						htmlType="submit" 
 					>
 						Submit
@@ -201,10 +242,8 @@ const Registration: React.FC<{
 			<Form.Item
 				name="password"
 				rules={[
-					{
-						required: true,
-						message: 'Please enter a password',
-					},
+					{ required: true, message: 'Please enter a password'},
+					{ type: 'string', min: 8, message: 'password length must be more than 8 characters'}
 				]}
 				hasFeedback
 			>
@@ -251,22 +290,24 @@ const Registration: React.FC<{
 			>
 				<Input placeholder="Lastname"></Input>
 			</Form.Item>
-			<Form.Item 
+			{/* <Form.Item 
 				name="birthdate"
 				rules={[{required: true, message: 'Please enter your birthdate'}]}
 			>
 				<DatePicker/>
-			</Form.Item>
+			</Form.Item> */}
 			<Form.Item>
 				<OperationButtonWrapper>
 					<Button
 						type="primary"
+						style={{width: 150}}
 						onClick={() => setMode(MODE.SELECTROLE)}
 					>
 						Back
 					</Button>
 					<Button 
 						type="primary"
+						style={{width: 150}}
 						htmlType="submit" 
 					>
 						Sign Up

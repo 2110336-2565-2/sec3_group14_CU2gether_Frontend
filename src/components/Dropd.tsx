@@ -41,7 +41,7 @@ const Con = styled.div`
   }
 `
 
-const Img =styled.div`
+const Img =styled.img`
     background-image: url('profile.png');
     background-repeat: no-repeat;
     background-size: cover;

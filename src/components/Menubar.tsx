@@ -76,7 +76,7 @@ const Butcon = styled.div`
     display: none;
   }
 `
-const Burger = styled.image`
+const Burger = styled.img`
   background-image: url('burger.png');
   background-repeat: no-repeat;
   background-size: cover;

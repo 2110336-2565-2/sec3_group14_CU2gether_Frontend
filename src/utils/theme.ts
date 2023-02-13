@@ -82,8 +82,8 @@ const color_level = {
 
 const media = {
   mobile_xs: '@media screen and (max-width: 350px)',
-  mobile: '@media screen and (max-width: 500px)',
-  tablet: '@media screen and (max-width: 800px)',
+  mobile: '@media screen and (max-width: 390px)',
+  tablet: '@media screen and (max-width: 1024px)',
   pc: '@media screen and (max-width: 1024px)',
   wirescreen: '@media screen and (max-width: 1440px)',
 }

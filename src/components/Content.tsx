@@ -19,6 +19,9 @@ const Text = styled.div`
     align-items: center;
     padding-top: 70px;
     font-size: 96px;
+    ${theme.media.mobile} {
+        font-size: 40px;
+    }
 `
 
 const PicCon = styled.div`
@@ -35,7 +38,7 @@ const Img = styled.img`
 `
 
 const Butcon = styled.div`
-    @media screen and (min-width: 801px) {
+    @media screen and (min-width: 1025px) {
         display: none;
     }
 `

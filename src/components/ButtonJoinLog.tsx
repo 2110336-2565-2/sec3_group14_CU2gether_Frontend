@@ -11,11 +11,19 @@ const ButtonJoin = styled.button`
     border-radius: 6px;
     background-color: #E16D62;
     border: none;
+    :hover{
+        background-color: #b8574e;
+    }
     ${theme.media.tablet} {
         margin-right: 0px;
         width: 600px;
         font-size: 24px;
         padding: 50px auto;
+    }
+    ${theme.media.mobile} {
+        width: 340px;
+        height: 30px;
+        font-size: 15px;
     }
 `
 
@@ -27,18 +35,26 @@ const ButtonLog = styled.button`
     border-radius: 6px;
     background-color: white;
     border: none;
+    :hover{
+        background-color: #bfbfbf;
+    }
     ${theme.media.tablet} {
         margin-right: 0px;
         width: 600px;
         font-size: 24px;
         margin: 30px;
     }
+    ${theme.media.mobile} {
+        width: 340px;
+        height: 30px;
+        font-size: 15px;
+    }
 `
 
 const ButCon = styled.div`
     height: 300px;
     display: flex;
-    padding-top: 40px;
+    padding-top: 55px;
     ${theme.media.tablet} {
         padding-top: 0px;
         text-align: center;

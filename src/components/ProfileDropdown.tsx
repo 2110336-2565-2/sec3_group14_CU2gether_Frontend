@@ -42,7 +42,7 @@ const items: MenuProps["items"] = [
   },
 ];
 
-const Con = styled.div`
+const ProfileDropdownWrapper = styled.div`
   padding: 40px;
   ${theme.media.mobile} {
     padding: 20px;
@@ -63,7 +63,7 @@ const StyledUserOutlined = styled(UserOutlined)`
 
 export default function ProfileDropdown() {
   return (
-    <Con className={inter.className}>
+    <ProfileDropdownWrapper className={inter.className}>
       <Space direction="vertical">
         <Space wrap>
           <Dropdown
@@ -76,6 +76,6 @@ export default function ProfileDropdown() {
           </Dropdown>
         </Space>
       </Space>
-    </Con>
+    </ProfileDropdownWrapper>
   );
 }

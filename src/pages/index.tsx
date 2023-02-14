@@ -1,14 +1,31 @@
 import { Inter } from "@next/font/google";
+import { useState } from "react";
 
-//import styles from '@/styles/Home.module.css'
+// import styles from "@/styles/Home.module.css";
 import Menubar from "@/components/Menubar";
 import Content from "@/components/Content";
+import { ConfigProvider } from "antd";
+import LoginAndRegistration from "@/components/login-registration/LoginAndRegistrationModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+    const [onLoginAndRegistration, setOnLoginAndRegistration] = useState(false);
+    const [isLogin, setLogin] = useState(false);
+
+    const toggleLoginAndRegistrationModal = () => {
+        setOnLoginAndRegistration(!onLoginAndRegistration);
+        console.log("clicked!");
+    };
+
     return (
-        <>
+        <ConfigProvider
+            theme={{
+                token: {
+                    colorPrimary: "#E16D62",
+                },
+            }}
+        >
             <div
                 className={inter.className}
                 style={{
@@ -20,9 +37,22 @@ export default function Home() {
                     height: `3876px`,
                 }}
             >
-                <Menubar />
-                <Content />
+                <Menubar
+                    toggleLoginAndRegistrationModal={
+                        toggleLoginAndRegistrationModal
+                    }
+                    setLogin={setLogin}
+                />
+                <LoginAndRegistration
+                    isLogin={isLogin}
+                    setLogin={setLogin}
+                    onLoginAndRegistrationModal={onLoginAndRegistration}
+                    toggleLoginAndRegistrationModal={
+                        toggleLoginAndRegistrationModal
+                    }
+                ></LoginAndRegistration>
+                {/* <Content /> */}
             </div>
-        </>
+        </ConfigProvider>
     );
 }

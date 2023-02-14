@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Button, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
 import Dropd from "./Dropd";
+import BurgerPopup from "./BurgerPopup";
 
 const StyledButton = styled(Button)`
     height: 35px;
@@ -98,16 +99,6 @@ const ButtonWrapper = styled.div`
         display: none;
     }
 `;
-const Burger = styled.img`
-    background-image: url("burger.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 18px;
-    height: 15px;
-    @media screen and (min-width: 391px) {
-        display: none;
-    }
-`;
 
 const MenuBar: React.FC<{
     toggleLoginAndRegistrationModal(): void;
@@ -128,7 +119,7 @@ const MenuBar: React.FC<{
                     alignItems: "center",
                 }}
             >
-                <Burger />
+                <BurgerPopup />
             </div>
             <Ul>
                 <b>

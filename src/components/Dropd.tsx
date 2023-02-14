@@ -4,6 +4,9 @@ import { Button, Dropdown, Space } from 'antd';
 import {QuestionOutlined,LoginOutlined} from '@ant-design/icons';
 import styled from 'styled-components';
 import theme from '@/utils/theme';
+import { Inter } from "@next/font/google";
+
+const inter = Inter({ subsets: ["latin"] });
 
 const items: MenuProps['items'] = [
   {
@@ -55,7 +58,7 @@ const Img =styled.img`
 
 export default function Dropd() {
   return (
-    <Con>
+    <Con className={inter.className}>
         <Space direction="vertical">
             <Space wrap>
                 <Dropdown menu={{ items }} placement="bottomRight" trigger={['click']} overlayStyle={{width:'340px'}} >

@@ -25,7 +25,7 @@ const RegistrationWrapper = styled.div`
     padding-left: 10%;
     padding-right: 10%;
 
-    ${theme.media.mobile} = {
+    ${theme.media.mobile} {
         padding-left: 0%;
         padding-right: 0%;
     }

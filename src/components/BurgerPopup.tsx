@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Button, Modal } from 'antd';
+import { Button, Drawer } from 'antd';
 import styled from 'styled-components';
+import { Inter } from "@next/font/google";
 
-const Burger = styled.img`
+const inter = Inter({ subsets: ["latin"] });
+
+const MenuForMoblie = styled.img`
   background-image: url('burger.png');
   background-repeat: no-repeat;
   background-size: cover;
@@ -11,47 +14,33 @@ const Burger = styled.img`
 `
 
 const BurgerPopup: React.FC = () => {
-  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const showModal = () => {
+  const showDrawer = () => {
     setOpen(true);
   };
 
-  const handleOk = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setOpen(false);
-    }, 3000);
-  };
-
-  const handleCancel = () => {
+  const onClose = () => {
     setOpen(false);
   };
 
   return (
-    <>
-      <Button type="text" onClick={showModal} >
-        <Burger/>
+    <div className={inter.className}>
+      <Button type="text" onClick={showDrawer}>
+        <MenuForMoblie/>
       </Button>
-      <Modal
-        open={open}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        footer={[]}
-      >
-        <b>
-            <p>Home</p>
-            <br />
-            <p>Explore Events</p>
-            <br />
-            <p>My Events</p>
-            <br />
-            <p>Create Event</p>
-        </b>
-      </Modal>
-    </>
+      <Drawer width={390} title={<div style={{fontSize:"24px",marginLeft:"70px",fontWeight:"bold"}}><div style={{color:"#F96491",display:"inline"}}>CU</div><div style={{color:"#BABABA",display:"inline"}}>2Gether</div></div>} placement="left" onClose={onClose} open={open}>
+        <div style={{fontSize:"15px",marginLeft:"20px",fontWeight:"bold",color:"#454545"}}>
+          <p>Home</p>
+          <br />
+          <p>Explore Events</p>
+          <br />
+          <p>My Events</p>
+          <br />
+          <p>Create Event</p>
+        </div>
+      </Drawer>
+    </div>
   );
 };
 

@@ -34,10 +34,6 @@ const ContentWrapper = styled.div`
 const HamburgerMenu: React.FC = () => {
   const [open, setOpen] = useState(false);
 
-  const showDrawer = () => {
-    setOpen(true);
-  };
-
   return (
     <HamburgerMenuWrapper className={inter.className}>
       <Button type="text" onClick={() => setOpen(true)}>

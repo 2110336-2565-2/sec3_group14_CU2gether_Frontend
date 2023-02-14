@@ -1,6 +1,6 @@
 import { Inter } from "@next/font/google";
 
-//import styles from '@/styles/Home.module.css'
+// import styles from "@/styles/Home.module.css";
 import Menubar from "@/components/Menubar";
 import Content from "@/components/Content";
 
@@ -21,7 +21,7 @@ export default function Home() {
                 }}
             >
                 <Menubar />
-                <Content />
+                {/* <Content /> */}
             </div>
         </>
     );

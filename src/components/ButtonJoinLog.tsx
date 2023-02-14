@@ -14,7 +14,7 @@ const ButtonJoin = styled.button`
     border-radius: 6px;
     background-color: #e16d62;
     border: none;
-    :hover{
+    :hover {
         background-color: #b8574e;
     }
     ${theme.media.tablet} {
@@ -28,7 +28,7 @@ const ButtonJoin = styled.button`
         height: 30px;
         font-size: 15px;
     }
-`
+`;
 
 const ButtonLog = styled.button`
     height: 50px;
@@ -38,7 +38,7 @@ const ButtonLog = styled.button`
     border-radius: 6px;
     background-color: white;
     border: none;
-    :hover{
+    :hover {
         background-color: #bfbfbf;
     }
     ${theme.media.tablet} {
@@ -52,7 +52,7 @@ const ButtonLog = styled.button`
         height: 30px;
         font-size: 15px;
     }
-`
+`;
 
 const ButCon = styled.div`
     height: 300px;
@@ -62,6 +62,19 @@ const ButCon = styled.div`
         padding-top: 0px;
         text-align: center;
         display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+    }
+`;
+
+const ButCon2 = styled(Button)`
+    height: 300px;
+    display: flex;
+    padding-top: 55px;
+    ${theme.media.tablet} {
+        padding-top: 0px;
+        text-align: center;
+        display: none;
         text-align: center;
         vertical-align: middle;
     }
@@ -82,7 +95,7 @@ export default function ButonJoinLog() {
                 },
             }}
         >
-            <Button onClick={() => toggleRegistrationModal()}>Join Us</Button>
+            <ButCon2 onClick={() => toggleRegistrationModal()}>Join Us</ButCon2>
             <Registration
                 toggleRegistrationModal={toggleRegistrationModal}
                 onRegistration={onRegistration}

@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import ButonJoinLog from "./ButtonJoinLog";
 import theme from "@/utils/theme";
 
 const Container = styled.div`
@@ -22,7 +21,7 @@ const Text = styled.div`
     ${theme.media.mobile} {
         font-size: 40px;
     }
-`
+`;
 
 const PicCon = styled.div`
     height: 800px;

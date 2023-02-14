@@ -1,8 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import ButonJoinLog from "./ButtonJoinLog";
+import { Button } from "antd";
 import theme from "@/utils/theme";
 import Dropd from "./Dropd";
+
+const StyledButton = styled(Button)`
+    height: 35px;
+    width: 100px;
+    font-size: 20px;
+    margin-right: 50px;
+    border-radius: 6px;
+    background-color: white;
+    border: none;
+    :hover {
+        background-color: #bfbfbf;
+    }
+    ${theme.media.tablet} {
+        margin-right: 0px;
+        width: 600px;
+        font-size: 24px;
+        margin: 30px;
+    }
+    ${theme.media.mobile} {
+        width: 340px;
+        height: 30px;
+        font-size: 15px;
+    }
+`;
 
 const Ul = styled.ul`
     list-style: none;
@@ -87,7 +111,15 @@ const Burger = styled.img`
     }
 `;
 
-export default function Menubar() {
+const MenuBar: React.FC<{
+    toggleLoginAndRegistrationModal(): void;
+    setLogin(isLogin: boolean): void;
+}> = ({ toggleLoginAndRegistrationModal, setLogin }) => {
+    const handleButtonClick = (isLogin: boolean) => {
+        toggleLoginAndRegistrationModal();
+        setLogin(isLogin);
+    };
+
     return (
         <Container>
             <div
@@ -112,9 +144,16 @@ export default function Menubar() {
                 <Li2>My Event</Li2>
             </Ul>
             <Butcon>
-                <ButonJoinLog />
+                <StyledButton onClick={() => handleButtonClick(false)}>
+                    Join Us
+                </StyledButton>
+                <StyledButton onClick={() => handleButtonClick(true)}>
+                    Login
+                </StyledButton>
             </Butcon>
             <Dropd />
         </Container>
     );
-}
+};
+
+export default MenuBar;

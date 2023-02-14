@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Drawer } from 'antd';
 import styled from 'styled-components';
 import { Inter } from "@next/font/google";
+import theme from '@/utils/theme';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,6 +12,13 @@ const MenuForMoblie = styled.img`
   background-size: cover;
   width: 18px;
   height: 15px;
+`
+
+const Wrapper = styled.div`
+  display: none;
+  ${theme.media.mobile} {
+      display: inline;
+  }
 `
 
 const BurgerPopup: React.FC = () => {
@@ -25,7 +33,7 @@ const BurgerPopup: React.FC = () => {
   };
 
   return (
-    <div className={inter.className}>
+    <Wrapper className={inter.className}>
       <Button type="text" onClick={showDrawer}>
         <MenuForMoblie/>
       </Button>
@@ -40,7 +48,7 @@ const BurgerPopup: React.FC = () => {
           <p>Create Event</p>
         </div>
       </Drawer>
-    </div>
+    </Wrapper>
   );
 };
 

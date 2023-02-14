@@ -54,10 +54,24 @@ const StyledUserOutlined = styled(UserOutlined)`
   font-size: 40px;
   width: 70px;
   height: 70px;
+  padding: 0 15px;
+  opacity: 0.9;
   ${theme.media.mobile} {
+    padding: 0 8px;
     font-size: 20px;
     width: 35px;
     height: 35px;
+  }
+`;
+
+const StyledUserOutlinedButton = styled.div`
+  background-color: rgba(220, 220, 220, 0.243);
+  border-radius: 50%;
+  height: 70px;
+  width: 70px;
+  ${theme.media.mobile} {
+    height: 35px;
+    width: 35px;
   }
 `;
 
@@ -72,7 +86,9 @@ export default function ProfileDropdown() {
             trigger={["click"]}
             overlayStyle={{ width: "340px" }}
           >
-            <StyledUserOutlined />
+            <StyledUserOutlinedButton>
+              <StyledUserOutlined />
+            </StyledUserOutlinedButton>
           </Dropdown>
         </Space>
       </Space>

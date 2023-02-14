@@ -30,8 +30,10 @@ const Ul = styled.ul`
   align-items: center;
   color: white;
   width: 80%;
+  gap: 60px;
   ${theme.media.tablet} {
     width: 90%;
+    gap: 10px;
   }
   ${theme.media.mobile} {
     font-size: 24px;
@@ -40,22 +42,16 @@ const Ul = styled.ul`
 `;
 
 const Li = styled.li`
-  margin: 0 45px;
   display: flex;
   font-size: 48px;
   align-items: center;
   justify-content: center;
-  ${theme.media.tablet} {
-    padding-top: 45px;
-  }
   ${theme.media.mobile} {
     font-size: 24px;
-    padding-top: 24px;
   }
 `;
 
 const Li2 = styled.li`
-  margin: 0 20px;
   display: flex;
   font-size: 20px;
   align-items: center;
@@ -84,6 +80,8 @@ const CU = styled.div`
 const MenuBarWrapper = styled.div`
   width: 100%;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   height: 150px;
   ${theme.media.mobile} {
     width: 390px;
@@ -102,7 +100,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const HamburgerMenuWrapper = styled.div`
-  width: 75px;
+  width: 110px;
   display: flex;
   justify-content: center;
   align-items: center;

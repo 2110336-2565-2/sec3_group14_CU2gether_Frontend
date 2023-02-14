@@ -4,6 +4,7 @@ import { useState } from "react";
 // import styles from "@/styles/Home.module.css";
 import Menubar from "@/components/Menubar";
 import Content from "@/components/Content";
+import { ConfigProvider } from "antd";
 import LoginAndRegistration from "@/components/login-registration/LoginAndRegistrationModal";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,7 +19,13 @@ export default function Home() {
     };
 
     return (
-        <>
+        <ConfigProvider
+            theme={{
+                token: {
+                    colorPrimary: "#E16D62",
+                },
+            }}
+        >
             <div
                 className={inter.className}
                 style={{
@@ -46,6 +53,6 @@ export default function Home() {
                 ></LoginAndRegistration>
                 {/* <Content /> */}
             </div>
-        </>
+        </ConfigProvider>
     );
 }

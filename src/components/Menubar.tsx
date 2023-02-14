@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Button } from "antd";
+import { Button, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
 import Dropd from "./Dropd";
 
@@ -8,13 +8,8 @@ const StyledButton = styled(Button)`
     height: 35px;
     width: 100px;
     font-size: 20px;
-    margin-right: 50px;
     border-radius: 6px;
-    background-color: white;
     border: none;
-    :hover {
-        background-color: #bfbfbf;
-    }
     ${theme.media.tablet} {
         margin-right: 0px;
         width: 600px;
@@ -31,6 +26,7 @@ const StyledButton = styled(Button)`
 const Ul = styled.ul`
     list-style: none;
     display: flex;
+    align-items: center;
     color: white;
     width: 80%;
     ${theme.media.tablet} {
@@ -48,7 +44,6 @@ const Li = styled.li`
     font-size: 48px;
     align-items: center;
     justify-content: center;
-    padding-top: 50px;
     ${theme.media.tablet} {
         padding-top: 45px;
     }
@@ -59,12 +54,13 @@ const Li = styled.li`
 `;
 const Li2 = styled.li`
     margin: 0 20px;
-    padding-top: 19px;
     display: flex;
     font-size: 20px;
     align-items: center;
-    height: 150px;
+    height: 100px;
     justify-content: center;
+    cursor: pointer;
+
     :hover {
         text-decoration: underline;
     }
@@ -93,9 +89,11 @@ const Container = styled.div`
     }
 `;
 
-const Butcon = styled.div`
+const ButtonWrapper = styled.div`
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 10px;
     ${theme.media.tablet} {
         display: none;
     }
@@ -143,14 +141,20 @@ const MenuBar: React.FC<{
                 <Li2>Create Event</Li2>
                 <Li2>My Event</Li2>
             </Ul>
-            <Butcon>
-                <StyledButton onClick={() => handleButtonClick(false)}>
+            <ButtonWrapper>
+                <StyledButton
+                    type="primary"
+                    onClick={() => handleButtonClick(false)}
+                >
                     Join Us
                 </StyledButton>
-                <StyledButton onClick={() => handleButtonClick(true)}>
+                <StyledButton
+                    type="default"
+                    onClick={() => handleButtonClick(true)}
+                >
                     Login
                 </StyledButton>
-            </Butcon>
+            </ButtonWrapper>
             <Dropd />
         </Container>
     );

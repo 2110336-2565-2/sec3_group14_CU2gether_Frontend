@@ -37,12 +37,19 @@ const ContentWrapper = styled.div`
     margin-top: 10px;
 `;
 
-const LoginAndRegistrationTitle = styled.h1`
+const RegistrationTitle = styled.h1`
     font-size: 32px;
     font-weight: bold;
     display: flex;
     flex-direction: column;
     align-items: center;
+`;
+
+const LoginTitle = styled.h1`
+    font-size: 32px;
+    font-weight: 600;
+    text-align: center;
+    color: black;
 `;
 
 export const MODE = {
@@ -74,15 +81,14 @@ const LoginAndRegistrationModal: React.FC<{
         setMode(mode);
     };
 
-    const title = isLogin
-        ? ""
-        : mode === MODE.SELECTROLE
-        ? "Who are you?"
-        : mode === MODE.SIGNUP
-        ? role === USER_ROLE_REF.ORGANIZER
-            ? "Request Form"
-            : "Sign Up"
-        : null;
+    const title =
+        mode === MODE.SELECTROLE
+            ? "Who are you?"
+            : mode === MODE.SIGNUP
+            ? role === USER_ROLE_REF.ORGANIZER
+                ? "Request Form"
+                : "Sign Up"
+            : null;
 
     const Content = isLogin ? (
         <LoginContent onSelectMode={onSelectMode} setLogin={setLogin} />
@@ -104,7 +110,7 @@ const LoginAndRegistrationModal: React.FC<{
             centered={true}
             closable={true}
             afterClose={() => setMode(MODE.SELECTROLE)}
-            bodyStyle={{ minHeight: 500 }}
+            bodyStyle={{ minHeight: 500, marginTop: 40 }}
             closeIcon={
                 <FontAwesomeIcon
                     onClick={() => toggleLoginAndRegistrationModal()}
@@ -114,7 +120,15 @@ const LoginAndRegistrationModal: React.FC<{
             }
             footer={null}
             title={
-                <LoginAndRegistrationTitle>{title}</LoginAndRegistrationTitle>
+                isLogin ? (
+                    <LoginTitle>
+                        Log in to
+                        <span style={{ color: "#F96491" }}> CU</span>
+                        2Gether
+                    </LoginTitle>
+                ) : (
+                    <RegistrationTitle>{title}</RegistrationTitle>
+                )
             }
         >
             {<ContentWrapper>{Content}</ContentWrapper>}

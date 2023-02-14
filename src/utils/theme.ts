@@ -7,7 +7,7 @@ const color = {
   gray: '#717D8A',
   black: '#0C1116',
 
-  primary: '#4620D1',
+  primary: '#E16D62',
   secondary: '#FF887C',
   success: '#00C767',
   error: '#EA4040',

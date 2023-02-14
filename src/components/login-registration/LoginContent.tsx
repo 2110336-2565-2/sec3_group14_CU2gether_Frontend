@@ -26,8 +26,8 @@ const SignUpLink = styled(SignUpText)`
 const ButtonWrapper = styled.div`
     display: flex;
     justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 `;
 
 const LoginContent: React.FC<{
@@ -119,18 +119,24 @@ const LoginContent: React.FC<{
                     </Form.Item>
 
                     <Form.Item>
+                        <SignUpLink onClick={forgotPasswordHandler}>
+                            Forgot Password?
+                        </SignUpLink>
+                    </Form.Item>
+
+                    <Form.Item>
                         <ButtonWrapper>
-                            <Button type="primary" htmlType="submit">
+                            <Button
+                                style={{ width: 100 }}
+                                type="primary"
+                                htmlType="submit"
+                            >
                                 Log in
                             </Button>
                         </ButtonWrapper>
                     </Form.Item>
                 </Form>
             </FormWrapper>
-
-            <SignUpLink onClick={forgotPasswordHandler}>
-                Forgot Password?
-            </SignUpLink>
 
             <div
                 style={{

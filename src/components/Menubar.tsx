@@ -1,45 +1,42 @@
 import React from 'react'
 import styled from 'styled-components'
-import ButonJoinLog from './ButtonJoinLog'
+import ButtonJoinLog from './ButtonJoinLog'
 import theme from '@/utils/theme'
 import Dropd from './Dropd'
+import BurgerPopup from './BurgerPopup'
 
 const Ul = styled.ul`
   list-style:none;
   display: flex;
   color: white;
   width: 80%;
+  height: 150px;
   ${theme.media.tablet} {
     width: 90%;
   }
   ${theme.media.mobile} {
       font-size: 24px; 
       justify-content: center;
+      height: 70px;
   }
 `
 
 const Li = styled.li`
   margin: 0 45px;
+  font-weight: bold;
   display: flex;
   font-size: 48px;
   align-items: center;
   justify-content: center;
-  padding-top: 50px;
-  ${theme.media.tablet} {
-      padding-top: 45px;  
-  }
   ${theme.media.mobile} {
       font-size: 24px;
-      padding-top: 24px;
   }
 `
 const Li2 = styled.li`
   margin: 0 20px;
-  padding-top: 19px;
   display: flex;
   font-size: 20px;
   align-items: center;
-  height: 150px;
   justify-content: center;
   :hover{
     text-decoration: underline;
@@ -72,36 +69,37 @@ const Container = styled.div`
 const Butcon = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   ${theme.media.tablet} {
     display: none;
   }
 `
-const Burger = styled.img`
-  background-image: url('burger.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 18px;
-  height: 15px;
-  @media screen and (min-width: 391px) {
-        display: none;
+
+const BurCon = styled.div`
+  display: none;
+  ${theme.media.mobile} {
+      width: 75px;
+      display:flex;
+      justify-content: center;
+      align-items: center;
   }
 `
 
 export default function Menubar() {
   return (
     <Container>
-        <div style={{width:'75px',display:'flex',justifyContent:'center',alignItems:'center'}}>
-          <Burger />
-        </div>
+        <BurCon>
+          <BurgerPopup />
+        </BurCon>
         <Ul>
-            <b><Li><CU>CU</CU>2Gether</Li></b>
+            <Li><CU>CU</CU>2Gether</Li>
             <Li2>Home</Li2>
             <Li2>Explore Events</Li2>
             <Li2>Create Event</Li2>
             <Li2>My Event</Li2>
         </Ul>
         <Butcon>
-            <ButonJoinLog />
+            <ButtonJoinLog />
         </Butcon>
         <Dropd/>
     </Container>

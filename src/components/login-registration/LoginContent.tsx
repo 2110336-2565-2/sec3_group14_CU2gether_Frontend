@@ -33,24 +33,8 @@ const ButtonWrapper = styled.div`
 const LoginContent: React.FC<{
     setLogin(isLogin: boolean): void;
     onSelectMode(mode: string): void;
-}> = ({ setLogin, onSelectMode }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [isEmailError, setIsEmailError] = useState(false);
-    const [isPasswordError, setIsPasswordError] = useState(false);
-
-    const emailChangeHandler = (email: React.ChangeEvent<HTMLInputElement>) => {
-        setIsEmailError(false);
-        setEmail(email.target.value);
-    };
-
-    const passwordChangeHandler = (
-        password: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setIsPasswordError(false);
-        setPassword(password.target.value);
-    };
-
+    toggleRegistrationModal(): void;
+}> = ({ setLogin, onSelectMode, toggleRegistrationModal }) => {
     const signupHandler = () => {
         console.log("signup");
         setLogin(false);
@@ -63,22 +47,23 @@ const LoginContent: React.FC<{
 
     const loginHandler = async (values: any) => {
         console.log(values);
-        // const email = values.Email;
-        // const password = values.password;
-        // const isStudent = true;
+        const email = values.Email;
+        const password = values.Password;
+        const isStudent = true;
 
-        // try {
-        //     const response = await axios.post(
-        //         "http://localhost:3001/auth/login",
-        //         {
-        //             email,
-        //             password,
-        //             isStudent,
-        //         }
-        //     );
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        try {
+            const response = await axios.post(
+                "http://localhost:3001/login/login",
+                {
+                    email,
+                    password,
+                    isStudent,
+                }
+            );
+            toggleRegistrationModal();
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -97,10 +82,7 @@ const LoginContent: React.FC<{
                             },
                         ]}
                     >
-                        <Input
-                            placeholder="email"
-                            onChange={emailChangeHandler}
-                        />
+                        <Input placeholder="email" />
                     </Form.Item>
 
                     <Form.Item
@@ -112,10 +94,7 @@ const LoginContent: React.FC<{
                             },
                         ]}
                     >
-                        <Input.Password
-                            placeholder="password"
-                            onChange={passwordChangeHandler}
-                        />
+                        <Input.Password placeholder="password" />
                     </Form.Item>
 
                     <Form.Item>

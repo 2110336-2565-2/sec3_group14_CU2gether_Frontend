@@ -91,7 +91,11 @@ const LoginAndRegistrationModal: React.FC<{
             : null;
 
     const Content = isLogin ? (
-        <LoginContent onSelectMode={onSelectMode} setLogin={setLogin} />
+        <LoginContent
+            onSelectMode={onSelectMode}
+            setLogin={setLogin}
+            toggleRegistrationModal={toggleLoginAndRegistrationModal}
+        />
     ) : (
         <RegistrationContent
             role={role}

@@ -36,7 +36,10 @@ const DoneWrapper = styled.div`
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    padding-top: 30%;
+    gap:30px;
+    padding-right: 12%;
+    padding-left: 12%;
+    padding-top: 15%;
 `;
 
 const OperationButtonWrapper = styled.div`
@@ -155,15 +158,6 @@ const RegistrationContent: React.FC<{
 
         onSelectMode(MODE.DONE);
     };
-
-    const title =
-        mode === MODE.SELECTROLE
-            ? "Who are you?"
-            : mode === MODE.SIGNUP
-            ? role === USER_ROLE_REF.ORGANIZER
-                ? "Request Form"
-                : "Sign Up"
-            : null;
 
     const subtitle1 =
         role === USER_ROLE_REF.ORGANIZER
@@ -317,6 +311,13 @@ const RegistrationContent: React.FC<{
                         {
                             required: true,
                             message: "Please enter your CU-student id",
+                        },
+                        {
+                            type: "string",
+                            min: 10,
+                            max: 10,
+                            message:
+                                "Please enter a valid CU-student id",
                         },
                     ]}
                 >

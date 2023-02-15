@@ -16,7 +16,7 @@ const Text = styled.div`
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding-top: 70px;
+    padding-top: 100px;
     font-size: 96px;
     ${theme.media.mobile} {
         font-size: 40px;

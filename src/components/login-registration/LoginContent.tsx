@@ -30,11 +30,13 @@ const ButtonWrapper = styled.div`
     margin-bottom: 20px;
 `;
 
-const LoginContent: React.FC<{
+type LoginContentProps = {
     setLogin(isLogin: boolean): void;
     onSelectMode(mode: string): void;
     toggleRegistrationModal(): void;
-}> = ({ setLogin, onSelectMode, toggleRegistrationModal }) => {
+};
+
+const LoginContent: React.FC<LoginContentProps> = ({ setLogin, onSelectMode, toggleRegistrationModal }) => {
     const signupHandler = () => {
         console.log("signup");
         setLogin(false);

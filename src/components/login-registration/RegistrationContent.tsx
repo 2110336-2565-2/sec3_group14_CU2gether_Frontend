@@ -7,6 +7,7 @@ import { Button, Modal, Form, Input, DatePicker } from "antd";
 import { USER_ROLE_REF } from "@/utils/Enum";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import theme from "@/utils/theme";
+import { registerStudent } from "api";
 
 const { TextArea } = Input;
 
@@ -93,14 +94,16 @@ const MODE = {
     DONE: "done",
 };
 
-const RegistrationContent: React.FC<{
+type RegistrationContentProps = {
     role: string;
     mode: string;
     onSelectRole(role: string): void;
     onSelectMode(mode: string): void;
     toggleRegistrationModal(): void;
     onRegistration: boolean;
-}> = ({
+};
+
+const RegistrationContent: React.FC<RegistrationContentProps> = ({
     role,
     mode,
     onSelectRole,
@@ -120,21 +123,7 @@ const RegistrationContent: React.FC<{
             const lastName = values.lastname;
             const image = "image1";
             const cardId = "cardID1";
-
-            axios
-                .post("http://localhost:3001/register/student", {
-                    studentId,
-                    email,
-                    password,
-                    firstName,
-                    lastName,
-                    image,
-                    cardId,
-                })
-                .then((res) => {
-                    console.log(res);
-                })
-                .catch((err) => console.log(err));
+            registerStudent(studentId, email, password, firstName, lastName, image, cardId);
         } else if (role === USER_ROLE_REF.ORGANIZER) {
             const email = values.organizerEmail;
             const name = values.organizerName;

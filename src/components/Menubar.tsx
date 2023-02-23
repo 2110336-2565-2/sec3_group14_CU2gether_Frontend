@@ -75,7 +75,7 @@ const Li2 = styled.li`
 `;
 
 const CU = styled.div`
-  color: #f96491;
+  color: ${theme.color.pink};
 `;
 
 const MenuBarContainer = styled.div`

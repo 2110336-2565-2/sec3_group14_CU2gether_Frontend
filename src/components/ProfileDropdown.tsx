@@ -50,7 +50,7 @@ const ProfileDropdownWrapper = styled.div`
 `;
 
 const StyledUserOutlined = styled(UserOutlined)`
-  color: white;
+  color: ${theme.color.white};
   font-size: 40px;
   width: 70px;
   height: 70px;

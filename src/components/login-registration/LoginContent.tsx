@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Form, Input, Button } from "antd";
 import React, { useState } from "react";
 import { MODE } from "./LoginAndRegistrationModal";
+import theme from "@/utils/theme";
 
 const FormContainer = styled.div`
   padding-left: 10%;
@@ -12,11 +13,11 @@ const FormContainer = styled.div`
 const SignUpText = styled.p`
   font-size: 24px;
   text-align: center;
-  color: #bababa;
+  color: ${theme.color.gray};
 `;
 
 const SignUpLink = styled(SignUpText)`
-  color: #f96491;
+  color: ${theme.color.pink};
   text-decoration: underline;
   margin-left: 10px;
   cursor: pointer;

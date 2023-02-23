@@ -51,6 +51,10 @@ const LoginTitle = styled.h1`
   color: black;
 `;
 
+const CU = styled.span`
+  color: ${theme.color.pink};
+`;
+
 export const MODE = {
   SELECTROLE: "selectRole",
   SIGNUP: "signUp",
@@ -124,7 +128,7 @@ const LoginAndRegistrationModal: React.FC<Props> = ({
         isLogin ? (
           <LoginTitle>
             Log in to
-            <span style={{ color: "#F96491" }}> CU</span>
+            <CU> CU</CU>
             2Gether
           </LoginTitle>
         ) : (

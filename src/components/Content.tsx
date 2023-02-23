@@ -5,7 +5,7 @@ import theme from "@/utils/theme";
 const ContentContainer = styled.div`
   width: 100%;
   height: 967px;
-  color: white;
+  color: ${theme.color.white};
   margin: 0;
   padding: 0;
   height: 819px;

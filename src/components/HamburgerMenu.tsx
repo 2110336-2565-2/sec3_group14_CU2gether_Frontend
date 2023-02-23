@@ -32,11 +32,11 @@ const ContentContainer = styled.div`
 `;
 
 const CU = styled.span`
-  color: #f96491;
+  color: ${theme.color.pink};
 `;
 
 const Gether = styled.span`
-  color: #bababa;
+  color: ${theme.color.gray};
 `;
 
 const HamburgerMenu: React.FC = () => {

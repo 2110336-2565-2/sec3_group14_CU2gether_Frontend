@@ -46,6 +46,7 @@ const Li = styled.li`
   font-size: 48px;
   align-items: center;
   justify-content: center;
+  font-weight: bold;
   ${theme.media.mobile} {
     font-size: 24px;
   }
@@ -77,7 +78,7 @@ const CU = styled.div`
   color: #f96491;
 `;
 
-const MenuBarWrapper = styled.div`
+const MenuBarContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -89,7 +90,7 @@ const MenuBarWrapper = styled.div`
   }
 `;
 
-const ButtonWrapper = styled.div`
+const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -99,48 +100,51 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const HamburgerMenuWrapper = styled.div`
+const HamburgerMenuContainer = styled.div`
   width: 110px;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const MenuBar: React.FC<{
+type Props = {
   toggleLoginAndRegistrationModal(): void;
   setLogin(isLogin: boolean): void;
-}> = ({ toggleLoginAndRegistrationModal, setLogin }) => {
+};
+
+const MenuBar: React.FC<Props> = ({
+  toggleLoginAndRegistrationModal,
+  setLogin,
+}) => {
   const handleButtonClick = (isLogin: boolean) => {
     toggleLoginAndRegistrationModal();
     setLogin(isLogin);
   };
 
   return (
-    <MenuBarWrapper>
-      <HamburgerMenuWrapper>
+    <MenuBarContainer>
+      <HamburgerMenuContainer>
         <HamburgerMenu />
-      </HamburgerMenuWrapper>
+      </HamburgerMenuContainer>
       <Ul>
-        <b>
-          <Li>
-            <CU>CU</CU>2Gether
-          </Li>
-        </b>
+        <Li>
+          <CU>CU</CU>2Gether
+        </Li>
         <Li2>Home</Li2>
         <Li2>Explore Events</Li2>
         <Li2>Create Event</Li2>
         <Li2>My Event</Li2>
       </Ul>
-      <ButtonWrapper>
+      <ButtonContainer>
         <StyledButton type="primary" onClick={() => handleButtonClick(false)}>
           Join Us
         </StyledButton>
         <StyledButton type="default" onClick={() => handleButtonClick(true)}>
           Login
         </StyledButton>
-      </ButtonWrapper>
+      </ButtonContainer>
       <ProfileDropdown />
-    </MenuBarWrapper>
+    </MenuBarContainer>
   );
 };
 

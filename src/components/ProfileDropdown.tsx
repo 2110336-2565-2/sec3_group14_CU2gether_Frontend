@@ -1,4 +1,3 @@
-import React from "react";
 import type { MenuProps } from "antd";
 import { Button, Dropdown, Space } from "antd";
 import {
@@ -7,6 +6,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import styled from "styled-components";
+import React from "react";
 import theme from "@/utils/theme";
 import { Inter } from "@next/font/google";
 
@@ -75,7 +75,7 @@ const StyledUserOutlinedButton = styled.div`
   }
 `;
 
-export default function ProfileDropdown() {
+const ProfileDropdown: React.FC = () => {
   return (
     <ProfileDropdownWrapper className={inter.className}>
       <Space direction="vertical">
@@ -94,4 +94,6 @@ export default function ProfileDropdown() {
       </Space>
     </ProfileDropdownWrapper>
   );
-}
+};
+
+export default ProfileDropdown;

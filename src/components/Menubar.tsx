@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Button, ConfigProvider } from "antd";
+import { Button } from "antd";
 import theme from "@/utils/theme";
 import ProfileDropdown from "./ProfileDropdown";
 import HamburgerMenu from "./HamburgerMenu";
@@ -8,19 +8,16 @@ import HamburgerMenu from "./HamburgerMenu";
 const StyledButton = styled(Button)`
   height: 35px;
   width: 100px;
-  font-size: 20px;
   border-radius: 6px;
   border: none;
   ${theme.media.tablet} {
     margin-right: 0px;
     width: 600px;
-    font-size: 24px;
     margin: 30px;
   }
   ${theme.media.mobile} {
     width: 340px;
     height: 30px;
-    font-size: 15px;
   }
 `;
 
@@ -132,10 +129,10 @@ const MenuBar: React.FC<{
         <Li2>My Event</Li2>
       </Ul>
       <ButtonWrapper>
-        <StyledButton type="primary" onClick={() => handleButtonClick(false)}>
+        <StyledButton onClick={() => handleButtonClick(false)}>
           Join Us
         </StyledButton>
-        <StyledButton type="default" onClick={() => handleButtonClick(true)}>
+        <StyledButton type="primary" onClick={() => handleButtonClick(true)}>
           Login
         </StyledButton>
       </ButtonWrapper>

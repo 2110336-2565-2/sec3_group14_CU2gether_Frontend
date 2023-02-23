@@ -6,6 +6,7 @@ import Menubar from "@/components/Menubar";
 import Content from "@/components/Content";
 import { ConfigProvider } from "antd";
 import LoginAndRegistration from "@/components/login-registration/LoginAndRegistrationModal";
+import theme from "@/utils/theme";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,7 @@ export default function Home() {
         <ConfigProvider
             theme={{
                 token: {
-                    colorPrimary: "#E16D62",
+                    colorPrimary: `${theme.color.primary}`,
                 },
             }}
         >

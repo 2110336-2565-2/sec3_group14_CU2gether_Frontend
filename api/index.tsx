@@ -1,9 +1,10 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { CU_API } from "@/utils/env";
 
 const registerStudentURL = CU_API + 'register/student';
 const registerOrganizerURL = CU_API + 'register/organizer';
 const loginURL = CU_API + 'login/login';
+const loginStudentURL = CU_API + 'login/student'
 
 export const registerStudent = (
     studentId: String,
@@ -14,7 +15,7 @@ export const registerStudent = (
     image: String,
     cardId: String,
 ) => {
-    console.log(CU_API);
+    console.log('url', CU_API);
     axios
     .post(registerStudentURL, {
         studentId,
@@ -28,7 +29,7 @@ export const registerStudent = (
     .then((res) => {
         console.log(res);
     })
-    .catch((err) => console.log(err));
+    .catch((err: AxiosError) => console.log(err));
 }
 
 export const registerOrganizer = (
@@ -49,21 +50,19 @@ export const registerOrganizer = (
     .then((res) => {
         console.log(res);
     })
-    .catch((err) => console.log(err));
+    .catch((err: AxiosError) => console.log(err));
 }
 
 export const login = (
     email: String,
     password: String,
-    isStudent: Boolean,
 ) => {
-    axios.post(loginURL, {
+    axios.post(loginStudentURL, {
         email,
-        password,
-        isStudent
+        password
     })
     .then((res) => {
         console.log(res);
     })
-    .catch((err) => console.log(err));
+    .catch((err: AxiosError) => console.log(err));
 }

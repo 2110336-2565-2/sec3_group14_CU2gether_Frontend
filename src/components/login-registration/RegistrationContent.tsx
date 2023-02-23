@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Children } from "react";
 
 import axios from "axios";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Modal, Form, Input, DatePicker } from "antd";
-import { USER_ROLE_REF } from "@/utils/Enum";
+import { Form, Input, Button } from "antd";
+import { ROLE } from "@/utils/Enum";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import theme from "@/utils/theme";
+import { registerStudent } from "api";
+import { MODE } from "./LoginAndRegistrationModal";
 
 const { TextArea } = Input;
 
@@ -31,7 +33,7 @@ const RegistrationWrapper = styled.div`
     }
 `;
 
-const DoneWrapper = styled.div`
+const DonePageContainer = styled.div`
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -42,13 +44,13 @@ const DoneWrapper = styled.div`
     padding-top: 15%;
 `;
 
-const OperationButtonWrapper = styled.div`
+const OperationButtonContainer = styled.div`
     display: flex;
     justify-content: center;
     gap: 20px;
 `;
 
-const SelectRoleButtonWrapper = styled.div`
+const SelectRoleButtonContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -87,20 +89,32 @@ const SubtitleText2 = styled.h3`
     }
 `;
 
-const MODE = {
-    SELECTROLE: "selectRole",
-    SIGNUP: "signUp",
-    DONE: "done",
-};
+const SelectRoleButton = styled(Button)`
+    width: 100%;
+    height: 200px;
+    margin-bottom: 20px;
+`;
 
-const RegistrationContent: React.FC<{
-    role: string;
-    mode: string;
-    onSelectRole(role: string): void;
-    onSelectMode(mode: string): void;
+const SelectStudentRoleButton = styled(SelectRoleButton)`
+    background-color: ${theme.color.cu_pink};
+    color: ${theme.color.white};
+`;
+
+const SelectOrganizerRoleButton = styled(SelectRoleButton)`
+    background-color: ${theme.color_level.gray.light};
+    color: ${theme.color_level.gray.dark};
+`;
+
+type RegistrationContentProps = {
+    role: ROLE;
+    mode: MODE;
+    onSelectRole(role: ROLE): void;
+    onSelectMode(mode: MODE): void;
     toggleRegistrationModal(): void;
     onRegistration: boolean;
-}> = ({
+};
+
+const RegistrationContent: React.FC<RegistrationContentProps> = ({
     role,
     mode,
     onSelectRole,
@@ -112,36 +126,13 @@ const RegistrationContent: React.FC<{
 
     const onFinish = (values: any) => {
         console.log("Success:", values);
-        if (role === USER_ROLE_REF.STUDENT) {
-            const studentId = values.studentId;
-            const email = values.email;
-            const password = values.password;
-            const firstName = values.firstname;
-            const lastName = values.lastname;
+        if (role === ROLE.STUDENT) {
+            const {email, password, studentId, firstname, lastname} = values;
             const image = "image1";
             const cardId = "cardID1";
-
-            axios
-                .post("http://localhost:3001/register/student", {
-                    studentId,
-                    email,
-                    password,
-                    firstName,
-                    lastName,
-                    image,
-                    cardId,
-                })
-                .then((res) => {
-                    console.log(res);
-                })
-                .catch((err) => console.log(err));
-        } else if (role === USER_ROLE_REF.ORGANIZER) {
-            const email = values.organizerEmail;
-            const name = values.organizerName;
-            const coorName = values.coordinatorName;
-            const phone = values.phone;
-            const description = values.description;
-
+            registerStudent(studentId, email, password, firstname, lastname, image, cardId);
+        } else if (role === ROLE.ORGANIZER) {
+            const {email, name, coorName, phone, description} = values;
             axios
                 .post("http://localhost:3001/register/organizer", {
                     email,
@@ -152,25 +143,25 @@ const RegistrationContent: React.FC<{
                 })
                 .then((res) => {
                     console.log(res);
+                    onSelectMode(MODE.DONE);
                 })
                 .catch((err) => console.log(err));
         }
-
         onSelectMode(MODE.DONE);
     };
 
     const subtitle1 =
-        role === USER_ROLE_REF.ORGANIZER
+        role === ROLE.ORGANIZER
             ? "Your request has been successfully summited"
             : "You are ready to dance!!";
 
     const subtitle2 =
-        role === USER_ROLE_REF.ORGANIZER
+        role === ROLE.ORGANIZER
             ? "The request will be reviewed and processed as soon as posible."
             : null;
 
     const FormItems =
-        role === USER_ROLE_REF.ORGANIZER ? (
+        role === ROLE.ORGANIZER ? (
             <>
                 <Form.Item
                     name="organizerEmail"
@@ -227,9 +218,8 @@ const RegistrationContent: React.FC<{
                     <TextArea rows={4} placeholder="description" />
                 </Form.Item>
                 <Form.Item>
-                    <OperationButtonWrapper>
+                    <OperationButtonContainer>
                         <Button
-                            type="primary"
                             style={{ width: 150 }}
                             onClick={() => onSelectMode(MODE.SELECTROLE)}
                         >
@@ -242,10 +232,10 @@ const RegistrationContent: React.FC<{
                         >
                             Submit
                         </Button>
-                    </OperationButtonWrapper>
+                    </OperationButtonContainer>
                 </Form.Item>
             </>
-        ) : role === USER_ROLE_REF.STUDENT ? (
+        ) : role === ROLE.STUDENT ? (
             <>
                 <Form.Item
                     name="email"
@@ -345,16 +335,9 @@ const RegistrationContent: React.FC<{
                 >
                     <Input placeholder="Lastname"></Input>
                 </Form.Item>
-                {/* <Form.Item 
-				name="birthdate"
-				rules={[{required: true, message: 'Please enter your birthdate'}]}
-			>
-				<DatePicker/>
-			</Form.Item> */}
                 <Form.Item>
-                    <OperationButtonWrapper>
+                    <OperationButtonContainer>
                         <Button
-                            type="primary"
                             style={{ width: 150 }}
                             onClick={() => onSelectMode(MODE.SELECTROLE)}
                         >
@@ -367,7 +350,7 @@ const RegistrationContent: React.FC<{
                         >
                             Sign Up
                         </Button>
-                    </OperationButtonWrapper>
+                    </OperationButtonContainer>
                 </Form.Item>
             </>
         ) : null;
@@ -375,31 +358,18 @@ const RegistrationContent: React.FC<{
     return (
         <>
             {mode === MODE.SELECTROLE ? (
-                <SelectRoleButtonWrapper>
-                    <Button
-                        style={{
-                            width: "100%",
-                            height: 200,
-                            marginBottom: 20,
-                            backgroundColor: "#F96491",
-                            color: "white",
-                        }}
-                        onClick={() => onSelectRole(USER_ROLE_REF.STUDENT)}
+                <SelectRoleButtonContainer>
+                    <SelectStudentRoleButton
+                        onClick={() => onSelectRole(ROLE.STUDENT)}
                     >
                         <SelectRoleButtonText>CU Student</SelectRoleButtonText>
-                    </Button>
-                    <Button
-                        style={{
-                            width: "100%",
-                            height: 200,
-                            backgroundColor: "#BABABA",
-                            color: "#454545",
-                        }}
-                        onClick={() => onSelectRole(USER_ROLE_REF.ORGANIZER)}
+                    </SelectStudentRoleButton>
+                    <SelectOrganizerRoleButton
+                        onClick={() => onSelectRole(ROLE.ORGANIZER)}
                     >
                         <SelectRoleButtonText>Organizer</SelectRoleButtonText>
-                    </Button>
-                </SelectRoleButtonWrapper>
+                    </SelectOrganizerRoleButton>
+                </SelectRoleButtonContainer>
             ) : mode === MODE.SIGNUP ? (
                 <RegistrationWrapper>
                     <Form
@@ -414,7 +384,7 @@ const RegistrationContent: React.FC<{
                     </Form>
                 </RegistrationWrapper>
             ) : mode === MODE.DONE ? (
-                <DoneWrapper>
+                <DonePageContainer>
                     <SubtitleText1>{subtitle1}</SubtitleText1>
                     <SubtitleText2>{subtitle2}</SubtitleText2>
                     <Button
@@ -423,7 +393,7 @@ const RegistrationContent: React.FC<{
                     >
                         Back to home
                     </Button>
-                </DoneWrapper>
+                </DonePageContainer>
             ) : null}
         </>
     );

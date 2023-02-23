@@ -1,37 +1,15 @@
 import React, { useState } from "react";
 
-import { USER_ROLE_REF } from "@/utils/Enum";
+import { ROLE } from "@/utils/Enum";
 import styled from "styled-components";
 import theme from "@/utils/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import LoginContent from "./LoginContent";
 import RegistrationContent from "./RegistrationContent";
-
-const StyledButton = styled(Button)`
-    height: 35px;
-    width: 100px;
-    font-size: 20px;
-    margin-right: 50px;
-    border-radius: 6px;
-    background-color: white;
-    border: none;
-    :hover {
-        background-color: #bfbfbf;
-    }
-    ${theme.media.tablet} {
-        margin-right: 0px;
-        width: 600px;
-        font-size: 24px;
-        margin: 30px;
-    }
-    ${theme.media.mobile} {
-        width: 340px;
-        height: 30px;
-        font-size: 15px;
-    }
-`;
+import Image from "next/image";
+import CU2Gether_logo from '../../../asset/CU2Gether_logo.png'
 
 const ContentWrapper = styled.div`
     margin-top: 10px;
@@ -52,32 +30,34 @@ const LoginTitle = styled.h1`
     color: black;
 `;
 
-export const MODE = {
-    SELECTROLE: "selectRole",
-    SIGNUP: "signUp",
-    DONE: "done",
-};
+export enum MODE {
+    SELECTROLE = "selectRole",
+    SIGNUP = "signUp",
+    DONE = "done"
+}
 
-const LoginAndRegistrationModal: React.FC<{
+type LoginAndRegistrationModalProps = {
     isLogin: boolean;
     setLogin(isLogin: boolean): void;
     toggleLoginAndRegistrationModal(): void;
     onLoginAndRegistrationModal: boolean;
-}> = ({
+}
+
+const LoginAndRegistrationModal: React.FC<LoginAndRegistrationModalProps> = ({
     isLogin,
     setLogin,
     toggleLoginAndRegistrationModal,
     onLoginAndRegistrationModal,
 }) => {
-    const [mode, setMode] = useState(MODE.SELECTROLE);
-    const [role, setRole] = useState("");
+    const [mode, setMode] = useState<MODE>(MODE.SELECTROLE);
+    const [role, setRole] = useState<ROLE>(ROLE.STUDENT);
 
-    const onSelectRole = (role: string) => {
+    const onSelectRole = (role: ROLE) => {
         setMode(MODE.SIGNUP);
         setRole(role);
     };
 
-    const onSelectMode = (mode: string) => {
+    const onSelectMode = (mode: MODE) => {
         setMode(mode);
     };
 
@@ -85,7 +65,7 @@ const LoginAndRegistrationModal: React.FC<{
         mode === MODE.SELECTROLE
             ? "Who are you?"
             : mode === MODE.SIGNUP
-            ? role === USER_ROLE_REF.ORGANIZER
+            ? role === ROLE.ORGANIZER
                 ? "Request Form"
                 : "Sign Up"
             : null;
@@ -129,6 +109,7 @@ const LoginAndRegistrationModal: React.FC<{
                         Log in to
                         <span style={{ color: "#F96491" }}> CU</span>
                         2Gether
+                        {/* <Image src={CU2Gether_logo} alt="logo" width={200} height={30}/> */}
                     </LoginTitle>
                 ) : (
                     <RegistrationTitle>{title}</RegistrationTitle>

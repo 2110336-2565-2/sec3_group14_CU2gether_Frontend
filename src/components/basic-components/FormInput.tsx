@@ -14,14 +14,14 @@ type formInputProps = {
   text: string;
   name: string;
   isRequired: boolean;
-  DataForm: JSX.Element;
+  children: JSX.Element;
 };
 
 const FormInput: React.FC<formInputProps> = ({
   text,
   name,
   isRequired,
-  DataForm,
+  children,
 }) => {
   return (
     <>
@@ -43,7 +43,7 @@ const FormInput: React.FC<formInputProps> = ({
             name={name}
             rules={[{ required: isRequired }]}
           >
-            {DataForm}
+            {children}
           </Form.Item>
         </Col>
       </Row>

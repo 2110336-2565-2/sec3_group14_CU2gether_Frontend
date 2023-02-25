@@ -38,7 +38,13 @@ const FormInput: React.FC<formInputProps> = ({
         </Col>
 
         <Col>
-          <Form.Item style={{ marginBottom: 0 }}>{DataForm}</Form.Item>
+          <Form.Item
+            style={{ marginBottom: 0 }}
+            name={name}
+            rules={[{ required: isRequired }]}
+          >
+            {DataForm}
+          </Form.Item>
         </Col>
       </Row>
     </>

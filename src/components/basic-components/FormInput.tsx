@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col } from "antd";
+import { Row, Col, Form } from "antd";
 import styled from "styled-components";
 import theme from "@/utils/theme";
 
@@ -12,12 +12,14 @@ const TextBox = styled.div`
 
 type formInputProps = {
   text: string;
+  name: string;
   isRequired: boolean;
-  DataForm: React.FC;
+  DataForm: JSX.Element;
 };
 
 const FormInput: React.FC<formInputProps> = ({
   text,
+  name,
   isRequired,
   DataForm,
 }) => {
@@ -36,7 +38,7 @@ const FormInput: React.FC<formInputProps> = ({
         </Col>
 
         <Col>
-          <DataForm />
+          <Form.Item style={{ marginBottom: 0 }}>{DataForm}</Form.Item>
         </Col>
       </Row>
     </>

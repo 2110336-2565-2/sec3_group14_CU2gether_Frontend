@@ -1,30 +1,45 @@
 import React from "react";
-import { Form } from "antd";
+import { Row, Col } from "antd";
 import styled from "styled-components";
 import theme from "@/utils/theme";
 
-const ComponentsContainer = styled.div`
-  display: flex;
-`;
-
-const TextBox = styled.p`
+const TextBox = styled.div`
   font-weight: bold;
+  word-wrap: break-word;
+  width: 100px;
+  margin-right: 10px;
 `;
 
 type formInputProps = {
   text: string;
   isRequired: boolean;
-  form: React.FC;
+  DataForm: React.FC;
 };
 
-const FormInput: React.FC<formInputProps> = ({ text, isRequired, form }) => {
+const FormInput: React.FC<formInputProps> = ({
+  text,
+  isRequired,
+  DataForm,
+}) => {
   return (
-    <ComponentsContainer>
-      <TextBox>
-        {text}{" "}
-        {isRequired ? <span style={{ color: theme.color.red }}>*</span> : ""}
-      </TextBox>
-    </ComponentsContainer>
+    <>
+      <Row align="middle">
+        <Col>
+          <TextBox>
+            {text}{" "}
+            {isRequired ? (
+              <span style={{ color: theme.color.red }}>*</span>
+            ) : (
+              ""
+            )}
+          </TextBox>
+        </Col>
+
+        <Col>
+          <DataForm />
+        </Col>
+      </Row>
+    </>
   );
 };
 

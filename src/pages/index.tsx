@@ -4,7 +4,7 @@ import { useState } from "react";
 // import styles from "@/styles/Home.module.css";
 import Menubar from "@/components/Menubar";
 import Content from "@/components/Content";
-import { ConfigProvider, Form, Input } from "antd";
+import { ConfigProvider, Form, Input, Radio } from "antd";
 import LoginAndRegistration from "@/components/login-registration/LoginAndRegistrationModal";
 import theme from "@/utils/theme";
 import FormInput from "@/components/basic-components/FormInput";
@@ -22,20 +22,26 @@ export default function Home() {
 
   const Eiei: React.FC<{}> = ({}) => {
     const tmp = (
-      <Form>
-        <Form.Item name="username" label="Username">
-          <Input />
-        </Form.Item>
-      </Form>
+      <Form.Item name="username">
+        <Radio.Group defaultValue="a">
+          <Radio.Button value="a">Hangzhou</Radio.Button>
+          <Radio.Button value="b">Shanghai</Radio.Button>
+          <Radio.Button value="c">Beijing</Radio.Button>
+          <Radio.Button value="d">Chengdu</Radio.Button>
+        </Radio.Group>
+      </Form.Item>
     );
     return tmp;
   };
 
-  console.log(Eiei);
   return (
     <div>
-      <>{Eiei}</>
-      <FormInput text="eiei" isRequired={true} form={Eiei} />
+      <FormInput text="eiei" isRequired={true} DataForm={Eiei} />
+      <FormInput
+        text="eieieieieieieieieieieieieieieieieieieiei"
+        isRequired={true}
+        DataForm={Eiei}
+      />
     </div>
     // <ConfigProvider
     //     theme={{

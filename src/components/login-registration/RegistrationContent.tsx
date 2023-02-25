@@ -1,24 +1,14 @@
-import React, { useState, useEffect, Children } from "react";
+import React from "react";
 
 import axios from "axios";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Form, Input, Button } from "antd";
 import { ROLE } from "@/utils/Enum";
-import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import theme from "@/utils/theme";
 import { registerStudent } from "api";
 import { MODE } from "./LoginAndRegistrationModal";
 
 const { TextArea } = Input;
-
-const RegistrationTitle = styled.h1`
-    font-size: 32px;
-    font-weight: bold;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
 
 const RegistrationWrapper = styled.div`
     display: flex;
@@ -119,10 +109,8 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
     mode,
     onSelectRole,
     onSelectMode,
-    onRegistration,
     toggleRegistrationModal,
 }) => {
-    const [form] = Form.useForm();
 
     const onFinish = (values: any) => {
         console.log("Success:", values);

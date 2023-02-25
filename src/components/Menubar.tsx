@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import { Button } from "antd";
 import theme from "@/utils/theme";
@@ -107,9 +108,16 @@ const MenuBar: React.FC<{
   toggleLoginAndRegistrationModal(): void;
   setLogin(isLogin: boolean): void;
 }> = ({ toggleLoginAndRegistrationModal, setLogin }) => {
+
+  const router = useRouter();
+
   const handleButtonClick = (isLogin: boolean) => {
     toggleLoginAndRegistrationModal();
     setLogin(isLogin);
+  };
+
+  const handleTestClick = () => {
+    router.push('/profile');
   };
 
   return (
@@ -127,6 +135,7 @@ const MenuBar: React.FC<{
         <Li2>Explore Events</Li2>
         <Li2>Create Event</Li2>
         <Li2>My Event</Li2>
+        <StyledButton onClick={() => handleTestClick()}>TEST</StyledButton>
       </Ul>
       <ButtonWrapper>
         <StyledButton onClick={() => handleButtonClick(false)}>

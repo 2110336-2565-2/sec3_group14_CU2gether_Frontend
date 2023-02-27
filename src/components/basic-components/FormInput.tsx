@@ -3,31 +3,36 @@ import { Row, Col, Form } from "antd";
 import styled from "styled-components";
 import theme from "@/utils/theme";
 
-const TextBox = styled.div`
+const TextBox = styled.div<{ width: number }>`
   font-weight: bold;
   word-wrap: break-word;
-  width: 100px;
+  width: ${(props) => props.width}px;
   margin-right: 10px;
 `;
 
-type formInputProps = {
+interface FormInputProps {
   text: string;
   name: string;
-  isRequired: boolean;
+  isRequired?: boolean;
+  textWidth?: number;
+  inputWidth?: number;
   children: JSX.Element;
-};
+}
 
-const FormInput: React.FC<formInputProps> = ({
+const FormInput: React.FC<FormInputProps> = ({
   text,
   name,
-  isRequired,
+  isRequired = false,
+  textWidth = 200,
+  inputWidth = 500,
   children,
 }) => {
+  console.log(textWidth, inputWidth);
   return (
     <>
       <Row align="middle">
         <Col>
-          <TextBox>
+          <TextBox width={textWidth}>
             {text}{" "}
             {isRequired ? (
               <span style={{ color: theme.color.red }}>*</span>
@@ -39,7 +44,7 @@ const FormInput: React.FC<formInputProps> = ({
 
         <Col>
           <Form.Item
-            style={{ marginBottom: 0 }}
+            style={{ marginBottom: 0, width: inputWidth }}
             name={name}
             rules={[{ required: isRequired }]}
           >

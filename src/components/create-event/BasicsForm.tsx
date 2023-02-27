@@ -2,86 +2,95 @@ import React from "react";
 import styled from "styled-components";
 import { Form, Input, Select, Radio, DatePicker } from "antd";
 
+import FormInput from "../basic-components/FormInput";
+
 const ContentContainer = styled.div`
-  height: 715px;
-  width: 539px;
+  width: 715px;
+  height: 539px;
 `;
 
 const ParticipantContainer = styled.div`
   display: flex;
+  width: 400px;
 `;
 
-const label = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 17 },
-};
-
 const BasicsForm: React.FC<{}> = ({}) => {
+  const typeForm = (
+    <Select
+      defaultValue="eiei1"
+      options={[
+        { value: "eiei1", label: "eiei1" },
+        { value: "eiei2", label: "eiei2" },
+        { value: "eiei3", label: "eiei3" },
+        { value: "eiei4", label: "eiei4" },
+      ]}
+    />
+  );
+
+  const visibilityForm = (
+    <Radio.Group>
+      <Radio.Button value="public">Public</Radio.Button>
+      <Radio.Button value="private">Private</Radio.Button>
+    </Radio.Group>
+  );
+
+  const tagsForm = (
+    <Select
+      mode="tags"
+      placeholder="Tags"
+      options={[
+        { value: "eiei1", label: "eiei1" },
+        { value: "eiei2", label: "eiei2" },
+        { value: "eiei3", label: "eiei3" },
+        { value: "eiei4", label: "eiei4" },
+      ]}
+    />
+  );
+
+  const participantCountForm = (
+    <ParticipantContainer>
+      <FormInput text="Minimum" name="minimum" isRequired={false}>
+        <Input placeholder="Minimum" style={{ width: 180 }} />
+      </FormInput>
+
+      <FormInput text="Maximum" name="maximum" isRequired={false}>
+        <Input placeholder="Maximum" style={{ width: 180 }} />
+      </FormInput>
+    </ParticipantContainer>
+  );
+
+  const { RangePicker } = DatePicker;
+
   return (
     <ContentContainer>
-      <Form {...label}>
-        <Form.Item
-          name="event-name"
-          label="Event Name"
-          rules={[{ required: true }]}
-        >
-          <Input />
-        </Form.Item>
+      <Form>
+        <FormInput text="Event Name" name="event-name" isRequired={true}>
+          <Input placeholder="Event Name" />
+        </FormInput>
 
-        <Form.Item name="type" label="Type" rules={[{ required: true }]}>
-          <Select
-            defaultValue="eiei1"
-            options={[
-              { value: "eiei1", label: "eiei1" },
-              { value: "eiei2", label: "eiei2" },
-              { value: "eiei3", label: "eiei3" },
-              { value: "eiei4", label: "eiei4" },
-            ]}
-          />
-        </Form.Item>
+        <FormInput text="Type" name="type" isRequired={true}>
+          {typeForm}
+        </FormInput>
 
-        <Form.Item
-          name="visibility"
-          label="Visibility"
-          rules={[{ required: true }]}
-        >
-          <Radio.Group>
-            <Radio.Button value="public">Public</Radio.Button>
-            <Radio.Button value="private">Private</Radio.Button>
-          </Radio.Group>
-        </Form.Item>
+        <FormInput text="Visibility" name="visibility" isRequired={true}>
+          {visibilityForm}
+        </FormInput>
 
-        <Form.Item name="tags" label="Tags">
-          <Select
-            mode="tags"
-            placeholder="Tags"
-            options={[
-              { value: "eiei1", label: "eiei1" },
-              { value: "eiei2", label: "eiei2" },
-              { value: "eiei3", label: "eiei3" },
-              { value: "eiei4", label: "eiei4" },
-            ]}
-          />
-        </Form.Item>
+        <FormInput text="Tags" name="tags" isRequired={false}>
+          {tagsForm}
+        </FormInput>
 
-        <Form.Item
+        <FormInput
+          text="Required Number of Participants"
           name="participant-count"
-          label="Required Number of Participants"
+          isRequired={false}
         >
-          <ParticipantContainer>
-            <Form.Item name="minimum" label="Minimum">
-              <Input />
-            </Form.Item>
+          {participantCountForm}
+        </FormInput>
 
-            <Form.Item name="maximum" label="Maximum">
-              <Input />
-            </Form.Item>
-          </ParticipantContainer>
-        </Form.Item>
-
-        <Form.Item name="date" label="Date" rules={[{ required: true }]}>
-          <DatePicker />
-        </Form.Item>
+        <FormInput text="Date" name="date" isRequired={true}>
+          <RangePicker showTime />
+        </FormInput>
       </Form>
     </ContentContainer>
   );

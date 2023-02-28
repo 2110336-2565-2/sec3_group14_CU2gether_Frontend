@@ -1,17 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { Form, Input, Select, Radio, DatePicker } from "antd";
+import { Form, Input, Select, Radio, DatePicker, TimePicker } from "antd";
 
 import FormInput from "../basic-components/FormInput";
 
-const ContentContainer = styled.div`
-  width: 715px;
-  height: 539px;
-`;
-
-const ParticipantContainer = styled.div`
+const FlexContainer = styled.div`
   display: flex;
   width: 400px;
+  gap: 20px;
 `;
 
 const BasicsForm: React.FC<{}> = ({}) => {
@@ -48,51 +44,75 @@ const BasicsForm: React.FC<{}> = ({}) => {
   );
 
   const participantCountForm = (
-    <ParticipantContainer>
-      <FormInput text="Minimum" name="minimum" isRequired={false}>
-        <Input placeholder="Minimum" style={{ width: 180 }} />
+    <FlexContainer>
+      <FormInput text="Minimum" name="minimum" textWidth={70} inputWidth={100}>
+        <Input placeholder="Minimum" />
       </FormInput>
 
-      <FormInput text="Maximum" name="maximum" isRequired={false}>
-        <Input placeholder="Maximum" style={{ width: 180 }} />
+      <FormInput text="Maximum" name="maximum" textWidth={70} inputWidth={100}>
+        <Input placeholder="Maximum" />
       </FormInput>
-    </ParticipantContainer>
+    </FlexContainer>
   );
 
-  const { RangePicker } = DatePicker;
+  const dateForm = (
+    <FlexContainer>
+      <FormInput text="Start" name="start-date" textWidth={70} inputWidth={100}>
+        <DatePicker />
+      </FormInput>
+
+      <FormInput text="Stop" name="stop-date" textWidth={70} inputWidth={100}>
+        <DatePicker />
+      </FormInput>
+    </FlexContainer>
+  );
+
+  const timeForm = (
+    <FlexContainer>
+      <FormInput text="Start" name="start-time" textWidth={70} inputWidth={100}>
+        <TimePicker />
+      </FormInput>
+
+      <FormInput text="Stop" name="stop-time" textWidth={70} inputWidth={100}>
+        <TimePicker />
+      </FormInput>
+    </FlexContainer>
+  );
 
   return (
-    <ContentContainer>
-      <Form>
-        <FormInput text="Event Name" name="event-name" isRequired={true}>
-          <Input placeholder="Event Name" />
-        </FormInput>
+    <Form>
+      <FormInput text="Event Name" name="event-name" isRequired={true}>
+        <Input placeholder="Event Name" />
+      </FormInput>
 
-        <FormInput text="Type" name="type" isRequired={true}>
-          {typeForm}
-        </FormInput>
+      <FormInput text="Type" name="type" isRequired={true}>
+        {typeForm}
+      </FormInput>
 
-        <FormInput text="Visibility" name="visibility" isRequired={true}>
-          {visibilityForm}
-        </FormInput>
+      <FormInput text="Visibility" name="visibility" isRequired={true}>
+        {visibilityForm}
+      </FormInput>
 
-        <FormInput text="Tags" name="tags" isRequired={false}>
-          {tagsForm}
-        </FormInput>
+      <FormInput text="Tags" name="tags">
+        {tagsForm}
+      </FormInput>
 
-        <FormInput
-          text="Required Number of Participants"
-          name="participant-count"
-          isRequired={false}
-        >
-          {participantCountForm}
-        </FormInput>
+      <FormInput
+        text="Required Number of Participants"
+        name="participant-count"
+        isRequired={false}
+      >
+        {participantCountForm}
+      </FormInput>
 
-        <FormInput text="Date" name="date" isRequired={true}>
-          <RangePicker showTime />
-        </FormInput>
-      </Form>
-    </ContentContainer>
+      <FormInput text="Date" name="date" isRequired={true}>
+        {dateForm}
+      </FormInput>
+
+      <FormInput text="Time" name="time" isRequired={true}>
+        {timeForm}
+      </FormInput>
+    </Form>
   );
 };
 

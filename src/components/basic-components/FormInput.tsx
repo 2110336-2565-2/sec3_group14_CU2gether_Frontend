@@ -10,30 +10,42 @@ const TextBox = styled.div<{ width: number }>`
   margin-right: 10px;
 `;
 
-interface FormInputProps {
-  text: string;
+type FormInputProps = {
+  title: string;
   name: string;
   isRequired?: boolean;
   textWidth?: number;
   inputWidth?: number;
+  marginTop?: number;
+  marginBottom?: number;
+  marginLeft?: number;
+  marginRight?: number;
   children: JSX.Element;
-}
+};
 
 const FormInput: React.FC<FormInputProps> = ({
-  text,
+  title,
   name,
   isRequired = false,
   textWidth = 200,
-  inputWidth = 500,
+  inputWidth = 400,
+  marginTop = 0,
+  marginBottom = 20,
+  marginLeft = 0,
+  marginRight = 0,
   children,
 }) => {
-  console.log(textWidth, inputWidth);
   return (
     <>
-      <Row align="middle">
+      <Row
+        align="middle"
+        style={{
+          margin: `${marginTop}px ${marginRight}px ${marginBottom}px ${marginLeft}px`,
+        }}
+      >
         <Col>
           <TextBox width={textWidth}>
-            {text}{" "}
+            {title}{" "}
             {isRequired ? (
               <span style={{ color: theme.color.red }}>*</span>
             ) : (

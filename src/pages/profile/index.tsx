@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Avatar, Card, Image, Layout } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
@@ -5,6 +6,7 @@ import theme from '@/utils/theme';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
+import { getStudentById } from 'api';
 
 const { Content } = Layout;
 
@@ -36,7 +38,7 @@ const ProfilePicture = styled(Avatar)`
     position: relative;
     background-color: ${theme.color.red};
     top: -75px;
-    left: 40px;
+    left: 4vw;
     border-width: 2px;
     border-color:  ${theme.color.white};
 `;
@@ -120,15 +122,30 @@ const CardTitle = styled.h1`
     font-weight: 400;
 `;
 
+const profile = {
+    firstName: String,
+    lastName: String
+}
+
 const ProfilePage: React.FC<{}> = ({}) => {
-  return (
+    const [profile, setProfile] = useState({firstName: "John", lastName: "Doe"});
+
+    useEffect(() => {
+        getStudentById('6330476521')
+        .then((data) => {
+            setProfile(data);
+        })
+        .catch((err) => console.log(err))
+    },[]);
+
+    return (
     <ProfileContainer>
       <Content>
         <CoverImageCard/>
         <ProfileInformationContainer>
             <ProfilePicture size={150}/>
             <InformationContainer>
-                <InformationTitle>Firstname Lastname</InformationTitle>
+                <InformationTitle>{profile.firstName+' '+profile.lastName}</InformationTitle>
                 <RoleWrapper>
                     <FontAwesomeIcon icon={faUserGraduate}/>
                     <RoleSubtitle>student</RoleSubtitle>

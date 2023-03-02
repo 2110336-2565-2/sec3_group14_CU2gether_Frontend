@@ -2,20 +2,19 @@ import React from "react";
 import styled from "styled-components";
 
 import BasicsForm from "./BasicsForm";
+import PictureForm from "./PictureForm";
 
 const ContentContainer = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  border-color: #bababa;
-  border-width: 10px;
-  border-style: solid;
+  flex-direction: column;
+  height: 400;
 `;
 
 const BasicsContent: React.FC<{}> = ({}) => {
   return (
     <ContentContainer>
-      <BasicsForm />
+      {/* <BasicsForm /> */}
+      <PictureForm />
     </ContentContainer>
   );
 };

@@ -1,6 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import { Form, Input, Select, Radio, DatePicker, TimePicker } from "antd";
+import {
+  Form,
+  Input,
+  Select,
+  Radio,
+  DatePicker,
+  TimePicker,
+  Upload,
+} from "antd";
 
 import FormInput from "../basic-components/FormInput";
 
@@ -24,9 +32,13 @@ const BasicsForm: React.FC<{}> = ({}) => {
   );
 
   const visibilityForm = (
-    <Radio.Group>
-      <Radio.Button value="public">Public</Radio.Button>
-      <Radio.Button value="private">Private</Radio.Button>
+    <Radio.Group buttonStyle="solid">
+      <Radio.Button value="public" style={{ width: 200, textAlign: "center" }}>
+        Public
+      </Radio.Button>
+      <Radio.Button value="private" style={{ width: 200, textAlign: "center" }}>
+        Private
+      </Radio.Button>
     </Radio.Group>
   );
 
@@ -45,74 +57,114 @@ const BasicsForm: React.FC<{}> = ({}) => {
 
   const participantCountForm = (
     <FlexContainer>
-      <FormInput text="Minimum" name="minimum" textWidth={70} inputWidth={100}>
-        <Input placeholder="Minimum" />
+      <FormInput
+        title="Min"
+        name="minimum"
+        textWidth={40}
+        inputWidth={140}
+        marginBottom={0}
+      >
+        <Input placeholder="Minimum" style={{ width: 140 }} />
       </FormInput>
 
-      <FormInput text="Maximum" name="maximum" textWidth={70} inputWidth={100}>
-        <Input placeholder="Maximum" />
+      <FormInput
+        title="Max"
+        name="maximum"
+        textWidth={40}
+        inputWidth={140}
+        marginBottom={0}
+      >
+        <Input placeholder="Maximum" style={{ width: 140 }} />
       </FormInput>
     </FlexContainer>
   );
 
   const dateForm = (
     <FlexContainer>
-      <FormInput text="Start" name="start-date" textWidth={70} inputWidth={100}>
-        <DatePicker />
+      <FormInput
+        title="Start"
+        name="start-date"
+        textWidth={40}
+        inputWidth={140}
+        marginBottom={0}
+      >
+        <DatePicker placeholder="Start Date" style={{ width: 140 }} />
       </FormInput>
 
-      <FormInput text="Stop" name="stop-date" textWidth={70} inputWidth={100}>
-        <DatePicker />
+      <FormInput
+        title="Stop"
+        name="stop-date"
+        textWidth={40}
+        inputWidth={140}
+        marginBottom={0}
+      >
+        <DatePicker placeholder="End Date" style={{ width: 140 }} />
       </FormInput>
     </FlexContainer>
   );
 
   const timeForm = (
     <FlexContainer>
-      <FormInput text="Start" name="start-time" textWidth={70} inputWidth={100}>
-        <TimePicker />
+      <FormInput
+        title="Start"
+        name="start-time"
+        textWidth={40}
+        inputWidth={140}
+        marginBottom={0}
+      >
+        <TimePicker placeholder="Start Time" style={{ width: 140 }} />
       </FormInput>
 
-      <FormInput text="Stop" name="stop-time" textWidth={70} inputWidth={100}>
-        <TimePicker />
+      <FormInput
+        title="Stop"
+        name="stop-time"
+        textWidth={40}
+        inputWidth={140}
+        marginBottom={0}
+      >
+        <TimePicker placeholder="End Time" style={{ width: 140 }} />
       </FormInput>
     </FlexContainer>
   );
 
   return (
-    <Form>
-      <FormInput text="Event Name" name="event-name" isRequired={true}>
+    <>
+      {/* <Form> */}
+      <FormInput title="Event Name" name="event-name" isRequired={true}>
         <Input placeholder="Event Name" />
       </FormInput>
 
-      <FormInput text="Type" name="type" isRequired={true}>
+      <FormInput title="Type" name="type" isRequired={true}>
         {typeForm}
       </FormInput>
 
-      <FormInput text="Visibility" name="visibility" isRequired={true}>
+      {/* change isRequired to true */}
+
+      <FormInput title="Date" name="date" isRequired={false}>
+        {dateForm}
+      </FormInput>
+
+      <FormInput title="Time" name="time" isRequired={false}>
+        {timeForm}
+      </FormInput>
+
+      <FormInput title="Visibility" name="visibility" isRequired={true}>
         {visibilityForm}
       </FormInput>
 
-      <FormInput text="Tags" name="tags">
+      <FormInput title="Tags" name="tags">
         {tagsForm}
       </FormInput>
 
       <FormInput
-        text="Required Number of Participants"
+        title="Required Number of Participants"
         name="participant-count"
         isRequired={false}
       >
         {participantCountForm}
       </FormInput>
-
-      <FormInput text="Date" name="date" isRequired={true}>
-        {dateForm}
-      </FormInput>
-
-      <FormInput text="Time" name="time" isRequired={true}>
-        {timeForm}
-      </FormInput>
-    </Form>
+      {/* </Form> */}
+    </>
   );
 };
 

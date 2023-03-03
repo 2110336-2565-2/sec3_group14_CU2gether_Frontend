@@ -74,6 +74,7 @@ const color_level = {
   gray: {
     dark: '#454545',
     medium: '#8A8A8A',
+    low: '#AEAEAE',
     light: '#BABABA',
   },
 }

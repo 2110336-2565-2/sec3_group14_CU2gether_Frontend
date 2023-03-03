@@ -4,7 +4,9 @@ import { CU_API } from "@/utils/env";
 const registerStudentURL = CU_API + 'register/student';
 const registerOrganizerURL = CU_API + 'register/organizer';
 const loginURL = CU_API + 'login/login';
-const loginStudentURL = CU_API + 'login/student'
+const loginStudentURL = CU_API + 'login/student';
+const getStudentByIdURL = CU_API + 'student/' // + studentId
+const getEventByNameURL = CU_API + 'event/' // + eventName
 
 export const registerStudent = (
     studentId: String,
@@ -65,4 +67,14 @@ export const login = (
         console.log(res);
     })
     .catch((err: AxiosError) => console.log(err));
+}
+
+export const getStudentById = async (studentId: String) => {
+    const response = await axios.get(getStudentByIdURL+studentId);
+    return response.data;
+}
+
+export const getEventByName = async (eventName: string) => {
+    const response = await axios.get(getEventByNameURL+eventName);
+    return response.data;
 }

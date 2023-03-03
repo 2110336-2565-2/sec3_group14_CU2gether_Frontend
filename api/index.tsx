@@ -5,6 +5,7 @@ const registerStudentURL = CU_API + 'register/student';
 const registerOrganizerURL = CU_API + 'register/organizer';
 const loginURL = CU_API + 'login/login';
 const loginStudentURL = CU_API + 'login/student';
+const updateStudentByIdURL = CU_API + 'student/' // + studentId
 const getStudentByIdURL = CU_API + 'student/' // + studentId
 
 export const registerStudent = (
@@ -16,7 +17,6 @@ export const registerStudent = (
     image: String,
     cardId: String,
 ) => {
-    console.log('url', CU_API);
     axios
     .post(registerStudentURL, {
         studentId,
@@ -61,6 +61,31 @@ export const login = (
     axios.post(loginStudentURL, {
         email,
         password
+    })
+    .then((res) => {
+        console.log(res);
+    })
+    .catch((err: AxiosError) => console.log(err));
+}
+
+export const updateStudentById = (
+    studentId: String,
+    email: String,
+    password: String,
+    firstName: String,
+    lastName: String,
+    image: String,
+    cardId: String,
+) => {
+    axios
+    .patch(updateStudentByIdURL+studentId, {
+        studentId,
+        email,
+        password,
+        firstName,
+        lastName,
+        image,
+        cardId,
     })
     .then((res) => {
         console.log(res);

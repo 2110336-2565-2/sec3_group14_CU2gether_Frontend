@@ -104,12 +104,12 @@ const HamburgerMenuContainer = styled.div`
   align-items: center;
 `;
 
-type Props = {
+type MenuBarProps = {
   toggleLoginAndRegistrationModal(): void;
   setLogin(isLogin: boolean): void;
 };
 
-const MenuBar: React.FC<Props> = ({
+const MenuBar: React.FC<MenuBarProps> = ({
   toggleLoginAndRegistrationModal,
   setLogin,
 }) => {

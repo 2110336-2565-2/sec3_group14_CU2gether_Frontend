@@ -32,7 +32,7 @@ const ContentContainer = styled.div`
 `;
 
 const CU = styled.span`
-  color: ${theme.color.pink};
+  color: ${theme.color.cu_pink};
 `;
 
 const Gether = styled.span`

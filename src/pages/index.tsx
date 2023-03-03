@@ -36,17 +36,7 @@ export default function Home() {
         },
       }}
     >
-      <div
-        className={inter.className}
-        style={{
-          backgroundImage: `url(background_page.png)`,
-          backgroundSize: "cover",
-          backgroundPosition: `center center`,
-          backgroundRepeat: `no-repeat`,
-          backgroundAttachment: `fixed`,
-          height: `3876px`,
-        }}
-      >
+      <HomeContainer className={inter.className}>
         <Menubar
           toggleLoginAndRegistrationModal={toggleLoginAndRegistrationModal}
           setLogin={setLogin}
@@ -58,7 +48,7 @@ export default function Home() {
           toggleLoginAndRegistrationModal={toggleLoginAndRegistrationModal}
         ></LoginAndRegistration>
         {/* <Content /> */}
-      </div>
+      </HomeContainer>
     </ConfigProvider>
   );
 }

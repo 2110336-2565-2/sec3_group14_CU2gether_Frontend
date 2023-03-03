@@ -2,10 +2,8 @@ import React, { useState, useEffect, Children } from "react";
 
 import axios from "axios";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Form, Input, Button } from "antd";
 import { ROLE } from "@/utils/Enum";
-import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import theme from "@/utils/theme";
 import { registerStudent } from "api";
 import { MODE } from "./LoginAndRegistrationModal";

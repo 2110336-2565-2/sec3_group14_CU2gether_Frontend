@@ -5,7 +5,6 @@ import { Form, Input, Button } from "antd";
 import { MODE } from "./LoginAndRegistrationModal";
 import { login } from "api";
 import theme from "@/utils/theme";
-import axios from "axios";
 
 const LoginContentContainer = styled.div`
   display: flex;

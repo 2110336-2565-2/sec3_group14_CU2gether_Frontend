@@ -12,17 +12,21 @@ import { Inter } from "@next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const OutlinedContainer = styled.div`
+  font-size: 17px;
+  font-weight: bold;
+  height: 30px;
+`;
+
 const items: MenuProps["items"] = [
   {
     key: "1",
     label: (
       <a target="_blank" rel="noopener noreferrer" href="">
-        <b>
-          <div style={{ fontSize: "17px", height: "30px" }}>
-            <QuestionOutlined /> <Space />
-            Support
-          </div>
-        </b>
+        <OutlinedContainer>
+          <QuestionOutlined /> <Space />
+          Support
+        </OutlinedContainer>
       </a>
     ),
   },
@@ -30,19 +34,17 @@ const items: MenuProps["items"] = [
     key: "2",
     label: (
       <a target="_blank" rel="noopener noreferrer" href="">
-        <b>
-          <div style={{ fontSize: "17px", height: "30px" }}>
-            <LoginOutlined /> <Space />
-            <Space />
-            Login
-          </div>
-        </b>
+        <OutlinedContainer>
+          <LoginOutlined /> <Space />
+          <Space />
+          Login
+        </OutlinedContainer>
       </a>
     ),
   },
 ];
 
-const ProfileDropdownWrapper = styled.div`
+const ProfileDropdownContainer = styled.div`
   padding: 40px;
   ${theme.media.mobile} {
     padding: 20px;
@@ -77,7 +79,7 @@ const StyledUserOutlinedButton = styled.div`
 
 const ProfileDropdown: React.FC = () => {
   return (
-    <ProfileDropdownWrapper className={inter.className}>
+    <ProfileDropdownContainer className={inter.className}>
       <Space direction="vertical">
         <Space wrap>
           <Dropdown
@@ -92,7 +94,7 @@ const ProfileDropdown: React.FC = () => {
           </Dropdown>
         </Space>
       </Space>
-    </ProfileDropdownWrapper>
+    </ProfileDropdownContainer>
   );
 };
 

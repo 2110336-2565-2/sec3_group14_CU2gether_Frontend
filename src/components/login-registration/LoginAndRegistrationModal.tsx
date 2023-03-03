@@ -8,10 +8,8 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "antd";
 import LoginContent from "./LoginContent";
 import RegistrationContent from "./RegistrationContent";
-import Image from "next/image";
-import CU2Gether_logo from "../../../asset/CU2Gether_logo.png";
 
-const ContentWrapper = styled.div`
+const ContentContainer = styled.div`
   margin-top: 10px;
 `;
 
@@ -28,6 +26,10 @@ const LoginTitle = styled.h1`
   font-weight: 600;
   text-align: center;
   color: black;
+`;
+
+const CU = styled.span`
+  color: ${theme.color.cu_pink};
 `;
 
 export enum MODE {
@@ -107,7 +109,7 @@ const LoginAndRegistrationModal: React.FC<LoginAndRegistrationModalProps> = ({
         isLogin ? (
           <LoginTitle>
             Log in to
-            <span style={{ color: "#F96491" }}> CU</span>
+            <CU> CU</CU>
             2Gether
             {/* <Image src={CU2Gether_logo} alt="logo" width={200} height={30}/> */}
           </LoginTitle>
@@ -116,7 +118,7 @@ const LoginAndRegistrationModal: React.FC<LoginAndRegistrationModalProps> = ({
         )
       }
     >
-      {<ContentWrapper>{Content}</ContentWrapper>}
+      {<ContentContainer>{Content}</ContentContainer>}
     </Modal>
   );
 };

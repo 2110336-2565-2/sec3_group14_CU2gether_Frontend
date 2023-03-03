@@ -47,7 +47,7 @@ export default function Home() {
           onLoginAndRegistrationModal={onLoginAndRegistration}
           toggleLoginAndRegistrationModal={toggleLoginAndRegistrationModal}
         ></LoginAndRegistration>
-        {/* <Content /> */}
+        <Content />
       </HomeContainer>
     </ConfigProvider>
   );

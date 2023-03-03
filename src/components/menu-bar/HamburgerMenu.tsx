@@ -60,13 +60,13 @@ const HamburgerMenu: React.FC = () => {
         open={open}
       >
         <ContentContainer>
-          <p>Home</p>
+          <h4>Home</h4>
           <br />
-          <p>Explore Events</p>
+          <h4>Explore Events</h4>
           <br />
-          <p>My Events</p>
+          <h4>My Events</h4>
           <br />
-          <p>Create Event</p>
+          <h4>Create Event</h4>
         </ContentContainer>
       </Drawer>
     </HamburgerMenuContainer>

@@ -8,9 +8,6 @@ import {
 import styled from "styled-components";
 import React from "react";
 import theme from "@/utils/theme";
-import { Inter } from "@next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
 
 const OutlinedContainer = styled.div`
   font-size: 17px;
@@ -79,7 +76,7 @@ const StyledUserOutlinedButton = styled.div`
 
 const ProfileDropdown: React.FC = () => {
   return (
-    <ProfileDropdownContainer className={inter.className}>
+    <ProfileDropdownContainer>
       <Space direction="vertical">
         <Space wrap>
           <Dropdown

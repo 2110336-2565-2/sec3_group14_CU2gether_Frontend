@@ -18,6 +18,7 @@ const Text = styled.div`
   align-items: center;
   padding-top: 100px;
   font-size: 96px;
+  font-weight: bold;
   ${theme.media.mobile} {
     font-size: 40px;
   }
@@ -45,9 +46,7 @@ const Butcon = styled.div`
 const Content: React.FC = () => {
   return (
     <ContentContainer>
-      <Text>
-        <b>Want events?</b>
-      </Text>
+      <Text>Want events?</Text>
       {/* <ButContent>
             <ButonJoinLog/>
         </ButContent> */}

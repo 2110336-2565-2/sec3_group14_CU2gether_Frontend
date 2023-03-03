@@ -3,7 +3,7 @@ import { Inter } from "@next/font/google";
 import { useState } from "react";
 
 // import styles from "@/styles/Home.module.css";
-import Menubar from "@/components/Menubar";
+import Menubar from "@/components/menu-bar/Menubar";
 import Content from "@/components/Content";
 import { ConfigProvider } from "antd";
 import LoginAndRegistration from "@/components/login-registration/LoginAndRegistrationModal";

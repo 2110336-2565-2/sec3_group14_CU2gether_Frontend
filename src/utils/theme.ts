@@ -1,13 +1,17 @@
+// import { createTheme } from "@mui/material/styles";
+import { registerStudent } from "api";
+
 const color = {
+  cu_pink: "#F96491",
+  white: "#FFFFFF",
+
   red: "#EA4040",
   yellow: "#EDAE30",
   orange: "#F2994A",
   blue: "#305FED",
   green: "#008143",
-  gray: "#bababa",
+  gray: "#717D8A",
   black: "#0C1116",
-  pink: "#f96491",
-  white: "white",
 
   primary: "#E16D62",
   secondary: "#FF887C",
@@ -18,12 +22,6 @@ const color = {
   disable: "#DCDCDC",
   backgroundColor: "#F5F6F9",
   border: "#D6DADE",
-
-  gray50: "#FAFAFA",
-  gray200: "#EAECEE",
-  gray300: "#D6DADE",
-  gray500: "#717D8A",
-  gray900: "#0C1116",
 
   primary50: "#F7F4FF",
   primary100: "#DAD2F6",
@@ -74,11 +72,9 @@ const color_level = {
   },
 
   gray: {
-    dark: "#252525",
-    high: "#494949",
+    dark: "#454545",
     medium: "#8A8A8A",
-    low: "#BBBBBB",
-    light: "#DCDCDC",
+    light: "#BABABA",
   },
 };
 

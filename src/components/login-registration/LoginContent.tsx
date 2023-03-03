@@ -1,23 +1,35 @@
-import axios from "axios";
+import React, { useState } from "react";
+
 import styled from "styled-components";
 import { Form, Input, Button } from "antd";
-import React, { useState } from "react";
 import { MODE } from "./LoginAndRegistrationModal";
+import { login } from "api";
 import theme from "@/utils/theme";
+import axios from "axios";
+
+const LoginContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const FormContainer = styled.div`
   padding-left: 10%;
   padding-right: 10%;
 `;
 
+const SignUpFooterContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 const SignUpText = styled.p`
   font-size: 24px;
   text-align: center;
-  color: ${theme.color.gray};
+  color: ${theme.color_level.gray.light};
 `;
 
 const SignUpLink = styled(SignUpText)`
-  color: ${theme.color.pink};
+  color: ${theme.color.cu_pink};
   text-decoration: underline;
   margin-left: 10px;
   cursor: pointer;
@@ -30,34 +42,17 @@ const ButtonContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-const SignupContainer = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-type Props = {
+type LoginContentProps = {
   setLogin(isLogin: boolean): void;
   onSelectMode(mode: string): void;
+  toggleRegistrationModal(): void;
 };
 
-const LoginContent: React.FC<Props> = ({ setLogin, onSelectMode }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isEmailError, setIsEmailError] = useState(false);
-  const [isPasswordError, setIsPasswordError] = useState(false);
-
-  const emailChangeHandler = (email: React.ChangeEvent<HTMLInputElement>) => {
-    setIsEmailError(false);
-    setEmail(email.target.value);
-  };
-
-  const passwordChangeHandler = (
-    password: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setIsPasswordError(false);
-    setPassword(password.target.value);
-  };
-
+const LoginContent: React.FC<LoginContentProps> = ({
+  setLogin,
+  onSelectMode,
+  toggleRegistrationModal,
+}) => {
   const signupHandler = () => {
     console.log("signup");
     setLogin(false);
@@ -69,34 +64,20 @@ const LoginContent: React.FC<Props> = ({ setLogin, onSelectMode }) => {
   };
 
   const loginHandler = async (values: any) => {
-    console.log(values);
-    // const email = values.Email;
-    // const password = values.password;
-    // const isStudent = true;
-
-    // try {
-    //     const response = await axios.post(
-    //         "http://localhost:3001/auth/login",
-    //         {
-    //             email,
-    //             password,
-    //             isStudent,
-    //         }
-    //     );
-    // } catch (error) {
-    //     console.log(error);
-    // }
+    const { email, password } = values;
+    login(email, password);
+    toggleRegistrationModal();
   };
 
   return (
-    <div>
+    <LoginContentContainer>
       <FormContainer>
         <Form
           onFinish={loginHandler}
           onFinishFailed={() => console.log("log in failed")}
         >
           <Form.Item
-            name="Email"
+            name="email"
             rules={[
               {
                 required: true,
@@ -104,11 +85,11 @@ const LoginContent: React.FC<Props> = ({ setLogin, onSelectMode }) => {
               },
             ]}
           >
-            <Input placeholder="email" onChange={emailChangeHandler} />
+            <Input placeholder="email" />
           </Form.Item>
 
           <Form.Item
-            name="Password"
+            name="password"
             rules={[
               {
                 required: true,
@@ -116,10 +97,7 @@ const LoginContent: React.FC<Props> = ({ setLogin, onSelectMode }) => {
               },
             ]}
           >
-            <Input.Password
-              placeholder="password"
-              onChange={passwordChangeHandler}
-            />
+            <Input.Password placeholder="password" />
           </Form.Item>
 
           <Form.Item>
@@ -131,14 +109,12 @@ const LoginContent: React.FC<Props> = ({ setLogin, onSelectMode }) => {
           </Form.Item>
         </Form>
       </FormContainer>
-
       <SignUpLink onClick={forgotPasswordHandler}>Forgot Password?</SignUpLink>
-
-      <SignupContainer>
+      <SignUpFooterContainer>
         <SignUpText>Have no account?</SignUpText>
         <SignUpLink onClick={signupHandler}>Sign up</SignUpLink>
-      </SignupContainer>
-    </div>
+      </SignUpFooterContainer>
+    </LoginContentContainer>
   );
 };
 

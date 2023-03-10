@@ -20,36 +20,28 @@ export default function Home() {
   };
 
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: `${theme.color.primary}`,
-        },
+    <div
+      className={inter.className}
+      style={{
+        backgroundImage: `url(background_page.png)`,
+        backgroundSize: "cover",
+        backgroundPosition: `center center`,
+        backgroundRepeat: `no-repeat`,
+        backgroundAttachment: `fixed`,
+        height: `3876px`,
       }}
     >
-      <div
-        className={inter.className}
-        style={{
-          backgroundImage: `url(background_page.png)`,
-          backgroundSize: "cover",
-          backgroundPosition: `center center`,
-          backgroundRepeat: `no-repeat`,
-          backgroundAttachment: `fixed`,
-          height: `3876px`,
-        }}
-      >
-        <Menubar
-          toggleLoginAndRegistrationModal={toggleLoginAndRegistrationModal}
-          setLogin={setLogin}
-        />
-        <LoginAndRegistration
-          isLogin={isLogin}
-          setLogin={setLogin}
-          onLoginAndRegistrationModal={onLoginAndRegistration}
-          toggleLoginAndRegistrationModal={toggleLoginAndRegistrationModal}
-        ></LoginAndRegistration>
-        {/* <Content /> */}
-      </div>
-    </ConfigProvider>
+      <Menubar
+        toggleLoginAndRegistrationModal={toggleLoginAndRegistrationModal}
+        setLogin={setLogin}
+      />
+      <LoginAndRegistration
+        isLogin={isLogin}
+        setLogin={setLogin}
+        onLoginAndRegistrationModal={onLoginAndRegistration}
+        toggleLoginAndRegistrationModal={toggleLoginAndRegistrationModal}
+      ></LoginAndRegistration>
+      {/* <Content /> */}
+    </div>
   );
 }

@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { Button, Drawer } from "antd";
 import styled from "styled-components";
-import { Inter } from "@next/font/google";
 import theme from "@/utils/theme";
 import { MenuOutlined } from "@ant-design/icons";
-
-const inter = Inter({ subsets: ["latin"] });
 
 const StyledMenuOutlined = styled(MenuOutlined)`
   color: white;
@@ -35,7 +32,7 @@ const HamburgerMenu: React.FC = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <HamburgerMenuWrapper className={inter.className}>
+    <HamburgerMenuWrapper>
       <Button type="text" onClick={() => setOpen(true)}>
         <StyledMenuOutlined />
       </Button>

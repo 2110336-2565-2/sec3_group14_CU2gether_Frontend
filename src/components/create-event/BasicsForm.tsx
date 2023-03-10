@@ -79,6 +79,23 @@ const BasicsForm: React.FC<{}> = ({}) => {
     </FlexContainer>
   );
 
+  const formList = [
+    {
+      title: "Start",
+      name: "start-date",
+      textWidth: 40,
+      inputWidth: 140,
+      marginBottom: 0,
+    },
+    {
+      title: "Stop",
+      name: "stop-date",
+      textWidth: 40,
+      inputWidth: 140,
+      marginBottom: 0,
+    },
+  ];
+
   const dateForm = (
     <FlexContainer>
       <FormInput
@@ -138,13 +155,11 @@ const BasicsForm: React.FC<{}> = ({}) => {
         {typeForm}
       </FormInput>
 
-      {/* change isRequired to true */}
-
-      <FormInput title="Date" name="date" isRequired={false}>
+      <FormInput title="Date" name="date" isRequired={true}>
         {dateForm}
       </FormInput>
 
-      <FormInput title="Time" name="time" isRequired={false}>
+      <FormInput title="Time" name="time" isRequired={true}>
         {timeForm}
       </FormInput>
 

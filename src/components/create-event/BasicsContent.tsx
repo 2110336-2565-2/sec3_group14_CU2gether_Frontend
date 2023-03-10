@@ -13,8 +13,8 @@ const ContentContainer = styled.div`
 const BasicsContent: React.FC<{}> = ({}) => {
   return (
     <ContentContainer>
-      {/* <BasicsForm /> */}
-      <PictureForm />
+      <BasicsForm />
+      {/* <PictureForm /> */}
     </ContentContainer>
   );
 };

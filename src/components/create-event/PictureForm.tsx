@@ -22,7 +22,9 @@ const PictureForm: React.FC<{}> = ({}) => {
   return (
     <>
       <Form.Item name="picture" rules={[{ required: true }]}>
-        <Upload listType="picture-card">{uploadButton}</Upload>
+        <Upload listType="picture-card" style={{ height: 400 }}>
+          {uploadButton}
+        </Upload>
       </Form.Item>
     </>
   );

@@ -7,6 +7,7 @@ import BasicsContent from "@/components/create-event/BasicsContent";
 import LocationContent from "@/components/create-event/LocationContent";
 import DescriptionContent from "@/components/create-event/DescriptionContent";
 import theme from "@/utils/theme";
+import SuccessContent from "@/components/create-event/SuccessContent";
 
 const ContentContainer = styled.div`
   display: flex;
@@ -22,17 +23,45 @@ const ButtonContainer = styled.div`
 `;
 
 const createEvent: React.FC<{}> = ({}) => {
-  const [current, useCurrent] = useState(0);
+  const [form] = Form.useForm();
+  const [current, setCurrent] = useState(0);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const clickclick = () => {
-    useCurrent(current + 1);
+  const goNextForm = () => {
+    setCurrent(current + 1);
   };
-  const click = () => {
-    useCurrent(current - 1);
+  const goPreviousForm = () => {
+    setCurrent(current - 1);
   };
 
-  const onFinish = (values: any) => {
-    console.log(values);
+  const dateAndTimeChecker = () => {
+    const { timeStart, timeStop, dateStart, dateStop } = form.getFieldsValue([
+      "start-time",
+      "stop-time",
+      "start-date",
+      "stop-date",
+    ]);
+
+    const isTimeValid = timeStart <= timeStop ? true : false;
+    const isDateValid = dateStart <= dateStop ? true : false;
+
+    if (isTimeValid) {
+      form.setFieldValue("time", "valid");
+    } else {
+      form.setFieldValue("time", undefined);
+    }
+
+    if (isDateValid) {
+      form.setFieldValue("date", "valid");
+    } else {
+      form.setFieldValue("date", undefined);
+    }
+  };
+
+  const onFinish = () => {
+    console.log("finish!!");
+    const allData = form.getFieldsValue(true);
+    console.log(allData);
   };
 
   const content = [
@@ -40,17 +69,20 @@ const createEvent: React.FC<{}> = ({}) => {
     <LocationContent />,
     <DescriptionContent />,
   ];
+
   return (
     <ConfigProvider
       theme={{
         token: {
           colorPrimary: `${theme.color.cu_pink}`,
         },
-        // components: {
-        //   Button: {
-        //     colorPrimary: `${theme.color.primary}`,
-        //   },
-        // },
+        components: {
+          Button: {
+            colorPrimary: `${theme.color.primary}`,
+            // colorPrimaryHover: `${theme.color.primary}`,
+            colorPrimaryHover: "rgba(237,153,142,255)",
+          },
+        },
       }}
     >
       <ContentContainer>
@@ -64,25 +96,37 @@ const createEvent: React.FC<{}> = ({}) => {
           style={{ width: 400 }}
           labelPlacement="vertical"
         />
-        <Form
-          onFinish={onFinish}
-          style={{
-            height: 450,
-            justifyContent: "space-between",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          {content[current]}
-          <ButtonContainer>
-            <Button onClick={click} style={{ width: 150 }}>
-              {current === 0 ? "Cancel" : "Back"}
-            </Button>
-            <Button onClick={clickclick} type="primary" style={{ width: 150 }}>
-              {current === 2 ? "Submit" : "Next"}
-            </Button>
-          </ButtonContainer>
-        </Form>
+        {current === 3 ? (
+          <SuccessContent />
+        ) : (
+          <Form
+            onFinish={onFinish}
+            style={{
+              height: 450,
+              justifyContent: "space-between",
+              display: "flex",
+              flexDirection: "column",
+            }}
+            form={form}
+          >
+            {content[current]}
+            <ButtonContainer>
+              <Button onClick={goPreviousForm} style={{ width: 150 }}>
+                {current === 0 ? "Cancel" : "Back"}
+              </Button>
+              <Button
+                onClick={goNextForm}
+                type="primary"
+                style={{ width: 150 }}
+              >
+                {current === 2 ? "Submit" : "Next"}
+              </Button>
+              <Button htmlType="submit" onClick={dateAndTimeChecker}>
+                Submit
+              </Button>
+            </ButtonContainer>
+          </Form>
+        )}
       </ContentContainer>
     </ConfigProvider>
   );

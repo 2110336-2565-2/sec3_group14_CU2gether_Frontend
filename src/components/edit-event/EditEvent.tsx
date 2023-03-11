@@ -1,11 +1,11 @@
 import axios from "axios";
 import React, { useState, useEffect, Children } from "react";
 import styled from "styled-components";
-import { Form, Input, Select, Radio, DatePicker, TimePicker, Button, Layout } from "antd";
+import { Form, Input, Select, Radio, DatePicker, TimePicker, Button, Layout, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
 import FormInput from "../basic-components/FormInput";
 import { getEventByName } from "api";
-import editEvent from "@/pages/editEvent";
+import dayjs from 'dayjs';
 
 const InputContainer = styled(Layout)`
   margin-left: auto;
@@ -18,8 +18,6 @@ const FlexContainer = styled.div`
   display: flex;
   width: 400px;
   gap: 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
 `;
 
 const ButtonContainer = styled.div`
@@ -28,7 +26,8 @@ const ButtonContainer = styled.div`
   gap: 20px;
 `;
 
-const eventTypeList = [
+const typeList = [
+  { value: "No Type", label: "No Type"},
   { value: "Concert", label: "Concert" },
   { value: "Education", label: "Education" },
   { value: "Festival", label: "Festival" },
@@ -45,24 +44,25 @@ const tagList = [
 const eventDetail = {
     eventName: String,
     eventType: String,
-    visibility: String,
+    visibility: Radio,
     tags: String,
     requireParticipantsMin: Number,
     requireParticipantsMax: Number,
-    startDate: String,
-    endDate: String,
-    startTime: String,
-    endTime: String,
-    meetingType: String,
+    startDate: dayjs,
+    endDate: dayjs,
+    startTime: dayjs,
+    endTime: dayjs,
+    meetingType: Radio,
     location: String,
-    website: String
+    website: String,
+    description: String
 }
 
 const EditEvent: React.FC<{}> = ({}) => {
   const [eventDetail, setEventDetail] = useState({
-    eventName: "Event Name",
-    eventType: "Concert",
-    visibility: "Public",
+    eventName: "No Event Name",
+    eventType: "No Type",
+    visibility: "public",
     tags: "Animal",
     requireParticipantsMin: 0,
     requireParticipantsMax: 127,
@@ -70,94 +70,124 @@ const EditEvent: React.FC<{}> = ({}) => {
     endDate: "2023-03-03",
     startTime: "16:00:00",
     endTime: "22:00:00",
-    meetingType: "Onsite",
+    meetingType: "onsite",
     location: "Somewhere On Earth",
-    website: "www.exmaple.com"
+    website: "www.exmaple.com",
   });
 
+  const [form] = Form.useForm();
+
   useEffect(() => {
-    // getEventByName('Orangutan Show!')
-    // .then((data) => {
-    //   setEventDetail(data);
-    // })
-    // .catch((err) => {
-    //   console.log(err)
-    // })
+    getEventByName('orange')
+    .then((data) => {
+      const newEvent = {
+        eventName: data.name,
+        eventType: "Concert",
+        visibility: "public",
+        tags: data.tag,
+        requireParticipantsMin: data.minCap,
+        requireParticipantsMax: data.maxCap,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        startTime: "16:00:00",
+        endTime: "22:00:00",
+        meetingType: "onsite",
+        location: data.location,
+        website: "www.exmaple.com",
+      };
+      setEventDetail(newEvent);
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   }, []);
-  
+
+  useEffect(() => {
+    form.setFieldsValue({
+      "event-name": eventDetail.eventName,
+      "event-type": eventDetail.eventType,
+      "visibility": eventDetail.visibility,
+      "tags": eventDetail.tags,
+      "minimum": eventDetail.requireParticipantsMin,
+      "maximum": eventDetail.requireParticipantsMax,
+      // "start-date": eventDetail.startDate,
+      // "end-date": eventDetail.endDate,
+      // "start-time": eventDetail.startTime,
+      // "end-time": eventDetail.endTime,
+      "meeting-type": eventDetail.meetingType,
+      "location": eventDetail.location,
+      "website": eventDetail.website,
+    })
+  })
+
   const eventNameForm = (
-    <FlexContainer>
-      <Form.Item
-        name="eventName"
-        >
-        <Input placeholder="Event Name" defaultValue={eventDetail.eventName}/>
-      </Form.Item>
-    </FlexContainer>
+    <Input 
+    placeholder="Event Name" 
+    defaultValue={eventDetail.eventName}
+    value={eventDetail.eventName}
+    />
   ); 
 
   const typeForm = (
-    <FlexContainer>
-      <Select
-        defaultValue={eventDetail.eventType}
-        options={eventTypeList}
-      />
-    </FlexContainer>
+    <Select
+      defaultValue={eventDetail.eventType}
+      options={typeList}
+    />
   );
 
   const visibilityForm = (
-    <FlexContainer>
-      <Radio.Group defaultValue={eventDetail.visibility} buttonStyle="solid">
-        <Radio.Button value="public">Public</Radio.Button>
-        <Radio.Button value="private">Private</Radio.Button>
-      </Radio.Group>
-    </FlexContainer>
-
+    <Radio.Group defaultValue={eventDetail.visibility} buttonStyle="solid">
+      <Radio.Button value="public" style={{ width: 200, textAlign: "center" }}>
+        Public
+      </Radio.Button>
+      <Radio.Button value="private" style={{ width: 200, textAlign: "center" }}>
+        Private
+      </Radio.Button>
+    </Radio.Group>
   );
 
   const tagsForm = (
-    <FlexContainer>
-      <Select
-        mode="tags"
-        placeholder="Tags"
-        defaultValue={eventDetail.tags}
-        options={tagList}
-      />      
-    </FlexContainer>
-
+    <Select
+      mode="tags"
+      placeholder="Tags"
+      defaultValue={eventDetail.tags}
+      value={eventDetail.tags}
+      options={tagList}
+    />      
   );
 
   const participantCountForm = (
     <FlexContainer>
-      <FormInput text="Minimum" name="minimum" textWidth={70} inputWidth={100}>
-        <Input placeholder="Minimum" defaultValue={eventDetail.requireParticipantsMin}/>
+      <FormInput title="Min" name="minimum" textWidth={40} inputWidth={140} marginBottom={0}>
+        <Input placeholder="Min" style={{ width: 140}} defaultValue={eventDetail.requireParticipantsMin}/>
       </FormInput>
 
-      <FormInput text="Maximum" name="maximum" textWidth={70} inputWidth={100}>
-        <Input placeholder="Maximum" defaultValue={eventDetail.requireParticipantsMax}/>
+      <FormInput title="Max" name="maximum" textWidth={40} inputWidth={140} marginBottom={0}>
+        <Input placeholder="Max" style={{ width: 140}} defaultValue={eventDetail.requireParticipantsMax}/>
       </FormInput>
     </FlexContainer>
   );
 
   const dateForm = (
     <FlexContainer>
-      <FormInput text="Start" name="start-date" textWidth={70} inputWidth={100}>
-        <DatePicker />
+      <FormInput title="Start" name="start-date" textWidth={40} inputWidth={140} marginBottom={0}>
+        <DatePicker style={{ width: 140 }}/>
       </FormInput>
 
-      <FormInput text="Stop" name="stop-date" textWidth={70} inputWidth={100}>
-        <DatePicker />
+      <FormInput title="Stop" name="stop-date" textWidth={40} inputWidth={140} marginBottom={0}>
+        <DatePicker style={{ width: 140 }}/>
       </FormInput>
     </FlexContainer>
   );
 
   const timeForm = (
     <FlexContainer>
-      <FormInput text="Start" name="start-time" textWidth={70} inputWidth={100}>
-        <TimePicker />
+      <FormInput title="Start" name="start-time" textWidth={40} inputWidth={140} marginBottom={0}>
+        <TimePicker style={{ width: 140 }}/>
       </FormInput>
 
-      <FormInput text="Stop" name="stop-time" textWidth={70} inputWidth={100}>
-        <TimePicker />
+      <FormInput title="Stop" name="stop-time" textWidth={40} inputWidth={140} marginBottom={0}>
+        <TimePicker style={{ width: 140 }}/>
       </FormInput>
     </FlexContainer>
   );
@@ -165,73 +195,76 @@ const EditEvent: React.FC<{}> = ({}) => {
   const meetingTypeForm = (
     <FlexContainer>
       <Radio.Group defaultValue={eventDetail.meetingType} buttonStyle="solid">
-        <Radio.Button value="onsite">Onsite</Radio.Button>
-        <Radio.Button value="online">Online</Radio.Button>
+        <Radio.Button value="onsite" style={{ width: 200, textAlign: "center" }}>
+          Onsite
+        </Radio.Button>
+        <Radio.Button value="online" style={{ width: 200, textAlign: "center" }}>
+          Online
+        </Radio.Button>
       </Radio.Group>      
     </FlexContainer>
   );
 
   const locationForm = (
-    <FlexContainer>
-      <Input placeholder="Location" defaultValue={eventDetail.location}/>
-    </FlexContainer>
+    <Input placeholder="Location" defaultValue={eventDetail.location}/>
   );
 
   const websiteForm = (
-    <FlexContainer>
-      <Input placeholder="Website" defaultValue={eventDetail.website}/>
-    </FlexContainer>
+    <Input placeholder="Website" defaultValue={eventDetail.website}/>
   );
 
   return (      
+    <ConfigProvider      
+    theme={{
+      token: {
+        colorPrimary: `${theme.color.cu_pink}`,
+      },
+    }}>
     <InputContainer>
-      <Form>
-        <FormInput text="Event Name" name="event-name" isRequired={false}>
+      <Form form={form}>
+        <FormInput title="Event Name" name="event-name" isRequired={false}>
           {eventNameForm}
         </FormInput>
 
-        <FormInput text="Type" name="type" isRequired={false}>
+        <FormInput title="Type" name="event-type" isRequired={false}>
           {typeForm}
         </FormInput>
 
-        <FormInput text="Visibility" name="visibility" isRequired={false}>
+        <FormInput title="Visibility" name="visibility" isRequired={false}>
           {visibilityForm}
         </FormInput>
 
-        <FormInput text="Tags" name="tags">
+        <FormInput title="Tags" name="tags">
           {tagsForm}
         </FormInput>
 
-        <FormInput
-          text="Required Number of Participants"
-          name="participant-count"
-          isRequired={false}
-        >
+        <FormInput title="Required Number of Participants" name="participant-count" isRequired={false}>
           {participantCountForm}
         </FormInput>
 
-        <FormInput text="Date" name="date" isRequired={false}>
+        <FormInput title="Date" name="date" isRequired={false}>
           {dateForm}
         </FormInput>
 
-        <FormInput text="Time" name="time" isRequired={false}>
+        <FormInput title="Time" name="time" isRequired={false}>
           {timeForm}
         </FormInput>
 
-        <FormInput text="Meeting Type" name="locating-type" isRequired={false}>
+        <FormInput title="Meeting Type" name="meeting-type" isRequired={false}>
           {meetingTypeForm}
         </FormInput>
 
-        <FormInput text="Location" name="location" isRequired={false}>
+        <FormInput title="Location" name="location" isRequired={false}>
           {locationForm}
         </FormInput>
 
-        <FormInput text="Website" name="website">
+        <FormInput title="Website" name="website">
           {websiteForm}
         </FormInput>
 
       </Form>
     </InputContainer>
+    </ConfigProvider>
   );
 };
 

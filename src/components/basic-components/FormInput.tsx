@@ -27,6 +27,7 @@ const FormInput: React.FC<FormInputProps> = ({
   inputWidth = 500,
   children,
 }) => {
+  console.log(textWidth, inputWidth);
   return (
     <>
       <Row align="middle">

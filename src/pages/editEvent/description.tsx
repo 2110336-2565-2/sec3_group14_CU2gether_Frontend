@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { Form, Input, Button, Layout, Space, ConfigProvider} from "antd";
 import theme from "@/utils/theme";
 import styled from 'styled-components';
-import { getEventByName } from "api";
+import { getEventByName, updateEventDescription } from "api";
 import FormInput from "@/components/basic-components/FormInput";
 
 const { TextArea } = Input;
@@ -16,7 +16,7 @@ const InputContainer = styled(Layout)`
   background-color: ${theme.color.white};
 `;
 
-const TextAreaContainer = styled.div`
+const TextAreaContainer = styled(Layout)`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -28,16 +28,19 @@ const ButtonContainer = styled.div`
     display: flex;
     justify-content: center;
     padding-top: 40px;
-    gap: 20px;
+    gap: 70px;
 `;
 
-const deacriptionDetail = {
-    description: String,
-}
+const ButtonConfig = styled(Button)`
+    width: 180px;
+    height: 44px;
+    font-size: 20px;
+`;
 
 const Description: React.FC<{}> = ({}) => {
     const [descriptionDetail, setDescriptionDetail] = useState({
-      description: "Tell us something"
+        eventName: "Event Name",
+        description: "Tell us something",
     });
 
     const [form] = Form.useForm();
@@ -45,7 +48,11 @@ const Description: React.FC<{}> = ({}) => {
     useEffect(() => {
       getEventByName('orange')
       .then((data) => {
-        setDescriptionDetail(data.description);
+        const newDescription = {
+            eventName: data.name,
+            description: data.description,
+        }
+        setDescriptionDetail(newDescription);
       })
       .catch((err) => {
         console.log(err)
@@ -59,21 +66,15 @@ const Description: React.FC<{}> = ({}) => {
     })
 
     const router = useRouter();
+
     const handleSaveClick = () => {
-        // getEventByName(eventDetail);
-        router.push('/editEvent', undefined, {shallow:true});
+        updateEventDescription(descriptionDetail.eventName, descriptionDetail.description)
+        router.push('/editEvent');
     };
 
     const handleCancelClick = () => {
         router.push('/editEvent');
     };
-
-    const buttonForm = (
-        <ButtonContainer>
-            <Button htmlType="button" onClick={handleCancelClick}>Cancel</Button>
-            <Button htmlType="submit" onClick={handleSaveClick} type="primary">Save</Button>
-        </ButtonContainer>
-    );
 
     return (
         <ConfigProvider      
@@ -84,15 +85,19 @@ const Description: React.FC<{}> = ({}) => {
         }}>
         <TextAreaContainer>
             <Form form={form}>
-                <TextArea
-                name="description"
-                defaultValue={descriptionDetail.description}
-                value={descriptionDetail.description}
-                style={{width:1000, height:754, margin:'auto'}}
-                />    
+                <Form.Item name="description">
+                    <TextArea
+                    defaultValue={descriptionDetail.description}
+                    value={descriptionDetail.description}
+                    style={{width:1000, height:754, margin:'auto'}}
+                    /> 
+                </Form.Item>   
             </Form>
         </TextAreaContainer>
-        {buttonForm}     
+        <ButtonContainer>
+            <ButtonConfig htmlType="button" onClick={handleCancelClick}>Cancel</ButtonConfig>
+            <ButtonConfig htmlType="submit" onClick={handleSaveClick} type="primary">Save</ButtonConfig>
+        </ButtonContainer>     
         </ConfigProvider>
 
     );

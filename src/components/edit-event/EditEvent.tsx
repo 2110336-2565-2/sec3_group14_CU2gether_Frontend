@@ -1,11 +1,11 @@
-import axios from "axios";
 import React, { useState, useEffect, Children } from "react";
 import styled from "styled-components";
 import { Form, Input, Select, Radio, DatePicker, TimePicker, Button, Layout, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
 import FormInput from "../basic-components/FormInput";
-import { getEventByName } from "api";
+import { getEventByName, updateEventDetail } from "api";
 import dayjs from 'dayjs';
+import { useRouter } from "next/router";
 
 const InputContainer = styled(Layout)`
   margin-left: auto;
@@ -22,9 +22,16 @@ const FlexContainer = styled.div`
 
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: left;
   gap: 20px;
 `;
+
+const ButtonConfig = styled(Button)`
+    width: 180px;
+    // height: 44px;
+    // font-size: 20px;
+`;
+
 
 const typeList = [
   { value: "No Type", label: "No Type"},
@@ -120,11 +127,41 @@ const EditEvent: React.FC<{}> = ({}) => {
     })
   })
 
+  const router = useRouter();
+
+  const handleSaveClick = (values: any) => {
+    const {
+      eventName, 
+      eventType, 
+      visibility, 
+      tags, 
+      requireParticipantsMin, 
+      requireParticipantsMax, 
+      meetingType, 
+      location, 
+      website, 
+      description} = values;
+    updateEventDetail(
+      eventName, 
+      eventType, 
+      visibility, 
+      tags, 
+      requireParticipantsMin,
+      requireParticipantsMax, 
+      meetingType, 
+      location, 
+      website,
+      );
+  }
+
+  const handleCancelClick = () => {
+    router.push('/');
+  }
+
   const eventNameForm = (
     <Input 
     placeholder="Event Name" 
     defaultValue={eventDetail.eventName}
-    value={eventDetail.eventName}
     />
   ); 
 
@@ -213,15 +250,32 @@ const EditEvent: React.FC<{}> = ({}) => {
     <Input placeholder="Website" defaultValue={eventDetail.website}/>
   );
 
+  const buttonForm = (
+    <ButtonContainer>
+        <ButtonConfig htmlType="button" onClick={handleCancelClick}>
+          Cancel
+        </ButtonConfig>
+        <ButtonConfig htmlType="submit" type="primary" onClick={handleSaveClick}>
+          Submit
+        </ButtonConfig>
+    </ButtonContainer>
+  );
+
   return (      
     <ConfigProvider      
     theme={{
       token: {
         colorPrimary: `${theme.color.cu_pink}`,
       },
+      components: {
+        Button: {
+          colorPrimary: `${theme.color.primary}`,
+          colorPrimaryHover: `${theme.color.primaryHover}`
+        }
+      }
     }}>
-    <InputContainer>
-      <Form form={form}>
+    <InputContainer >
+      <Form form={form} >
         <FormInput title="Event Name" name="event-name" isRequired={false}>
           {eventNameForm}
         </FormInput>
@@ -263,6 +317,7 @@ const EditEvent: React.FC<{}> = ({}) => {
         </FormInput>
 
       </Form>
+      {buttonForm}
     </InputContainer>
     </ConfigProvider>
   );

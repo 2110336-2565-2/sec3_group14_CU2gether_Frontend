@@ -3,19 +3,13 @@ import { useRouter } from "next/router";
 import { Form, Radio, Button, ConfigProvider, Layout, Space } from "antd";
 import theme from "@/utils/theme";
 import styled from 'styled-components';
-import { getEventByName } from "api";
+import { getEventByName, updateEventDetail } from "api";
 import dayjs from 'dayjs';
 
 import EditImage from "@/components/edit-event/EditImage";
 import EditEvent from "@/components/edit-event/EditEvent";
 
-const { Header, Content } = Layout;
-
-const headerStyle: React.CSSProperties = {
-  height: 119,
-  lineHeight: '119px',
-  backgroundColor: `${theme.color.white}`,
-}
+const { Content } = Layout;
 
 const EditEventContainer = styled(Layout)`
   margin-left: auto;
@@ -34,13 +28,6 @@ const ContentContainer = styled(Content)`
   background-color: ${theme.color.white};
 `;
 
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-`;
-
 const Li = styled.li`
   display: flex;
   font-size: 40px;
@@ -50,31 +37,7 @@ const Li = styled.li`
   }
 `;
 
-const eventDetail = {
-  eventName: String,
-  eventType: String,
-  visibility: Radio,
-  tags: String,
-  requireParticipantsMin: Number,
-  requireParticipantsMax: Number,
-  startDate: dayjs,
-  endDate: dayjs,
-  startTime: dayjs,
-  endTime: dayjs,
-  meetingType: Radio,
-  location: String,
-  website: String,
-  description: String
-}
-
-
 const editEvent: React.FC<{}> = ({}) => {
-  const buttonForm = (
-    <ButtonContainer>
-        <Button htmlType="button">Cancel</Button>
-        <Button htmlType="submit" type="primary">Submit</Button>
-    </ButtonContainer>
-  );
 
   return (
     <ConfigProvider    
@@ -83,7 +46,7 @@ const editEvent: React.FC<{}> = ({}) => {
         colorPrimary: `${theme.color.primary}`,
       },
     }}>
-      <EditEventContainer>
+      <EditEventContainer >
           <Li>
             <b>Edit Event Detail</b>
           </Li>
@@ -92,10 +55,7 @@ const editEvent: React.FC<{}> = ({}) => {
               <EditImage />
               <EditEvent />
             </ContentContainer>
-          </Content>
-          <Content>
-            {buttonForm}
-          </Content>
+          </Content>    
       </EditEventContainer>
     </ConfigProvider>
   );

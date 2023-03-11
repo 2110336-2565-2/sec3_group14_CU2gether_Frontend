@@ -23,6 +23,8 @@ const color = {
   primary50: '#F7F4FF',
   primary100: '#DAD2F6',
   primary200: '#B5A6ED',
+
+  primaryHover: '#ED998E',
 }
 
 const input = {

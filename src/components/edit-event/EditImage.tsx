@@ -28,10 +28,11 @@ const ButtonContainer = styled.div`
   gap: 20px;
 `;
 
-const PosterContainer = styled.div`
-//   width: 350px;
-//   height: 500px;
-`
+const ButtonConfig = styled(Button)`
+    width: 180px;
+    // height: 44px;
+    // font-size: 20px;
+`;
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -71,13 +72,13 @@ const EditImage: React.FC<{}> = ({}) => {
   }
   const buttonForm = (
     <ButtonContainer>
-      <Button htmlType="button">Cancel Event</Button>
-      <Button 
+      <ButtonConfig htmlType="button">Cancel Event</ButtonConfig>
+      <ButtonConfig 
       htmlType="button" 
       onClick={handleEditDescriptionClick} 
       type="primary">
         Edit Description
-      </Button>
+      </ButtonConfig>
     </ButtonContainer>
   );
   const uploadButton = (

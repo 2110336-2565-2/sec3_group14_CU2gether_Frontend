@@ -1,5 +1,3 @@
-import { registerStudent } from "api";
-
 const color = {
   cu_pink: '#F96491',
   white: '#FFFFFF',
@@ -79,15 +77,13 @@ const color_level = {
 }
 
 const media = {
-  mobile_xs: '@media screen and (max-width: 350px)',
-  mobile: '@media screen and (max-width: 390px)',
-  tablet: '@media screen and (max-width: 1024px)',
+  mobile: '@media screen and (max-width: 425px)',
+  tablet: '@media screen and (max-width: 768px)',
   pc: '@media screen and (max-width: 1024px)',
   wirescreen: '@media screen and (max-width: 1440px)',
 }
 
 const theme = {
-  max: '1440px',
   color,
   color_level,
   input,

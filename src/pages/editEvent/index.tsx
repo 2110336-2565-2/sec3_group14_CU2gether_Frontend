@@ -6,8 +6,8 @@ import styled from 'styled-components';
 import { getEventByName, updateEventDetail } from "api";
 import dayjs from 'dayjs';
 
-import EditImage from "@/components/edit-event/EditImage";
-import EditEvent from "@/components/edit-event/EditEvent";
+import EditImage from "@/components/edit-event/EditImageAndDescription";
+import EditEvent from "@/components/edit-event/EditEventForm";
 
 const { Content } = Layout;
 

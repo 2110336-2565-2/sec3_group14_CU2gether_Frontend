@@ -48,23 +48,6 @@ const tagList = [
   { value: "eiei4", label: "eiei4" },
 ];
 
-const eventDetail = {
-    eventName: String,
-    eventType: String,
-    visibility: Radio,
-    tags: String,
-    requireParticipantsMin: Number,
-    requireParticipantsMax: Number,
-    startDate: dayjs,
-    endDate: dayjs,
-    startTime: dayjs,
-    endTime: dayjs,
-    meetingType: Radio,
-    location: String,
-    website: String,
-    description: String
-}
-
 const EditEvent: React.FC<{}> = ({}) => {
   const [eventDetail, setEventDetail] = useState({
     eventName: "No Event Name",
@@ -88,21 +71,22 @@ const EditEvent: React.FC<{}> = ({}) => {
     getEventByName('orange')
     .then((data) => {
       const newEvent = {
-        eventName: data.name,
-        eventType: "Concert",
-        visibility: "public",
-        tags: data.tag,
-        requireParticipantsMin: data.minCap,
-        requireParticipantsMax: data.maxCap,
+        eventName: data.eventName,
+        eventType: data.eventType,
+        visibility: data.visibility,
+        tags: data.tags,
+        requireParticipantsMin: data.requireParticipantsMin,
+        requireParticipantsMax: data.requireParticipantsMax,
         startDate: data.startDate,
         endDate: data.endDate,
-        startTime: "16:00:00",
-        endTime: "22:00:00",
-        meetingType: "onsite",
+        startTime: data.startTime,
+        endTime: data.endTime,
+        meetingType: data.meetingType,
         location: data.location,
-        website: "www.exmaple.com",
+        website: data.website,
       };
       setEventDetail(newEvent);
+      console.log(newEvent)
     })
     .catch((err) => {
       console.log(err)
@@ -117,10 +101,10 @@ const EditEvent: React.FC<{}> = ({}) => {
       "tags": eventDetail.tags,
       "minimum": eventDetail.requireParticipantsMin,
       "maximum": eventDetail.requireParticipantsMax,
-      // "start-date": eventDetail.startDate,
-      // "end-date": eventDetail.endDate,
-      // "start-time": eventDetail.startTime,
-      // "end-time": eventDetail.endTime,
+      "start-date": dayjs(eventDetail.startDate),
+      "end-date": dayjs(eventDetail.endDate),
+      "start-time": dayjs(eventDetail.startTime),
+      "end-time": dayjs(eventDetail.endTime),
       "meeting-type": eventDetail.meetingType,
       "location": eventDetail.location,
       "website": eventDetail.website,
@@ -129,28 +113,17 @@ const EditEvent: React.FC<{}> = ({}) => {
 
   const router = useRouter();
 
-  const handleSaveClick = (values: any) => {
-    const {
-      eventName, 
-      eventType, 
-      visibility, 
-      tags, 
-      requireParticipantsMin, 
-      requireParticipantsMax, 
-      meetingType, 
-      location, 
-      website, 
-      description} = values;
+  const handleSaveClick = () => {
     updateEventDetail(
-      eventName, 
-      eventType, 
-      visibility, 
-      tags, 
-      requireParticipantsMin,
-      requireParticipantsMax, 
-      meetingType, 
-      location, 
-      website,
+      eventDetail.eventName, 
+      eventDetail.eventType, 
+      eventDetail.visibility, 
+      eventDetail.tags, 
+      eventDetail.requireParticipantsMin,
+      eventDetail.requireParticipantsMax, 
+      eventDetail.meetingType, 
+      eventDetail.location, 
+      eventDetail.website,
       );
   }
 
@@ -174,10 +147,10 @@ const EditEvent: React.FC<{}> = ({}) => {
 
   const visibilityForm = (
     <Radio.Group defaultValue={eventDetail.visibility} buttonStyle="solid">
-      <Radio.Button value="public" style={{ width: 200, textAlign: "center" }}>
+      <Radio.Button value="PUBLIC" style={{ width: 200, textAlign: "center" }}>
         Public
       </Radio.Button>
-      <Radio.Button value="private" style={{ width: 200, textAlign: "center" }}>
+      <Radio.Button value="PRIVATE" style={{ width: 200, textAlign: "center" }}>
         Private
       </Radio.Button>
     </Radio.Group>
@@ -211,7 +184,7 @@ const EditEvent: React.FC<{}> = ({}) => {
         <DatePicker style={{ width: 140 }}/>
       </FormInput>
 
-      <FormInput title="Stop" name="stop-date" textWidth={40} inputWidth={140} marginBottom={0}>
+      <FormInput title="End" name="end-date" textWidth={40} inputWidth={140} marginBottom={0}>
         <DatePicker style={{ width: 140 }}/>
       </FormInput>
     </FlexContainer>
@@ -223,7 +196,7 @@ const EditEvent: React.FC<{}> = ({}) => {
         <TimePicker style={{ width: 140 }}/>
       </FormInput>
 
-      <FormInput title="Stop" name="stop-time" textWidth={40} inputWidth={140} marginBottom={0}>
+      <FormInput title="End" name="end-time" textWidth={40} inputWidth={140} marginBottom={0}>
         <TimePicker style={{ width: 140 }}/>
       </FormInput>
     </FlexContainer>

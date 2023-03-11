@@ -33,8 +33,8 @@ const ButtonContainer = styled.div`
 
 const ButtonConfig = styled(Button)`
     width: 180px;
-    height: 44px;
-    font-size: 20px;
+    // height: 44px;
+    // font-size: 20px;
 `;
 
 const Description: React.FC<{}> = ({}) => {

@@ -11,6 +11,7 @@ const getStudentByIdURL = CU_API + 'student/' // + studentId
 const getEventByNameURL = CU_API + 'event/' // + eventName
 const updateEventDetailURL = CU_API + 'event/' 
 const updateEventDescriptionURL = CU_API + 'event/'
+const cancelEventURL = CU_API + 'event/'
 
 export const registerStudent = (
     studentId: String,
@@ -128,6 +129,18 @@ export const updateEventDescription = (
     .patch(updateEventDescriptionURL+eventName, {
         eventName,
         description,
+    })
+    .then((res) => {
+        console.log(res);
+    })
+    .catch((err: AxiosError) => console.log(err));
+}
+
+export const cancelEvent = (
+    eventName: String,
+) => {
+    axios
+    .delete(cancelEventURL+eventName, {
     })
     .then((res) => {
         console.log(res);

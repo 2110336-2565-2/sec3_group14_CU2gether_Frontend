@@ -62,7 +62,9 @@ const createEvent: React.FC<{}> = ({}) => {
     }
     form
       .validateFields()
-      .then(() => setCurrentPageIndex(currentPageIndex + 1))
+      .then(() => {
+        setCurrentPageIndex(currentPageIndex + 1);
+      })
       .catch((err) => console.log(err));
   };
 
@@ -73,6 +75,7 @@ const createEvent: React.FC<{}> = ({}) => {
   const onFinish = () => {
     const allData = form.getFieldsValue(true);
     console.log(allData);
+    setIsSuccess(true);
   };
 
   const content = [
@@ -81,23 +84,19 @@ const createEvent: React.FC<{}> = ({}) => {
     <DescriptionContent />,
   ];
 
-  const backButton =
-    currentPageIndex === 0 ? (
+  const BackButton = () => {
+    return currentPageIndex === 0 ? (
       <Button style={{ width: 150 }}>Cancel</Button>
     ) : (
       <Button onClick={goPreviousForm} style={{ width: 150 }}>
         Back
       </Button>
     );
+  };
 
-  const nextButton =
-    currentPageIndex === 2 ? (
-      <Button
-        type="primary"
-        style={{ width: 150 }}
-        htmlType="submit"
-        onClick={dateAndTimeChecker}
-      >
+  const NextButton = () => {
+    return currentPageIndex === 2 ? (
+      <Button type="primary" style={{ width: 150 }} htmlType="submit">
         Submit
       </Button>
     ) : (
@@ -105,6 +104,7 @@ const createEvent: React.FC<{}> = ({}) => {
         Next
       </Button>
     );
+  };
 
   return (
     <ConfigProvider
@@ -115,7 +115,6 @@ const createEvent: React.FC<{}> = ({}) => {
         components: {
           Button: {
             colorPrimary: `${theme.color.primary}`,
-            // colorPrimaryHover: `${theme.color.primary}`,
             colorPrimaryHover: `${theme.color.primaryHover}`,
           },
         },
@@ -132,7 +131,7 @@ const createEvent: React.FC<{}> = ({}) => {
           style={{ width: 400 }}
           labelPlacement="vertical"
         />
-        {currentPageIndex === 3 ? (
+        {isSuccess ? (
           <SuccessContent />
         ) : (
           <Form
@@ -147,9 +146,8 @@ const createEvent: React.FC<{}> = ({}) => {
           >
             {content[currentPageIndex]}
             <ButtonContainer>
-              {backButton}
-
-              {nextButton}
+              <BackButton />
+              <NextButton />
             </ButtonContainer>
           </Form>
         )}

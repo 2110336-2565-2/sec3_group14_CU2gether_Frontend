@@ -24,18 +24,16 @@ const ButtonContainer = styled.div`
 
 const createEvent: React.FC<{}> = ({}) => {
   const [form] = Form.useForm();
-  const [current, setCurrent] = useState(0);
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const goNextForm = () => {
-    setCurrent(current + 1);
-  };
-  const goPreviousForm = () => {
-    setCurrent(current - 1);
-  };
-
   const dateAndTimeChecker = () => {
-    const { timeStart, timeStop, dateStart, dateStop } = form.getFieldsValue([
+    const {
+      "start-time": timeStart,
+      "stop-time": timeStop,
+      "start-date": dateStart,
+      "stop-date": dateStop,
+    } = form.getFieldsValue([
       "start-time",
       "stop-time",
       "start-date",
@@ -58,8 +56,21 @@ const createEvent: React.FC<{}> = ({}) => {
     }
   };
 
+  const goNextForm = () => {
+    if (currentPageIndex === 0) {
+      dateAndTimeChecker();
+    }
+    form
+      .validateFields()
+      .then(() => setCurrentPageIndex(currentPageIndex + 1))
+      .catch((err) => console.log(err));
+  };
+
+  const goPreviousForm = () => {
+    setCurrentPageIndex(currentPageIndex - 1);
+  };
+
   const onFinish = () => {
-    console.log("finish!!");
     const allData = form.getFieldsValue(true);
     console.log(allData);
   };
@@ -69,6 +80,31 @@ const createEvent: React.FC<{}> = ({}) => {
     <LocationContent />,
     <DescriptionContent />,
   ];
+
+  const backButton =
+    currentPageIndex === 0 ? (
+      <Button style={{ width: 150 }}>Cancel</Button>
+    ) : (
+      <Button onClick={goPreviousForm} style={{ width: 150 }}>
+        Back
+      </Button>
+    );
+
+  const nextButton =
+    currentPageIndex === 2 ? (
+      <Button
+        type="primary"
+        style={{ width: 150 }}
+        htmlType="submit"
+        onClick={dateAndTimeChecker}
+      >
+        Submit
+      </Button>
+    ) : (
+      <Button onClick={goNextForm} type="primary" style={{ width: 150 }}>
+        Next
+      </Button>
+    );
 
   return (
     <ConfigProvider
@@ -80,14 +116,14 @@ const createEvent: React.FC<{}> = ({}) => {
           Button: {
             colorPrimary: `${theme.color.primary}`,
             // colorPrimaryHover: `${theme.color.primary}`,
-            colorPrimaryHover: "rgba(237,153,142,255)",
+            colorPrimaryHover: `${theme.color.primaryHover}`,
           },
         },
       }}
     >
       <ContentContainer>
         <Steps
-          current={current}
+          current={currentPageIndex}
           items={[
             { title: "Basics" },
             { title: "Location" },
@@ -96,7 +132,7 @@ const createEvent: React.FC<{}> = ({}) => {
           style={{ width: 400 }}
           labelPlacement="vertical"
         />
-        {current === 3 ? (
+        {currentPageIndex === 3 ? (
           <SuccessContent />
         ) : (
           <Form
@@ -109,21 +145,11 @@ const createEvent: React.FC<{}> = ({}) => {
             }}
             form={form}
           >
-            {content[current]}
+            {content[currentPageIndex]}
             <ButtonContainer>
-              <Button onClick={goPreviousForm} style={{ width: 150 }}>
-                {current === 0 ? "Cancel" : "Back"}
-              </Button>
-              <Button
-                onClick={goNextForm}
-                type="primary"
-                style={{ width: 150 }}
-              >
-                {current === 2 ? "Submit" : "Next"}
-              </Button>
-              <Button htmlType="submit" onClick={dateAndTimeChecker}>
-                Submit
-              </Button>
+              {backButton}
+
+              {nextButton}
             </ButtonContainer>
           </Form>
         )}

@@ -1,12 +1,8 @@
-import React, { useState, useEffect, Children } from "react";
-import { useRouter } from "next/router";
+import React from "react";
 import { Form, Radio, Button, ConfigProvider, Layout, Space } from "antd";
 import theme from "@/utils/theme";
 import styled from 'styled-components';
-import { getEventByName, updateEventDetail } from "api";
-import dayjs from 'dayjs';
 
-import EditImage from "@/components/edit-event/EditImageAndDescription";
 import EditEvent from "@/components/edit-event/EditEventForm";
 
 const { Content } = Layout;
@@ -14,24 +10,36 @@ const { Content } = Layout;
 const EditEventContainer = styled(Layout)`
   margin-left: auto;
   margin-right: auto;
-  width: 1158px;
+  width: 50vw;
+  padding-bottom: 40px;
   background-color: ${theme.color.white};
 `;
 
 const ContentContainer = styled(Content)`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 40px;
   padding-top: 40px;
   margin-left: auto;
   margin-right: auto;
+  flex-direction: column;
+  font-size: 20px;
   background-color: ${theme.color.white};
+  ${theme.media.mobile} {
+    font-size: 14px;
+  }
 `;
 
-const Li = styled.li`
+const Header = styled.h1`
   display: flex;
   font-size: 40px;
+  font-weight: bold;
   justify-content: left;
+  padding-top: 40px;
+  ${theme.media.tablet} {
+    font-size: 24px;
+  }
   ${theme.media.mobile} {
     font-size: 24px;
   }
@@ -40,24 +48,16 @@ const Li = styled.li`
 const editEvent: React.FC<{}> = ({}) => {
 
   return (
-    <ConfigProvider    
-    theme={{
-      token: {
-        colorPrimary: `${theme.color.primary}`,
-      },
-    }}>
       <EditEventContainer >
-          <Li>
-            <b>Edit Event Detail</b>
-          </Li>
+          <Header>
+            Edit Event Detail
+          </Header>
           <Content>
             <ContentContainer>
-              <EditImage />
               <EditEvent />
             </ContentContainer>
           </Content>    
       </EditEventContainer>
-    </ConfigProvider>
   );
 };
 

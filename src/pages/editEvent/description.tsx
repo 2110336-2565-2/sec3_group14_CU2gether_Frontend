@@ -9,26 +9,26 @@ import FormInput from "@/components/basic-components/FormInput";
 const { TextArea } = Input;
 const { Content } = Layout;
 
-const InputContainer = styled(Layout)`
-  margin-left: auto;
-  margin-right: auto;
-  width: 800px;
-  background-color: ${theme.color.white};
-`;
-
 const TextAreaContainer = styled(Layout)`
     display: flex;
     align-items: center;
     justify-content: center;
     padding-top: 48px;
+    width: 100vw;
     background-color: ${theme.color.white};
+    ${theme.media.tablet} {
+        font-size: 20px;
+    }
+    ${theme.media.mobile} {
+        font-size: 14px;
+    }
 `;
 
 const ButtonContainer = styled.div`
     display: flex;
     justify-content: center;
     padding-top: 40px;
-    gap: 70px;
+    gap: 2vw;
 `;
 
 const ButtonConfig = styled(Button)`
@@ -85,11 +85,11 @@ const Description: React.FC<{}> = ({}) => {
         }}>
         <TextAreaContainer>
             <Form form={form}>
-                <Form.Item name="description">
+                <Form.Item name="description" >
                     <TextArea
                     defaultValue={descriptionDetail.description}
                     value={descriptionDetail.description}
-                    style={{width:1000, height:754, margin:'auto'}}
+                    style={{width:'50vw', height:'60vh', margin:'auto'}}
                     /> 
                 </Form.Item>   
             </Form>

@@ -1,18 +1,44 @@
 import React, { useState, useEffect, Children } from "react";
 import styled from "styled-components";
-import { Form, Input, Select, Radio, DatePicker, TimePicker, Button, Layout, ConfigProvider } from "antd";
+import { Modal, Upload, Form, Input, Select, Radio, DatePicker, TimePicker, Button, Layout, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
 import FormInput from "../basic-components/FormInput";
-import { getEventByName, updateEventDetail } from "api";
+import { getEventByName, updateEventDetail, cancelEvent } from "api";
+import type { RcFile, UploadProps } from 'antd/es/upload';
+import type { UploadFile } from 'antd/es/upload/interface';
 import dayjs from 'dayjs';
 import { useRouter } from "next/router";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
-const InputContainer = styled(Layout)`
+const FormInputContainer = styled(Layout)`
+  display: flex;
   margin-left: auto;
   margin-right: auto;
-  width: 800px;
+  align-items: center;
+  justify-content: center;
   background-color: ${theme.color.white};
 `;
+
+const NonFormInputContainer = styled(Layout)`
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: ${theme.color.white};
+`;
+
+const EndFormContainer = styled(Layout)`
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+  justify-content: center;
+  gap: 2vw;
+  background-color: ${theme.color.white};
+`
 
 const FlexContainer = styled.div`
   display: flex;
@@ -23,8 +49,15 @@ const FlexContainer = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: left;
-  gap: 20px;
+  gap: 2vw;
 `;
+
+const NonFormButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-direction: column;
+`
 
 const ButtonConfig = styled(Button)`
     width: 180px;
@@ -32,6 +65,38 @@ const ButtonConfig = styled(Button)`
     // font-size: 20px;
 `;
 
+const ModalButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 2vw;
+  margin-top: 40vh;
+`
+
+const ContentWrapper = styled.div`
+  margin-top: 10px;
+`
+
+const CancelEventTitle = styled.h1`
+  font-size: 32px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;  
+`
+const CancelEventContent = styled.h2`
+  font-size: 24px;
+  font-weight: normal;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+const getBase64 = (file: RcFile): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
 
 const typeList = [
   { value: "No Type", label: "No Type"},
@@ -64,6 +129,32 @@ const EditEvent: React.FC<{}> = ({}) => {
     location: "Somewhere On Earth",
     website: "www.exmaple.com",
   });
+
+  const [onCancelEvent, setOnCancelEvent] = useState(false); 
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState('');
+  const [previewTitle, setPreviewTitle] = useState('');
+  const [fileList, setFileList] = useState<UploadFile[]>([
+    {
+      uid: '0',
+      name: 'poster.png',
+      status: 'done',
+      url: '/orangutan_show.png',
+    },
+  ]);
+
+  const handleCancel = () => setPreviewOpen(false);
+  const handlePreview = async (file: UploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj as RcFile);
+    }
+
+    setPreviewImage(file.url || (file.preview as string));
+    setPreviewOpen(true);
+    setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
+  };
+  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>
+  setFileList(newFileList);
 
   const [form] = Form.useForm();
 
@@ -129,6 +220,22 @@ const EditEvent: React.FC<{}> = ({}) => {
 
   const handleCancelClick = () => {
     router.push('/');
+  }
+
+  const handleEditDescriptionClick = () => {
+    router.push('/editEvent/description',undefined,{shallow:true});
+  }
+
+  const toggleCancelEventModal = () => {
+    setOnCancelEvent(!onCancelEvent);
+  };
+
+  const handleCancelEventSureClick = () => {
+    cancelEvent(eventDetail.eventName);
+  }
+
+  const handleCancelEventCancelClick = () => {
+    setOnCancelEvent(false);
   }
 
   const eventNameForm = (
@@ -234,6 +341,81 @@ const EditEvent: React.FC<{}> = ({}) => {
     </ButtonContainer>
   );
 
+  const title = (
+    <CancelEventTitle>
+      Want to cancel event?
+    </CancelEventTitle>
+  );
+
+  const content = (
+    <CancelEventContent>
+      If you cancel this event, I will kill you!!!
+    </CancelEventContent>
+  );
+
+  const renderButtonForm = (
+    <NonFormButtonContainer>
+      <ButtonConfig 
+      htmlType="button" 
+      onClick={handleEditDescriptionClick}>
+        Edit Description
+      </ButtonConfig>
+      <ButtonConfig 
+      htmlType="button"
+      onClick={toggleCancelEventModal}>
+        Cancel Event
+      </ButtonConfig>
+      <Modal
+      open={onCancelEvent}
+      width={600}
+      centered={true}
+      closable={true}
+      bodyStyle={{minHeight:500, marginTop: 40}}
+      closeIcon={
+        <FontAwesomeIcon
+          onClick={toggleCancelEventModal}
+          icon={faCircleXmark}
+          size={"2x"}
+        />
+      }
+      footer={null}
+      title={title}>
+        <ContentWrapper>
+            {content}
+        </ContentWrapper>
+        <ModalButtonContainer>
+          <ButtonConfig 
+          htmlType='button' 
+          onClick={handleCancelEventCancelClick}>
+            Cancel
+          </ButtonConfig>
+          <ButtonConfig 
+          htmlType='submit' 
+          type='primary'
+          onClick={handleCancelEventSureClick}>
+            Sure
+          </ButtonConfig>
+        </ModalButtonContainer>
+      </Modal>
+    </NonFormButtonContainer>
+  );
+
+  const editImageForm = (
+    <Upload 
+    listType="picture-card"
+    fileList={fileList}
+    onPreview={handlePreview}
+    onChange={handleChange} 
+    style={{alignItems:'center',justifyContent:'center',width:350, height:500}}>
+    </Upload>  
+  );
+
+  const previewImageModal = (
+    <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+      <img alt="example" style={{ width: '100%' }} src={previewImage} />
+    </Modal>
+  );
+
   return (      
     <ConfigProvider      
     theme={{
@@ -247,7 +429,7 @@ const EditEvent: React.FC<{}> = ({}) => {
         }
       }
     }}>
-    <InputContainer >
+    <FormInputContainer >
       <Form form={form} >
         <FormInput title="Event Name" name="event-name" isRequired={false}>
           {eventNameForm}
@@ -288,10 +470,16 @@ const EditEvent: React.FC<{}> = ({}) => {
         <FormInput title="Website" name="website">
           {websiteForm}
         </FormInput>
-
-      </Form>
+      </Form>    
+    </FormInputContainer>
+    <NonFormInputContainer>
+      {editImageForm}
+      {previewImageModal}
+      {renderButtonForm} 
+    </NonFormInputContainer>
+    <EndFormContainer>
       {buttonForm}
-    </InputContainer>
+    </EndFormContainer> 
     </ConfigProvider>
   );
 };

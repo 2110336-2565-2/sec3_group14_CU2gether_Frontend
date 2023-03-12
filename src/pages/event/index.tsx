@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import { Cascader, Divider, Space, Typography } from "antd";
-import ContainedButton from "@/common/button";
+import { ContainedButton } from "@/common/button";
 import useEventStore from "@/hooks/useEventStore";
 
 type EventProps = {};
@@ -31,53 +31,81 @@ const Event: React.FC<EventProps> = () => {
 
   const mockEvents = [
     {
-      src: "",
-      alt: "event",
+      id: 1,
+      srcImg: "",
+      altImg: "event",
       date: dayjs("2021-01-01"),
       name: "event1",
       join: true,
+      ownerName: "owner name",
+      eventType: "Concert",
+      location: "402, Building 3, Faculty of Engineering",
     },
     {
-      src: "",
-      alt: "event",
+      id: 2,
+      srcImg: "",
+      altImg: "event",
       date: dayjs("2021-01-01"),
       name: "event1",
       join: true,
+      ownerName: "owner name",
+      eventType: "Concert",
+      location: "402, Building 3, Faculty of Engineering",
     },
     {
-      src: "",
-      alt: "event",
+      id: 3,
+      srcImg: "",
+      altImg: "event",
       date: dayjs("2021-01-01"),
       name: "event1",
       join: true,
+      ownerName: "owner name",
+      eventType: "Concert",
+      location: "402, Building 3, Faculty of Engineering",
     },
     {
-      src: "",
-      alt: "event",
+      id: 4,
+      srcImg: "",
+      altImg: "event",
       date: dayjs("2021-01-01"),
       name: "event1",
       join: true,
+      ownerName: "owner name",
+      eventType: "Concert",
+      location: "402, Building 3, Faculty of Engineering",
     },
     {
-      src: "",
-      alt: "event",
+      id: 5,
+      srcImg: "",
+      altImg: "event",
       date: dayjs("2021-01-01"),
       name: "event1",
       join: true,
+      ownerName: "owner name",
+      eventType: "Concert",
+      location: "402, Building 3, Faculty of Engineering",
     },
     {
-      src: "",
-      alt: "event",
+      id: 6,
+      srcImg: "",
+      altImg: "event",
       date: dayjs("2021-01-01"),
       name: "event1",
       join: true,
+      ownerName: "owner name",
+      eventType: "Concert",
+      location: "402, Building 3, Faculty of Engineering",
     },
     {
-      src: "",
-      alt: "event",
+      id: 7,
+      srcImg: "",
+      altImg: "event",
       date: dayjs("2021-01-01"),
       name: "event1",
       join: true,
+      ownerName: "owner name",
+      eventType: "Concert",
+      location: "402, Building 3, Faculty of Engineering",
     },
   ];
 

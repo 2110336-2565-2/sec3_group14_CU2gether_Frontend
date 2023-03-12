@@ -7,8 +7,13 @@ const TextBox = styled.div<{ width: number | string; fontSize: number }>`
   font-weight: bold;
   font-size: 0.9rem;
   word-wrap: break-word;
-  width: ${(props) => props.width}px;
+  width: ${(props) => props.width};
   margin-right: 10px;
+
+  ${theme.media.mobile} {
+    font-size: 0.7rem;
+    min-width: 100px;
+  }
 `;
 
 type FormInputProps = {
@@ -53,6 +58,7 @@ const FormInput: React.FC<FormInputProps> = ({
           <Form.Item
             style={{
               minWidth: 100,
+              maxWidth: 400,
               width: inputWidth,
               marginBottom: marginBottom,
             }}

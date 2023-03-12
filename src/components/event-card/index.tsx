@@ -5,7 +5,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { Space, Typography } from "antd";
 import { useModal } from "@/hooks";
 import CenteredModal from "@/common/modal";
-import ContainedButton, { OutlinedButton } from "@/common/button";
+import { ContainedButton, OutlinedButton } from "@/common/button";
 
 type EventCardProps = {
   event: {

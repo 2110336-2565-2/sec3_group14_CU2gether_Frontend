@@ -5,6 +5,7 @@ import theme from "@/utils/theme";
 
 const TextBox = styled.div<{ width: number }>`
   font-weight: bold;
+  font-size: 0.9rem;
   word-wrap: break-word;
   width: ${(props) => props.width}px;
   margin-right: 10px;
@@ -16,10 +17,8 @@ type FormInputProps = {
   isRequired?: boolean;
   textWidth?: number;
   inputWidth?: number;
-  marginTop?: number;
-  marginBottom?: number;
-  marginLeft?: number;
-  marginRight?: number;
+  isSubForm?: boolean;
+  errorMessage?: string;
   children: JSX.Element;
 };
 
@@ -29,20 +28,14 @@ const FormInput: React.FC<FormInputProps> = ({
   isRequired = false,
   textWidth = 200,
   inputWidth = 400,
-  marginTop = 0,
-  marginBottom = 20,
-  marginLeft = 0,
-  marginRight = 0,
+  isSubForm = true,
+  errorMessage = "Please enter information",
   children,
 }) => {
+  const marginBottom: number = isSubForm ? 24 : 0;
   return (
     <>
-      <Row
-        align="middle"
-        style={{
-          margin: `${marginTop}px ${marginRight}px ${marginBottom}px ${marginLeft}px`,
-        }}
-      >
+      <Row>
         <Col>
           <TextBox width={textWidth}>
             {title}{" "}
@@ -56,9 +49,9 @@ const FormInput: React.FC<FormInputProps> = ({
 
         <Col>
           <Form.Item
-            style={{ marginBottom: 0, width: inputWidth }}
+            style={{ width: inputWidth, marginBottom: marginBottom }}
             name={name}
-            rules={[{ required: isRequired }]}
+            rules={[{ required: isRequired, message: errorMessage }]}
           >
             {children}
           </Form.Item>

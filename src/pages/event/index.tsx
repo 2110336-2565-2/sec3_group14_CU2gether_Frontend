@@ -3,7 +3,8 @@ import EventCard from "@/components/event-card";
 import React from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
-import { Space, Typography } from "antd";
+import { Cascader, Divider, Space, Typography } from "antd";
+import ContainedButton from "@/common/button";
 
 type EventProps = {};
 
@@ -65,6 +66,54 @@ const Event: React.FC<EventProps> = () => {
     },
   ];
 
+  const options: any[] = [
+    {
+      label: "Light",
+      value: "light",
+      children: new Array(20)
+        .fill(null)
+        .map((_, index) => ({ label: `Number ${index}`, value: index })),
+    },
+    {
+      label: "Bamboo",
+      value: "bamboo",
+      children: [
+        {
+          label: "Little",
+          value: "little",
+          children: [
+            {
+              label: "Toy Fish",
+              value: "fish",
+            },
+            {
+              label: "Toy Cards",
+              value: "cards",
+            },
+            {
+              label: "Toy Bird",
+              value: "bird",
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  const onFilterChange = (value: any, selectedOptions: any) => {
+    console.log("tae", value, selectedOptions);
+  };
+
+  const dropdownRender = (menus: React.ReactNode) => (
+    <Space direction="vertical" style={{ padding: "8px" }}>
+      {menus}
+      <Divider style={{ margin: 0 }} />
+      <Space>
+        <ContainedButton text="Apply" />
+      </Space>
+    </Space>
+  );
+
   const renderEventCardList = () =>
     events.map((event, idx) => (
       <EventCard key={`event-${idx}`} event={event} />
@@ -74,13 +123,23 @@ const Event: React.FC<EventProps> = () => {
     <EventContainer direction="vertical">
       <HeaderContainer>
         <Title>Explore Events</Title>
-        <Space>
+        <Space.Compact block>
           <SearchInput
             placeholder={"Search event by name..."}
             onSearch={onSearch}
             onEnter={onEnter}
           />
-        </Space>
+          <Cascader
+            dropdownRender={dropdownRender}
+            multiple
+            onChange={onFilterChange}
+            options={options}
+            placeholder="Filter"
+            showSearch
+            maxTagCount="responsive"
+            style={{ width: "30%" }}
+          />
+        </Space.Compact>
       </HeaderContainer>
       <DetailContainer wrap>{renderEventCardList()}</DetailContainer>
     </EventContainer>

@@ -1,20 +1,35 @@
 import { SearchInput } from "@/common/input";
 import EventCard from "@/components/event-card";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import { Cascader, Divider, Space, Typography } from "antd";
 import ContainedButton from "@/common/button";
+import useEventStore from "@/hooks/useEventStore";
 
 type EventProps = {};
 
 const { Title } = Typography;
 
 const Event: React.FC<EventProps> = () => {
+  const { events, fetchEvents } = useEventStore();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        // await fetchEvents();
+      } catch (e) {}
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
   const onSearch = async (value: string) => {};
   const onEnter = (e: any) => {};
 
-  const events = [
+  const mockEvents = [
     {
       src: "",
       alt: "event",
@@ -115,9 +130,11 @@ const Event: React.FC<EventProps> = () => {
   );
 
   const renderEventCardList = () =>
-    events.map((event, idx) => (
+    mockEvents.map((event, idx) => (
       <EventCard key={`event-${idx}`} event={event} />
     ));
+
+  if (loading) return <></>;
 
   return (
     <EventContainer direction="vertical">

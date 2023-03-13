@@ -3,13 +3,15 @@ import styled from "styled-components";
 import { Modal, Upload, Form, Input, Select, Radio, DatePicker, TimePicker, Button, Layout, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
 import FormInput from "../basic-components/FormInput";
-import { getEventByName, updateEventDetail, cancelEvent } from "api";
+import { getEventByName, updateEventDetail, cancelEvent } from "api/event";
 import type { RcFile, UploadProps } from 'antd/es/upload';
 import type { UploadFile } from 'antd/es/upload/interface';
 import dayjs from 'dayjs';
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+
+import PictureForm from "./PictureForm";
 
 const FormInputContainer = styled(Layout)`
   display: flex;
@@ -27,6 +29,8 @@ const NonFormInputContainer = styled(Layout)`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  width: 100%;
+  height: 65%;
   background-color: ${theme.color.white};
 `;
 
@@ -42,8 +46,8 @@ const EndFormContainer = styled(Layout)`
 
 const FlexContainer = styled.div`
   display: flex;
-  width: 400px;
-  gap: 20px;
+  width: 100%;
+  gap: 2vw;
 `;
 
 const ButtonContainer = styled.div`
@@ -55,7 +59,7 @@ const ButtonContainer = styled.div`
 const NonFormButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 2vw;
   flex-direction: column;
 `
 
@@ -90,13 +94,6 @@ const CancelEventContent = styled.h2`
   flex-direction: column;
   align-items: center;
 `
-const getBase64 = (file: RcFile): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
-  });
 
 const typeList = [
   { value: "No Type", label: "No Type"},
@@ -121,19 +118,16 @@ const EditEvent: React.FC<{}> = ({}) => {
     tags: "Animal",
     requireParticipantsMin: 0,
     requireParticipantsMax: 127,
-    startDate: "2023-03-02",
-    endDate: "2023-03-03",
-    startTime: "16:00:00",
-    endTime: "22:00:00",
+    startDate: dayjs('13:30:56', 'HH:mm:ss'),
+    endDate: dayjs('13:30:56', 'HH:mm:ss'),
+    startTime: dayjs('13:30:56', 'HH:mm:ss'),
+    endTime: dayjs('13:30:56', 'HH:mm:ss'),
     meetingType: "onsite",
     location: "Somewhere On Earth",
     website: "www.exmaple.com",
   });
 
   const [onCancelEvent, setOnCancelEvent] = useState(false); 
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState('');
-  const [previewTitle, setPreviewTitle] = useState('');
   const [fileList, setFileList] = useState<UploadFile[]>([
     {
       uid: '0',
@@ -143,16 +137,6 @@ const EditEvent: React.FC<{}> = ({}) => {
     },
   ]);
 
-  const handleCancel = () => setPreviewOpen(false);
-  const handlePreview = async (file: UploadFile) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj as RcFile);
-    }
-
-    setPreviewImage(file.url || (file.preview as string));
-    setPreviewOpen(true);
-    setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
-  };
   const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>
   setFileList(newFileList);
 
@@ -194,6 +178,7 @@ const EditEvent: React.FC<{}> = ({}) => {
       "maximum": eventDetail.requireParticipantsMax,
       "start-date": dayjs(eventDetail.startDate),
       "end-date": dayjs(eventDetail.endDate),
+      "date": [dayjs(eventDetail.startDate), dayjs(eventDetail.endDate)],
       "start-time": dayjs(eventDetail.startTime),
       "end-time": dayjs(eventDetail.endTime),
       "meeting-type": eventDetail.meetingType,
@@ -212,6 +197,10 @@ const EditEvent: React.FC<{}> = ({}) => {
       eventDetail.tags, 
       eventDetail.requireParticipantsMin,
       eventDetail.requireParticipantsMax, 
+      eventDetail.startDate,
+      eventDetail.endDate, 
+      eventDetail.startTime,
+      eventDetail.endTime, 
       eventDetail.meetingType, 
       eventDetail.location, 
       eventDetail.website,
@@ -253,11 +242,11 @@ const EditEvent: React.FC<{}> = ({}) => {
   );
 
   const visibilityForm = (
-    <Radio.Group defaultValue={eventDetail.visibility} buttonStyle="solid">
-      <Radio.Button value="PUBLIC" style={{ width: 200, textAlign: "center" }}>
+    <Radio.Group defaultValue={eventDetail.visibility} buttonStyle="solid" style={{width: '100%'}}>
+      <Radio.Button value="PUBLIC" style={{ width: '50%', textAlign: "center" }}>
         Public
       </Radio.Button>
-      <Radio.Button value="PRIVATE" style={{ width: 200, textAlign: "center" }}>
+      <Radio.Button value="PRIVATE" style={{ width: '50%', textAlign: "center" }}>
         Private
       </Radio.Button>
     </Radio.Group>
@@ -275,47 +264,40 @@ const EditEvent: React.FC<{}> = ({}) => {
 
   const participantCountForm = (
     <FlexContainer>
-      <FormInput title="Min" name="minimum" textWidth={40} inputWidth={140} marginBottom={0}>
-        <Input placeholder="Min" style={{ width: 140}} defaultValue={eventDetail.requireParticipantsMin}/>
+      <FormInput title="Min" name="minimum" >
+        <Input placeholder="Min" style={{ width: '50%'}} defaultValue={eventDetail.requireParticipantsMin}/>
       </FormInput>
 
-      <FormInput title="Max" name="maximum" textWidth={40} inputWidth={140} marginBottom={0}>
-        <Input placeholder="Max" style={{ width: 140}} defaultValue={eventDetail.requireParticipantsMax}/>
+      <FormInput title="Max" name="maximum" >
+        <Input placeholder="Max" style={{ width: '50%'}} defaultValue={eventDetail.requireParticipantsMax}/>
       </FormInput>
     </FlexContainer>
   );
 
   const dateForm = (
     <FlexContainer>
-      <FormInput title="Start" name="start-date" textWidth={40} inputWidth={140} marginBottom={0}>
-        <DatePicker style={{ width: 140 }}/>
-      </FormInput>
-
-      <FormInput title="End" name="end-date" textWidth={40} inputWidth={140} marginBottom={0}>
-        <DatePicker style={{ width: 140 }}/>
-      </FormInput>
+      <DatePicker.RangePicker 
+      defaultValue={[eventDetail.startDate, eventDetail.endDate]}
+      style={{ height: '100%', width: '100%' }}/>
     </FlexContainer>
   );
 
   const timeForm = (
     <FlexContainer>
-      <FormInput title="Start" name="start-time" textWidth={40} inputWidth={140} marginBottom={0}>
-        <TimePicker style={{ width: 140 }}/>
-      </FormInput>
-
-      <FormInput title="End" name="end-time" textWidth={40} inputWidth={140} marginBottom={0}>
-        <TimePicker style={{ width: 140 }}/>
-      </FormInput>
+      <TimePicker.RangePicker 
+      defaultValue={[eventDetail.startTime, eventDetail.endTime]}
+      format="HH:mm"
+      style={{ height: '100%', width: '100%' }}/>
     </FlexContainer>
   );
 
   const meetingTypeForm = (
     <FlexContainer>
-      <Radio.Group defaultValue={eventDetail.meetingType} buttonStyle="solid">
-        <Radio.Button value="onsite" style={{ width: 200, textAlign: "center" }}>
+      <Radio.Group defaultValue={eventDetail.meetingType} buttonStyle="solid" style={{ width:'100%'}}>
+        <Radio.Button value="onsite" style={{ width: '50%', textAlign: "center" }}>
           Onsite
         </Radio.Button>
-        <Radio.Button value="online" style={{ width: 200, textAlign: "center" }}>
+        <Radio.Button value="online" style={{ width: '50%', textAlign: "center" }}>
           Online
         </Radio.Button>
       </Radio.Group>      
@@ -401,19 +383,12 @@ const EditEvent: React.FC<{}> = ({}) => {
   );
 
   const editImageForm = (
-    <Upload 
+    <Upload.Dragger 
     listType="picture-card"
     fileList={fileList}
-    onPreview={handlePreview}
     onChange={handleChange} 
-    style={{alignItems:'center',justifyContent:'center',width:350, height:500}}>
-    </Upload>  
-  );
-
-  const previewImageModal = (
-    <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
-      <img alt="example" style={{ width: '100%' }} src={previewImage} />
-    </Modal>
+    style={{alignItems:'center',justifyContent:'center'}}>
+    </Upload.Dragger>  
   );
 
   return (      
@@ -473,8 +448,8 @@ const EditEvent: React.FC<{}> = ({}) => {
       </Form>    
     </FormInputContainer>
     <NonFormInputContainer>
-      {editImageForm}
-      {previewImageModal}
+      {/* {editImageForm} */}
+      <PictureForm />
       {renderButtonForm} 
     </NonFormInputContainer>
     <EndFormContainer>

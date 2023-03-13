@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Radio, Button, ConfigProvider, Layout, Space } from "antd";
+import { Layout } from "antd";
 import theme from "@/utils/theme";
 import styled from 'styled-components';
 
@@ -26,9 +26,6 @@ const ContentContainer = styled(Content)`
   flex-direction: column;
   font-size: 20px;
   background-color: ${theme.color.white};
-  ${theme.media.mobile} {
-    font-size: 14px;
-  }
 `;
 
 const Header = styled.h1`

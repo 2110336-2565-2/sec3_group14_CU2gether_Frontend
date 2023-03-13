@@ -3,11 +3,9 @@ import { useRouter } from "next/router";
 import { Form, Input, Button, Layout, Space, ConfigProvider} from "antd";
 import theme from "@/utils/theme";
 import styled from 'styled-components';
-import { getEventByName, updateEventDescription } from "api";
-import FormInput from "@/components/basic-components/FormInput";
+import { getEventByName, updateEventDescription } from "api/event";
 
 const { TextArea } = Input;
-const { Content } = Layout;
 
 const TextAreaContainer = styled(Layout)`
     display: flex;

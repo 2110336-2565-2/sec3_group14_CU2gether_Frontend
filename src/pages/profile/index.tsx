@@ -6,7 +6,7 @@ import theme from '@/utils/theme';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
-import { getStudentById } from 'api';
+import { getStudentById } from 'api/student';
 
 const { Content } = Layout;
 

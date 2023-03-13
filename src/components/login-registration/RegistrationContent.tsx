@@ -7,7 +7,7 @@ import { Form, Input, Button } from "antd";
 import { ROLE } from "@/utils/Enum";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import theme from "@/utils/theme";
-import { registerStudent } from "api";
+import { registerStudent } from "api/student";
 import { MODE } from "./LoginAndRegistrationModal";
 
 const { TextArea } = Input;

@@ -9,7 +9,6 @@ const TextBox = styled.div<{ width: number | string; fontSize: number }>`
   word-wrap: break-word;
   width: ${(props) => props.width};
   margin-right: 10px;
-
   ${theme.media.mobile} {
     font-size: 0.7rem;
     min-width: 100px;
@@ -22,6 +21,9 @@ type FormInputProps = {
   isRequired?: boolean;
   textWidth?: number | string;
   inputWidth?: number;
+  isSubForm?: boolean;
+  errorMessage?: string;
+  fontSize?: number;
   children: JSX.Element;
 };
 
@@ -29,17 +31,20 @@ const FormInput: React.FC<FormInputProps> = ({
   title,
   name,
   isRequired = false,
-  textWidth = 200,
-  inputWidth = 500,
+  textWidth = "100%",
+  inputWidth = "100%",
+  isSubForm = true,
+  errorMessage = "Please enter information",
+  fontSize = 14,
   children,
 }) => {
-  console.log(textWidth, inputWidth);
+  const marginBottom: number = isSubForm ? 24 : 0;
   return (
-    <>
-      <Row align="middle">
-        <Col>
-          <TextBox width={textWidth}>
-            {text}{" "}
+    <div style={{ width: "100%" }}>
+      <Row>
+        <Col style={{ width: "24%" }}>
+          <TextBox width={textWidth} fontSize={fontSize}>
+            {title}{" "}
             {isRequired ? (
               <span style={{ color: theme.color.red }}>*</span>
             ) : (

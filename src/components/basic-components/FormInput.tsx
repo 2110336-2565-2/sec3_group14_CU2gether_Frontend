@@ -3,23 +3,25 @@ import { Row, Col, Form } from "antd";
 import styled from "styled-components";
 import theme from "@/utils/theme";
 
-const TextBox = styled.div<{ width: number }>`
+const TextBox = styled.div<{ width: number | string; fontSize: number }>`
   font-weight: bold;
+  font-size: 0.9rem;
   word-wrap: break-word;
-  width: ${(props) => props.width}px;
+  width: ${(props) => props.width};
   margin-right: 10px;
+
+  ${theme.media.mobile} {
+    font-size: 0.7rem;
+    min-width: 100px;
+  }
 `;
 
 type FormInputProps = {
   title: string;
   name: string;
   isRequired?: boolean;
-  textWidth?: number;
+  textWidth?: number | string;
   inputWidth?: number;
-  marginTop?: number;
-  marginBottom?: number;
-  marginLeft?: number;
-  marginRight?: number;
   children: JSX.Element;
 };
 
@@ -28,25 +30,16 @@ const FormInput: React.FC<FormInputProps> = ({
   name,
   isRequired = false,
   textWidth = 200,
-  inputWidth = 400,
-  marginTop = 0,
-  marginBottom = 20,
-  marginLeft = 0,
-  marginRight = 0,
+  inputWidth = 500,
   children,
 }) => {
-  // console.log(textWidth, inputWidth);
+  console.log(textWidth, inputWidth);
   return (
     <>
-      <Row
-        align="middle"
-        style={{
-          margin: `${marginTop}px ${marginRight}px ${marginBottom}px ${marginLeft}px`,
-        }}
-      >
+      <Row align="middle">
         <Col>
           <TextBox width={textWidth}>
-            {title}{" "}
+            {text}{" "}
             {isRequired ? (
               <span style={{ color: theme.color.red }}>*</span>
             ) : (
@@ -55,17 +48,22 @@ const FormInput: React.FC<FormInputProps> = ({
           </TextBox>
         </Col>
 
-        <Col>
+        <Col style={{ width: "76%" }}>
           <Form.Item
-            style={{ marginBottom: 0, width: inputWidth }}
+            style={{
+              minWidth: 100,
+              maxWidth: 400,
+              width: inputWidth,
+              marginBottom: marginBottom,
+            }}
             name={name}
-            rules={[{ required: isRequired }]}
+            rules={[{ required: isRequired, message: errorMessage }]}
           >
             {children}
           </Form.Item>
         </Col>
       </Row>
-    </>
+    </div>
   );
 };
 

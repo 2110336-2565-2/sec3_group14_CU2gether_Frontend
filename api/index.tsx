@@ -1,13 +1,9 @@
 import axios, { AxiosError } from "axios";
-import client from "@/utils/client";
 import { CU_API } from "@/utils/env";
 
 const registerStudentURL = CU_API + 'register/student';
 const registerOrganizerURL = CU_API + 'register/organizer';
 const loginURL = CU_API + 'auth/login';
-const loginStudentURL = CU_API + 'login/student';
-const updateStudentByIdURL = CU_API + 'student/' // + studentId
-const getStudentByIdURL = CU_API + 'student/' // + studentId
 
 export const registerStudent = (
     studentId: String,
@@ -67,34 +63,4 @@ export const login = (
         console.log(res);
     })
     .catch((err: AxiosError) => console.log(err));
-}
-
-export const updateStudentById = (
-    studentId: String,
-    email: String,
-    password: String,
-    firstName: String,
-    lastName: String,
-    image: String,
-    cardId: String,
-) => {
-    axios
-    .patch(updateStudentByIdURL+studentId, {
-        studentId,
-        email,
-        password,
-        firstName,
-        lastName,
-        image,
-        cardId,
-    })
-    .then((res) => {
-        console.log(res);
-    })
-    .catch((err: AxiosError) => console.log(err));
-}
-
-export const getStudentById = async (studentId: string) => {
-    const response = await axios.get(getStudentByIdURL+studentId);
-    return response.data;
 }

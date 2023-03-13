@@ -6,23 +6,19 @@ import { Space, Typography } from "antd";
 import { useModal } from "@/hooks";
 import CenteredModal from "@/common/modal";
 import { ContainedButton, OutlinedButton } from "@/common/button";
+import theme from "@/utils/theme";
+import { Event } from "@/types";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 type EventCardProps = {
-  event: {
-    id: number;
-    srcImg: string;
-    altImg: string;
-    date: Dayjs;
-    name: string;
-    join: boolean;
-  };
+  event: Event;
 };
 
 const { Title } = Typography;
 
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const { openModal, closeModal, isModalOpen } = useModal();
-  const { srcImg, altImg, date, name } = event;
+  const { srcImg, altImg, date, name, location } = event;
 
   const modalFooter = (
     <Space align="end">
@@ -34,11 +30,17 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   return (
     <>
       <EventContainer direction="vertical" onClick={openModal}>
-        <Image src={srcImg} alt={altImg} width={100} height={100} />
+        <ImageContainer>
+          <Image src={srcImg} alt={altImg} width={150} height={200} />
+        </ImageContainer>
         <Typography>{date.format("ddd, DD MMM YYYY")}</Typography>
         <Title level={3} style={{ margin: 0 }}>
           {name}
         </Title>
+        <LocationContainer>
+          <LocationOnIcon />
+          <Typography>{location}</Typography>
+        </LocationContainer>
       </EventContainer>
       <CenteredModal
         open={isModalOpen}
@@ -53,16 +55,21 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
 };
 
 const EventContainer = styled(Space)`
-  border: 1px solid;
-  border-radius: 8px;
-  width: 12.5vw;
-  min-width: 200px;
-  padding: 20px;
-  margin: 5px;
+  width: 22.5vw;
+  min-width: 150px;
+  padding: 2vw;
+  :hover {
+    background-color: ${theme.color.backgroundOnHover};
+  }
 `;
 
-const ModalFooterContainer = styled(Space)`
+const ImageContainer = styled(Space)`
   width: 100%;
+  justify-content: center;
+`;
+
+const LocationContainer = styled(Space)`
+  color: ${theme.color.secondary};
 `;
 
 export default EventCard;

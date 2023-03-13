@@ -1,4 +1,5 @@
 import client from "@/utils/client";
+import { Event } from "@/types";
 import { create } from "zustand";
 
 type EventStore = {
@@ -16,7 +17,7 @@ const useEventStore = create<EventStore>((set) => ({
   },
   fetchJoinEvents: (id: string) => {
     client
-      .get(`/events/joined/${id}`)
+      .get(`/events/join/${id}`)
       .then((res: any) => set({ joinedEvents: res.data }));
   },
 }));

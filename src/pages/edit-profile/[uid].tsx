@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { getStudentById, updateStudentById } from 'api';
-import { Input, Layout, Form, Button } from 'antd';
+import { getStudentById, updateStudentById } from 'api/student';
+import { Input, Layout, Form, Button, Skeleton } from 'antd';
 import styled from 'styled-components';
 import theme from '@/utils/theme';
 import FormInput from '@/components/basic-components/FormInput';
@@ -10,19 +10,21 @@ const EditProfileContainer = styled(Layout)`
     margin-left: auto;
     margin-right: auto;
     margin-top: 5%;
-    width: 800px;
+    max-width: 800px;
+    width: 100%;
     background-color: ${theme.color.white};
 `;
 
 const FormContainer = styled(Form)`
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 30px;
 `;
 
 const StyledInput = styled(Input)`
-  height: 45px;
-  font-size: 20px;
+  height: 40px;
+  font-size: 18px;
 
   ${theme.media.mobile} {
     height: 31px;
@@ -38,28 +40,31 @@ const OperationButtonContainer = styled.div`
 
 const OperationButton = styled(Button)`
   width: 180px;
-  height: 44px;
-  font-size: 20px;
+  height: 40px;
+  font-size: 18px;
 `;
 
-const profile = {
-    email: String,
-    studentId: String,
-    firstName: String,
-    lastName: String
+interface profile {
+    email: string,
+    studentId: string,
+    firstName: string,
+    lastName: string
 }
 
 const EditProfilePage: React.FC<{}> = ({}) => {
-    const [profile, setProfile] = useState({email: "John@Doe.com", studentId: "6330123456",firstName: "John", lastName: "Doe"});
+    const [profile, setProfile] = useState<profile>({email: "John@Doe.com", studentId: "6330123456",firstName: "John", lastName: "Doe"});
 
     const router = useRouter();
-    
+    const { uid } = router.query;
+
     useEffect(() => {
-      getStudentById('6330476521')
-      .then((data) => {
-        setProfile(data);
-      })
-      .catch((err) => console.log(err))
+      if(typeof uid !== 'undefined') {
+        getStudentById(uid.toString())
+        .then((data) => {
+          setProfile({email: data.email, studentId: data.studentId, firstName: data.firstName, lastName: data.lastName});
+        })
+        .catch((err) => console.log(err))
+      } 
     },[]);
 
     const onFinish = (values: any) => {
@@ -70,31 +75,31 @@ const EditProfilePage: React.FC<{}> = ({}) => {
     }
     
     const onCancle = () => {
-      router.push('/profile');
+      router.push(`/profile/${uid}`);
     }
 
     return (
       <EditProfileContainer>
         <FormContainer onFinish={onFinish}>
-          <FormInput text="Email" name="email">
+          <FormInput title="Email" name="email">
             <StyledInput disabled defaultValue={profile.email}></StyledInput>
           </FormInput>
-          <FormInput text="Student ID" name="studentID">
+          <FormInput title="Student ID" name="studentID">
             <StyledInput disabled defaultValue={profile.studentId}></StyledInput>
           </FormInput>
-          <FormInput text="Firstname" name="firstName">
+          <FormInput title="Firstname" name="firstName">
             <StyledInput placeholder="firstname" defaultValue={profile.firstName}></StyledInput>
           </FormInput>
-          <FormInput text="Lastname" name="lastName">
+          <FormInput title="Lastname" name="lastName">
             <StyledInput placeholder="lastname" defaultValue={profile.lastName}></StyledInput>
           </FormInput>
-          <FormInput text="Password" name="oldPassword">
+          <FormInput title="Password" name="oldPassword" isRequired={true}>
             <StyledInput placeholder="Old Password"></StyledInput>
           </FormInput>
-          <FormInput text="" name="newPassword">
+          <FormInput title="New Password" name="newPassword" isRequired={true}>
             <StyledInput placeholder="New Password"></StyledInput>
           </FormInput>
-          <FormInput text="" name="confirmPassword">
+          <FormInput title="Confirn Password" name="confirmPassword" isRequired={true}>
             <StyledInput placeholder="Confirm New Password"></StyledInput>
           </FormInput>
           <Form.Item>

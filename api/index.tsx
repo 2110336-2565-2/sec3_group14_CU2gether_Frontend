@@ -1,9 +1,10 @@
 import axios, { AxiosError } from "axios";
+import client from "@/utils/client";
 import { CU_API } from "@/utils/env";
 
 const registerStudentURL = CU_API + 'register/student';
 const registerOrganizerURL = CU_API + 'register/organizer';
-const loginURL = CU_API + 'login/login';
+const loginURL = CU_API + 'auth/login';
 const loginStudentURL = CU_API + 'login/student';
 const updateStudentByIdURL = CU_API + 'student/' // + studentId
 const getStudentByIdURL = CU_API + 'student/' // + studentId
@@ -58,7 +59,7 @@ export const login = (
     email: String,
     password: String,
 ) => {
-    axios.post(loginStudentURL, {
+    axios.post(loginURL, {
         email,
         password
     })
@@ -93,7 +94,7 @@ export const updateStudentById = (
     .catch((err: AxiosError) => console.log(err));
 }
 
-export const getStudentById = async (studentId: String) => {
+export const getStudentById = async (studentId: string) => {
     const response = await axios.get(getStudentByIdURL+studentId);
     return response.data;
 }

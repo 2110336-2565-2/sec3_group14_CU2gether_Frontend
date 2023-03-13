@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Avatar, Card, Image, Layout } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { Avatar, Card, Image, Layout, Typography } from 'antd';
 import styled from 'styled-components';
 import theme from '@/utils/theme';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
-import { getStudentById } from 'api';
+import { useRouter } from 'next/router';
+import { getStudentById } from 'api/student';
 
 const { Content } = Layout;
+const { Text } = Typography;
 
 const ProfileCard = styled(Card)`
     border-width: 1px;
@@ -18,29 +19,51 @@ const ProfileCard = styled(Card)`
 const ProfileContainer = styled(Layout)`
     margin-left: auto;
     margin-right: auto;
-    width: 800px;
+    max-width: 800px;
+    width: 80%;
     background-color: ${theme.color.white};
+    ${theme.media.mobile} {
+        width: 360px;
+    }
 `;
 
 const CoverImageCard = styled(ProfileCard)`
-    width: 800px;
     height: 200px;
     border-width: 0px;
     background-color: ${theme.color.cu_pink};
+
+    ${theme.media.mobile} {
+        margin-top: 21px;
+        width: 360px;
+        height: 90px;
+    }
 `;
 
 const ProfileInformationContainer = styled.div`
     display: flex;
-    height: 75px;
+    height: 84px;
+    ${theme.media.mobile} {
+        flex-direction: column;
+    }
 `;
 
 const ProfilePicture = styled(Avatar)`
     position: relative;
     background-color: ${theme.color.red};
     top: -75px;
-    left: 4vw;
+    left: 45px;
+    width: 150px;
+    height: 150px;
     border-width: 2px;
     border-color:  ${theme.color.white};
+
+    ${theme.media.mobile} {
+        top: -35px;
+        left: 140px;
+        margin-bottom: -40px;
+        width: 70px;
+        height: 70px;
+    }
 `;
 
 const InformationContainer = styled.div`
@@ -48,12 +71,21 @@ const InformationContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     gap: 5px;
-    margin-left: 8%;
+    margin-left: 60px;
+
+    ${theme.media.mobile} {
+        align-items: center;
+        margin-left: 0;
+    }
 `;
 
-const InformationTitle = styled.h1`
+const InformationTitle = styled(Text)`
     font-size: 24px;
     font-weight: bold;
+
+    ${theme.media.mobile} {
+        font-size: 20px;
+    }
 `;
 
 const RoleWrapper = styled.div`
@@ -74,20 +106,32 @@ const ContentContainer = styled(Content)`
     justify-content: space-between;
     gap: 40px;
     padding-top: 43px;
-    background-color: ${theme.color.white}
+    background-color: ${theme.color.white};
+
+    ${theme.media.tablet} {
+        flex-direction: column;
+        padding-top: 14px;
+        gap: 14px;
+    }
 `;
 
 const RecordCard = styled(ProfileCard)`
     width: 200px;
     height: 400px;
+    ${theme.media.tablet} {
+        width: 100%;
+        height: 110px;
+    }
 `;
 
 const AboutContainer = styled(Content)`
     padding-top: 40px;
+    ${theme.media.mobile} {
+        padding-top: 14px;
+    }
 `;
 
 const AboutCard = styled(ProfileCard)`
-    width: 800px;
     height: 158px;
 `;
 
@@ -97,7 +141,7 @@ const AboutContentContainer = styled.div`
     justify-content: center;
 `;
 
-const AboutSubTitle = styled.p`
+const AboutSubTitle = styled(Text)`
     font-size: 16px;
     color: ${theme.color_level.gray.low};
 `;
@@ -105,11 +149,19 @@ const AboutSubTitle = styled.p`
 const PreviousEventCard = styled(ProfileCard)`
     width: 560px;
     height: 400px;
+    ${theme.media.tablet} {
+        width: 100%;
+        height: 210px;
+    }
 `;
 
 const PreviousEventSubTital = styled(Link)`
     font-size: 20px;
     color: ${theme.color_level.gray.low};
+    
+    ${theme.media.mobile} {
+      font-size: 16px;
+    }
 `;
 
 const CardTitleContainer = styled.div`
@@ -117,25 +169,59 @@ const CardTitleContainer = styled.div`
     justify-content: space-between;
 `;
 
-const CardTitle = styled.h1`
+const CardTitle = styled(Text)`
     font-size: 24px;
     font-weight: 400;
+
+    ${theme.media.tablet} {
+      font-size: 20px;
+    }
+
+    ${theme.media.mobile} {
+        font-size: 16px;
+    }
 `;
 
-const profile = {
-    firstName: String,
-    lastName: String
+const StatisticContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    ${theme.media.tablet} {
+      height: 50px;
+    }
+`;
+
+const StatisticText = styled(Text)`
+    font-size: 20px;
+    ${theme.media.tablet} {
+      font-size: 16px;
+    }
+    ${theme.media.mobile} {
+        font-size: 14px;
+    }
+`;
+
+interface profile {
+    firstName: string,
+    lastName: string,
+    role: string,
 }
 
 const ProfilePage: React.FC<{}> = ({}) => {
-    const [profile, setProfile] = useState({firstName: "John", lastName: "Doe"});
+    const [ profile, setProfile ] = useState<profile>({firstName: "John", lastName: "Doe", role: "STUDENT"});
+
+    const router = useRouter();
+    const { uid } = router.query;
 
     useEffect(() => {
-        getStudentById('6330476521')
+      if(typeof uid !== 'undefined') {
+        getStudentById(uid.toString())
         .then((data) => {
-            setProfile(data);
+            setProfile({firstName: data.firstName, lastName: data.lastName, role: data.user.role});
         })
         .catch((err) => console.log(err))
+      }
     },[]);
 
     return (
@@ -143,12 +229,12 @@ const ProfilePage: React.FC<{}> = ({}) => {
       <Content>
         <CoverImageCard/>
         <ProfileInformationContainer>
-            <ProfilePicture size={150}/>
+            <ProfilePicture/>
             <InformationContainer>
                 <InformationTitle>{profile.firstName+' '+profile.lastName}</InformationTitle>
                 <RoleWrapper>
                     <FontAwesomeIcon icon={faUserGraduate}/>
-                    <RoleSubtitle>student</RoleSubtitle>
+                    <RoleSubtitle>{profile.role.toLowerCase()}</RoleSubtitle>
                 </RoleWrapper>
             </InformationContainer>
         </ProfileInformationContainer>
@@ -167,7 +253,13 @@ const ProfilePage: React.FC<{}> = ({}) => {
       <Layout>
         <ContentContainer>
             <RecordCard>
-                <CardTitle>Record</CardTitle>    
+                <CardTitle>Record</CardTitle>
+                <StatisticContainer>
+                    <StatisticText>Join : 0</StatisticText>
+                    <StatisticText>Unjoin : 0</StatisticText>    
+                    <StatisticText>Create: 0</StatisticText>
+                    <StatisticText>Cancle : 0</StatisticText>
+                </StatisticContainer>
             </RecordCard>
             <PreviousEventCard>
                 <CardTitleContainer>

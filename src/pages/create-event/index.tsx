@@ -14,6 +14,7 @@ const ContentContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 30px;
+  height: 75%;
 `;
 
 const ButtonContainer = styled.div`
@@ -27,45 +28,20 @@ const createEvent: React.FC<{}> = ({}) => {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const dateAndTimeChecker = () => {
-    const {
-      "start-time": timeStart,
-      "stop-time": timeStop,
-      "start-date": dateStart,
-      "stop-date": dateStop,
-    } = form.getFieldsValue([
-      "start-time",
-      "stop-time",
-      "start-date",
-      "stop-date",
-    ]);
-
-    const isTimeValid = timeStart <= timeStop ? true : false;
-    const isDateValid = dateStart <= dateStop ? true : false;
-
-    if (isTimeValid) {
-      form.setFieldValue("time", "valid");
-    } else {
-      form.setFieldValue("time", undefined);
-    }
-
-    if (isDateValid) {
-      form.setFieldValue("date", "valid");
-    } else {
-      form.setFieldValue("date", undefined);
-    }
-  };
-
   const goNextForm = () => {
     if (currentPageIndex === 0) {
-      dateAndTimeChecker();
+      const { minimum, maximum } = form.getFieldsValue(["minimum", "maximum"]);
+      if (maximum < minimum) {
+        form.setFieldValue("minimum", maximum);
+        form.setFieldValue("maximum", minimum);
+      }
     }
     form
       .validateFields()
       .then(() => {
         setCurrentPageIndex(currentPageIndex + 1);
       })
-      .catch((err) => console.log(err));
+      .catch();
   };
 
   const goPreviousForm = () => {
@@ -128,7 +104,7 @@ const createEvent: React.FC<{}> = ({}) => {
             { title: "Location" },
             { title: "Description" },
           ]}
-          style={{ width: 400 }}
+          style={{ minWidth: "400px", width: "30vw", height: "20%" }}
           labelPlacement="vertical"
         />
         {isSuccess ? (
@@ -137,10 +113,13 @@ const createEvent: React.FC<{}> = ({}) => {
           <Form
             onFinish={onFinish}
             style={{
-              height: 450,
-              justifyContent: "space-between",
+              minHeight: 450,
+              height: "80%",
+              width: "70%",
+              justifyContent: "flex-start",
               display: "flex",
               flexDirection: "column",
+              gap: 30,
             }}
             form={form}
           >

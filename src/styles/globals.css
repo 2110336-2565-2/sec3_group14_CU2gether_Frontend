@@ -115,3 +115,8 @@ a {
 .ant-upload .ant-upload-select {
   width: 200px;
 }
+
+.ant-upload-wrapper .ant-upload-drag {
+  min-height: 200px;
+  height: 50vh;
+}

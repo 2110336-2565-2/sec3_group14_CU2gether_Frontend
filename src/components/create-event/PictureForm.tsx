@@ -1,32 +1,46 @@
-import React, { useState } from "react";
-import { Upload, Form } from "antd";
+import React, { useEffect, useState } from "react";
+import { Upload, Form, Image } from "antd";
 import { PictureOutlined, LoadingOutlined } from "@ant-design/icons";
 import styled from "styled-components";
+import theme from "@/utils/theme";
 
 const PictureForm: React.FC<{}> = ({}) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
+  const [url, setUrl] = useState<string>("");
 
-  const uploadButton = (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <div>{isLoading ? <LoadingOutlined /> : <PictureOutlined />}</div>
-      <div>Upload Event Photo</div>
-    </div>
-  );
+  const ShowImage = () => {
+    return url ? (
+      <Image src={url} width="100%" preview={false} />
+    ) : (
+      <>
+        <PictureOutlined style={{ fontSize: "3em" }} />
+        <p>Upload Event Photo</p>
+      </>
+    );
+  };
 
   return (
-    <>
-      <Form.Item name="picture" rules={[{ required: true }]}>
-        <Upload listType="picture-card" style={{ height: 400 }}>
-          {uploadButton}
-        </Upload>
-      </Form.Item>
-    </>
+    <Form.Item
+      name="picture"
+      rules={[{ required: true, message: "Please insert picture" }]}
+      style={{ width: "30%", height: "100%" }}
+    >
+      <Upload.Dragger
+        maxCount={1}
+        beforeUpload={(file: File) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setUrl(reader.result as string);
+          };
+          reader.readAsDataURL(file);
+          return false;
+        }}
+        onRemove={() => {
+          setUrl("");
+        }}
+      >
+        <ShowImage />
+      </Upload.Dragger>
+    </Form.Item>
   );
 };
 

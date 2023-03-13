@@ -6,15 +6,18 @@ import PictureForm from "./PictureForm";
 
 const ContentContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  height: 400;
+  flex-direction: row;
+  justify-content: center;
+  height: 65%;
+  width: 100%;
+  gap: 30px;
 `;
 
 const BasicsContent: React.FC<{}> = ({}) => {
   return (
     <ContentContainer>
+      <PictureForm />
       <BasicsForm />
-      {/* <PictureForm /> */}
     </ContentContainer>
   );
 };

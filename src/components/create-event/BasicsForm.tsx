@@ -12,7 +12,7 @@ import {
 } from "antd";
 import theme from "@/utils/theme";
 
-import FormInput from "../basic-components/FormInput";
+import { FormInput } from "@/common/input";
 
 const FormContainer = styled.div`
   display: flex;

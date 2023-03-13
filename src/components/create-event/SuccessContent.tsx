@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "antd";
+import { Button, Typography } from "antd";
 import styled from "styled-components";
 
 const ContentContainer = styled.div`
@@ -7,7 +7,9 @@ const ContentContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  text-align: center;
+  width: 45%;
+  gap: 15px;
 `;
 
 const SuccessContent: React.FC<{}> = ({}) => {
@@ -17,9 +19,9 @@ const SuccessContent: React.FC<{}> = ({}) => {
   ];
   return (
     <ContentContainer>
-      <h1>Create Success!</h1>
-      <p>{successText[0]}</p>
-      <p>{successText[1]}</p>
+      <Typography.Title level={1} style={{marginBottom: 5}}>Create Success!</Typography.Title>
+      <Typography.Text>{successText[0]}</Typography.Text>
+      <Typography.Text>{successText[1]}</Typography.Text>
       <Button>Back to Home</Button>
     </ContentContainer>
   );

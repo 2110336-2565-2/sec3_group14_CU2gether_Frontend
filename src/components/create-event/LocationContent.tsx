@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Radio, Input } from "antd";
 import styled from "styled-components";
-import FormInput from "../basic-components/FormInput";
+import { FormInput } from "@/common/input";
 
 const ContentContainer = styled.div`
   display: flex;

@@ -20,7 +20,7 @@ const { Paragraph, Text } = Typography;
 
 const Navbar: React.FC<NavbarProps> = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
-  const menus = [
+  const navMenus = [
     { key: "1", label: "Home", href: "/" },
     { key: "2", label: "Explore", href: "/events" },
     { key: "3", label: "Create Event", href: "/create" },
@@ -97,7 +97,7 @@ const Navbar: React.FC<NavbarProps> = () => {
     ),
   ];
 
-  return isMobileScreen ? (
+  const renderMobileNav = () => (
     <Nav>
       <ShortNavContainer>
         <MenuIcon onClick={() => setIsDrawerOpen(true)} />
@@ -141,7 +141,7 @@ const Navbar: React.FC<NavbarProps> = () => {
         onClose={() => setIsDrawerOpen(false)}
         open={isDrawerOpen}
       >
-        {menus.map((menu, idx) => {
+        {navMenus.map((menu, idx) => {
           return (
             <Link href={menu.href}>
               <Paragraph key={idx}>{menu.label}</Paragraph>
@@ -150,7 +150,9 @@ const Navbar: React.FC<NavbarProps> = () => {
         })}
       </Drawer>
     </Nav>
-  ) : (
+  );
+
+  const renderPCNav = () => (
     <Nav>
       <FullNavContainer>
         <MenuContainer>
@@ -161,7 +163,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             height={64}
           />
           <Menu>
-            {menus.map((menu, idx) => (
+            {navMenus.map((menu, idx) => (
               <Link href={menu.href}>
                 <div
                   style={{
@@ -196,6 +198,8 @@ const Navbar: React.FC<NavbarProps> = () => {
       </FullNavContainer>
     </Nav>
   );
+
+  return isMobileScreen ? renderMobileNav() : renderPCNav();
 };
 
 const Nav = styled(Header)`

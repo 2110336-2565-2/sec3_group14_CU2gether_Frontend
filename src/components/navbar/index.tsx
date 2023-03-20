@@ -1,9 +1,9 @@
 import { ContainedButton, OutlinedButton } from "@/common/button";
 import theme from "@/utils/theme";
-import type { MenuProps } from "antd";
+import { Drawer, MenuProps } from "antd";
 import { Dropdown, Layout, Typography } from "antd";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import MenuIcon from "@mui/icons-material/Menu";
 import styled from "styled-components";
@@ -16,13 +16,15 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 type NavbarProps = {};
 
 const { Header } = Layout;
+const { Paragraph, Text } = Typography;
 
 const Navbar: React.FC<NavbarProps> = () => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const menus = [
     { key: "1", label: "Home", href: "/" },
     { key: "2", label: "Explore", href: "/events" },
-    { key: "3", label: "Create", href: "/create" },
-    { key: "4", label: "Join Events", href: "/events/joined" },
+    { key: "3", label: "Create Event", href: "/create" },
+    { key: "4", label: "Join Event", href: "/events/joined" },
     { key: "5", label: "My Events", href: "/events/" },
   ];
 
@@ -98,21 +100,55 @@ const Navbar: React.FC<NavbarProps> = () => {
   return isMobileScreen ? (
     <Nav>
       <ShortNavContainer>
-        <MenuIcon />
+        <MenuIcon onClick={() => setIsDrawerOpen(true)} />
         <Logo
           src={"./logo_black.svg"}
           alt={"CU2Gether Logo"}
           width={200}
           height={64}
         />
-        <ProfileImage
-          src={"./pattanan.svg"}
-          alt={"profile image"}
-          width={36}
-          height={36}
-          style={{ borderRadius: "50%" }}
-        />
+        {true ? (
+          <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
+            <ProfileImage
+              src={"./pattanan.svg"}
+              alt={"profile image"}
+              width={36}
+              height={36}
+              style={{ borderRadius: "50%" }}
+            />
+          </Dropdown>
+        ) : (
+          <ProfileImage
+            src={"./pattanan.svg"}
+            alt={"profile image"}
+            width={36}
+            height={36}
+            style={{ borderRadius: "50%" }}
+          />
+        )}
       </ShortNavContainer>
+      <Drawer
+        title={
+          <Logo
+            src={"./logo_black.svg"}
+            alt={"CU2Gether Logo"}
+            width={200}
+            height={48}
+          />
+        }
+        placement={"left"}
+        width={250}
+        onClose={() => setIsDrawerOpen(false)}
+        open={isDrawerOpen}
+      >
+        {menus.map((menu, idx) => {
+          return (
+            <Link href={menu.href}>
+              <Paragraph key={idx}>{menu.label}</Paragraph>
+            </Link>
+          );
+        })}
+      </Drawer>
     </Nav>
   ) : (
     <Nav>
@@ -141,18 +177,13 @@ const Navbar: React.FC<NavbarProps> = () => {
         {true ? (
           <ProfileContainer>
             <Name style={{ color: theme.color.primary }}>Hello, {name}</Name>
-            <Dropdown
-              menu={{ items: ProfileMenuItems }}
-              overlayStyle={{ fontSize: "18px !important" }}
-              trigger={["click"]}
-            >
+            <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
               <ProfileImage
                 src={"./pattanan.svg"}
                 alt={"profile image"}
                 width={36}
                 height={36}
                 style={{ borderRadius: "50%" }}
-                onClick={() => {}}
               />
             </Dropdown>
           </ProfileContainer>
@@ -212,7 +243,7 @@ const Menu = styled.div`
   gap: 2vw;
 `;
 
-const Name = styled(Typography.Text)`
+const Name = styled(Text)`
   font-size: 0.8rem;
   ${theme.media.tablet} {
     display: none;

@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import { useState, useEffect } from "react";
 
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { ConfigProvider, Layout } from "antd";
@@ -11,6 +12,8 @@ config.autoAddCss = false;
 
 const { Content, Footer } = Layout;
 export default function App({ Component, pageProps }: AppProps) {
+  useEffect(() => {}, []);
+
   return (
     <ConfigProvider
       theme={{

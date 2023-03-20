@@ -1,4 +1,3 @@
-import { useModal } from "@/hooks";
 import { Modal } from "antd";
 import React from "react";
 

@@ -17,6 +17,7 @@ type NavbarProps = {};
 
 const { Header } = Layout;
 const { Paragraph, Text } = Typography;
+type MenuItem = Required<MenuProps>["items"][number];
 
 const Navbar: React.FC<NavbarProps> = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
@@ -31,7 +32,6 @@ const Navbar: React.FC<NavbarProps> = () => {
   const name = "Chayakorn";
 
   const isMobileScreen = useMediaQuery({ query: "(max-width: 768px)" });
-  type MenuItem = Required<MenuProps>["items"][number];
 
   const getItem = (
     label: React.ReactNode,

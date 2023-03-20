@@ -245,9 +245,7 @@ const Event: React.FC<EventProps> = () => {
           />
         </Space.Compact>
       </HeaderContainer>
-      <DetailContainer size={0} wrap>
-        {renderEventCardList()}
-      </DetailContainer>
+      <DetailContainer>{renderEventCardList()}</DetailContainer>
     </EventContainer>
   );
 };
@@ -265,6 +263,10 @@ const HeaderContainer = styled.div`
 const DetailContainer = styled(Space)`
   height: 100%;
   width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 240px);
+  grid-gap: 1rem;
+  justify-content: space-around;
 `;
 
 export default Event;

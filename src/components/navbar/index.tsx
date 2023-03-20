@@ -29,63 +29,70 @@ const Navbar: React.FC<NavbarProps> = () => {
   const name = "Chayakorn";
 
   const isMobileScreen = useMediaQuery({ query: "(max-width: 768px)" });
+  type MenuItem = Required<MenuProps>["items"][number];
 
-  const ProfileMenuItems: MenuProps["items"] = [
-    {
-      key: "1",
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.antgroup.com"
-        >
-          My Profile
-        </a>
-      ),
-      itemIcon: <AccountCircleIcon />,
-    },
-    {
-      key: "2",
-      itemIcon: <ManageAccountsIcon />,
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.aliyun.com"
-        >
-          Manage Account
-        </a>
-      ),
-    },
-    {
-      key: "3",
-      itemIcon: <HelpIcon />,
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.luohanacademy.com"
-        >
-          Support
-        </a>
-      ),
-    },
+  const getItem = (
+    label: React.ReactNode,
+    key?: React.Key | null,
+    icon?: React.ReactNode,
+    children?: MenuItem[]
+  ): MenuItem => {
+    return {
+      key,
+      icon,
+      children,
+      label,
+    } as MenuItem;
+  };
+
+  const ProfileMenuItems: MenuItem[] = [
+    getItem(
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.antgroup.com"
+      >
+        My Profile
+      </a>,
+      "1",
+      <AccountCircleIcon fontSize="large" />
+    ),
+    getItem(
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.aliyun.com"
+      >
+        Manage Account
+      </a>,
+      "2",
+      <ManageAccountsIcon />
+    ),
+    getItem(
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.antgroup.com"
+      >
+        Support
+      </a>,
+      "3",
+      <HelpIcon />
+    ),
     {
       type: "divider",
     },
-    {
-      key: "4",
-      itemIcon: <LogoutIcon />,
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.luohanacademy.com"
-        >
-          Log Out
-        </a>
-      ),
-    },
+    getItem(
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.luohanacademy.com"
+      >
+        Log Out
+      </a>,
+      "4",
+      <LogoutIcon />
+    ),
   ];
 
   return isMobileScreen ? (
@@ -134,7 +141,11 @@ const Navbar: React.FC<NavbarProps> = () => {
         {true ? (
           <ProfileContainer>
             <Name style={{ color: theme.color.primary }}>Hello, {name}</Name>
-            <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
+            <Dropdown
+              menu={{ items: ProfileMenuItems }}
+              overlayStyle={{ fontSize: "18px !important" }}
+              trigger={["click"]}
+            >
               <ProfileImage
                 src={"./pattanan.svg"}
                 alt={"profile image"}

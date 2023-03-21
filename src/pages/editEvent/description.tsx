@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { Form, Input, Button, Layout, Space, ConfigProvider} from "antd";
 import theme from "@/utils/theme";
 import styled from 'styled-components';
-import { getEventByName, updateEventDescription } from "api/event";
+import { getEventByID, updateEventDescription } from "api/event";
 
 const { TextArea } = Input;
 
@@ -36,7 +36,7 @@ const ButtonConfig = styled(Button)`
 
 const Description: React.FC<{}> = ({}) => {
     const [descriptionDetail, setDescriptionDetail] = useState({
-        eventName: "Event Name",
+        id: "0",
         description: "Tell us something",
     });
 
@@ -44,10 +44,10 @@ const Description: React.FC<{}> = ({}) => {
     const router = useRouter();
 
     useEffect(() => {
-      getEventByName('orange2')
+      getEventByID("1")
       .then((data) => {
         const newDescription = {
-            eventName: data.eventName,
+            id: data.id,
             description: data.description,
         }
         setDescriptionDetail(newDescription);
@@ -59,16 +59,16 @@ const Description: React.FC<{}> = ({}) => {
 
     useEffect(() => {
         form.setFieldsValue({
-            "eventName": descriptionDetail.eventName,
+            "id": descriptionDetail.id,
             "description": descriptionDetail.description,
         })
     })
 
     const onDescriptionFinish = async (values: any) => {
         console.log(values);
-        const eventName = descriptionDetail.eventName;
+        const id = descriptionDetail.id;
         const { description } = values;
-        updateEventDescription(eventName, description);
+        updateEventDescription(id, description);
         router.push('/editEvent');
       }
 

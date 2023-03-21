@@ -1,18 +1,35 @@
 import axios, { AxiosError } from "axios";
 import { CU_API } from "@/config";
 import { Dayjs } from "dayjs"
+import client from "@/utils/client";
 
-const getEventByNameURL = CU_API + 'event/' // + eventName
-const updateEventDetailURL = CU_API + 'event/' 
-const updateEventDescriptionURL = CU_API + 'event/'
-const cancelEventURL = CU_API + 'event/'
+const eventUrl = CU_API + "events/" // + id
 
-export const getEventByName = async (eventName: string) => {
-    const response = await axios.get(getEventByNameURL+eventName);
+const getEventByIDURL = CU_API + 'events/' // + id
+const updateEventDetailURL = CU_API + 'events/' 
+const updateEventDescriptionURL = CU_API + 'events/'
+const cancelEventURL = CU_API + 'events/'
+
+export const getEventByID = async (id: String) => {
+    const response = await axios.get(getEventByIDURL+id);
     return response.data;
 }
 
+// const getEventByID = async (id: String) => {
+//     try {
+//         const event = await client.get(eventUrl);
+//         if (event.status === 200) {
+//             return event.data;
+//         } else {
+//             throw new Error("Error fetching events with status code: " + event.status);
+//         }
+//     } catch(err) {
+//         console.log(err)
+//     }
+// }
+
 export const updateEventDetail = (
+    id: String,
     eventName: String,
     eventType: String,
     visibility: String,
@@ -28,7 +45,8 @@ export const updateEventDetail = (
     website: String,
 ) => {
     axios
-    .patch(updateEventDetailURL+eventName, {
+    .patch(updateEventDetailURL+id, {
+        id,
         eventName,
         eventType,
         visibility,
@@ -50,12 +68,12 @@ export const updateEventDetail = (
 }
 
 export const updateEventDescription = (
-    eventName: String,
+    id: String,
     description: String,
 ) => {
     axios
-    .patch(updateEventDescriptionURL+eventName, {
-        eventName,
+    .patch(updateEventDescriptionURL+id, {
+        id,
         description,
     })
     .then((res) => {
@@ -65,10 +83,10 @@ export const updateEventDescription = (
 }
 
 export const cancelEvent = (
-    eventName: String,
+    id: String,
 ) => {
     axios
-    .delete(cancelEventURL+eventName, {
+    .delete(cancelEventURL+id, {
     })
     .then((res) => {
         console.log(res);
@@ -77,7 +95,7 @@ export const cancelEvent = (
 }
 
 const event = {
-    getEventByName,
+    getEventByID,
     updateEventDetail,
     updateEventDescription,
     cancelEvent,

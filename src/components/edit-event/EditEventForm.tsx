@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Typography, Modal, Upload, Form, Input, Select, Radio, DatePicker, TimePicker, Button, Layout, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
 import { FormInput } from "@/common/input";
-import { getEventByName, updateEventDetail, cancelEvent } from "api/event";
+import { getEventByID, updateEventDetail, cancelEvent } from "api/event";
 import type { UploadProps } from 'antd/es/upload';
 import type { UploadFile } from 'antd/es/upload/interface';
 import dayjs from 'dayjs';
@@ -122,6 +122,7 @@ const tagList = [
 
 const EditEvent: React.FC<{}> = ({}) => {
   const [eventDetail, setEventDetail] = useState({
+    id: "0",
     eventName: "No Event Name",
     eventType: "No Type",
     visibility: "public",
@@ -156,9 +157,10 @@ const EditEvent: React.FC<{}> = ({}) => {
   const { ename } = router.query;
   
   useEffect(() => {
-    getEventByName('orange2')
+    getEventByID("1")
     .then((data) => {
       const newEvent = {
+        id: data.id,
         eventName: data.eventName,
         eventType: data.eventType,
         visibility: data.visibility,
@@ -202,26 +204,9 @@ const EditEvent: React.FC<{}> = ({}) => {
     })
   })
 
-  const handleSubmitClick = () => {
-    updateEventDetail(
-      eventDetail.eventName, 
-      eventDetail.eventType, 
-      eventDetail.visibility, 
-      eventDetail.tags, 
-      eventDetail.requireParticipantsMin,
-      eventDetail.requireParticipantsMax, 
-      eventDetail.startDate,
-      eventDetail.endDate, 
-      eventDetail.startTime,
-      eventDetail.endTime, 
-      eventDetail.meetingType, 
-      eventDetail.location, 
-      eventDetail.website,
-      );
-  }
-
-  const onFormFinish = (values: any) => {
+  const onFormFinish = async (values: any) => {
     console.log(values);
+    const id = eventDetail.id;
     const {      
       eventName, 
       eventType, 
@@ -234,6 +219,7 @@ const EditEvent: React.FC<{}> = ({}) => {
       location, 
       website,} = values;
     updateEventDetail(
+      id,
       eventName, 
       eventType, 
       visibility, 
@@ -263,7 +249,7 @@ const EditEvent: React.FC<{}> = ({}) => {
   };
 
   const handleCancelEventSureClick = () => {
-    cancelEvent(eventDetail.eventName);
+    cancelEvent(eventDetail.id);
   }
 
   const handleCancelEventCancelClick = () => {

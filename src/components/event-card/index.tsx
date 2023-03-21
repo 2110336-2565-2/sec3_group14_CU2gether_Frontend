@@ -10,7 +10,6 @@ type EventCardProps = {
 };
 
 const { Title } = Typography;
-const { Header, Footer, Sider, Content } = Layout;
 
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const { pictures, startDate, endDate, eventName, location } = event;

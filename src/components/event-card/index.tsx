@@ -24,11 +24,11 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
           {name}
         </Title>
         <Space>
-          <CalendarMonthIcon />
+          <CalendarMonthIcon fontSize="small" />
           <Typography>{date.format("ddd, DD MMM YYYY")}</Typography>
         </Space>
         <Space>
-          <LocationOnIcon />
+          <LocationOnIcon fontSize="small" />
           <Typography>{location}</Typography>
         </Space>
       </Card>

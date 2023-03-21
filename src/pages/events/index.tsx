@@ -2,30 +2,32 @@ import { SearchInput } from "@/common/input";
 import EventCard from "@/components/event-card";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import dayjs from "dayjs";
 import {
   Card,
-  Cascader,
+  DatePicker,
   Divider,
   Empty,
+  Radio,
   Skeleton,
   Space,
+  TimePicker,
   Typography,
 } from "antd";
 import { ContainedButton } from "@/common/button";
 import useEventStore from "@/hooks/useEventStore";
 import { Event } from "@/types";
+import { DropdownButton } from "@/common/dropdown";
 
 type EventProps = {};
 
 const { Title } = Typography;
 const { Meta } = Card;
 const { Image } = Skeleton;
+const { Group, Button } = Radio;
 
 const Event: React.FC<EventProps> = () => {
   const { events, fetchEvents } = useEventStore();
   const [loading, setLoading] = useState<boolean>(false);
-
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -44,53 +46,9 @@ const Event: React.FC<EventProps> = () => {
     fetchEvents({ searchKey: e.target.value });
   };
 
-  const options: any[] = [
-    {
-      label: "Light",
-      value: "light",
-      children: new Array(20)
-        .fill(null)
-        .map((_, index) => ({ label: `Number ${index}`, value: index })),
-    },
-    {
-      label: "Bamboo",
-      value: "bamboo",
-      children: [
-        {
-          label: "Little",
-          value: "little",
-          children: [
-            {
-              label: "Toy Fish",
-              value: "fish",
-            },
-            {
-              label: "Toy Cards",
-              value: "cards",
-            },
-            {
-              label: "Toy Bird",
-              value: "bird",
-            },
-          ],
-        },
-      ],
-    },
-  ];
-
   const onFilterChange = (value: any, selectedOptions: any) => {
     console.log("tae", value, selectedOptions);
   };
-
-  const dropdownRender = (menus: React.ReactNode) => (
-    <Space direction="vertical" style={{ padding: "8px" }}>
-      {menus}
-      <Divider style={{ margin: 0 }} />
-      <Space>
-        <ContainedButton text="Apply" />
-      </Space>
-    </Space>
-  );
 
   const renderEventCardList = () =>
     events.map((event: Event, idx: number) => (
@@ -125,25 +83,47 @@ const Event: React.FC<EventProps> = () => {
     <EventContainer>
       <HeaderContainer>
         <Title>Explore Events</Title>
-        <Space.Compact block>
+        <SearchFilterContainer>
           <SearchInput
             placeholder={"Search event by name..."}
             onSearch={onSearch}
             onEnter={onEnter}
+            style={{ width: "70%" }}
           />
-          <Cascader
-            dropdownRender={dropdownRender}
-            multiple
-            onChange={onFilterChange}
-            options={options}
-            placeholder="Filter"
-            showSearch
-            maxTagCount="responsive"
-            style={{ width: "30%" }}
+          <DropdownButton
+            text="Filter"
+            width="30%"
+            DropdownComponent={
+              <DropdownContainer>
+                <Row>
+                  <SearchInput
+                    placeholder={"Location"}
+                    style={{ width: "40%" }}
+                  />
+                  <DropdownButton
+                    text="Type"
+                    width="fit-content"
+                    DropdownComponent={<></>}
+                  />
+                  <Group>
+                    <Button value="ONSITE">Onsite</Button>
+                    <Button value="ONLINE">Online</Button>
+                  </Group>
+                </Row>
+                <Row>
+                  <DatePicker.RangePicker format="YYYY-MM-DD" />
+                  <TimePicker.RangePicker format="HH:mm" />
+                </Row>
+                <Divider style={{ margin: 0 }} />
+                <Row>
+                  <ContainedButton text="Apply" onClick={onFilterChange} />
+                </Row>
+              </DropdownContainer>
+            }
           />
-        </Space.Compact>
+        </SearchFilterContainer>
       </HeaderContainer>
-      {events ? (
+      {events && events.length > 0 ? (
         <DetailContainer>{renderEventCardList()}</DetailContainer>
       ) : (
         <EmptyWrapper>
@@ -177,6 +157,28 @@ const DetailContainer = styled(Space)`
 
 const EmptyWrapper = styled.div`
   height: 100%;
+`;
+
+const SearchFilterContainer = styled.div`
+  display: flex;
+  flex-flow: row;
+  gap: 5vw;
+  align-items: center;
+`;
+
+const DropdownContainer = styled.div`
+  display: flex;
+  flex-flow: column;
+  padding: 8px;
+  gap: 5px;
+  background-color: white;
+`;
+
+const Row = styled.div`
+  display: flex;
+  flex-flow: row;
+  gap: 5px;
+  justify-content: space-between;
 `;
 
 export default Event;

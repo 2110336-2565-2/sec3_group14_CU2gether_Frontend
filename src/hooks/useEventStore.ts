@@ -1,5 +1,7 @@
 import client from "@/utils/client";
+import { Event } from "@/types";
 import { create } from "zustand";
+import events from "api/events";
 
 type EventStore = {
   events: Event[];
@@ -12,11 +14,11 @@ const useEventStore = create<EventStore>((set) => ({
   events: [],
   joinedEvents: [],
   fetchEvents: () => {
-    client.get("/events").then((res: any) => set({ events: res.data }));
+    events.getEvents().then((res: any) => set({ events: res }));
   },
   fetchJoinEvents: (id: string) => {
     client
-      .get(`/events/joined/${id}`)
+      .get(`/events/join/${id}`)
       .then((res: any) => set({ joinedEvents: res.data }));
   },
 }));

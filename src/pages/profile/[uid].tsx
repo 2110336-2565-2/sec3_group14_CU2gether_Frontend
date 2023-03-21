@@ -210,19 +210,22 @@ interface profile {
 
 const ProfilePage: React.FC<{}> = ({}) => {
     const [ profile, setProfile ] = useState<profile>({firstName: "John", lastName: "Doe", role: "STUDENT"});
+    const [ isLoading, setLoading ] = useState<boolean>(false)
 
     const router = useRouter();
     const { uid } = router.query;
 
     useEffect(() => {
-      if(typeof uid !== 'undefined') {
+      setLoading(true);
+      if(uid) {
         getStudentById(uid.toString())
         .then((data) => {
             setProfile({firstName: data.firstName, lastName: data.lastName, role: data.user.role});
+            setLoading(false);
         })
         .catch((err) => console.log(err))
       }
-    },[]);
+    },[uid]);
 
     return (
     <ProfileContainer>

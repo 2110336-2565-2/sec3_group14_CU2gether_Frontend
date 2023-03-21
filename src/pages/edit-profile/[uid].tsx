@@ -1,25 +1,50 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { getStudentById, updateStudentById } from 'api/student';
-import { Input, Layout, Form, Button, Skeleton } from 'antd';
+import { Input, Layout, Form, Button, Skeleton, Typography } from 'antd';
 import styled from 'styled-components';
 import theme from '@/utils/theme';
 import FormInput from '@/components/basic-components/FormInput';
 
+const { Text } = Typography;
+
 const EditProfileContainer = styled(Layout)`
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 5%;
-    max-width: 800px;
-    width: 100%;
-    background-color: ${theme.color.white};
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5%;
+  max-width: 800px;
+  width: 100%;
+  background-color: ${theme.color.white};
+`;
+
+const ManageAccountTitleWrapper = styled.div`
+  margin-left: -40vw;
+  margin-bottom: 30px;
+`;
+
+const ManageAccountTitle = styled(Text)`
+  font-size: 36px;
+  font-weight: bold;
+
+  ${theme.media.mobile} {
+    font-size: 24px;
+  }
 `;
 
 const FormContainer = styled(Form)`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 650px;
   gap: 30px;
+
+  ${theme.media.mobile} {
+    width: 309px;
+    font-size: 14px;
+    gap: 10px;
+  }
 `;
 
 const StyledInput = styled(Input)`
@@ -27,6 +52,7 @@ const StyledInput = styled(Input)`
   font-size: 18px;
 
   ${theme.media.mobile} {
+    width: 205px;
     height: 31px;
     font-size: 14px;
   }
@@ -42,6 +68,12 @@ const OperationButton = styled(Button)`
   width: 180px;
   height: 40px;
   font-size: 18px;
+
+  ${theme.media.mobile} {
+    height: 31px;
+    width: 120px;
+    font-size: 14px;
+  }
 `;
 
 interface profile {
@@ -53,19 +85,22 @@ interface profile {
 
 const EditProfilePage: React.FC<{}> = ({}) => {
     const [profile, setProfile] = useState<profile>({email: "John@Doe.com", studentId: "6330123456",firstName: "John", lastName: "Doe"});
+    const [isLoading, setLoading] = useState<boolean>(false);
 
     const router = useRouter();
     const { uid } = router.query;
 
     useEffect(() => {
-      if(typeof uid !== 'undefined') {
+      setLoading(true);
+      if(uid) {
         getStudentById(uid.toString())
         .then((data) => {
           setProfile({email: data.email, studentId: data.studentId, firstName: data.firstName, lastName: data.lastName});
+          setLoading(false);
         })
         .catch((err) => console.log(err))
       } 
-    },[]);
+    },[uid]);
 
     const onFinish = (values: any) => {
       const {email, newPassword, studentId, firstname, lastname} = values;
@@ -78,8 +113,13 @@ const EditProfilePage: React.FC<{}> = ({}) => {
       router.push(`/profile/${uid}`);
     }
 
+    if(isLoading) return <Skeleton></Skeleton>
+
     return (
       <EditProfileContainer>
+        <ManageAccountTitleWrapper>
+          <ManageAccountTitle>Manage Account</ManageAccountTitle>
+        </ManageAccountTitleWrapper>
         <FormContainer onFinish={onFinish}>
           <FormInput title="Email" name="email">
             <StyledInput disabled defaultValue={profile.email}></StyledInput>
@@ -96,10 +136,10 @@ const EditProfilePage: React.FC<{}> = ({}) => {
           <FormInput title="Password" name="oldPassword" isRequired={true}>
             <StyledInput placeholder="Old Password"></StyledInput>
           </FormInput>
-          <FormInput title="New Password" name="newPassword" isRequired={true}>
+          <FormInput title="" name="newPassword" >
             <StyledInput placeholder="New Password"></StyledInput>
           </FormInput>
-          <FormInput title="Confirn Password" name="confirmPassword" isRequired={true}>
+          <FormInput title="" name="confirmPassword">
             <StyledInput placeholder="Confirm New Password"></StyledInput>
           </FormInput>
           <Form.Item>

@@ -17,6 +17,7 @@ import { ContainedButton } from "@/common/button";
 import useEventStore from "@/hooks/useEventStore";
 import { Event } from "@/types";
 import { DropdownButton } from "@/common/dropdown";
+import { useMediaQuery } from "react-responsive";
 
 type EventProps = {};
 
@@ -28,6 +29,12 @@ const { Group, Button } = Radio;
 const Event: React.FC<EventProps> = () => {
   const { events, fetchEvents } = useEventStore();
   const [loading, setLoading] = useState<boolean>(false);
+  const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
+  const mobile = useMediaQuery({ query: "(max-width: 768px)" });
+
+  useEffect(() => {
+    setIsMobileScreen(mobile);
+  }, [mobile]);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -54,6 +61,64 @@ const Event: React.FC<EventProps> = () => {
     events.map((event: Event, idx: number) => (
       <EventCard key={`event-${idx}`} event={event} />
     ));
+
+  const renderDropdownContent = () => {
+    if (isMobileScreen) {
+      return (
+        <DropdownContainer>
+          <Row>
+            <SearchInput placeholder={"Location"} style={{ width: "60%" }} />
+            <DropdownButton
+              text="Type"
+              width="fit-content"
+              dropdownComponent={<></>}
+            />
+          </Row>
+          <Row>
+            <Group>
+              <Button value="ONSITE">Onsite</Button>
+              <Button value="ONLINE">Online</Button>
+            </Group>
+          </Row>
+          <Row>
+            <DatePicker.RangePicker format="YYYY-MM-DD" />
+          </Row>
+          <Row>
+            <TimePicker.RangePicker format="HH:mm" />
+          </Row>
+          <Divider style={{ margin: 0 }} />
+          <Row>
+            <ContainedButton text="Apply" onClick={onFilterChange} />
+          </Row>
+        </DropdownContainer>
+      );
+    } else {
+      return (
+        <DropdownContainer>
+          <Row>
+            <SearchInput placeholder={"Location"} style={{ width: "40%" }} />
+            <DropdownButton
+              text="Type"
+              width="fit-content"
+              dropdownComponent={<></>}
+            />
+            <Group>
+              <Button value="ONSITE">Onsite</Button>
+              <Button value="ONLINE">Online</Button>
+            </Group>
+          </Row>
+          <Row>
+            <DatePicker.RangePicker format="YYYY-MM-DD" />
+            <TimePicker.RangePicker format="HH:mm" />
+          </Row>
+          <Divider style={{ margin: 0 }} />
+          <RightAlignedRow>
+            <ContainedButton text="Apply" onClick={onFilterChange} />
+          </RightAlignedRow>
+        </DropdownContainer>
+      );
+    }
+  };
 
   if (loading)
     return (
@@ -86,40 +151,13 @@ const Event: React.FC<EventProps> = () => {
         <SearchFilterContainer>
           <SearchInput
             placeholder={"Search event by name..."}
-            onSearch={onSearch}
             onEnter={onEnter}
             style={{ width: "70%" }}
           />
           <DropdownButton
             text="Filter"
             width="30%"
-            DropdownComponent={
-              <DropdownContainer>
-                <Row>
-                  <SearchInput
-                    placeholder={"Location"}
-                    style={{ width: "40%" }}
-                  />
-                  <DropdownButton
-                    text="Type"
-                    width="fit-content"
-                    DropdownComponent={<></>}
-                  />
-                  <Group>
-                    <Button value="ONSITE">Onsite</Button>
-                    <Button value="ONLINE">Online</Button>
-                  </Group>
-                </Row>
-                <Row>
-                  <DatePicker.RangePicker format="YYYY-MM-DD" />
-                  <TimePicker.RangePicker format="HH:mm" />
-                </Row>
-                <Divider style={{ margin: 0 }} />
-                <Row>
-                  <ContainedButton text="Apply" onClick={onFilterChange} />
-                </Row>
-              </DropdownContainer>
-            }
+            dropdownComponent={renderDropdownContent()}
           />
         </SearchFilterContainer>
       </HeaderContainer>
@@ -179,6 +217,20 @@ const Row = styled.div`
   flex-flow: row;
   gap: 5px;
   justify-content: space-between;
+`;
+
+const CenteredRow = styled.div`
+  display: flex;
+  flex-flow: row;
+  gap: 5px;
+  justify-content: space-around;
+`;
+
+const RightAlignedRow = styled.div`
+  display: flex;
+  flex-flow: row;
+  gap: 5px;
+  justify-content: flex-end;
 `;
 
 export default Event;

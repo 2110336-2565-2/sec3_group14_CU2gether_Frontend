@@ -6,16 +6,16 @@ import styled from "styled-components";
 type DropdownButtonProps = {
   text: string;
   width: string | number;
-  DropdownComponent: React.ReactNode;
+  dropdownComponent: React.ReactNode;
 };
 
 const DropdownButton: React.FC<DropdownButtonProps> = ({
   text,
   width,
-  DropdownComponent,
+  dropdownComponent,
 }) => {
   return (
-    <Dropdown dropdownRender={() => DropdownComponent}>
+    <Dropdown dropdownRender={() => dropdownComponent}>
       <Button style={{ width: width }}>
         <TextWithIcon>
           <>

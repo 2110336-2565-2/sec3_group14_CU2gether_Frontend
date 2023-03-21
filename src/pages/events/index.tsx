@@ -46,9 +46,6 @@ const Event: React.FC<EventProps> = () => {
     fetchData();
   }, []);
 
-  const onSearch = async (value: string) => {
-    fetchEvents({ searchKey: value });
-  };
   const onEnter = (e: any) => {
     fetchEvents({ searchKey: e.target.value });
   };

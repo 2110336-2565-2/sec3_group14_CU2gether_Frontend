@@ -120,3 +120,14 @@ a {
 .ant-dropdown-menu-item-icon {
   font-size: 18px !important;
 }
+
+.ant-upload-wrapper .ant-upload-drag {
+  min-height: 200px;
+  height: 40vh;
+}
+
+@media screen and (max-width: 425px) {
+  .ant-upload-wrapper .ant-upload-drag {
+    width: 100%;
+  }
+}

@@ -2,7 +2,8 @@ import React, { useState, useEffect, Children } from "react";
 import styled from "styled-components";
 import { Modal, Upload, Form, Input, Select, Radio, DatePicker, TimePicker, Button, Layout, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
-import FormInput from "../basic-components/FormInput";
+import { FormInput } from "@/common/input";
+import CenteredModal from "@/common/modal";
 import { getEventByName, updateEventDetail, cancelEvent } from "api/event";
 import type { RcFile, UploadProps } from 'antd/es/upload';
 import type { UploadFile } from 'antd/es/upload/interface';
@@ -10,15 +11,28 @@ import dayjs from 'dayjs';
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+
+// dayjs.extend(customParseFormat)
 
 import PictureForm from "./PictureForm";
+
+const LayoutContainer = styled(Layout)`
+  justify-content: center;
+  flex-direction: row;
+  width: 100%;
+  background-color: ${theme.color.white};
+  ${theme.media.tablet} {
+    flex-direction: column-reverse;
+  }
+`
 
 const FormInputContainer = styled(Layout)`
   display: flex;
   margin-left: auto;
   margin-right: auto;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
   background-color: ${theme.color.white};
 `;
 
@@ -29,8 +43,8 @@ const NonFormInputContainer = styled(Layout)`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 100%;
-  height: 65%;
+  width: 50%;
+  height: 50%;
   background-color: ${theme.color.white};
 `;
 
@@ -127,7 +141,8 @@ const EditEvent: React.FC<{}> = ({}) => {
     website: "www.exmaple.com",
   });
 
-  const [onCancelEvent, setOnCancelEvent] = useState(false); 
+  const [onCancelEvent, setOnCancelEvent] = useState<boolean>(false); 
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const [fileList, setFileList] = useState<UploadFile[]>([
     {
       uid: '0',
@@ -141,6 +156,8 @@ const EditEvent: React.FC<{}> = ({}) => {
   setFileList(newFileList);
 
   const [form] = Form.useForm();
+  const router = useRouter();
+  const { ename } = router.query;
 
   useEffect(() => {
     getEventByName('orange')
@@ -187,8 +204,6 @@ const EditEvent: React.FC<{}> = ({}) => {
     })
   })
 
-  const router = useRouter();
-
   const handleSaveClick = () => {
     updateEventDetail(
       eventDetail.eventName, 
@@ -213,6 +228,10 @@ const EditEvent: React.FC<{}> = ({}) => {
 
   const handleEditDescriptionClick = () => {
     router.push('/editEvent/description',undefined,{shallow:true});
+  }
+
+  const toggleOpenModal = () => {
+    setOpenModal(openModal);
   }
 
   const toggleCancelEventModal = () => {
@@ -277,7 +296,7 @@ const EditEvent: React.FC<{}> = ({}) => {
   const dateForm = (
     <FlexContainer>
       <DatePicker.RangePicker 
-      defaultValue={[eventDetail.startDate, eventDetail.endDate]}
+      defaultValue={[dayjs(eventDetail.startDate), dayjs(eventDetail.endDate)]}
       style={{ height: '100%', width: '100%' }}/>
     </FlexContainer>
   );
@@ -285,7 +304,7 @@ const EditEvent: React.FC<{}> = ({}) => {
   const timeForm = (
     <FlexContainer>
       <TimePicker.RangePicker 
-      defaultValue={[eventDetail.startTime, eventDetail.endTime]}
+      defaultValue={[dayjs(eventDetail.startTime), dayjs(eventDetail.endTime)]}
       format="HH:mm"
       style={{ height: '100%', width: '100%' }}/>
     </FlexContainer>
@@ -323,6 +342,7 @@ const EditEvent: React.FC<{}> = ({}) => {
     </ButtonContainer>
   );
 
+
   const title = (
     <CancelEventTitle>
       Want to cancel event?
@@ -333,6 +353,7 @@ const EditEvent: React.FC<{}> = ({}) => {
     <CancelEventContent>
       If you cancel this event, I will kill you!!!
     </CancelEventContent>
+
   );
 
   const renderButtonForm = (
@@ -347,12 +368,17 @@ const EditEvent: React.FC<{}> = ({}) => {
       onClick={toggleCancelEventModal}>
         Cancel Event
       </ButtonConfig>
+      {/* <CenteredModal
+        children={title}
+        title="Want to cancle event?"
+        onClose={toggleCancelEventModal}
+      /> */}
       <Modal
       open={onCancelEvent}
-      width={600}
+      width={'50vw'}
       centered={true}
       closable={true}
-      bodyStyle={{minHeight:500, marginTop: 40}}
+      bodyStyle={{minHeight:'50%', marginTop: '40', fontSize:'0.9rem'}}
       closeIcon={
         <FontAwesomeIcon
           onClick={toggleCancelEventModal}
@@ -404,54 +430,55 @@ const EditEvent: React.FC<{}> = ({}) => {
         }
       }
     }}>
-    <FormInputContainer >
-      <Form form={form} >
-        <FormInput title="Event Name" name="event-name" isRequired={false}>
-          {eventNameForm}
-        </FormInput>
+    <LayoutContainer>
+      <NonFormInputContainer>
+        <PictureForm />
+        {renderButtonForm} 
+      </NonFormInputContainer>
+      <FormInputContainer >
+        <Form form={form} >
+          <FormInput title="Event Name" name="event-name" isRequired={false}>
+            {eventNameForm}
+          </FormInput>
 
-        <FormInput title="Type" name="event-type" isRequired={false}>
-          {typeForm}
-        </FormInput>
+          <FormInput title="Type" name="event-type" isRequired={false}>
+            {typeForm}
+          </FormInput>
 
-        <FormInput title="Visibility" name="visibility" isRequired={false}>
-          {visibilityForm}
-        </FormInput>
+          <FormInput title="Visibility" name="visibility" isRequired={false}>
+            {visibilityForm}
+          </FormInput>
 
-        <FormInput title="Tags" name="tags">
-          {tagsForm}
-        </FormInput>
+          <FormInput title="Tags" name="tags">
+            {tagsForm}
+          </FormInput>
 
-        <FormInput title="Required Number of Participants" name="participant-count" isRequired={false}>
-          {participantCountForm}
-        </FormInput>
+          <FormInput title="Required Number of Participants" name="participant-count" isRequired={false}>
+            {participantCountForm}
+          </FormInput>
 
-        <FormInput title="Date" name="date" isRequired={false}>
-          {dateForm}
-        </FormInput>
+          <FormInput title="Date" name="date" isRequired={false}>
+            {dateForm}
+          </FormInput>
 
-        <FormInput title="Time" name="time" isRequired={false}>
-          {timeForm}
-        </FormInput>
+          <FormInput title="Time" name="time" isRequired={false}>
+            {timeForm}
+          </FormInput>
 
-        <FormInput title="Meeting Type" name="meeting-type" isRequired={false}>
-          {meetingTypeForm}
-        </FormInput>
+          <FormInput title="Meeting Type" name="meeting-type" isRequired={false}>
+            {meetingTypeForm}
+          </FormInput>
 
-        <FormInput title="Location" name="location" isRequired={false}>
-          {locationForm}
-        </FormInput>
+          <FormInput title="Location" name="location" isRequired={false}>
+            {locationForm}
+          </FormInput>
 
-        <FormInput title="Website" name="website">
-          {websiteForm}
-        </FormInput>
-      </Form>    
-    </FormInputContainer>
-    <NonFormInputContainer>
-      {/* {editImageForm} */}
-      <PictureForm />
-      {renderButtonForm} 
-    </NonFormInputContainer>
+          <FormInput title="Website" name="website">
+            {websiteForm}
+          </FormInput>
+        </Form>    
+      </FormInputContainer>
+    </LayoutContainer>
     <EndFormContainer>
       {buttonForm}
     </EndFormContainer> 

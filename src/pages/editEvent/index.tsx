@@ -10,7 +10,7 @@ const { Content } = Layout;
 const EditEventContainer = styled(Layout)`
   margin-left: auto;
   margin-right: auto;
-  width: 50vw;
+  width: 70%;
   padding-bottom: 40px;
   background-color: ${theme.color.white};
 `;
@@ -33,7 +33,7 @@ const Header = styled.h1`
   font-size: 40px;
   font-weight: bold;
   justify-content: left;
-  padding-top: 40px;
+  padding-top: 5vh;
   ${theme.media.tablet} {
     font-size: 24px;
   }
@@ -42,18 +42,22 @@ const Header = styled.h1`
   }
 `;
 
+const HeaderContainer = styled.div`
+  height: 15vh;
+`
+
 const editEvent: React.FC<{}> = ({}) => {
 
   return (
       <EditEventContainer >
-          <Header>
-            Edit Event Detail
-          </Header>
-          <Content>
-            <ContentContainer>
-              <EditEvent />
-            </ContentContainer>
-          </Content>    
+        <Header>
+          Edit Event Detail
+        </Header>
+        <Content>
+          <ContentContainer>
+            <EditEvent />
+          </ContentContainer>
+        </Content>    
       </EditEventContainer>
   );
 };

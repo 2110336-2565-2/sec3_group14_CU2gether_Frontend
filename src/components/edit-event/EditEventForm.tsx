@@ -1,27 +1,24 @@
-import React, { useState, useEffect, Children } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Modal, Upload, Form, Input, Select, Radio, DatePicker, TimePicker, Button, Layout, ConfigProvider } from "antd";
+import { Typography, Modal, Upload, Form, Input, Select, Radio, DatePicker, TimePicker, Button, Layout, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
 import { FormInput } from "@/common/input";
-import CenteredModal from "@/common/modal";
 import { getEventByName, updateEventDetail, cancelEvent } from "api/event";
-import type { RcFile, UploadProps } from 'antd/es/upload';
+import type { UploadProps } from 'antd/es/upload';
 import type { UploadFile } from 'antd/es/upload/interface';
 import dayjs from 'dayjs';
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
-import customParseFormat from 'dayjs/plugin/customParseFormat'
-
-// dayjs.extend(customParseFormat)
 
 import PictureForm from "./PictureForm";
 
+const { Title, Text} = Typography;
+ 
 const LayoutContainer = styled(Layout)`
   justify-content: center;
   flex-direction: row;
   width: 100%;
-  background-color: ${theme.color.white};
   ${theme.media.tablet} {
     flex-direction: column-reverse;
   }
@@ -33,7 +30,6 @@ const FormInputContainer = styled(Layout)`
   margin-right: auto;
   align-items: center;
   justify-content: left;
-  background-color: ${theme.color.white};
 `;
 
 const NonFormInputContainer = styled(Layout)`
@@ -45,7 +41,6 @@ const NonFormInputContainer = styled(Layout)`
   flex-direction: column;
   width: 50%;
   height: 50%;
-  background-color: ${theme.color.white};
 `;
 
 const EndFormContainer = styled(Layout)`
@@ -55,7 +50,6 @@ const EndFormContainer = styled(Layout)`
   align-items: center;
   justify-content: center;
   gap: 2vw;
-  background-color: ${theme.color.white};
 `
 
 const FlexContainer = styled.div`
@@ -152,15 +146,15 @@ const EditEvent: React.FC<{}> = ({}) => {
     },
   ]);
 
-  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>
+  const handleImageChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>
   setFileList(newFileList);
 
   const [form] = Form.useForm();
   const router = useRouter();
   const { ename } = router.query;
-
+  
   useEffect(() => {
-    getEventByName('orange')
+    getEventByName('orange2')
     .then((data) => {
       const newEvent = {
         eventName: data.eventName,
@@ -198,13 +192,14 @@ const EditEvent: React.FC<{}> = ({}) => {
       "date": [dayjs(eventDetail.startDate), dayjs(eventDetail.endDate)],
       "start-time": dayjs(eventDetail.startTime),
       "end-time": dayjs(eventDetail.endTime),
+      "time": [dayjs(eventDetail.startTime), dayjs(eventDetail.endTime)],
       "meeting-type": eventDetail.meetingType,
       "location": eventDetail.location,
       "website": eventDetail.website,
     })
   })
 
-  const handleSaveClick = () => {
+  const handleSubmitClick = () => {
     updateEventDetail(
       eventDetail.eventName, 
       eventDetail.eventType, 
@@ -228,10 +223,6 @@ const EditEvent: React.FC<{}> = ({}) => {
 
   const handleEditDescriptionClick = () => {
     router.push('/editEvent/description',undefined,{shallow:true});
-  }
-
-  const toggleOpenModal = () => {
-    setOpenModal(openModal);
   }
 
   const toggleCancelEventModal = () => {
@@ -293,20 +284,28 @@ const EditEvent: React.FC<{}> = ({}) => {
     </FlexContainer>
   );
 
+  const dateFormat = 'YYYY-MM-DD';
+  const timeFormat = 'HH:mm';
+
   const dateForm = (
     <FlexContainer>
-      <DatePicker.RangePicker 
-      defaultValue={[dayjs(eventDetail.startDate), dayjs(eventDetail.endDate)]}
-      style={{ height: '100%', width: '100%' }}/>
+      <Form.Item name="date" style={{width: '100%'}}>
+        <DatePicker.RangePicker 
+        style={{ height: '100%', width: '100%' }}
+        format={dateFormat}
+        />
+      </Form.Item>
     </FlexContainer>
   );
 
   const timeForm = (
     <FlexContainer>
-      <TimePicker.RangePicker 
-      defaultValue={[dayjs(eventDetail.startTime), dayjs(eventDetail.endTime)]}
-      format="HH:mm"
-      style={{ height: '100%', width: '100%' }}/>
+      <Form.Item name="time" style={{width: '100%'}}>
+        <TimePicker.RangePicker 
+        style={{ height: '100%', width: '100%' }}
+        format={timeFormat}
+        />
+      </Form.Item>
     </FlexContainer>
   );
 
@@ -336,7 +335,7 @@ const EditEvent: React.FC<{}> = ({}) => {
         <ButtonConfig htmlType="button" onClick={handleCancelClick}>
           Cancel
         </ButtonConfig>
-        <ButtonConfig htmlType="submit" type="primary" onClick={handleSaveClick}>
+        <ButtonConfig htmlType="submit" type="primary" onClick={handleSubmitClick}>
           Submit
         </ButtonConfig>
     </ButtonContainer>
@@ -345,15 +344,16 @@ const EditEvent: React.FC<{}> = ({}) => {
 
   const title = (
     <CancelEventTitle>
-      Want to cancel event?
+      <Title>Want to cancel event?</Title>
     </CancelEventTitle>
   );
 
   const content = (
     <CancelEventContent>
-      If you cancel this event, I will kill you!!!
+      <Text style={{fontSize: 20}}>
+        If you cancel this event, I will kill you!!!
+      </Text>
     </CancelEventContent>
-
   );
 
   const renderButtonForm = (
@@ -368,17 +368,12 @@ const EditEvent: React.FC<{}> = ({}) => {
       onClick={toggleCancelEventModal}>
         Cancel Event
       </ButtonConfig>
-      {/* <CenteredModal
-        children={title}
-        title="Want to cancle event?"
-        onClose={toggleCancelEventModal}
-      /> */}
       <Modal
       open={onCancelEvent}
       width={'50vw'}
       centered={true}
       closable={true}
-      bodyStyle={{minHeight:'50%', marginTop: '40', fontSize:'0.9rem'}}
+      bodyStyle={{minHeight:'50%', marginTop: '40'}}
       closeIcon={
         <FontAwesomeIcon
           onClick={toggleCancelEventModal}
@@ -412,7 +407,7 @@ const EditEvent: React.FC<{}> = ({}) => {
     <Upload.Dragger 
     listType="picture-card"
     fileList={fileList}
-    onChange={handleChange} 
+    onChange={handleImageChange} 
     style={{alignItems:'center',justifyContent:'center'}}>
     </Upload.Dragger>  
   );
@@ -457,11 +452,11 @@ const EditEvent: React.FC<{}> = ({}) => {
             {participantCountForm}
           </FormInput>
 
-          <FormInput title="Date" name="date" isRequired={false}>
+          <FormInput title="Date" name="event-date" isRequired={false}>
             {dateForm}
           </FormInput>
 
-          <FormInput title="Time" name="time" isRequired={false}>
+          <FormInput title="Time" name="event-time" isRequired={false}>
             {timeForm}
           </FormInput>
 

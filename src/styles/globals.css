@@ -123,11 +123,22 @@ a {
 
 .ant-upload-wrapper .ant-upload-drag {
   min-height: 200px;
-  height: 40vh;
+  height: 30vh;
 }
 
-@media screen and (max-width: 425px) {
+.ant-typography-title {
+  font-size: 40px;
+}
+
+@media screen and (max-width: 768px) {
   .ant-upload-wrapper .ant-upload-drag {
     width: 100%;
   }
+  .ant-typography-title {
+    font-size: 24px;
+  }
+  /* .ant-typography-text {
+    font-size: 16px;
+  } */
+
 }

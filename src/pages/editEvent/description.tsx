@@ -11,9 +11,8 @@ const TextAreaContainer = styled(Layout)`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 48px;
+    padding-top: 2.5vh;
     width: 100vw;
-    background-color: ${theme.color.white};
     ${theme.media.tablet} {
         font-size: 20px;
     }
@@ -25,7 +24,7 @@ const TextAreaContainer = styled(Layout)`
 const ButtonContainer = styled.div`
     display: flex;
     justify-content: center;
-    padding-top: 40px;
+    padding-top: 2.5vh;
     gap: 2vw;
 `;
 

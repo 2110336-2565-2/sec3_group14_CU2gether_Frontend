@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { CU_API } from "@/utils/env";
+import { CU_API } from "@/config";
 import { Dayjs } from "dayjs"
 
 const registerStudentURL = CU_API + 'register/student';

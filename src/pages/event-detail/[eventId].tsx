@@ -6,6 +6,7 @@ import { Space, Typography, Layout } from "antd";
 import { useRouter } from "next/router";
 import { ContainedButton, OutlinedButton } from "@/common/button";
 import theme from "@/utils/theme";
+import profilePic from "../../../public/background_page.png";
 
 type EventDetailProps = {
   event: {
@@ -22,7 +23,7 @@ type EventDetailProps = {
 };
 
 const { Title } = Typography;
-const { Header, Footer, Sider, Content } = Layout;
+// const { Header, Footer, Sider, Content } = Layout;
 
 const EventDetail: React.FC = () => {
   const router = useRouter();
@@ -31,7 +32,7 @@ const EventDetail: React.FC = () => {
   const mockEvents = [
     {
       id: 1,
-      srcImg: "",
+      srcImg: "https://tse4.mm.bing.net/th?id=OIP.2bJ9_f9aKoGCME7ZIff-ZwHaJ4&pid=Api&P=0",
       altImg: "event",
       date: dayjs("2021-01-01"),
       name: "event1",
@@ -132,37 +133,31 @@ const EventDetail: React.FC = () => {
   return (
     <EventDetailPageContainer>
       <LayoutContainer>
-        <Sider style={StyleSider} width="35%">
-          <Image src={srcImg} alt={altImg} width={100} height={100} />
+        <Sider>
+          <Image src={profilePic} alt={altImg} layout="fill" />
         </Sider>
         <RightLayout>
-          <Header style={StyleHeader}>
+          <Header>
             <Title style={StyleTitle} level={1}>
               <b>{name}</b>
             </Title>
             <span>Created by {ownerName}</span>
           </Header>
-          <Content style={StyleContent}>
-            <EventDetailContainer>
+          <Content>
               <Space size={"middle"}>
                 {EventTypeImg}
                 {eventType}
               </Space>
-            </EventDetailContainer>
-            <EventDetailContainer>
               <Space size={"middle"}>
                 {LocateImg}
                 {location}
               </Space>
-            </EventDetailContainer>
-            <EventDetailContainer>
               <Space size={"middle"}>
                 {CalendarImg}
                 {date ? date.format("ddd, DD MMM YYYY") : ""}
               </Space>
-            </EventDetailContainer>
           </Content>
-          <Footer style={StyleFooter}>{modalFooter}</Footer>
+          <Footer>{modalFooter}</Footer>
         </RightLayout>
       </LayoutContainer>
     </EventDetailPageContainer>
@@ -182,77 +177,101 @@ const ModalFooterContainer = styled(Space)`
   width: 100%;
 `;
 
-const LayoutContainer = styled(Layout)`
+const LayoutContainer = styled.div`
+  display: flex;
   width: 60vw;
-  height: 80%;
+  height: 100%;
   margin: 0 auto;
   background-color: rgba(255, 99, 71, 0);
+  ${theme.media.tablet} {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
-const RightLayout = styled(Layout)`
+const RightLayout = styled.div`
   width: 65%;
   height: 100%;
   margin: 0 auto;
   background-color: rgba(255, 99, 71, 0);
   font-size: 1rem;
+  ${theme.media.tablet} {
+    height: 60%;
+    width:100%;
+  }
 `;
 
 const StyleTitle = {
   color: "#fff",
   marginBottom: "0rem",
+  fontSize: "2rem",
 };
 
 const EventDetailContainer = styled.div`
-  height: 3rem;
+  height: 20%;
   margin: 1rem auto;
 `;
 
-const StyleHeader: React.CSSProperties = {
-  textAlign: "left",
-  color: "#fff",
-  height: "30%",
-  backgroundColor: "#000000",
-  opacity: 0.8,
-  padding: "5rem 5rem",
-};
+const Header = styled.div`
+  text-align: left;
+  color: #fff;
+  height: 30%;
+  width:100%;
+  background-color: #000000;
+  opacity: 0.8;
+  padding: 2rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  ${theme.media.tablet} {
+    padding: 1rem 2.5rem;
+  }
+`;
 
-const StyleContent: React.CSSProperties = {
-  textAlign: "left",
-  minHeight: "30vh",
-  color: "#fff",
-  backgroundColor: "#000000",
-  opacity: 0.8,
-  padding: "1.5rem 5rem",
-  height: "50%",
-};
+const Content = styled.div`
+  text-align: left;
+  min-height: 30vh;
+  color: #fff;
+  background-color: #000000;
+  opacity: 0.8;
+  padding: 1.5rem 4rem;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  ${theme.media.tablet} {
+    padding: 1.5rem 2.5rem;
+  }
+`;
 
-const StyleSider: React.CSSProperties = {
-  textAlign: "center",
-  color: "#fff",
-  backgroundImage:
-    "url(https://cdn.discordapp.com/attachments/457166097230069773/1084368763979317248/IMG_5824_2.png)",
-  backgroundSize: "cover",
-  backgroundPosition: " center center",
-  backgroundRepeat: "no-repeat",
-};
+const Sider = styled.div`
+  width: 35%;
+  height: 100%;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  background-color: rgba(255, 99, 71, 0);
+  ${theme.media.tablet} {
+    width: 100%;
+  }
+`;
 
-const StyleFooter: React.CSSProperties = {
-  textAlign: "center",
-  color: "#fff",
-  backgroundColor: "#000000",
-  opacity: 0.8,
-  fontWeight: "bold",
-  height: "20%",
-};
+const Footer = styled.div`
+  text-align: center;
+  color: #fff;
+  background-color: #000000;
+  opacity: 0.8;
+  font-weight: bold;
+  height: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const EventDetailPageContainer = styled.div`
   padding: 5vw;
   margin: 0;
   height: 95vh;
-  background-image: url(https://cdn.discordapp.com/attachments/457166097230069773/1084418691598405672/IMG_5824_2.png);
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
 `;
 
 const EventTypeImg = (

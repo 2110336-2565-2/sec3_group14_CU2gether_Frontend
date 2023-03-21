@@ -120,3 +120,6 @@ a {
   min-height: 200px;
   height: 50vh;
 }
+.ant-dropdown-menu-item-icon {
+  font-size: 18px !important;
+}

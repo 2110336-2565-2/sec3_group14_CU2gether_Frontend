@@ -2,7 +2,6 @@ import axios from "axios";
 
 axios.interceptors.request.use(
   (config) => {
-    config.headers["User-Agent"] = "CU2Gether";
     if (!config.headers["Content-Type"]) {
       config.headers["Content-Type"] = "application/json";
     }

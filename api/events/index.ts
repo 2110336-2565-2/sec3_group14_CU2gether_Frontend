@@ -3,21 +3,23 @@ import client from "@/utils/client";
 
 const baseUrl = CU_API + "events";
 
-const getEvents = async (page = 1, limit = -1) => {
-    try{
-        const events = await client.get(baseUrl, { page, limit });
-        if(events.status === 200) {
-            return events.data;
-        } else {
-            throw new Error("Error fetching events with status code: " + events.status);
-        }
-    } catch(err) {
-        console.log(err);
+const getEvents = async (page = 1, limit = -1, searchKey = "") => {
+  try {
+    const events = await client.get(baseUrl, { page, limit, searchKey });
+    if (events.status === 200) {
+      return events.data;
+    } else {
+      throw new Error(
+        "Error fetching events with status code: " + events.status
+      );
     }
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const events = {
-    getEvents
-}
+  getEvents,
+};
 
 export default events;

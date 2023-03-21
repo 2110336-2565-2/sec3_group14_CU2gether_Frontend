@@ -6,7 +6,7 @@ import { Space, Typography, Layout } from "antd";
 import { useRouter } from "next/router";
 import { ContainedButton, OutlinedButton } from "@/common/button";
 import theme from "@/utils/theme";
-import profilePic from "../../../public/background_page.png";
+import profilePic from "../../../public/background.svg";
 
 type EventDetailProps = {
   event: {
@@ -32,118 +32,77 @@ const EventDetail: React.FC = () => {
   const mockEvents = [
     {
       id: 1,
-      srcImg: "https://tse4.mm.bing.net/th?id=OIP.2bJ9_f9aKoGCME7ZIff-ZwHaJ4&pid=Api&P=0",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event1",
-      join: true,
-      ownerName: "owner name",
+      eventName: "event1",
+      ownerName: "OAT",
       eventType: "Concert",
       location: "402, Building 3, Faculty of Engineering",
+      startDate: dayjs("2021-01-01"),
+      endDate: dayjs("2021-01-01"),
+      startTime: "10:00",
+      endTime: "11:00",
+      pictures: "",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor nam maxime veritatis provident doloribus, incidunt quo aspernatur esse quae velit consectetur numquam amet exercitationem nihil optio laudantium porro minima voluptate.",
     },
     {
       id: 2,
-      srcImg: "",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event2",
-      join: true,
-      ownerName: "owner name",
+      eventName: "event2",
+      ownerName: "OAT",
       eventType: "Concert",
       location: "402, Building 3, Faculty of Engineering",
-    },
-    {
-      id: 3,
-      srcImg: "",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event3",
-      join: true,
-      ownerName: "owner name",
-      eventType: "Concert",
-      location: "402, Building 3, Faculty of Engineering",
-    },
-    {
-      id: 4,
-      srcImg: "",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event4",
-      join: true,
-      ownerName: "owner name",
-      eventType: "Concert",
-      location: "402, Building 3, Faculty of Engineering",
-    },
-    {
-      id: 5,
-      srcImg: "",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event5",
-      join: true,
-      ownerName: "owner name",
-      eventType: "Concert",
-      location: "402, Building 3, Faculty of Engineering",
-    },
-    {
-      id: 6,
-      srcImg: "",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event6",
-      join: true,
-      ownerName: "owner name",
-      eventType: "Concert",
-      location: "402, Building 3, Faculty of Engineering",
-    },
-    {
-      id: 7,
-      srcImg: "",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event7",
-      join: true,
-      ownerName: "owner name",
-      eventType: "Concert",
-      location: "402, Building 3, Faculty of Engineering",
+      startDate: dayjs("2021-01-01"),
+      endDate: dayjs("2021-01-01"),
+      startTime: "10:00",
+      endTime: "11:00",
+      pictures: [""],
+      description: "dsasdasdasdsads",
     },
   ];
 
   const event = mockEvents[Number(eventId) - 1];
 
   const {
-    id,
-    srcImg,
-    altImg,
-    date,
-    name,
-    join,
+    eventName,
     ownerName,
     eventType,
     location,
+    startDate,
+    endDate,
+    startTime,
+    endTime,
+    pictures,
+    description,
   } = event || {};
 
-  const modalFooter = (
+  const LayoutFooter = (
     <Space align="end">
       <OutlinedButton text="Description" />
-      <ContainedButton text={join ? "Unjoin" : "Join"} />
+      <ContainedButton text={1 ? "Unjoin" : "Join"} />
+    </Space>
+  );
+
+  const DescriptionFooter = (
+    <Space align="end">
+      <OutlinedButton text="Back To Top" />
+      <ContainedButton text={1 ? "Unjoin Event" : "Join Event"} />
     </Space>
   );
 
   return (
     <EventDetailPageContainer>
-      <LayoutContainer>
-        <Sider>
-          <Image src={profilePic} alt={altImg} layout="fill" />
-        </Sider>
-        <RightLayout>
-          <Header>
-            <Title style={StyleTitle} level={1}>
-              <b>{name}</b>
-            </Title>
-            <span>Created by {ownerName}</span>
-          </Header>
-          <Content>
+      <EventDetailContainer>
+        <LayoutContainer>
+          <Sider>
+            <Image src={profilePic} alt={eventName} layout="fill" />
+          </Sider>
+          <RightLayout>
+            <Header>
+              <Title style={StyleTitle} level={1}>
+                <b>{eventName}</b>
+              </Title>
+              <span>Created by {ownerName}</span>
+            </Header>
+            <Content>
               <Space size={"middle"}>
                 {EventTypeImg}
                 {eventType}
@@ -154,27 +113,46 @@ const EventDetail: React.FC = () => {
               </Space>
               <Space size={"middle"}>
                 {CalendarImg}
-                {date ? date.format("ddd, DD MMM YYYY") : ""}
+                {startDate ? startDate.format("ddd, DD MMM YYYY") : ""}-
+                {endDate ? startDate.format("ddd, DD MMM YYYY") : ""},{" "}
+                {startTime}-{endTime}
               </Space>
-          </Content>
-          <Footer>{modalFooter}</Footer>
-        </RightLayout>
-      </LayoutContainer>
+            </Content>
+            <Footer>{LayoutFooter}</Footer>
+          </RightLayout>
+        </LayoutContainer>
+      </EventDetailContainer>
+      <DescriptionContainer>
+        <Description>{description}</Description>
+        <DescriptionFooterContainer>
+          {DescriptionFooter}
+        </DescriptionFooterContainer>
+      </DescriptionContainer>
     </EventDetailPageContainer>
   );
 };
 
-const EventContainer = styled(Space)`
-  border: 1px solid;
-  border-radius: 8px;
-  width: 12.5vw;
-  min-width: 200px;
-  padding: 20px;
-  margin: 5px;
+const DescriptionContainer = styled.div`
+  padding: 3rem;
+  width: 80%;
+  height: 500px;
+  margin: 0 auto;
 `;
 
-const ModalFooterContainer = styled(Space)`
-  width: 100%;
+const Description = styled.div`
+  height: 300px;
+  margin: 1rem;
+  text-align: left;
+`;
+
+const DescriptionFooterContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const EventDetailContainer = styled.div`
+  padding: 8rem 0;
+  height: 50rem;
 `;
 
 const LayoutContainer = styled.div`
@@ -182,10 +160,13 @@ const LayoutContainer = styled.div`
   width: 60vw;
   height: 100%;
   margin: 0 auto;
-  background-color: rgba(255, 99, 71, 0);
   ${theme.media.tablet} {
     flex-direction: column;
     align-items: center;
+    width: 85%;
+  }
+  ${theme.media.mobile} {
+    width: 100%;
   }
 `;
 
@@ -193,11 +174,10 @@ const RightLayout = styled.div`
   width: 65%;
   height: 100%;
   margin: 0 auto;
-  background-color: rgba(255, 99, 71, 0);
   font-size: 1rem;
   ${theme.media.tablet} {
     height: 60%;
-    width:100%;
+    width: 100%;
   }
 `;
 
@@ -207,35 +187,28 @@ const StyleTitle = {
   fontSize: "2rem",
 };
 
-const EventDetailContainer = styled.div`
-  height: 20%;
-  margin: 1rem auto;
-`;
-
 const Header = styled.div`
   text-align: left;
   color: #fff;
   height: 30%;
-  width:100%;
-  background-color: #000000;
-  opacity: 0.8;
+  width: 100%;
+  background-color: rgb(0, 0, 0, 80%);
   padding: 2rem 4rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 2.5rem;
   ${theme.media.tablet} {
     padding: 1rem 2.5rem;
+    gap: 0.5rem;
   }
 `;
 
 const Content = styled.div`
   text-align: left;
-  min-height: 30vh;
   color: #fff;
-  background-color: #000000;
-  opacity: 0.8;
+  background-color: rgb(0, 0, 0, 80%);
   padding: 1.5rem 4rem;
-  height: 50%;
+  height: 40%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -245,12 +218,11 @@ const Content = styled.div`
 `;
 
 const Sider = styled.div`
+  background-color: rgb(0, 0, 0, 80%);
   width: 35%;
   height: 100%;
   text-align: center;
-  color: #fff;
   position: relative;
-  background-color: rgba(255, 99, 71, 0);
   ${theme.media.tablet} {
     width: 100%;
   }
@@ -259,19 +231,17 @@ const Sider = styled.div`
 const Footer = styled.div`
   text-align: center;
   color: #fff;
-  background-color: #000000;
-  opacity: 0.8;
+  background-color: rgb(0, 0, 0, 80%);
   font-weight: bold;
-  height: 20%;
+  height: 30%;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 const EventDetailPageContainer = styled.div`
-  padding: 5vw;
+  padding: 0;
   margin: 0;
-  height: 95vh;
 `;
 
 const EventTypeImg = (

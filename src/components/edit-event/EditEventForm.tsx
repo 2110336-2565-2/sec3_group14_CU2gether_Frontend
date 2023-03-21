@@ -20,16 +20,18 @@ const LayoutContainer = styled(Layout)`
   flex-direction: row;
   width: 100%;
   ${theme.media.tablet} {
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
 `
 
-const FormInputContainer = styled(Layout)`
+const FormInputContainer = styled(Form)`
   display: flex;
   margin-left: auto;
   margin-right: auto;
   align-items: center;
   justify-content: left;
+  flex-direction: column;
+  padding: 2.5vh;
 `;
 
 const NonFormInputContainer = styled(Layout)`
@@ -181,19 +183,20 @@ const EditEvent: React.FC<{}> = ({}) => {
 
   useEffect(() => {
     form.setFieldsValue({
-      "event-name": eventDetail.eventName,
-      "event-type": eventDetail.eventType,
+      "eventName": eventDetail.eventName,
+      "eventType": eventDetail.eventType,
       "visibility": eventDetail.visibility,
       "tags": eventDetail.tags,
-      "minimum": eventDetail.requireParticipantsMin,
-      "maximum": eventDetail.requireParticipantsMax,
-      "start-date": dayjs(eventDetail.startDate),
-      "end-date": dayjs(eventDetail.endDate),
+      "requireParticipantsMin": eventDetail.requireParticipantsMin,
+      "requireParticipantsMax": eventDetail.requireParticipantsMax,
+      "requireParticipants": [eventDetail.requireParticipantsMin, eventDetail.requireParticipantsMax],
+      "startDate": dayjs(eventDetail.startDate),
+      "endDate": dayjs(eventDetail.endDate),
       "date": [dayjs(eventDetail.startDate), dayjs(eventDetail.endDate)],
-      "start-time": dayjs(eventDetail.startTime),
-      "end-time": dayjs(eventDetail.endTime),
+      "startTime": dayjs(eventDetail.startTime),
+      "endTime": dayjs(eventDetail.endTime),
       "time": [dayjs(eventDetail.startTime), dayjs(eventDetail.endTime)],
-      "meeting-type": eventDetail.meetingType,
+      "meetingType": eventDetail.meetingType,
       "location": eventDetail.location,
       "website": eventDetail.website,
     })
@@ -215,6 +218,36 @@ const EditEvent: React.FC<{}> = ({}) => {
       eventDetail.location, 
       eventDetail.website,
       );
+  }
+
+  const onFormFinish = (values: any) => {
+    console.log(values);
+    const {      
+      eventName, 
+      eventType, 
+      visibility, 
+      tags, 
+      requireParticipants,
+      date,
+      time, 
+      meetingType, 
+      location, 
+      website,} = values;
+    updateEventDetail(
+      eventName, 
+      eventType, 
+      visibility, 
+      tags, 
+      requireParticipants[0],
+      requireParticipants[1], 
+      dayjs(date[0]),
+      dayjs(date[1]), 
+      dayjs(time[0]),
+      dayjs(time[1]), 
+      meetingType, 
+      location, 
+      website,
+    )
   }
 
   const handleCancelClick = () => {
@@ -274,11 +307,11 @@ const EditEvent: React.FC<{}> = ({}) => {
 
   const participantCountForm = (
     <FlexContainer>
-      <FormInput title="Min" name="minimum" >
+      <FormInput title="Min" name="requireParticipantsMin" >
         <Input placeholder="Min" style={{ width: '50%'}} defaultValue={eventDetail.requireParticipantsMin}/>
       </FormInput>
 
-      <FormInput title="Max" name="maximum" >
+      <FormInput title="Max" name="requireParticipantsMax" >
         <Input placeholder="Max" style={{ width: '50%'}} defaultValue={eventDetail.requireParticipantsMax}/>
       </FormInput>
     </FlexContainer>
@@ -329,18 +362,6 @@ const EditEvent: React.FC<{}> = ({}) => {
   const websiteForm = (
     <Input placeholder="Website" defaultValue={eventDetail.website}/>
   );
-
-  const buttonForm = (
-    <ButtonContainer>
-        <ButtonConfig htmlType="button" onClick={handleCancelClick}>
-          Cancel
-        </ButtonConfig>
-        <ButtonConfig htmlType="submit" type="primary" onClick={handleSubmitClick}>
-          Submit
-        </ButtonConfig>
-    </ButtonContainer>
-  );
-
 
   const title = (
     <CancelEventTitle>
@@ -403,6 +424,17 @@ const EditEvent: React.FC<{}> = ({}) => {
     </NonFormButtonContainer>
   );
 
+  const buttonForm = (
+    <ButtonContainer>
+        <ButtonConfig type="default" htmlType="button" onClick={() => handleCancelClick()}>
+          Cancel
+        </ButtonConfig>
+        <ButtonConfig type="primary" htmlType="submit" >
+          Submit
+        </ButtonConfig>
+    </ButtonContainer>
+  );
+
   const editImageForm = (
     <Upload.Dragger 
     listType="picture-card"
@@ -430,53 +462,44 @@ const EditEvent: React.FC<{}> = ({}) => {
         <PictureForm />
         {renderButtonForm} 
       </NonFormInputContainer>
-      <FormInputContainer >
-        <Form form={form} >
-          <FormInput title="Event Name" name="event-name" isRequired={false}>
-            {eventNameForm}
-          </FormInput>
-
-          <FormInput title="Type" name="event-type" isRequired={false}>
-            {typeForm}
-          </FormInput>
-
-          <FormInput title="Visibility" name="visibility" isRequired={false}>
-            {visibilityForm}
-          </FormInput>
-
-          <FormInput title="Tags" name="tags">
-            {tagsForm}
-          </FormInput>
-
-          <FormInput title="Required Number of Participants" name="participant-count" isRequired={false}>
-            {participantCountForm}
-          </FormInput>
-
-          <FormInput title="Date" name="event-date" isRequired={false}>
-            {dateForm}
-          </FormInput>
-
-          <FormInput title="Time" name="event-time" isRequired={false}>
-            {timeForm}
-          </FormInput>
-
-          <FormInput title="Meeting Type" name="meeting-type" isRequired={false}>
-            {meetingTypeForm}
-          </FormInput>
-
-          <FormInput title="Location" name="location" isRequired={false}>
-            {locationForm}
-          </FormInput>
-
-          <FormInput title="Website" name="website">
-            {websiteForm}
-          </FormInput>
-        </Form>    
+      <FormInputContainer form={form} onFinish={onFormFinish}>
+        <FormInput title="Event Name" name="eventName" isRequired={false}>
+          {eventNameForm}
+        </FormInput>
+        <FormInput title="Type" name="eventType" isRequired={false}>
+          {typeForm}
+        </FormInput>
+        <FormInput title="Visibility" name="visibility" isRequired={false}>
+          {visibilityForm}
+        </FormInput>
+        <FormInput title="Tags" name="tags">
+          {tagsForm}
+        </FormInput>
+        <FormInput title="Required Number of Participants" name="requireParticipants" isRequired={false}>
+          {participantCountForm}
+        </FormInput>
+        <FormInput title="Date" name="date" isRequired={false}>
+          {dateForm}
+        </FormInput>
+        <FormInput title="Time" name="time" isRequired={false}>
+          {timeForm}
+        </FormInput>
+        <FormInput title="Meeting Type" name="meetingType" isRequired={false}>
+          {meetingTypeForm}
+        </FormInput>
+        <FormInput title="Location" name="location" isRequired={false}>
+          {locationForm}
+        </FormInput>
+        <FormInput title="Website" name="website">
+          {websiteForm}
+        </FormInput>
+        <Form.Item>
+          {buttonForm}
+        </Form.Item>    
       </FormInputContainer>
     </LayoutContainer>
-    <EndFormContainer>
-      {buttonForm}
-    </EndFormContainer> 
+    {/* <EndFormContainer> 
+    </EndFormContainer>  */}
     </ConfigProvider>
   );
 };

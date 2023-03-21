@@ -75,3 +75,12 @@ export const cancelEvent = (
     })
     .catch((err: AxiosError) => console.log(err));
 }
+
+const event = {
+    getEventByName,
+    updateEventDetail,
+    updateEventDescription,
+    cancelEvent,
+}
+
+export default event;

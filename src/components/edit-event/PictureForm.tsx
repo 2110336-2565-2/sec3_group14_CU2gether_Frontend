@@ -22,7 +22,7 @@ const PictureForm: React.FC<{}> = ({}) => {
     <Form.Item
       name="picture"
       rules={[{ required: true, message: "Please insert picture" }]}
-      style={{ width: "70%", height: "100%" }}
+      style={{ width: "50%", height: "100%" }}
     >
       <Upload.Dragger
         maxCount={1}

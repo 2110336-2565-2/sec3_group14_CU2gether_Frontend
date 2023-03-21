@@ -41,12 +41,13 @@ const Description: React.FC<{}> = ({}) => {
     });
 
     const [form] = Form.useForm();
+    const router = useRouter();
 
     useEffect(() => {
-      getEventByName('orange')
+      getEventByName('orange2')
       .then((data) => {
         const newDescription = {
-            eventName: data.name,
+            eventName: data.eventName,
             description: data.description,
         }
         setDescriptionDetail(newDescription);
@@ -54,24 +55,37 @@ const Description: React.FC<{}> = ({}) => {
       .catch((err) => {
         console.log(err)
       })
-    }, []);
+    }, [router]);
 
     useEffect(() => {
         form.setFieldsValue({
+            "eventName": descriptionDetail.eventName,
             "description": descriptionDetail.description,
         })
     })
 
-    const router = useRouter();
-
-    const handleSaveClick = () => {
-        updateEventDescription(descriptionDetail.eventName, descriptionDetail.description)
+    const onDescriptionFinish = async (values: any) => {
+        console.log(values);
+        const eventName = descriptionDetail.eventName;
+        const { description } = values;
+        updateEventDescription(eventName, description);
         router.push('/editEvent');
-    };
+      }
 
     const handleCancelClick = () => {
         router.push('/editEvent');
     };
+
+    const buttonForm = (
+        <ButtonContainer>
+            <ButtonConfig type="default" htmlType="button" onClick={() => handleCancelClick()}>
+              Cancel
+            </ButtonConfig>
+            <ButtonConfig type="primary" htmlType="submit" >
+              Save
+            </ButtonConfig>
+        </ButtonContainer>
+      );
 
     return (
         <ConfigProvider      
@@ -81,20 +95,18 @@ const Description: React.FC<{}> = ({}) => {
           },
         }}>
         <TextAreaContainer>
-            <Form form={form}>
+            <Form form={form} onFinish={onDescriptionFinish}>
                 <Form.Item name="description" >
                     <TextArea
-                    defaultValue={descriptionDetail.description}
-                    value={descriptionDetail.description}
                     style={{width:'50vw', height:'60vh', margin:'auto'}}
                     /> 
-                </Form.Item>   
+                </Form.Item>
+                <Form.Item>
+                    {buttonForm}    
+                </Form.Item>          
             </Form>
         </TextAreaContainer>
-        <ButtonContainer>
-            <ButtonConfig htmlType="button" onClick={handleCancelClick}>Cancel</ButtonConfig>
-            <ButtonConfig htmlType="submit" onClick={handleSaveClick} type="primary">Save</ButtonConfig>
-        </ButtonContainer>     
+   
         </ConfigProvider>
 
     );

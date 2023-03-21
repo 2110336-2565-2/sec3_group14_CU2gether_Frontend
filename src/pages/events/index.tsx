@@ -124,7 +124,7 @@ const EventContainer = styled.div`
   width: 100vw;
   display: flex;
   flex-flow: column;
-  gap: 5%;
+  gap: 3%;
 `;
 
 const HeaderContainer = styled.div`
@@ -132,7 +132,6 @@ const HeaderContainer = styled.div`
 `;
 
 const DetailContainer = styled(Space)`
-  height: 100%;
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, 240px);

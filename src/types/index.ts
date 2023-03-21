@@ -1,13 +1,43 @@
 import { Dayjs } from "dayjs";
+export enum EventType {
+  "RESTAURANT",
+  "CAFE",
+  "BAR",
+  "SPORT",
+  "VOLUNTEER",
+  "CONCERT",
+  "PHOTO_TRIP",
+  "BOARDGAME",
+  "SEMINAR",
+  "SPECIAL_DAY",
+  "OTHERS",
+}
+
+export enum Visibility {
+  "PUBLIC",
+  "PRIVATE",
+}
+
+export enum MeetingType {
+  "ONSITE",
+  "ONLINE"
+}
 
 export type Event = {
-  id: number;
-  srcImg: string;
-  altImg: string;
-  date: Dayjs;
-  name: string;
-  join: boolean;
+  eventName: string;
+  eventType: EventType;
+  visibility: Visibility;
+  tags: string[];
+  requireParticipantsMin: number;
+  requireParticipantsMax: number;
+  startDate: Dayjs;
+  endDate: Dayjs;
+  startTime: Dayjs;
+  endTime: Dayjs;
+  meetingType: string;
   location: string;
+  website: string;
+  pictures: string[];
 };
 
 export type Student = {

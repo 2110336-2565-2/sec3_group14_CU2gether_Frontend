@@ -1,12 +1,8 @@
 import { Inter } from "@next/font/google";
+import Image from "next/image";
 import { useState } from "react";
 
-// import styles from "@/styles/Home.module.css";
-import Menubar from "@/components/Menubar";
-import Content from "@/components/Content";
-import { ConfigProvider } from "antd";
 import LoginAndRegistration from "@/components/login-registration/LoginAndRegistrationModal";
-import theme from "@/utils/theme";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,36 +16,8 @@ export default function Home() {
   };
 
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: `${theme.color.primary}`,
-        },
-      }}
-    >
-      <div
-        className={inter.className}
-        style={{
-          backgroundImage: `url(background_page.png)`,
-          backgroundSize: "cover",
-          backgroundPosition: `center center`,
-          backgroundRepeat: `no-repeat`,
-          backgroundAttachment: `fixed`,
-          height: `3876px`,
-        }}
-      >
-        <Menubar
-          toggleLoginAndRegistrationModal={toggleLoginAndRegistrationModal}
-          setLogin={setLogin}
-        />
-        <LoginAndRegistration
-          isLogin={isLogin}
-          setLogin={setLogin}
-          onLoginAndRegistrationModal={onLoginAndRegistration}
-          toggleLoginAndRegistrationModal={toggleLoginAndRegistrationModal}
-        ></LoginAndRegistration>
-        {/* <Content /> */}
-      </div>
-    </ConfigProvider>
+    <>
+      <Image src={"./background.svg"} alt={"background image"} fill />
+    </>
   );
 }

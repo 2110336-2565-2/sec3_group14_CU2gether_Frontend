@@ -18,6 +18,7 @@ const color = {
   action: '#305FED',
   disable: '#DCDCDC',
   backgroundColor: '#F5F6F9',
+  backgroundOnHover: '#D9D9D9',
   border: '#D6DADE',
 
   primary50: '#F7F4FF',

@@ -10,7 +10,7 @@ import Navbar from "@/components/navbar";
 import styled from "styled-components";
 config.autoAddCss = false;
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {}, []);
 
@@ -22,17 +22,22 @@ export default function App({ Component, pageProps }: AppProps) {
         },
       }}
     >
-      <Layout>
+      <MyLayout>
         <Navbar />
         <MyContent>
           <Component {...pageProps} />
         </MyContent>
-        <Footer />
-      </Layout>
+      </MyLayout>
     </ConfigProvider>
   );
 }
 
+const MyLayout = styled(Layout)`
+  overflow: hidden;
+  height: 100vh;
+`;
+
 const MyContent = styled(Content)`
+  height: 100%;
   overflow-y: scroll;
 `;

@@ -3,7 +3,7 @@ import theme from "@/utils/theme";
 import { Drawer, MenuProps } from "antd";
 import { Dropdown, Layout, Typography } from "antd";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import MenuIcon from "@mui/icons-material/Menu";
 import styled from "styled-components";
@@ -21,6 +21,13 @@ type MenuItem = Required<MenuProps>["items"][number];
 
 const Navbar: React.FC<NavbarProps> = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
+  const mobile = useMediaQuery({ query: "(max-width: 768px)" });
+
+  useEffect(() => {
+    setIsMobileScreen(mobile);
+  }, [mobile]);
+
   const navMenus = [
     { key: "1", label: "Home", href: "/" },
     { key: "2", label: "Explore", href: "/events" },
@@ -30,8 +37,6 @@ const Navbar: React.FC<NavbarProps> = () => {
   ];
 
   const name = "Chayakorn";
-
-  const isMobileScreen = useMediaQuery({ query: "(max-width: 768px)" });
 
   const getItem = (
     label: React.ReactNode,
@@ -100,7 +105,9 @@ const Navbar: React.FC<NavbarProps> = () => {
   const renderMobileNav = () => (
     <Nav>
       <ShortNavContainer>
-        <MenuIcon onClick={() => setIsDrawerOpen(true)} />
+        <MenuIconWrapper>
+          <MenuIcon onClick={() => setIsDrawerOpen(true)} />
+        </MenuIconWrapper>
         <Logo
           src={"./logo_black.svg"}
           alt={"CU2Gether Logo"}
@@ -143,8 +150,8 @@ const Navbar: React.FC<NavbarProps> = () => {
       >
         {navMenus.map((menu, idx) => {
           return (
-            <Link href={menu.href}>
-              <Paragraph key={idx}>{menu.label}</Paragraph>
+            <Link key={idx} href={menu.href}>
+              <Paragraph>{menu.label}</Paragraph>
             </Link>
           );
         })}
@@ -164,7 +171,7 @@ const Navbar: React.FC<NavbarProps> = () => {
           />
           <Menu>
             {navMenus.map((menu, idx) => (
-              <Link href={menu.href}>
+              <Link key={idx} href={menu.href}>
                 <div
                   style={{
                     color: theme.color.black,
@@ -269,5 +276,7 @@ const ProfileImage = styled(Image)`
     margin-bottom: 8px;
   }
 `;
+
+const MenuIconWrapper = styled.div``;
 
 export default Navbar;

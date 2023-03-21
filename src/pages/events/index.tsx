@@ -3,7 +3,7 @@ import EventCard from "@/components/event-card";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
-import { Cascader, Divider, Space, Typography } from "antd";
+import { Cascader, Divider, Empty, Space, Typography } from "antd";
 import { ContainedButton } from "@/common/button";
 import useEventStore from "@/hooks/useEventStore";
 import { Event } from "@/types";
@@ -20,7 +20,7 @@ const Event: React.FC<EventProps> = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // await fetchEvents();
+        await fetchEvents();
       } catch (e) {}
       setLoading(false);
     };
@@ -29,144 +29,6 @@ const Event: React.FC<EventProps> = () => {
 
   const onSearch = async (value: string) => {};
   const onEnter = (e: any) => {};
-
-  const mockEvents: Event[] = [
-    {
-      srcImg: "./event.svg",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event1",
-      join: true,
-      id: 1,
-      location: "home",
-    },
-    {
-      srcImg: "./event.svg",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event1",
-      join: true,
-      id: 1,
-      location: "home",
-    },
-    {
-      srcImg: "./event.svg",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event1",
-      join: true,
-      id: 1,
-      location: "home",
-    },
-    {
-      srcImg: "./event.svg",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event1",
-      join: true,
-      id: 1,
-      location: "home",
-    },
-    {
-      srcImg: "./event.svg",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event1",
-      join: true,
-      id: 1,
-      location: "home",
-    },
-    {
-      srcImg: "./event.svg",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event1",
-      join: true,
-      id: 1,
-      location: "home",
-    },
-    {
-      srcImg: "./event.svg",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event1",
-      join: true,
-      id: 1,
-      location: "home",
-    },
-    {
-      srcImg: "./event.svg",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event1",
-      join: true,
-      id: 1,
-      location: "home",
-    },
-    {
-      srcImg: "./event.svg",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event1",
-      join: true,
-      id: 1,
-      location: "home",
-    },
-    {
-      srcImg: "./event.svg",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event1",
-      join: true,
-      id: 1,
-      location: "home",
-    },
-    {
-      srcImg: "./event.svg",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event1",
-      join: true,
-      id: 1,
-      location: "home",
-    },
-    {
-      srcImg: "./event.svg",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event1",
-      join: true,
-      id: 1,
-      location: "home",
-    },
-    {
-      srcImg: "./event.svg",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event1",
-      join: true,
-      id: 1,
-      location: "home",
-    },
-    {
-      srcImg: "./event.svg",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event1",
-      join: true,
-      id: 1,
-      location: "home",
-    },
-    {
-      srcImg: "./event.svg",
-      altImg: "event",
-      date: dayjs("2021-01-01"),
-      name: "event1",
-      join: true,
-      id: 1,
-      location: "home",
-    },
-  ];
 
   const options: any[] = [
     {
@@ -217,14 +79,14 @@ const Event: React.FC<EventProps> = () => {
   );
 
   const renderEventCardList = () =>
-    mockEvents.map((event: Event, idx: number) => (
+    events.map((event: Event, idx: number) => (
       <EventCard key={`event-${idx}`} event={event} />
     ));
 
   if (loading) return <></>;
 
   return (
-    <EventContainer direction="vertical">
+    <EventContainer>
       <HeaderContainer>
         <Title>Explore Events</Title>
         <Space.Compact block>
@@ -245,19 +107,28 @@ const Event: React.FC<EventProps> = () => {
           />
         </Space.Compact>
       </HeaderContainer>
-      <DetailContainer>{renderEventCardList()}</DetailContainer>
+      {events ? (
+        <DetailContainer>{renderEventCardList()}</DetailContainer>
+      ) : (
+        <EmptyWrapper>
+          <Empty description={"No event"} />
+        </EmptyWrapper>
+      )}
     </EventContainer>
   );
 };
 
-const EventContainer = styled(Space)`
+const EventContainer = styled.div`
   padding: 2.5vh 5vw;
   height: 100%;
   width: 100vw;
+  display: flex;
+  flex-flow: column;
+  gap: 5%;
 `;
 
 const HeaderContainer = styled.div`
-  height: 15vh;
+  height: fit-content;
 `;
 
 const DetailContainer = styled(Space)`
@@ -267,6 +138,10 @@ const DetailContainer = styled(Space)`
   grid-template-columns: repeat(auto-fill, 240px);
   grid-gap: 1rem;
   justify-content: space-around;
+`;
+
+const EmptyWrapper = styled.div`
+  height: 100%;
 `;
 
 export default Event;

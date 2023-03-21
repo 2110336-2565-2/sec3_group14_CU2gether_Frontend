@@ -3,6 +3,7 @@ import { Card, Space, Typography } from "antd";
 import { Event } from "@/types";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import dayjs from "dayjs";
 
 type EventCardProps = {
   event: Event;
@@ -25,7 +26,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
         </Title>
         <Space>
           <CalendarMonthIcon fontSize="small" />
-          <Typography>{date.format("ddd, DD MMM YYYY")}</Typography>
+          <Typography>{dayjs(date).format("ddd, DD MMM YYYY")}</Typography>
         </Space>
         <Space>
           <LocationOnIcon fontSize="small" />

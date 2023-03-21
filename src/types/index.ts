@@ -41,22 +41,22 @@ export type Event = {
 };
 
 export type Student = {
-  studentId: String;
-  email: String;
-  password: String;
-  firstName: String;
-  lastName: String;
-  image: String;
-  cardId: String;
+  studentId: string;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  image: string;
+  cardId: string;
 };
 
 export type Organizer = {
-  email: String;
-  name: String;
-  coorName: String;
-  phone: String;
-  description: String;
-  password: String;
+  email: string;
+  name: string;
+  coorName: string;
+  phone: string;
+  description: string;
+  password: string;
 };
 
 export type User = Student | Organizer;

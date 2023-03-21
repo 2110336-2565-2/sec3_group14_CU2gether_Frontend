@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
-import { Avatar, Card, Image, Layout, Typography } from 'antd';
+import { ReactNode, useEffect, useState } from 'react';
+import { Avatar, Card, Image, Input, Layout, Skeleton, Typography } from 'antd';
 import styled from 'styled-components';
 import theme from '@/utils/theme';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { getStudentById } from 'api/student';
+import { getStudentById, updateStudentById } from 'api/student';
+import { student } from '@/types';
+import { ROLE } from '@/utils/Enum';
 
 const { Content } = Layout;
 const { Text } = Typography;
@@ -202,15 +204,24 @@ const StatisticText = styled(Text)`
     }
 `;
 
-interface profile {
-    firstName: string,
-    lastName: string,
-    role: string,
+const initialProfile = {
+    firstName: "John",
+    lastName: "Doe",
+    email: "John@Doe.com",
+    studentId: "0000000000",
+    cardId: "card",
+    description: "great",
+    cancelTimes: 1,
+    createTimes: 2,
+    joinTimes: 3,
+    unjoinTimes: 4,
+    role: ROLE.STUDENT,
 }
 
 const ProfilePage: React.FC<{}> = ({}) => {
-    const [ profile, setProfile ] = useState<profile>({firstName: "John", lastName: "Doe", role: "STUDENT"});
+    const [ profile, setProfile ] = useState<student>(initialProfile);
     const [ isLoading, setLoading ] = useState<boolean>(false)
+    const [ isEditingDescription, setEditingDescription ] = useState<boolean>(false); 
 
     const router = useRouter();
     const { uid } = router.query;
@@ -220,12 +231,34 @@ const ProfilePage: React.FC<{}> = ({}) => {
       if(uid) {
         getStudentById(uid.toString())
         .then((data) => {
-            setProfile({firstName: data.firstName, lastName: data.lastName, role: data.user.role});
+            const {firstName, lastName, email, studentId, cardId, description, createTimes, cancelTimes, joinTimes, unjoinTimes } = data;
+            const role = data.user.role.toLowerCase();
+            setProfile({
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                studentId: studentId,
+                cardId: cardId,
+                description: description,
+                cancelTimes: cancelTimes,
+                createTimes: createTimes,
+                joinTimes: joinTimes,
+                unjoinTimes: unjoinTimes,
+                role: role,
+            });
             setLoading(false);
         })
         .catch((err) => console.log(err))
       }
     },[uid]);
+
+    const editDescription = (message: string) : void => {
+        if(uid) {
+           
+        }
+    }
+
+    if(isLoading) return <Skeleton></Skeleton>
 
     return (
     <ProfileContainer>
@@ -237,7 +270,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
                 <InformationTitle>{profile.firstName+' '+profile.lastName}</InformationTitle>
                 <RoleWrapper>
                     <FontAwesomeIcon icon={faUserGraduate}/>
-                    <RoleSubtitle>{profile.role.toLowerCase()}</RoleSubtitle>
+                    <RoleSubtitle>{profile.role}</RoleSubtitle>
                 </RoleWrapper>
             </InformationContainer>
         </ProfileInformationContainer>
@@ -248,9 +281,11 @@ const ProfilePage: React.FC<{}> = ({}) => {
                 <CardTitle>About</CardTitle>
                 <FontAwesomeIcon icon={faPencil}></FontAwesomeIcon>
             </CardTitleContainer>
-            <AboutContentContainer>
-                <AboutSubTitle>Tell us about yourself</AboutSubTitle>
-            </AboutContentContainer>
+            {isEditingDescription 
+            ? (<Input></Input>) 
+            : (<AboutContentContainer>
+                <AboutSubTitle>{profile.description ? profile.description : "Tell us about yourself"}</AboutSubTitle>
+            </AboutContentContainer>)}
         </AboutCard>
       </AboutContainer>
       <Layout>
@@ -258,16 +293,16 @@ const ProfilePage: React.FC<{}> = ({}) => {
             <RecordCard>
                 <CardTitle>Record</CardTitle>
                 <StatisticContainer>
-                    <StatisticText>Join : 0</StatisticText>
-                    <StatisticText>Unjoin : 0</StatisticText>    
-                    <StatisticText>Create: 0</StatisticText>
-                    <StatisticText>Cancle : 0</StatisticText>
+                    {profile.role === ROLE.STUDENT ? (<StatisticText>Join : {profile.joinTimes}</StatisticText>) : null}
+                    {profile.role === ROLE.STUDENT ? (<StatisticText>UnJoin : {profile.unjoinTimes}</StatisticText>) : null}
+                    <StatisticText>Create : {profile.createTimes}</StatisticText>
+                    <StatisticText>Cancel : {profile.cancelTimes}</StatisticText>
                 </StatisticContainer>
             </RecordCard>
             <PreviousEventCard>
                 <CardTitleContainer>
                     <CardTitle>Event</CardTitle>
-                    <PreviousEventSubTital href="">see all user's event {'>'}</PreviousEventSubTital>
+                    <PreviousEventSubTital href="/">see all user's event {'>'}</PreviousEventSubTital>
                 </CardTitleContainer>
             </PreviousEventCard>
         </ContentContainer>

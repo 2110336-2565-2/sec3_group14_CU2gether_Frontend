@@ -4,7 +4,7 @@ import { getStudentById, updateStudentById } from 'api/student';
 import { Input, Layout, Form, Button, Skeleton, Typography } from 'antd';
 import styled from 'styled-components';
 import theme from '@/utils/theme';
-import FormInput from '@/components/basic-components/FormInput';
+import FormInput from '@/common/input/FormInput'
 
 const { Text } = Typography;
 

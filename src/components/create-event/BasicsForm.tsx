@@ -30,60 +30,78 @@ const FlexContainer = styled.div`
 `;
 
 const BasicsForm: React.FC<{}> = ({}) => {
-  const typeForm = (
-    <Select
-      options={[
-        { value: "RESTAURANT", label: "Restaurant" },
-        { value: "CAFE", label: "Cafe" },
-        { value: "BAR", label: "Bar" },
-        { value: "SPORT", label: "Sport" },
-        { value: "VOLUNTEER", label: "Volunteer" },
-        { value: "CONCERT", label: "Concert" },
-        { value: "PHOTO_TRIP", label: "Photo Trip" },
-        { value: "BOARDGAME", label: "Boardgame" },
-        { value: "SEMINAR", label: "Seminar" },
-        { value: "SPECIAL_DAY", label: "Special Day" },
-        { value: "OTHERS", label: "Others" },
-      ]}
-    />
-  );
+  const typeForm = () => {
+    return (
+      <Select
+        options={[
+          { value: "RESTAURANT", label: "Restaurant" },
+          { value: "CAFE", label: "Cafe" },
+          { value: "BAR", label: "Bar" },
+          { value: "SPORT", label: "Sport" },
+          { value: "VOLUNTEER", label: "Volunteer" },
+          { value: "CONCERT", label: "Concert" },
+          { value: "PHOTO_TRIP", label: "Photo Trip" },
+          { value: "BOARDGAME", label: "Boardgame" },
+          { value: "SEMINAR", label: "Seminar" },
+          { value: "SPECIAL_DAY", label: "Special Day" },
+          { value: "OTHERS", label: "Others" },
+        ]}
+      />
+    );
+  };
 
-  const visibilityForm = (
-    <Radio.Group buttonStyle="solid" style={{ width: "100%" }}>
-      <Radio.Button
-        value="PUBLIC"
-        style={{ width: "50%", textAlign: "center" }}
-      >
-        Public
-      </Radio.Button>
-      <Radio.Button
-        value="PRIVATE"
-        style={{ width: "50%", textAlign: "center" }}
-      >
-        Private
-      </Radio.Button>
-    </Radio.Group>
-  );
+  const visibilityForm = () => {
+    return (
+      <Radio.Group buttonStyle="solid" style={{ width: "100%" }}>
+        <Radio.Button
+          value="PUBLIC"
+          style={{ width: "50%", textAlign: "center" }}
+        >
+          Public
+        </Radio.Button>
+        <Radio.Button
+          value="PRIVATE"
+          style={{ width: "50%", textAlign: "center" }}
+        >
+          Private
+        </Radio.Button>
+      </Radio.Group>
+    );
+  };
 
-  const tagsForm = (
-    <Select
-      mode="tags"
-      placeholder="Tags"
-      options={[{ value: "CU2GETHER", label: "CU2Gether" }]}
-    />
-  );
+  const tagsForm = () => {
+    return (
+      <Select
+        mode="tags"
+        placeholder="Tags"
+        options={[{ value: "CU2GETHER", label: "CU2Gether" }]}
+      />
+    );
+  };
 
-  const participantCountForm = (
-    <FlexContainer>
-      <FormInput title="Min" name="requireParticipantsMin">
-        <InputNumber placeholder="Min" style={{ width: "100%" }} min={1} max={1000}/>
-      </FormInput>
+  const participantCountForm = () => {
+    return (
+      <FlexContainer>
+        <FormInput title="Min" name="requireParticipantsMin">
+          <InputNumber
+            placeholder="Min"
+            style={{ width: "100%" }}
+            min={1}
+            max={1000}
+          />
+        </FormInput>
 
-      <FormInput title="Max" name="requireParticipantsMax">
-        <InputNumber placeholder="Max" style={{ width: "100%" }} min={1} max={1000}/>
-      </FormInput>
-    </FlexContainer>
-  );
+        <FormInput title="Max" name="requireParticipantsMax">
+          <InputNumber
+            placeholder="Max"
+            style={{ width: "100%" }}
+            min={1}
+            max={1000}
+          />
+        </FormInput>
+      </FlexContainer>
+    );
+  };
 
   return (
     <FormContainer>
@@ -102,7 +120,7 @@ const BasicsForm: React.FC<{}> = ({}) => {
         isRequired={true}
         rules={[{ required: true, message: "Please enter Type" }]}
       >
-        {typeForm}
+        {typeForm()}
       </FormInput>
 
       <FormInput
@@ -129,18 +147,18 @@ const BasicsForm: React.FC<{}> = ({}) => {
         isRequired={true}
         rules={[{ required: true, message: "Please enter Visibility" }]}
       >
-        {visibilityForm}
+        {visibilityForm()}
       </FormInput>
 
       <FormInput title="Tags" name="tags">
-        {tagsForm}
+        {tagsForm()}
       </FormInput>
 
       <FormInput
         title="Required Number of Participants"
         name="participant-count"
       >
-        {participantCountForm}
+        {participantCountForm()}
       </FormInput>
     </FormContainer>
   );

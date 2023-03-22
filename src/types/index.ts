@@ -36,7 +36,7 @@ export type Event = {
   meetingType: MeetingType;
   location: string;
   website: string;
-  pictures: string[];
+  photos: string[];
   description: string;
 };
 

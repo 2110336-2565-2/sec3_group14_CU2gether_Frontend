@@ -31,10 +31,12 @@ const PictureForm: React.FC<{}> = ({}) => {
 
   useEffect(() => {
     const formPicture = form.getFieldValue("picture");
-    if (formPicture !== undefined) {
+    if (formPicture) {
       setUrl(formPicture.file.thumbUrl);
     }
   }, []);
+
+  console.log(url);
 
   return (
     <StyledForm

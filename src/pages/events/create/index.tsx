@@ -45,14 +45,16 @@ const StyledForm = styled(Form)`
   }
 `;
 
-const createEvent: React.FC<{}> = ({}) => {
+const CreateEvent: React.FC<{}> = ({}) => {
   const [form] = Form.useForm();
   const { createEvent } = useEventStore();
-  const [currentPageIndex, setCurrentPageIndex] = useState(0);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [currentPageIndex, setCurrentPageIndex] = useState<number>(0);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
   const goNextForm = () => {
     if (currentPageIndex === 0) {
+      console.log(form.getFieldValue('picture'))
+
       const {
         requireParticipantsMin: minimum,
         requireParticipantsMax: maximum,
@@ -103,6 +105,8 @@ const createEvent: React.FC<{}> = ({}) => {
       description,
     } = form.getFieldsValue(true);
 
+    console.log(form.getFieldsValue(true));
+
     createEvent({
       eventName,
       eventType,
@@ -117,7 +121,7 @@ const createEvent: React.FC<{}> = ({}) => {
       meetingType,
       location,
       website,
-      pictures: [picture.file.thumbUrl],
+      photos: picture.fileList,
       description,
     });
 
@@ -205,4 +209,4 @@ const createEvent: React.FC<{}> = ({}) => {
   );
 };
 
-export default createEvent;
+export default CreateEvent;

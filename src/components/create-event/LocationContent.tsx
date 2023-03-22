@@ -11,22 +11,25 @@ const ContentContainer = styled.div`
 `;
 
 const LocationContent: React.FC<{}> = ({}) => {
-  const meetingForm = (
-    <Radio.Group buttonStyle="solid" style={{ width: "100%" }}>
-      <Radio.Button
-        value="ONLINE"
-        style={{ width: "50%", textAlign: "center" }}
-      >
-        Online
-      </Radio.Button>
-      <Radio.Button
-        value="ONSITE"
-        style={{ width: "50%", textAlign: "center" }}
-      >
-        Onsite
-      </Radio.Button>
-    </Radio.Group>
-  );
+  const meetingForm = () => {
+    return (
+      <Radio.Group buttonStyle="solid" style={{ width: "100%" }}>
+        <Radio.Button
+          value="ONLINE"
+          style={{ width: "50%", textAlign: "center" }}
+        >
+          Online
+        </Radio.Button>
+        <Radio.Button
+          value="ONSITE"
+          style={{ width: "50%", textAlign: "center" }}
+        >
+          Onsite
+        </Radio.Button>
+      </Radio.Group>
+    );
+  };
+
   return (
     <ContentContainer>
       <FormInput
@@ -35,7 +38,7 @@ const LocationContent: React.FC<{}> = ({}) => {
         isRequired={true}
         rules={[{ required: true, message: "Please enter Meeting Form" }]}
       >
-        {meetingForm}
+        {meetingForm()}
       </FormInput>
 
       <FormInput

@@ -2,6 +2,8 @@ import { CU_API } from "@/config";
 import { EventType, MeetingType } from "@/types";
 import client from "@/utils/client";
 
+import { Event } from "@/types"
+
 const baseUrl = CU_API + "events";
 
 export type getEventsRequestParams = {
@@ -32,8 +34,22 @@ const getEvents = async (params: getEventsRequestParams) => {
   }
 };
 
+const createEvent = async (params: Event) => {
+    try {
+        const events = await client.post(baseUrl, params);
+        if (events.status === 201) {
+            console.log("Create Success");
+        } else {
+            throw new Error("Error on creating event with status code: " + events.status);
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 const events = {
-  getEvents,
-};
+    getEvents,
+    createEvent
+}
 
 export default events;

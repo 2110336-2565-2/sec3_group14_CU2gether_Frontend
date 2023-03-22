@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Typography } from "antd";
+import { Button, Result, Typography } from "antd";
 import styled from "styled-components";
 
 const ContentContainer = styled.div`
@@ -12,6 +12,8 @@ const ContentContainer = styled.div`
   gap: 15px;
 `;
 
+const { Title, Text } = Typography;
+
 const SuccessContent: React.FC<{}> = ({}) => {
   const successText = [
     "You can edit your event information by clicking “My Events” on the page header and select the event you want to edit.",
@@ -19,9 +21,11 @@ const SuccessContent: React.FC<{}> = ({}) => {
   ];
   return (
     <ContentContainer>
-      <Typography.Title level={1} style={{marginBottom: 5}}>Create Success!</Typography.Title>
-      <Typography.Text>{successText[0]}</Typography.Text>
-      <Typography.Text>{successText[1]}</Typography.Text>
+      <Title level={1} style={{ marginBottom: 5 }}>
+        Create Success!
+      </Title>
+      <Text>{successText[0]}</Text>
+      <Text>{successText[1]}</Text>
       <Button>Back to Home</Button>
     </ContentContainer>
   );

@@ -8,6 +8,7 @@ type EventStore = {
   joinedEvents: Event[];
   fetchEvents: (params: getEventsRequestParams) => void;
   fetchJoinEvents: (id: string) => void;
+  createEvent: (params: Event) => void;
 };
 
 const useEventStore = create<EventStore>((set) => ({
@@ -21,6 +22,9 @@ const useEventStore = create<EventStore>((set) => ({
       .get(`/events/join/${id}`)
       .then((res: any) => set({ joinedEvents: res.data }));
   },
+  createEvent: (params: Event) => {
+    events.createEvent(params);
+  }
 }));
 
 export default useEventStore;

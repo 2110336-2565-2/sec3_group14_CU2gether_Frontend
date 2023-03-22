@@ -3,14 +3,19 @@ import { Input, Form } from "antd";
 
 const DescriptionContent: React.FC<{}> = ({}) => {
   return (
-    <>
-      <Form.Item name="description">
+    <div style={{ width: "100%", height: "100%" }}>
+      <Form.Item name="description" style={{ height: "100%" }}>
         <Input.TextArea
           placeholder="Description"
-          style={{ height: 400, width: 800, resize: "none" }}
+          style={{
+            height: "45vh",
+            maxHeight: "100%",
+            width: "100%",
+            resize: "none",
+          }}
         />
       </Form.Item>
-    </>
+    </div>
   );
 };
 

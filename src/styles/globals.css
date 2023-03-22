@@ -123,3 +123,9 @@ a {
 .ant-dropdown-menu-item-icon {
   font-size: 18px !important;
 }
+
+@media screen and (max-width: 425px) {
+  .ant-upload-wrapper .ant-upload-drag {
+    width: 100%;
+  }
+}

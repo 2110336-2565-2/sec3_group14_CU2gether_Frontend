@@ -1,14 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import {
-  Form,
   Input,
   InputNumber,
   Select,
   Radio,
   DatePicker,
   TimePicker,
-  Upload,
 } from "antd";
 import theme from "@/utils/theme";
 
@@ -18,7 +16,7 @@ const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 55%;
-  height: 75%;
+  height: 100%;
 
   ${theme.media.mobile} {
     width: 100%;
@@ -35,10 +33,17 @@ const BasicsForm: React.FC<{}> = ({}) => {
   const typeForm = (
     <Select
       options={[
-        { value: "eiei1", label: "eiei1" },
-        { value: "eiei2", label: "eiei2" },
-        { value: "eiei3", label: "eiei3" },
-        { value: "eiei4", label: "eiei4" },
+        { value: "RESTAURANT", label: "Restaurant" },
+        { value: "CAFE", label: "Cafe" },
+        { value: "BAR", label: "Bar" },
+        { value: "SPORT", label: "Sport" },
+        { value: "VOLUNTEER", label: "Volunteer" },
+        { value: "CONCERT", label: "Concert" },
+        { value: "PHOTO_TRIP", label: "Photo Trip" },
+        { value: "BOARDGAME", label: "Boardgame" },
+        { value: "SEMINAR", label: "Seminar" },
+        { value: "SPECIAL_DAY", label: "Special Day" },
+        { value: "OTHERS", label: "Others" },
       ]}
     />
   );
@@ -46,13 +51,13 @@ const BasicsForm: React.FC<{}> = ({}) => {
   const visibilityForm = (
     <Radio.Group buttonStyle="solid" style={{ width: "100%" }}>
       <Radio.Button
-        value="public"
+        value="PUBLIC"
         style={{ width: "50%", textAlign: "center" }}
       >
         Public
       </Radio.Button>
       <Radio.Button
-        value="private"
+        value="PRIVATE"
         style={{ width: "50%", textAlign: "center" }}
       >
         Private
@@ -64,23 +69,18 @@ const BasicsForm: React.FC<{}> = ({}) => {
     <Select
       mode="tags"
       placeholder="Tags"
-      options={[
-        { value: "eiei1", label: "eiei1" },
-        { value: "eiei2", label: "eiei2" },
-        { value: "eiei3", label: "eiei3" },
-        { value: "eiei4", label: "eiei4" },
-      ]}
+      options={[{ value: "CU2GETHER", label: "CU2Gether" }]}
     />
   );
 
   const participantCountForm = (
     <FlexContainer>
-      <FormInput title="Min" name="minimum">
-        <InputNumber placeholder="Minimum" style={{ width: "100%" }} min={1} />
+      <FormInput title="Min" name="requireParticipantsMin">
+        <InputNumber placeholder="Min" style={{ width: "100%" }} min={1} max={1000}/>
       </FormInput>
 
-      <FormInput title="Max" name="maximum">
-        <InputNumber placeholder="Maximum" style={{ width: "100%" }} min={1} />
+      <FormInput title="Max" name="requireParticipantsMax">
+        <InputNumber placeholder="Max" style={{ width: "100%" }} min={1} max={1000}/>
       </FormInput>
     </FlexContainer>
   );
@@ -89,18 +89,18 @@ const BasicsForm: React.FC<{}> = ({}) => {
     <FormContainer>
       <FormInput
         title="Event Name"
-        name="event-name"
+        name="eventName"
         isRequired={true}
-        errorMessage="Please enter event name"
+        rules={[{ required: true, message: "Please enter Event Name" }]}
       >
         <Input placeholder="Event Name" />
       </FormInput>
 
       <FormInput
         title="Type"
-        name="type"
+        name="eventType"
         isRequired={true}
-        errorMessage="Please enter type"
+        rules={[{ required: true, message: "Please enter Type" }]}
       >
         {typeForm}
       </FormInput>
@@ -109,25 +109,25 @@ const BasicsForm: React.FC<{}> = ({}) => {
         title="Date"
         name="date"
         isRequired={true}
-        errorMessage="Please enter date"
+        rules={[{ required: true, message: "Please enter Date" }]}
       >
-        <DatePicker.RangePicker style={{ width: "100%" }} />
+        <DatePicker.RangePicker style={{ width: "100%" }} format="YYYY-MM-DD" />
       </FormInput>
 
       <FormInput
         title="Time"
         name="time"
         isRequired={true}
-        errorMessage="Please enter time"
+        rules={[{ required: true, message: "Please enter Time" }]}
       >
-        <TimePicker.RangePicker style={{ width: "100%" }} />
+        <TimePicker.RangePicker style={{ width: "100%" }} format="HH:mm" />
       </FormInput>
 
       <FormInput
         title="Visibility"
         name="visibility"
         isRequired={true}
-        errorMessage="Please enter visibility"
+        rules={[{ required: true, message: "Please enter Visibility" }]}
       >
         {visibilityForm}
       </FormInput>
@@ -139,7 +139,6 @@ const BasicsForm: React.FC<{}> = ({}) => {
       <FormInput
         title="Required Number of Participants"
         name="participant-count"
-        isRequired={false}
       >
         {participantCountForm}
       </FormInput>

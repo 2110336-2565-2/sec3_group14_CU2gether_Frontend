@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Upload, Form, Image } from "antd";
+import { Upload, Form, Image, FormInstance, UploadFile } from "antd";
 import { PictureOutlined, LoadingOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import theme from "@/utils/theme";
+
+const StyledForm = styled(Form.Item)`
+  width: 30%;
+  height: 100%;
+
+  ${theme.media.mobile} {
+    width: 100%;
+  }
+`;
 
 const PictureForm: React.FC<{}> = ({}) => {
   const [url, setUrl] = useState<string>("");
@@ -18,11 +27,19 @@ const PictureForm: React.FC<{}> = ({}) => {
     );
   };
 
+  const form = Form.useFormInstance();
+
+  useEffect(() => {
+    const formPicture = form.getFieldValue("picture");
+    if (formPicture !== undefined) {
+      setUrl(formPicture.file.thumbUrl);
+    }
+  }, []);
+
   return (
-    <Form.Item
+    <StyledForm
       name="picture"
       rules={[{ required: true, message: "Please insert picture" }]}
-      style={{ width: "30%", height: "100%" }}
     >
       <Upload.Dragger
         maxCount={1}
@@ -32,15 +49,21 @@ const PictureForm: React.FC<{}> = ({}) => {
             setUrl(reader.result as string);
           };
           reader.readAsDataURL(file);
-          return false;
+          // return false;
+        }}
+        onChange={({ file }) => {
+          if (file.status === "done") {
+            file.thumbUrl = url;
+          }
         }}
         onRemove={() => {
+          form.setFieldValue("picture", undefined);
           setUrl("");
         }}
       >
         <ShowImage />
       </Upload.Dragger>
-    </Form.Item>
+    </StyledForm>
   );
 };
 

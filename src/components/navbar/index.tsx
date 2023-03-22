@@ -12,6 +12,8 @@ import HelpIcon from "@mui/icons-material/Help";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import useProfileStore from "@/hooks/useProfileStore";
+import auth from "api/auth";
 
 type NavbarProps = {};
 
@@ -20,11 +22,16 @@ const { Paragraph, Text } = Typography;
 type MenuItem = Required<MenuProps>["items"][number];
 
 const Navbar: React.FC<NavbarProps> = () => {
+  const { isLogin, checkStatus } = useProfileStore();
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
   const mobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   useEffect(() => {
+    const checkLoginStatus = async () => {
+      await checkStatus();
+    };
+    checkLoginStatus();
     setIsMobileScreen(mobile);
   }, [mobile]);
 
@@ -114,9 +121,9 @@ const Navbar: React.FC<NavbarProps> = () => {
           width={200}
           height={64}
         />
-        {true ? (
+        {isLogin ? (
           <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
-            <ProfileImage
+            <Image
               src={"./pattanan.svg"}
               alt={"profile image"}
               width={36}
@@ -125,7 +132,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             />
           </Dropdown>
         ) : (
-          <ProfileImage
+          <Image
             src={"./pattanan.svg"}
             alt={"profile image"}
             width={36}
@@ -183,11 +190,11 @@ const Navbar: React.FC<NavbarProps> = () => {
             ))}
           </Menu>
         </MenuContainer>
-        {true ? (
+        {isLogin ? (
           <ProfileContainer>
             <Name style={{ color: theme.color.primary }}>Hello, {name}</Name>
             <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
-              <ProfileImage
+              <Image
                 src={"./pattanan.svg"}
                 alt={"profile image"}
                 width={36}
@@ -198,8 +205,13 @@ const Navbar: React.FC<NavbarProps> = () => {
           </ProfileContainer>
         ) : (
           <ProfileContainer>
-            <OutlinedButton text={"eiei"} />
-            <ContainedButton text={"eiei"} />
+            <ContainedButton text={"Sign up"} onClick={() => {}} />
+            <OutlinedButton
+              text={"Log in"}
+              onClick={() => {
+                auth.login("tae@tae.com", "12345678");
+              }}
+            />
           </ProfileContainer>
         )}
       </FullNavContainer>
@@ -268,12 +280,6 @@ const Logo = styled(Image)`
   }
   ${theme.media.mobile} {
     width: 100px !important;
-  }
-`;
-
-const ProfileImage = styled(Image)`
-  ${theme.media.tablet} {
-    margin-bottom: 8px;
   }
 `;
 

@@ -1,4 +1,3 @@
-import { Dayjs } from "dayjs";
 export enum EventType {
   "RESTAURANT",
   "CAFE",
@@ -30,11 +29,11 @@ export type Event = {
   tags: string[];
   requireParticipantsMin: number;
   requireParticipantsMax: number;
-  startDate: Dayjs;
-  endDate: Dayjs;
-  startTime: Dayjs;
-  endTime: Dayjs;
-  meetingType: string;
+  startDate: string;
+  endDate: string;
+  startTime: string;
+  endTime: string;
+  meetingType: MeetingType;
   location: string;
   website: string;
   pictures: string[];

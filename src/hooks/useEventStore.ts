@@ -1,20 +1,20 @@
 import client from "@/utils/client";
 import { Event } from "@/types";
 import { create } from "zustand";
-import events from "api/events";
+import events, { getEventsRequestParams } from "api/events";
 
 type EventStore = {
   events: Event[];
   joinedEvents: Event[];
-  fetchEvents: () => void;
+  fetchEvents: (params: getEventsRequestParams) => void;
   fetchJoinEvents: (id: string) => void;
 };
 
 const useEventStore = create<EventStore>((set) => ({
   events: [],
   joinedEvents: [],
-  fetchEvents: () => {
-    events.getEvents().then((res: any) => set({ events: res }));
+  fetchEvents: (params) => {
+    events.getEvents(params).then((res: any) => set({ events: res }));
   },
   fetchJoinEvents: (id: string) => {
     client

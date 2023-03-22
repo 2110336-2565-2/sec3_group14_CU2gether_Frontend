@@ -2,6 +2,8 @@ import React from "react";
 import { Row, Col, Form } from "antd";
 import styled from "styled-components";
 import theme from "@/utils/theme";
+import { NamePath } from "antd/es/form/interface";
+import { Rule } from "antd/es/form";
 
 const TextBox = styled.div<{ width: number | string; fontSize: number }>`
   font-weight: bold;
@@ -11,8 +13,11 @@ const TextBox = styled.div<{ width: number | string; fontSize: number }>`
   margin-right: 10px;
 
   ${theme.media.mobile} {
-    font-size: 0.7rem;
-    min-width: 100px;
+    font-size: 0.8rem;
+  }
+
+  ${theme.media.tablet} {
+    font-size: 0.8rem;
   }
 `;
 
@@ -23,9 +28,10 @@ type FormInputProps = {
   textWidth?: number | string;
   inputWidth?: number;
   isSubForm?: boolean;
-  errorMessage?: string;
   fontSize?: number;
   children: JSX.Element;
+  rules?: Rule[];
+  dependencies?: NamePath[];
 };
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -35,15 +41,17 @@ const FormInput: React.FC<FormInputProps> = ({
   textWidth = "100%",
   inputWidth = "100%",
   isSubForm = true,
-  errorMessage = "Please enter information",
   fontSize = 14,
   children,
+  rules = [{ required: false }],
+  dependencies = [],
 }) => {
   const marginBottom: number = isSubForm ? 24 : 0;
+
   return (
     <div style={{ width: "100%" }}>
       <Row>
-        <Col style={{ width: "24%" }}>
+        <Col style={{ width: "35%" }}>
           <TextBox width={textWidth} fontSize={fontSize}>
             {title}{" "}
             {isRequired ? (
@@ -54,16 +62,17 @@ const FormInput: React.FC<FormInputProps> = ({
           </TextBox>
         </Col>
 
-        <Col style={{ width: "76%" }}>
+        <Col style={{ width: "65%" }}>
           <Form.Item
             style={{
-              minWidth: 100,
+              minWidth: 50,
               maxWidth: 400,
               width: inputWidth,
               marginBottom: marginBottom,
             }}
             name={name}
-            rules={[{ required: isRequired, message: errorMessage }]}
+            rules={rules}
+            dependencies={dependencies}
           >
             {children}
           </Form.Item>

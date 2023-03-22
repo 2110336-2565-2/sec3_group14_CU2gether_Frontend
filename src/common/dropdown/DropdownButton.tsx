@@ -1,21 +1,19 @@
 import React from "react";
-import { Button, Dropdown } from "antd";
+import { Button, Dropdown, DropdownProps, MenuProps } from "antd";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import styled from "styled-components";
 
 type DropdownButtonProps = {
   text: string;
   width: string | number;
-  dropdownComponent: React.ReactNode;
 };
 
-const DropdownButton: React.FC<DropdownButtonProps> = ({
-  text,
-  width,
-  dropdownComponent,
-}) => {
+const DropdownButton: React.FC<DropdownButtonProps & DropdownProps> = (
+  props
+) => {
+  const { text, width, ...otherProps } = props;
   return (
-    <Dropdown dropdownRender={() => dropdownComponent}>
+    <Dropdown {...otherProps}>
       <Button style={{ width: width }}>
         <TextWithIcon>
           <>

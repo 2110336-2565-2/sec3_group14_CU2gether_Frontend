@@ -5,6 +5,7 @@ axios.interceptors.request.use(
     if (!config.headers["Content-Type"]) {
       config.headers["Content-Type"] = "application/json";
     }
+    config.withCredentials = true;
     return config;
   },
   (error) => Promise.reject(error)

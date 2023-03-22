@@ -5,13 +5,8 @@ import client from "@/utils/client";
 
 const eventUrl = CU_API + "events/" // + id
 
-const getEventByIDURL = CU_API + 'events/' // + id
-const updateEventDetailURL = CU_API + 'events/' 
-const updateEventDescriptionURL = CU_API + 'events/'
-const cancelEventURL = CU_API + 'events/'
-
 export const getEventByID = async (id: String) => {
-    const response = await axios.get(getEventByIDURL+id);
+    const response = await axios.get(eventUrl+id);
     return response.data;
 }
 
@@ -45,7 +40,7 @@ export const updateEventDetail = (
     website: String,
 ) => {
     axios
-    .patch(updateEventDetailURL+id, {
+    .patch(eventUrl+id, {
         id,
         eventName,
         eventType,
@@ -72,9 +67,24 @@ export const updateEventDescription = (
     description: String,
 ) => {
     axios
-    .patch(updateEventDescriptionURL+id, {
+    .patch(eventUrl+id, {
         id,
         description,
+    })
+    .then((res) => {
+        console.log(res);
+    })
+    .catch((err: AxiosError) => console.log(err));
+}
+
+export const updateEventImage = (
+    id: String,
+    picture: String,
+) => {
+    axios
+    .patch(eventUrl+id, {
+        id,
+        picture,
     })
     .then((res) => {
         console.log(res);
@@ -86,7 +96,7 @@ export const cancelEvent = (
     id: String,
 ) => {
     axios
-    .delete(cancelEventURL+id, {
+    .delete(eventUrl+id, {
     })
     .then((res) => {
         console.log(res);

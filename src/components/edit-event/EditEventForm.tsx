@@ -3,15 +3,18 @@ import styled from "styled-components";
 import { Typography, Modal, Upload, Form, Input, Select, Radio, DatePicker, TimePicker, Button, Layout, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
 import { FormInput } from "@/common/input";
-import { getEventByID, updateEventDetail, cancelEvent } from "api/event";
 import type { UploadProps } from 'antd/es/upload';
 import type { UploadFile } from 'antd/es/upload/interface';
 import dayjs from 'dayjs';
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { EventType, Visibility, MeetingType } from "@/types";
+import useEventStore from "@/hooks/useEventStore";
+import event from "api/event";
 
 import PictureForm from "./PictureForm";
+import { format } from "path";
 
 const { Title, Text} = Typography;
  
@@ -106,11 +109,11 @@ const CancelEventContent = styled.h2`
 `
 
 const typeList = [
-  { value: "No Type", label: "No Type"},
-  { value: "Concert", label: "Concert" },
-  { value: "Education", label: "Education" },
-  { value: "Festival", label: "Festival" },
-  { value: "Market", label: "Market" },
+  { value: "RESTAURANT", label: "Restaurant"},
+  { value: "CAFE", label: "Cafe" },
+  { value: "BAR", label: "Bar" },
+  { value: "SPORT", label: "Sport" },
+  { value: "VOLUNTEER", label: "Volunteer" },
 ];
 
 const tagList = [
@@ -120,24 +123,43 @@ const tagList = [
   { value: "eiei4", label: "eiei4" },
 ];
 
+export type eventDetailParams = {
+  id: string,
+  eventName?: string,
+  eventType?: EventType,
+  visibility?: Visibility,
+  tags?: string[],
+  requireParticipantsMin?: number,
+  requireParticipantsMax?: number,
+  startDate?: string,
+  endDate?: string,
+  startTime?: string,
+  endTime?: string,
+  meetingType?: MeetingType,
+  location?: string,
+  website?: string,
+};
+
 const EditEvent: React.FC<{}> = ({}) => {
   const [eventDetail, setEventDetail] = useState({
     id: "0",
     eventName: "No Event Name",
-    eventType: "No Type",
-    visibility: "public",
-    tags: "Animal",
-    requireParticipantsMin: 0,
-    requireParticipantsMax: 127,
-    startDate: dayjs('13:30:56', 'HH:mm:ss'),
-    endDate: dayjs('13:30:56', 'HH:mm:ss'),
-    startTime: dayjs('13:30:56', 'HH:mm:ss'),
-    endTime: dayjs('13:30:56', 'HH:mm:ss'),
-    meetingType: "onsite",
-    location: "Somewhere On Earth",
+    eventType: EventType.OTHERS,
+    visibility: Visibility.PRIVATE,
+    tags: ["No Tag"],
+    requireParticipantsMin: 1,
+    requireParticipantsMax: 20,
+    startDate: '2000-01-01',
+    endDate: '2000-01-02',
+    startTime: '08:00',
+    endTime: '16:00',
+    meetingType: MeetingType.ONSITE,
+    location: "Chulalongkorn",
     website: "www.exmaple.com",
   });
 
+  // const [eventDetail, setEventDetail] = useState<eventDetailParams>({});
+  // const { event, fetchEvent } = useEventStore();
   const [onCancelEvent, setOnCancelEvent] = useState<boolean>(false); 
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [fileList, setFileList] = useState<UploadFile[]>([
@@ -157,7 +179,7 @@ const EditEvent: React.FC<{}> = ({}) => {
   const { ename } = router.query;
   
   useEffect(() => {
-    getEventByID("1")
+    event.getEventByID("3")
     .then((data) => {
       const newEvent = {
         id: data.id,
@@ -183,6 +205,20 @@ const EditEvent: React.FC<{}> = ({}) => {
     })
   }, []);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       await fetchEvent("2");
+  //     } catch (e) {}
+  //   };
+  //   fetchData();
+  //   // setEventDetail(e);
+  // }, []);
+
+  
+  const dateFormat = 'YYYY-MM-DD';
+  const timeFormat = 'HH:mm';
+
   useEffect(() => {
     form.setFieldsValue({
       "eventName": eventDetail.eventName,
@@ -192,17 +228,13 @@ const EditEvent: React.FC<{}> = ({}) => {
       "requireParticipantsMin": eventDetail.requireParticipantsMin,
       "requireParticipantsMax": eventDetail.requireParticipantsMax,
       "requireParticipants": [eventDetail.requireParticipantsMin, eventDetail.requireParticipantsMax],
-      "startDate": dayjs(eventDetail.startDate),
-      "endDate": dayjs(eventDetail.endDate),
-      "date": [dayjs(eventDetail.startDate), dayjs(eventDetail.endDate)],
-      "startTime": dayjs(eventDetail.startTime),
-      "endTime": dayjs(eventDetail.endTime),
-      "time": [dayjs(eventDetail.startTime), dayjs(eventDetail.endTime)],
+      "date": [dayjs(eventDetail.startDate, dateFormat), dayjs(eventDetail.endDate, dateFormat)],
+      "time": [dayjs(eventDetail.startTime, timeFormat), dayjs(eventDetail.endTime, timeFormat)],
       "meetingType": eventDetail.meetingType,
       "location": eventDetail.location,
       "website": eventDetail.website,
     })
-  })
+  });
 
   const onFormFinish = async (values: any) => {
     console.log(values);
@@ -218,7 +250,7 @@ const EditEvent: React.FC<{}> = ({}) => {
       meetingType, 
       location, 
       website,} = values;
-    updateEventDetail(
+      event.updateEventDetail(
       id,
       eventName, 
       eventType, 
@@ -226,10 +258,10 @@ const EditEvent: React.FC<{}> = ({}) => {
       tags, 
       requireParticipants[0],
       requireParticipants[1], 
-      dayjs(date[0]),
-      dayjs(date[1]), 
-      dayjs(time[0]),
-      dayjs(time[1]), 
+      date[0].format("YYYY-MM-DD"),
+      date[1].format("YYYY-MM-DD"), 
+      time[0].format("HH:mm"),
+      time[1].format("HH:mm"), 
       meetingType, 
       location, 
       website,
@@ -241,7 +273,7 @@ const EditEvent: React.FC<{}> = ({}) => {
   }
 
   const handleEditDescriptionClick = () => {
-    router.push('/editEvent/description',undefined,{shallow:true});
+    router.push('/editEvent/description');
   }
 
   const toggleCancelEventModal = () => {
@@ -249,7 +281,7 @@ const EditEvent: React.FC<{}> = ({}) => {
   };
 
   const handleCancelEventSureClick = () => {
-    cancelEvent(eventDetail.id);
+    event.cancelEvent(eventDetail.id);
   }
 
   const handleCancelEventCancelClick = () => {
@@ -303,9 +335,6 @@ const EditEvent: React.FC<{}> = ({}) => {
     </FlexContainer>
   );
 
-  const dateFormat = 'YYYY-MM-DD';
-  const timeFormat = 'HH:mm';
-
   const dateForm = (
     <FlexContainer>
       <Form.Item name="date" style={{width: '100%'}}>
@@ -329,18 +358,15 @@ const EditEvent: React.FC<{}> = ({}) => {
   );
 
   const meetingTypeForm = (
-    <FlexContainer>
-      <Radio.Group defaultValue={eventDetail.meetingType} buttonStyle="solid" style={{ width:'100%'}}>
-        <Radio.Button value="onsite" style={{ width: '50%', textAlign: "center" }}>
-          Onsite
-        </Radio.Button>
-        <Radio.Button value="online" style={{ width: '50%', textAlign: "center" }}>
-          Online
-        </Radio.Button>
-      </Radio.Group>      
-    </FlexContainer>
-  );
-
+    <Radio.Group defaultValue={eventDetail.meetingType} buttonStyle="solid" style={{ width:'100%'}}>
+      <Radio.Button value="ONSITE" style={{ width: '50%', textAlign: "center" }}>
+        Onsite
+      </Radio.Button>
+      <Radio.Button value="ONLINE" style={{ width: '50%', textAlign: "center" }}>
+        Online
+      </Radio.Button>
+    </Radio.Group>   
+  )
   const locationForm = (
     <Input placeholder="Location" defaultValue={eventDetail.location}/>
   );

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { Form, Input, Button, Layout, Space, ConfigProvider} from "antd";
 import theme from "@/utils/theme";
 import styled from 'styled-components';
-import { getEventByID, updateEventDescription } from "api/event";
+import event from "api/event";
 
 const { TextArea } = Input;
 
@@ -44,7 +44,7 @@ const Description: React.FC<{}> = ({}) => {
     const router = useRouter();
 
     useEffect(() => {
-      getEventByID("1")
+      event.getEventByID("1")
       .then((data) => {
         const newDescription = {
             id: data.id,
@@ -55,7 +55,7 @@ const Description: React.FC<{}> = ({}) => {
       .catch((err) => {
         console.log(err)
       })
-    }, [router]);
+    }, []);
 
     useEffect(() => {
         form.setFieldsValue({
@@ -68,7 +68,7 @@ const Description: React.FC<{}> = ({}) => {
         console.log(values);
         const id = descriptionDetail.id;
         const { description } = values;
-        updateEventDescription(id, description);
+        event.updateEventDescription(id, description);
         router.push('/editEvent');
       }
 

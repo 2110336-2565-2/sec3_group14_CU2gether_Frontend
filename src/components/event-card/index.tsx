@@ -15,8 +15,8 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const { pictures, startDate, endDate, eventName, location } = event;
 
   const getDateTimeText = () => {
-    const start = dayjs(startDate);
-    const end = dayjs(endDate);
+    const start = dayjs(startDate, "YYYY-MM-DD");
+    const end = dayjs(endDate, "YYYY-MM-DD");
     if (start.isSame(end, "day")) {
       return start.format("ddd, DD MMM YYYY");
     } else if (start.isSame(end, "month")) {

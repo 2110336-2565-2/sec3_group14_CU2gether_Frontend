@@ -1,10 +1,14 @@
 import axios, { AxiosError } from "axios";
 import { CU_API } from "@/config";
+import auth from "./auth"
 import events from "./events";
+import userProfile from "./user-profile";
 
 export default {
+  auth,
   events,
-}
+  userProfile,
+};
 
 const registerStudentURL = CU_API + "register/student";
 const registerOrganizerURL = CU_API + "register/organizer";
@@ -51,18 +55,6 @@ export const registerOrganizer = (
       coorName,
       phone,
       description,
-    })
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err: AxiosError) => console.log(err));
-};
-
-export const login = (email: String, password: String) => {
-  axios
-    .post(loginStudentURL, {
-      email,
-      password,
     })
     .then((res) => {
       console.log(res);

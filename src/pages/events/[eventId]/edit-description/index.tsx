@@ -42,19 +42,22 @@ const Description: React.FC<{}> = ({}) => {
 
     const [form] = Form.useForm();
     const router = useRouter();
+    const { eventId } = router.query;
 
     useEffect(() => {
-      event.getEventByID("1")
-      .then((data) => {
-        const newDescription = {
-            id: data.id,
-            description: data.description,
-        }
-        setDescriptionDetail(newDescription);
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+      if (eventId) {
+        event.getEventByID(eventId.toString())
+        .then((data) => {
+          const newDescription = {
+              id: data.id,
+              description: data.description,
+          }
+          setDescriptionDetail(newDescription);
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      }
     }, []);
 
     useEffect(() => {
@@ -69,11 +72,11 @@ const Description: React.FC<{}> = ({}) => {
         const id = descriptionDetail.id;
         const { description } = values;
         event.updateEventDescription(id, description);
-        router.push('/editEvent');
+        router.push(`/events/${eventId}/edit-main`);
       }
 
     const handleCancelClick = () => {
-        router.push('/editEvent');
+        router.push(`/events/${eventId}/edit-main`);
     };
 
     const buttonForm = (

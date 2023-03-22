@@ -77,7 +77,12 @@ const Event: React.FC<EventProps> = () => {
   const renderLocationSearch = () => (
     <SearchInput
       placeholder={"Location"}
-      style={{ minWidth: "150px", width: "35%" }}
+      value={eventsParams.location}
+      onChange={(e: any) => {
+        const newEventsParams = { ...eventsParams, location: e.target.value };
+        setEventsParams(newEventsParams);
+      }}
+      style={{ minWidth: "150px", width: "30%" }}
     />
   );
   const renderEventTypePicker = () => (
@@ -95,6 +100,7 @@ const Event: React.FC<EventProps> = () => {
   );
   const renderMeetingTypePicker = () => (
     <Group
+      defaultValue={undefined}
       value={eventsParams.meetingType}
       onChange={(e) => {
         setEventsParams({
@@ -105,6 +111,7 @@ const Event: React.FC<EventProps> = () => {
     >
       <Button value="ONSITE">Onsite</Button>
       <Button value="ONLINE">Online</Button>
+      <Button value={undefined}>Both</Button>
     </Group>
   );
   const renderDatePicker = () => (
@@ -283,7 +290,6 @@ const Row = styled.div`
   display: flex;
   flex-flow: row;
   gap: 5px;
-  padding: 0 5px;
   justify-content: space-between;
 `;
 

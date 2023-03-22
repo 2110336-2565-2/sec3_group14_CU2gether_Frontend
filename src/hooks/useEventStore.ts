@@ -7,7 +7,7 @@ type EventStore = {
   events: Event[];
   joinedEvents: Event[];
   fetchEvents: (params: getEventsRequestParams) => void;
-  fetchJoinEvents: (id: string) => void;
+  fetchJoinEvents: () => void;
 };
 
 const useEventStore = create<EventStore>((set) => ({
@@ -16,9 +16,9 @@ const useEventStore = create<EventStore>((set) => ({
   fetchEvents: (params) => {
     events.getEvents(params).then((res: any) => set({ events: res }));
   },
-  fetchJoinEvents: (id: string) => {
+  fetchJoinEvents: () => {
     client
-      .get(`/events/join/${id}`)
+      .get("http://localhost:3001/userProfile/joining-event")
       .then((res: any) => set({ joinedEvents: res.data }));
   },
 }));

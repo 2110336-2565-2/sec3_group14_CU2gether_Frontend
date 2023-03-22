@@ -19,10 +19,11 @@ export enum Visibility {
 
 export enum MeetingType {
   "ONSITE",
-  "ONLINE"
+  "ONLINE",
 }
 
 export type Event = {
+  id: number;
   eventName: string;
   eventType: EventType;
   visibility: Visibility;
@@ -37,6 +38,8 @@ export type Event = {
   location: string;
   website: string;
   pictures: string[];
+  description: string;
+  ownerName: string;
 };
 
 export type Student = {

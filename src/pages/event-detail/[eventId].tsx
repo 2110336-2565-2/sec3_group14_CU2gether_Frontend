@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";
 import dayjs, { Dayjs } from "dayjs";
@@ -6,60 +6,106 @@ import { Space, Typography, Layout } from "antd";
 import { useRouter } from "next/router";
 import { ContainedButton, OutlinedButton } from "@/common/button";
 import theme from "@/utils/theme";
-import profilePic from "../../../public/background.svg";
+import eventDetail from "api/event-detail";
+import { Event, EventType, MeetingType, Visibility } from "@/types";
+import useEventStore from "@/hooks/useEventStore";
 
 type EventDetailProps = {
   event: {
-    id: number;
-    srcImg: string;
-    altImg: string;
-    date: Dayjs;
-    name: string;
-    join: boolean;
+    eventName: string;
     ownerName: string;
     eventType: string;
     location: string;
+    startDate: Dayjs;
+    endDate: Dayjs;
+    startTime: string;
+    endTime: string;
+    pictures: string;
+    description: string;
   };
 };
 
 const { Title } = Typography;
-// const { Header, Footer, Sider, Content } = Layout;
 
 const EventDetail: React.FC = () => {
   const router = useRouter();
   const { eventId } = router.query;
 
-  const mockEvents = [
-    {
-      id: 1,
-      eventName: "event1",
-      ownerName: "OAT",
-      eventType: "Concert",
-      location: "402, Building 3, Faculty of Engineering",
-      startDate: dayjs("2021-01-01"),
-      endDate: dayjs("2021-01-01"),
-      startTime: "10:00",
-      endTime: "11:00",
-      pictures: "",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor nam maxime veritatis provident doloribus, incidunt quo aspernatur esse quae velit consectetur numquam amet exercitationem nihil optio laudantium porro minima voluptate.",
-    },
-    {
-      id: 2,
-      eventName: "event2",
-      ownerName: "OAT",
-      eventType: "Concert",
-      location: "402, Building 3, Faculty of Engineering",
-      startDate: dayjs("2021-01-01"),
-      endDate: dayjs("2021-01-01"),
-      startTime: "10:00",
-      endTime: "11:00",
-      pictures: [""],
-      description: "dsasdasdasdsads",
-    },
-  ];
+  // const mockEvents = [
+  //   {
+  //     id: 1,
+  //     eventName: "event1",
+  //     ownerName: "OAT",
+  //     eventType: "Concert",
+  //     location: "402, Building 3, Faculty of Engineering",
+  //     startDate: dayjs("2021-01-01"),
+  //     endDate: dayjs("2021-01-01"),
+  //     startTime: "10:00",
+  //     endTime: "11:00",
+  //     pictures: "",
+  //     description:
+  //       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor nam maxime veritatis provident doloribus, incidunt quo aspernatur esse quae velit consectetur numquam amet exercitationem nihil optio laudantium porro minima voluptate.",
+  //   },
+  //   {
+  //     id: 2,
+  //     eventName: "event2",
+  //     ownerName: "OAT",
+  //     eventType: "Concert",
+  //     location: "402, Building 3, Faculty of Engineering",
+  //     startDate: dayjs("2021-01-01"),
+  //     endDate: dayjs("2021-01-01"),
+  //     startTime: "10:00",
+  //     endTime: "11:00",
+  //     pictures: [""],
+  //     description: "dsasdasdasdsads",
+  //   },
+  // ];
+  // const event = mockEvents[Number(eventId) - 1];
 
-  const event = mockEvents[Number(eventId) - 1];
+  const [event, setEvent] = useState<Event>({
+    id: 0,
+    eventName: "",
+    eventType: EventType.CONCERT,
+    visibility: Visibility.PUBLIC,
+    tags: [],
+    requireParticipantsMin: 1,
+    requireParticipantsMax: 10,
+    startDate: "",
+    endDate: "",
+    startTime: "",
+    endTime: "",
+    meetingType: MeetingType.ONSITE,
+    location: "",
+    website: "",
+    description: "",
+    pictures: [],
+    ownerName: "",
+  });
+
+  const { joinedEvents, fetchJoinEvents } = useEventStore();
+  const [join, setJoin] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (eventId) {
+        try {
+          setEvent(await eventDetail.getEventById(eventId.toString()));
+          await fetchJoinEvents();
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    fetchData();
+  }, [eventId]);
+
+  useEffect(() => {
+    joinedEvents.map((event: Event, idx: number) => {
+      if (event.id.toString() == eventId) {
+        setJoin(true);
+      }
+    });
+  }, [eventId, joinedEvents]);
 
   const {
     eventName,
@@ -72,28 +118,43 @@ const EventDetail: React.FC = () => {
     endTime,
     pictures,
     description,
-  } = event || {};
+  } = event;
+
+  const JoinOrUnjoin = () => {
+    if (eventId) {
+      if (join) {
+        eventDetail.unjoinEvent(eventId.toString());
+        setJoin(false);
+      } else {
+        eventDetail.joinEvent(eventId.toString());
+        setJoin(true);
+      }
+    }
+  };
 
   const LayoutFooter = (
     <Space align="end">
       <OutlinedButton text="Description" />
-      <ContainedButton text={1 ? "Unjoin" : "Join"} />
+      <ContainedButton text={join ? "Unjoin" : "Join"} onClick={JoinOrUnjoin} />
     </Space>
   );
 
   const DescriptionFooter = (
     <Space align="end">
       <OutlinedButton text="Back To Top" />
-      <ContainedButton text={1 ? "Unjoin Event" : "Join Event"} />
+      <ContainedButton
+        text={join ? "Unjoin Event" : "Join Event"}
+        onClick={JoinOrUnjoin}
+      />
     </Space>
   );
 
   return (
-    <EventDetailPageContainer>
+    <EventDetailPageContainer id="event-detail">
       <EventDetailContainer>
         <LayoutContainer>
           <Sider>
-            <Image src={profilePic} alt={eventName} layout="fill" />
+            <Image src={pictures[0]} alt={eventName} layout="fill" />
           </Sider>
           <RightLayout>
             <Header>
@@ -113,8 +174,8 @@ const EventDetail: React.FC = () => {
               </Space>
               <Space size={"middle"}>
                 {CalendarImg}
-                {startDate ? startDate.format("ddd, DD MMM YYYY") : ""}-
-                {endDate ? startDate.format("ddd, DD MMM YYYY") : ""},{" "}
+                {startDate ? dayjs(startDate).format("ddd, DD MMM YYYY") : ""}-
+                {endDate ? dayjs(endDate).format("ddd, DD MMM YYYY") : ""},{" "}
                 {startTime}-{endTime}
               </Space>
             </Content>
@@ -219,6 +280,7 @@ const Content = styled.div`
 
 const Sider = styled.div`
   background-color: rgb(0, 0, 0, 80%);
+  color: #fff;
   width: 35%;
   height: 100%;
   text-align: center;

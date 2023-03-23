@@ -5,15 +5,13 @@ const baseUrl = CU_API + "userProfile";
 
 const checkStatus = async () => {
   try {
-    const res = await client.get(`${baseUrl}/whoami`);
+    const res = await client.get(`${baseUrl}`);
     if (res.status === 200) {
-      return true;
-    } else if (res.status === 401){
-      return false
+      return res.data;
+    } else if (res.status === 401) {
+      return undefined;
     } else {
-        throw new Error(
-            "Error occurs with status code: " + res.status
-        );
+      throw new Error("Error occurs with status code: " + res.status);
     }
   } catch (err) {
     console.log(err);

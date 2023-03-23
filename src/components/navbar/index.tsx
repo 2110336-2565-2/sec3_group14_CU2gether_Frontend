@@ -8,8 +8,10 @@ import { useMediaQuery } from "react-responsive";
 import MenuIcon from "@mui/icons-material/Menu";
 import styled from "styled-components";
 import Link from "next/link";
-import HelpIcon from "@mui/icons-material/Help";
+import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import HandshakeIcon from "@mui/icons-material/Handshake";
+import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import useProfileStore from "@/hooks/useProfileStore";
@@ -72,7 +74,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             My Profile
           </a>,
           "1",
-          <AccountCircleIcon fontSize="large" />
+          <AccountCircleIcon />
         ),
         getItem(
           <a
@@ -91,10 +93,10 @@ const Navbar: React.FC<NavbarProps> = () => {
             rel="noopener noreferrer"
             href="https://www.antgroup.com"
           >
-            Support
+            Report History
           </a>,
           "3",
-          <HelpIcon />
+          <ReportGmailerrorredIcon />
         ),
         {
           type: "divider",
@@ -121,7 +123,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             Join Us
           </a>,
           "1",
-          <AccountCircleIcon fontSize="large" />
+          <HandshakeIcon />
         ),
         getItem(
           <a
@@ -132,7 +134,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             Log In
           </a>,
           "2",
-          <ManageAccountsIcon />
+          <LoginIcon />
         ),
       ];
 
@@ -232,7 +234,7 @@ const Navbar: React.FC<NavbarProps> = () => {
           </ProfileContainer>
         ) : (
           <ProfileContainer>
-            <ContainedButton text={"Sign up"} onClick={() => {}} />
+            <ContainedButton text={"Join Us"} onClick={() => {}} />
             <OutlinedButton
               text={"Log in"}
               onClick={() => {

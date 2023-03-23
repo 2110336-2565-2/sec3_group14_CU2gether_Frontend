@@ -129,7 +129,7 @@ const EventDetail: React.FC = () => {
       <EventDetailContainer>
         <LayoutContainer>
           <Sider>
-            <Image src={pictures[0]} alt={eventName} layout="fill" />
+            <Image src={pictures[0]} alt={"Event Image"} layout="fill" />
           </Sider>
           <RightLayout>
             <Header>

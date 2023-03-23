@@ -14,6 +14,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import useProfileStore from "@/hooks/useProfileStore";
 import auth from "api/auth";
+import { ROLE } from "@/utils/Enum";
 
 type NavbarProps = {};
 
@@ -22,7 +23,7 @@ const { Paragraph, Text } = Typography;
 type MenuItem = Required<MenuProps>["items"][number];
 
 const Navbar: React.FC<NavbarProps> = () => {
-  const { isLogin, checkStatus } = useProfileStore();
+  const { role, name, imageUrl, checkStatus } = useProfileStore();
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
   const mobile = useMediaQuery({ query: "(max-width: 768px)" });
@@ -41,12 +42,10 @@ const Navbar: React.FC<NavbarProps> = () => {
   const navMenus = [
     { key: "1", label: "Home", href: "/" },
     { key: "2", label: "Explore", href: "/events" },
-    { key: "3", label: "Create Event", href: "/create" },
+    { key: "3", label: "Create Event", href: "/events/create" },
     { key: "4", label: "Join Event", href: "/events/joined" },
-    { key: "5", label: "My Events", href: "/events/" },
+    { key: "5", label: "My Events", href: "/events/my-event" },
   ];
-
-  const name = "Chayakorn";
 
   const getItem = (
     label: React.ReactNode,
@@ -62,55 +61,80 @@ const Navbar: React.FC<NavbarProps> = () => {
     } as MenuItem;
   };
 
-  const ProfileMenuItems: MenuItem[] = [
-    getItem(
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.antgroup.com"
-      >
-        My Profile
-      </a>,
-      "1",
-      <AccountCircleIcon fontSize="large" />
-    ),
-    getItem(
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.aliyun.com"
-      >
-        Manage Account
-      </a>,
-      "2",
-      <ManageAccountsIcon />
-    ),
-    getItem(
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.antgroup.com"
-      >
-        Support
-      </a>,
-      "3",
-      <HelpIcon />
-    ),
-    {
-      type: "divider",
-    },
-    getItem(
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.luohanacademy.com"
-      >
-        Log Out
-      </a>,
-      "4",
-      <LogoutIcon />
-    ),
-  ];
+  const ProfileMenuItems: MenuItem[] = role
+    ? [
+        getItem(
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.antgroup.com"
+          >
+            My Profile
+          </a>,
+          "1",
+          <AccountCircleIcon fontSize="large" />
+        ),
+        getItem(
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.aliyun.com"
+          >
+            Manage Account
+          </a>,
+          "2",
+          <ManageAccountsIcon />
+        ),
+        getItem(
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.antgroup.com"
+          >
+            Support
+          </a>,
+          "3",
+          <HelpIcon />
+        ),
+        {
+          type: "divider",
+        },
+        getItem(
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.luohanacademy.com"
+          >
+            Log Out
+          </a>,
+          "4",
+          <LogoutIcon />
+        ),
+      ]
+    : [
+        getItem(
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.antgroup.com"
+          >
+            Join Us
+          </a>,
+          "1",
+          <AccountCircleIcon fontSize="large" />
+        ),
+        getItem(
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.aliyun.com"
+          >
+            Log In
+          </a>,
+          "2",
+          <ManageAccountsIcon />
+        ),
+      ];
 
   const renderMobileNav = () => (
     <Nav>
@@ -124,25 +148,19 @@ const Navbar: React.FC<NavbarProps> = () => {
           width={200}
           height={64}
         />
-        {isLogin ? (
-          <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
+        <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
+          {imageUrl ? (
             <Image
-              src={"./pattanan.svg"}
+              src={imageUrl}
               alt={"profile image"}
               width={36}
               height={36}
               style={{ borderRadius: "50%" }}
             />
-          </Dropdown>
-        ) : (
-          <Image
-            src={"./pattanan.svg"}
-            alt={"profile image"}
-            width={36}
-            height={36}
-            style={{ borderRadius: "50%" }}
-          />
-        )}
+          ) : (
+            <AccountCircleIcon />
+          )}
+        </Dropdown>
       </ShortNavContainer>
       <Drawer
         title={
@@ -159,7 +177,7 @@ const Navbar: React.FC<NavbarProps> = () => {
         open={isDrawerOpen}
       >
         {navMenus.map((menu, idx) => {
-          return (
+          return menu.key === "4" && role === ROLE.ORGANIZER ? null : (
             <Link key={idx} href={menu.href}>
               <Paragraph>{menu.label}</Paragraph>
             </Link>
@@ -180,30 +198,36 @@ const Navbar: React.FC<NavbarProps> = () => {
             height={64}
           />
           <Menu>
-            {navMenus.map((menu, idx) => (
-              <Link key={idx} href={menu.href}>
-                <div
-                  style={{
-                    color: theme.color.black,
-                  }}
-                >
-                  {menu.label}
-                </div>
-              </Link>
-            ))}
+            {navMenus.map((menu, idx) =>
+              menu.key === "4" && role === ROLE.ORGANIZER ? null : (
+                <Link key={idx} href={menu.href}>
+                  <div
+                    style={{
+                      color: theme.color.black,
+                    }}
+                  >
+                    {menu.label}
+                  </div>
+                </Link>
+              )
+            )}
           </Menu>
         </MenuContainer>
-        {isLogin ? (
+        {role ? (
           <ProfileContainer>
             <Name style={{ color: theme.color.primary }}>Hello, {name}</Name>
             <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
-              <Image
-                src={"./pattanan.svg"}
-                alt={"profile image"}
-                width={36}
-                height={36}
-                style={{ borderRadius: "50%" }}
-              />
+              {imageUrl ? (
+                <Image
+                  src={imageUrl}
+                  alt={"profile image"}
+                  width={36}
+                  height={36}
+                  style={{ borderRadius: "50%" }}
+                />
+              ) : (
+                <AccountCircleIcon />
+              )}
             </Dropdown>
           </ProfileContainer>
         ) : (

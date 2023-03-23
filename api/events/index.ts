@@ -38,7 +38,6 @@ const createEvent = async (params: Event) => {
     try {
         const events = await client.post(baseUrl, params, {"Content-Type": "multipart/form-data"});
         if (events.status === 201) {
-            console.log("Create Success");
             return true;
         } else {
             throw new Error("Error on creating event with status code: " + events.status);

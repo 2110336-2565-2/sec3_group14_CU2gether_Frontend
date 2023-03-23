@@ -7,7 +7,7 @@ import BasicsContent from "@/components/create-event/BasicsContent";
 import LocationContent from "@/components/create-event/LocationContent";
 import DescriptionContent from "@/components/create-event/DescriptionContent";
 import theme from "@/utils/theme";
-import SuccessContent from "@/components/create-event/SuccessContent";
+import ResultContent from "@/components/create-event/ResultContent";
 import useEventStore from "@/hooks/useEventStore";
 import dayjs from "dayjs";
 
@@ -46,15 +46,14 @@ const StyledForm = styled(Form)`
 `;
 
 const CreateEvent: React.FC<{}> = ({}) => {
+  const router = useRouter();
   const [form] = Form.useForm();
-  const { createEvent } = useEventStore();
+  const { createEvent, isCreateEventSuccess } = useEventStore();
   const [currentPageIndex, setCurrentPageIndex] = useState<number>(0);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean | undefined>(undefined); // undefined is not yet submitted
 
   const goNextForm = () => {
     if (currentPageIndex === 0) {
-      console.log(form.getFieldValue('picture'))
-
       const {
         requireParticipantsMin: minimum,
         requireParticipantsMax: maximum,
@@ -88,6 +87,11 @@ const CreateEvent: React.FC<{}> = ({}) => {
     setCurrentPageIndex(currentPageIndex - 1);
   };
 
+  const retryHandler = () => {
+    setIsSuccess(undefined);
+    setCurrentPageIndex(0);
+  };
+
   const onFinish = () => {
     const {
       eventName,
@@ -104,8 +108,6 @@ const CreateEvent: React.FC<{}> = ({}) => {
       picture,
       description,
     } = form.getFieldsValue(true);
-
-    console.log(form.getFieldsValue(true));
 
     createEvent({
       eventName,
@@ -125,7 +127,7 @@ const CreateEvent: React.FC<{}> = ({}) => {
       description,
     });
 
-    setIsSuccess(true);
+    setIsSuccess(isCreateEventSuccess);
   };
 
   const content = [
@@ -136,7 +138,9 @@ const CreateEvent: React.FC<{}> = ({}) => {
 
   const BackButton = () => {
     return currentPageIndex === 0 ? (
-      <Button style={{ width: 150 }}>Cancel</Button>
+      <Button style={{ width: 150 }} onClick={() => router.back()}>
+        Cancel
+      </Button>
     ) : (
       <Button onClick={goPreviousForm} style={{ width: 150 }}>
         Back
@@ -192,8 +196,12 @@ const CreateEvent: React.FC<{}> = ({}) => {
             labelPlacement="vertical"
             responsive={false}
           />
-          {isSuccess ? (
-            <SuccessContent />
+          {isSuccess !== undefined ? (
+            <ResultContent
+              isSuccess={isSuccess}
+              retryHandler={retryHandler}
+              previousPageHandler={() => router.back()}
+            />
           ) : (
             <StyledForm onFinish={onFinish} form={form}>
               {content[currentPageIndex]}

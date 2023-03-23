@@ -36,8 +36,6 @@ const PictureForm: React.FC<{}> = ({}) => {
     }
   }, []);
 
-  console.log(url);
-
   return (
     <StyledForm
       name="picture"

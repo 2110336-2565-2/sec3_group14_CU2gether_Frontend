@@ -6,7 +6,6 @@ import { FormInput } from "@/common/input";
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 400;
   width: 80%;
 `;
 

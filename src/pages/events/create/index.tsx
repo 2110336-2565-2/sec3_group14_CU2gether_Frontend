@@ -123,7 +123,7 @@ const CreateEvent: React.FC<{}> = ({}) => {
       meetingType,
       location,
       website,
-      photos: picture.fileList,
+      pictures: picture.fileList,
       description,
     });
 

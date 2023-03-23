@@ -86,16 +86,38 @@ const EventDetail: React.FC = () => {
     }
   };
 
+  const scrollToDescription = () => {
+    let element = document.getElementById("description");
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest",
+      });
+    }
+  };
+
+  const scrollToEventDetail = () => {
+    let element = document.getElementById("eventDetail");
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest",
+      });
+    }
+  };
+
   const LayoutFooter = (
     <Space align="end">
-      <OutlinedButton text="Description" />
+      <OutlinedButton text="Description" onClick={scrollToDescription} />
       <ContainedButton text={join ? "Unjoin" : "Join"} onClick={JoinOrUnjoin} />
     </Space>
   );
 
   const DescriptionFooter = (
     <Space align="end">
-      <OutlinedButton text="Back To Top" />
+      <OutlinedButton text="Back To Top" onClick={scrollToEventDetail} />
       <ContainedButton
         text={join ? "Unjoin Event" : "Join Event"}
         onClick={JoinOrUnjoin}
@@ -105,8 +127,7 @@ const EventDetail: React.FC = () => {
 
   const EventDetailContainer = styled.div`
     padding: 8rem 0;
-    height: 50rem;
-
+    height: 93vh;
     position: relative;
     z-index: 1;
     ::before {
@@ -122,11 +143,14 @@ const EventDetail: React.FC = () => {
       filter: blur(10px);
       z-index: -1;
     }
+    ${theme.media.tablet} {
+      padding: 2rem 0;
+    }
   `;
 
   return (
-    <EventDetailPageContainer id="event-detail">
-      <EventDetailContainer>
+    <EventDetailPageContainer>
+      <EventDetailContainer id="eventDetail">
         <LayoutContainer>
           <Sider>
             <Image src={pictures[0]} alt={"Event Image"} layout="fill" />
@@ -136,7 +160,7 @@ const EventDetail: React.FC = () => {
               <Title style={StyleTitle} level={1}>
                 <b>{eventName}</b>
               </Title>
-              <span>Created by {ownerName}</span>
+              <div>Created by {ownerName}</div>
             </Header>
             <Content>
               <Space size={"middle"}>
@@ -158,7 +182,7 @@ const EventDetail: React.FC = () => {
           </RightLayout>
         </LayoutContainer>
       </EventDetailContainer>
-      <DescriptionContainer>
+      <DescriptionContainer id="description">
         <Description>{description}</Description>
         <DescriptionFooterContainer>
           {DescriptionFooter}
@@ -169,15 +193,16 @@ const EventDetail: React.FC = () => {
 };
 
 const DescriptionContainer = styled.div`
-  padding: 3rem;
-  width: 80%;
-  height: 500px;
+  width: 100%;
   margin: 0 auto;
+  padding: 3rem 0;
+  height: 93vh;
 `;
 
 const Description = styled.div`
-  height: 300px;
-  margin: 1rem;
+  height: 90%;
+  margin: 1rem auto;
+  width: 80%;
   text-align: left;
 `;
 
@@ -207,24 +232,25 @@ const RightLayout = styled.div`
   margin: 0 auto;
   font-size: 1rem;
   ${theme.media.tablet} {
-    height: 60%;
+    height: 50%;
     width: 100%;
   }
 `;
 
 const StyleTitle = {
   color: "#fff",
-  marginBottom: "0rem",
   fontSize: "2rem",
 };
 
 const Header = styled.div`
+  height: 200px;
   text-align: left;
   color: #fff;
-  height: 30%;
+  height: 40%;
   width: 100%;
   background-color: rgb(0, 0, 0, 80%);
   padding: 2rem 4rem;
+  padding-top: 3rem;
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
@@ -244,7 +270,7 @@ const Content = styled.div`
   flex-direction: column;
   justify-content: space-between;
   ${theme.media.tablet} {
-    padding: 1.5rem 2.5rem;
+    padding: 0rem 2.5rem;
   }
 `;
 
@@ -257,6 +283,7 @@ const Sider = styled.div`
   position: relative;
   ${theme.media.tablet} {
     width: 100%;
+    height: 50%;
   }
 `;
 
@@ -265,7 +292,7 @@ const Footer = styled.div`
   color: #fff;
   background-color: rgb(0, 0, 0, 80%);
   font-weight: bold;
-  height: 30%;
+  height: 20%;
   display: flex;
   justify-content: center;
   align-items: center;

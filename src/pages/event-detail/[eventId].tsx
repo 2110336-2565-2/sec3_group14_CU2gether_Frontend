@@ -10,57 +10,11 @@ import eventDetail from "api/event-detail";
 import { Event, EventType, MeetingType, Visibility } from "@/types";
 import useEventStore from "@/hooks/useEventStore";
 
-type EventDetailProps = {
-  event: {
-    eventName: string;
-    ownerName: string;
-    eventType: string;
-    location: string;
-    startDate: Dayjs;
-    endDate: Dayjs;
-    startTime: string;
-    endTime: string;
-    pictures: string;
-    description: string;
-  };
-};
-
 const { Title } = Typography;
 
 const EventDetail: React.FC = () => {
   const router = useRouter();
   const { eventId } = router.query;
-
-  // const mockEvents = [
-  //   {
-  //     id: 1,
-  //     eventName: "event1",
-  //     ownerName: "OAT",
-  //     eventType: "Concert",
-  //     location: "402, Building 3, Faculty of Engineering",
-  //     startDate: dayjs("2021-01-01"),
-  //     endDate: dayjs("2021-01-01"),
-  //     startTime: "10:00",
-  //     endTime: "11:00",
-  //     pictures: "",
-  //     description:
-  //       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor nam maxime veritatis provident doloribus, incidunt quo aspernatur esse quae velit consectetur numquam amet exercitationem nihil optio laudantium porro minima voluptate.",
-  //   },
-  //   {
-  //     id: 2,
-  //     eventName: "event2",
-  //     ownerName: "OAT",
-  //     eventType: "Concert",
-  //     location: "402, Building 3, Faculty of Engineering",
-  //     startDate: dayjs("2021-01-01"),
-  //     endDate: dayjs("2021-01-01"),
-  //     startTime: "10:00",
-  //     endTime: "11:00",
-  //     pictures: [""],
-  //     description: "dsasdasdasdsads",
-  //   },
-  // ];
-  // const event = mockEvents[Number(eventId) - 1];
 
   const [event, setEvent] = useState<Event>({
     id: 0,

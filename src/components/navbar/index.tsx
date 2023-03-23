@@ -32,6 +32,9 @@ const Navbar: React.FC<NavbarProps> = () => {
       await checkStatus();
     };
     checkLoginStatus();
+  }, []);
+
+  useEffect(() => {
     setIsMobileScreen(mobile);
   }, [mobile]);
 

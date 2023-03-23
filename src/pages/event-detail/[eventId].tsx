@@ -103,6 +103,27 @@ const EventDetail: React.FC = () => {
     </Space>
   );
 
+  const EventDetailContainer = styled.div`
+    padding: 8rem 0;
+    height: 50rem;
+
+    position: relative;
+    z-index: 1;
+    ::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url(${pictures[0]});
+      background-size: cover;
+      background-position: center;
+      filter: blur(10px);
+      z-index: -1;
+    }
+  `;
+
   return (
     <EventDetailPageContainer id="event-detail">
       <EventDetailContainer>
@@ -163,11 +184,6 @@ const Description = styled.div`
 const DescriptionFooterContainer = styled.div`
   display: flex;
   justify-content: center;
-`;
-
-const EventDetailContainer = styled.div`
-  padding: 8rem 0;
-  height: 50rem;
 `;
 
 const LayoutContainer = styled.div`

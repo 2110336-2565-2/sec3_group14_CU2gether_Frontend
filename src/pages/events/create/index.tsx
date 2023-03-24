@@ -50,7 +50,7 @@ const CreateEvent: React.FC<{}> = ({}) => {
   const [form] = Form.useForm();
   const { createEvent, isCreateEventSuccess } = useEventStore();
   const [currentPageIndex, setCurrentPageIndex] = useState<number>(0);
-  const [isSuccess, setIsSuccess] = useState<boolean | undefined>(undefined); // undefined is not yet submitted
+  const [isSuccess, setIsSuccess] = useState<boolean | undefined>(false); // undefined is not yet submitted
 
   const goNextForm = () => {
     if (currentPageIndex === 0) {

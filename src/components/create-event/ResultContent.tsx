@@ -18,8 +18,8 @@ const { Text } = Typography;
 
 const ResultContent: React.FC<{
   isSuccess: boolean;
-  retryHandler: any;
-  previousPageHandler: any;
+  retryHandler: () => void;
+  previousPageHandler: () => void;
 }> = ({ isSuccess, retryHandler, previousPageHandler }) => {
   const SuccessDetail = () => {
     return (

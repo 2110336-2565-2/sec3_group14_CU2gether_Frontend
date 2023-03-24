@@ -17,7 +17,7 @@ const PictureForm: React.FC<{}> = ({}) => {
   const [url, setUrl] = useState<string>("");
 
   const ShowImage = () => {
-    return url ? (
+    return url !== "" ? (
       <Image src={url} width="100%" preview={false} />
     ) : (
       <>

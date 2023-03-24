@@ -9,6 +9,7 @@ import {
   TimePicker,
 } from "antd";
 import theme from "@/utils/theme";
+import { Visibility } from "@/types"
 
 import { FormInput } from "@/common/input";
 
@@ -54,13 +55,13 @@ const BasicsForm: React.FC<{}> = ({}) => {
     return (
       <Radio.Group buttonStyle="solid" style={{ width: "100%" }}>
         <Radio.Button
-          value="PUBLIC"
+          value={Visibility.PUBLIC}
           style={{ width: "50%", textAlign: "center" }}
         >
           Public
         </Radio.Button>
         <Radio.Button
-          value="PRIVATE"
+          value={Visibility.PRIVATE}
           style={{ width: "50%", textAlign: "center" }}
         >
           Private

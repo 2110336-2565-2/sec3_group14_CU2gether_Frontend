@@ -2,6 +2,7 @@ import React from "react";
 import { Form, Radio, Input } from "antd";
 import styled from "styled-components";
 import { FormInput } from "@/common/input";
+import { MeetingType } from "@/types";
 
 const ContentContainer = styled.div`
   display: flex;
@@ -14,13 +15,13 @@ const LocationContent: React.FC<{}> = ({}) => {
     return (
       <Radio.Group buttonStyle="solid" style={{ width: "100%" }}>
         <Radio.Button
-          value="ONLINE"
+          value={MeetingType.ONLINE}
           style={{ width: "50%", textAlign: "center" }}
         >
           Online
         </Radio.Button>
         <Radio.Button
-          value="ONSITE"
+          value={MeetingType.ONSITE}
           style={{ width: "50%", textAlign: "center" }}
         >
           Onsite

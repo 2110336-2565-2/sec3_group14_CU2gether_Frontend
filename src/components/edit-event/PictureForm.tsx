@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Upload, Form, Image } from "antd";
-import { PictureOutlined, LoadingOutlined } from "@ant-design/icons";
-import styled from "styled-components";
-import theme from "@/utils/theme";
+import { PictureOutlined } from "@ant-design/icons";
 
 const PictureForm: React.FC<{}> = ({}) => {
   const [url, setUrl] = useState<string>("");

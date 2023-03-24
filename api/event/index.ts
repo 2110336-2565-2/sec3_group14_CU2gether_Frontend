@@ -3,10 +3,11 @@ import { CU_API } from "@/config";
 import { Dayjs } from "dayjs"
 import client from "@/utils/client";
 import { EventType, MeetingType, Visibility } from "@/types";
+import { Event } from "@/types";
 
 const eventUrl = CU_API + "events/";
 
-export const getEventByID = async (id: String) => {
+const getEventByID = async (id: String) => {
     try {
         const event = await client.get(`${eventUrl}${id}`);
         if (event.status === 200) {
@@ -19,46 +20,21 @@ export const getEventByID = async (id: String) => {
     }
 }
 
-export const updateEventDetail = async (
+const updateEventDetail = async (
     id: string,
-    eventName: string,
-    eventType: EventType,
-    visibility: Visibility,
-    tags: string[],
-    requireParticipantsMin: number,
-    requireParticipantsMax: number,
-    startDate: string,
-    endDate: string,
-    startTime: string,
-    endTime: string,
-    meetingType: MeetingType,
-    location: string,
-    website: string,
+    params: Event,
 ) => {
     try {
         await client.patch(
-            `${eventUrl}${id}`,{
-                eventName,
-                eventType,
-                visibility,
-                tags,
-                requireParticipantsMin,
-                requireParticipantsMax,
-                startDate,
-                endDate,
-                startTime,
-                endTime,
-                meetingType,
-                location,
-                website,
-            } 
+            `${eventUrl}${id}`,
+            params,
         );
     } catch(err) {
         console.log(err)
     }
 }
 
-export const updateEventDescription = async (
+const updateEventDescription = async (
     id: String,
     description: String,
 ) => {
@@ -73,7 +49,7 @@ export const updateEventDescription = async (
     }
 }
 
-export const updateEventImage = async (
+const updateEventImage = async (
     id: String,
     pictures: String[],
 ) => {
@@ -88,7 +64,7 @@ export const updateEventImage = async (
     }
 }
 
-export const cancelEvent = async (
+const cancelEvent = async (
     id: String,
 ) => {
     try {

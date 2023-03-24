@@ -25,128 +25,12 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { EventType, Visibility, MeetingType } from "@/types";
 import useEventStore from "@/hooks/useEventStore";
 import event from "api/event";
+import { Event } from "@/types";
 
 import PictureForm from "@/components/edit-event/PictureForm";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
-
-const EditEventContainer = styled(Layout)`
-  margin-left: auto;
-  margin-right: auto;
-  width: 70%;
-  padding: 2.5vh 5vw;
-`;
-
-const ContentContainer = styled(Content)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 40px;
-  padding-top: 40px;
-  margin-left: auto;
-  margin-right: auto;
-  flex-direction: column;
-  font-size: 20px;
-`;
-
-const HeaderContainer = styled.div`
-  display: flex;
-  font-size: 40px;
-  justify-content: left;
-  padding-top: 5vh;
-`;
-
-const LayoutContainer = styled(Layout)`
-  justify-content: center;
-  flex-direction: row;
-  width: 100%;
-  ${theme.media.tablet} {
-    flex-direction: column;
-  }
-`;
-
-const FormInputContainer = styled(Form)`
-  display: flex;
-  margin-left: auto;
-  margin-right: auto;
-  align-items: center;
-  justify-content: left;
-  flex-direction: column;
-  padding: 2.5vh;
-`;
-
-const NonFormInputContainer = styled(Layout)`
-  display: flex;
-  margin-left: auto;
-  margin-right: auto;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 50%;
-  height: 50%;
-`;
-
-const EndFormContainer = styled(Layout)`
-  display: flex;
-  margin-left: auto;
-  margin-right: auto;
-  align-items: center;
-  justify-content: center;
-  gap: 2vw;
-`;
-
-const FlexContainer = styled.div`
-  display: flex;
-  width: 100%;
-  gap: 2vw;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: left;
-  gap: 2vw;
-`;
-
-const NonFormButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 2vw;
-  flex-direction: column;
-`;
-
-const ButtonConfig = styled(Button)`
-  width: 180px;
-  // height: 44px;
-  // font-size: 20px;
-`;
-
-const ModalButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 2vw;
-  margin-top: 40vh;
-`;
-
-const ContentWrapper = styled.div`
-  margin-top: 10px;
-`;
-
-const CancelEventTitle = styled.h1`
-  font-size: 32px;
-  font-weight: bold;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const CancelEventContent = styled.h2`
-  font-size: 24px;
-  font-weight: normal;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
 
 const typeList = [
   { value: "RESTAURANT", label: "Restaurant" },
@@ -172,25 +56,7 @@ const tagList = [
 const dateFormat = "YYYY-MM-DD";
 const timeFormat = "HH:mm";
 
-export type eventDetailParams = {
-  id: string;
-  eventName?: string;
-  eventType?: EventType;
-  visibility?: Visibility;
-  tags?: string[];
-  requireParticipantsMin?: number;
-  requireParticipantsMax?: number;
-  startDate?: string;
-  endDate?: string;
-  startTime?: string;
-  endTime?: string;
-  meetingType?: MeetingType;
-  location?: string;
-  website?: string;
-};
-
 const defaultEventDetail = {
-  id: "0",
   eventName: "No Event Name",
   eventType: EventType.OTHERS,
   visibility: Visibility.PRIVATE,
@@ -204,14 +70,15 @@ const defaultEventDetail = {
   meetingType: MeetingType.ONSITE,
   location: "Chulalongkorn",
   website: "www.exmaple.com",
+  pictures: ["pictures"],
 };
 
 const EditEventMain: React.FC<{}> = ({}) => {
-  // const { eventDetail, getEventDetail, updateEventDetail } = useEventStore();
+  const { event, getEventDetail, updateEventDetail, cancelEvent } = useEventStore();
   const [eventDetail, setEventDetail] =
-    useState<eventDetailParams>(defaultEventDetail);
+    useState<Event>(defaultEventDetail);
   const [onCancelEvent, setOnCancelEvent] = useState<boolean>(false);
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [fileList, setFileList] = useState<UploadFile[]>([
     {
       uid: "0",
@@ -231,101 +98,81 @@ const EditEventMain: React.FC<{}> = ({}) => {
 
   useEffect(() => {
     if (eventId) {
-      event
-        .getEventByID(eventId.toString())
-        .then((data) => {
-          const newEvent = {
-            id: data.id,
-            eventName: data.eventName,
-            eventType: data.eventType,
-            visibility: data.visibility,
-            tags: data.tags,
-            requireParticipantsMin: data.requireParticipantsMin,
-            requireParticipantsMax: data.requireParticipantsMax,
-            startDate: data.startDate,
-            endDate: data.endDate,
-            startTime: data.startTime,
-            endTime: data.endTime,
-            meetingType: data.meetingType,
-            location: data.location,
-            website: data.website,
-          };
-          setEventDetail(newEvent);
-          console.log(newEvent);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      console.log(eventId.toString())
+      const getData = async (id: string) => {
+        try {
+          await getEventDetail(id);
+        } catch (err) {
+          console.log(err)
+        }
+      };
+      getData(eventId.toString());
     }
-  }, []);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       await fetchEvent("3");
-  //     } catch (err) {
-  //       console.log(err)
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
+  }, [eventId]);
 
   useEffect(() => {
-    form.setFieldsValue({
-      eventName: eventDetail.eventName,
-      eventType: eventDetail.eventType,
-      visibility: eventDetail.visibility,
-      tags: eventDetail.tags,
-      requireParticipantsMin: eventDetail.requireParticipantsMin,
-      requireParticipantsMax: eventDetail.requireParticipantsMax,
-      requireParticipants: [
-        eventDetail.requireParticipantsMin,
-        eventDetail.requireParticipantsMax,
-      ],
-      date: [
-        dayjs(eventDetail.startDate, dateFormat),
-        dayjs(eventDetail.endDate, dateFormat),
-      ],
-      time: [
-        dayjs(eventDetail.startTime, timeFormat),
-        dayjs(eventDetail.endTime, timeFormat),
-      ],
-      meetingType: eventDetail.meetingType,
-      location: eventDetail.location,
-      website: eventDetail.website,
-    });
-  });
+    if (event) {
+      form.setFieldsValue({
+        eventName: event.eventName,
+        eventType: event.eventType,
+        visibility: event.visibility,
+        tags: event.tags,
+        requireParticipantsMin: event.requireParticipantsMin,
+        requireParticipantsMax: event.requireParticipantsMax,
+        requireParticipants: [
+          event.requireParticipantsMin,
+          event.requireParticipantsMax,
+        ],
+        date: [
+          dayjs(event.startDate, dateFormat),
+          dayjs(event.endDate, dateFormat),
+        ],
+        time: [
+          dayjs(event.startTime, timeFormat),
+          dayjs(event.endTime, timeFormat),
+        ],
+        meetingType: event.meetingType,
+        location: event.location,
+        website: event.website,
+      });
+    }
+  }, [event]);
 
   const onFormFinish = async (values: any) => {
-    const id = eventDetail.id;
-    const {
-      eventName,
-      eventType,
-      visibility,
-      tags,
-      requireParticipants,
-      date,
-      time,
-      meetingType,
-      location,
-      website,
-    } = values;
-    event.updateEventDetail(
-      id,
-      eventName,
-      eventType,
-      visibility,
-      tags,
-      requireParticipants[0],
-      requireParticipants[1],
-      date[0].format("YYYY-MM-DD"),
-      date[1].format("YYYY-MM-DD"),
-      time[0].format("HH:mm"),
-      time[1].format("HH:mm"),
-      meetingType,
-      location,
-      website
-    );
+    if (eventId) {
+      const id = eventId.toString();
+      const {
+        eventName,
+        eventType,
+        visibility,
+        tags,
+        requireParticipants,
+        date,
+        time,
+        meetingType,
+        location,
+        website,
+      } = values;
+      const pictures = ["C:\Users\namo\Documents\GitHub\CU2gether\sec3_group14_CU2gether_Frontend\public\orangutan_show.png"];
+      updateEventDetail(
+        id, {
+          eventName,
+          eventType,
+          visibility,
+          tags,
+          requireParticipantsMin: requireParticipants[0],
+          requireParticipantsMax: requireParticipants[1],
+          startDate: date[0].format("YYYY-MM-DD"),
+          endDate: date[1].format("YYYY-MM-DD"),
+          startTime: time[0].format("HH:mm"),
+          endTime: time[1].format("HH:mm"),
+          meetingType,
+          location,
+          website,
+          pictures,
+        }
+      );
+    }
   };
 
   const handleCancelClick = () => {
@@ -343,7 +190,9 @@ const EditEventMain: React.FC<{}> = ({}) => {
   };
 
   const handleCancelEventSureClick = () => {
-    event.cancelEvent(eventDetail.id);
+    if (eventId) {
+      cancelEvent(eventId.toString());
+    }
   };
 
   const handleCancelEventCancelClick = () => {
@@ -624,5 +473,122 @@ const EditEventMain: React.FC<{}> = ({}) => {
     </ConfigProvider>
   );
 };
+
+const EditEventContainer = styled(Layout)`
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+  padding: 2.5vh 5vw;
+`;
+
+const ContentContainer = styled(Content)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  padding-top: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  flex-direction: column;
+  font-size: 20px;
+`;
+
+const HeaderContainer = styled.div`
+  display: flex;
+  font-size: 40px;
+  justify-content: left;
+  padding-top: 5vh;
+`;
+
+const LayoutContainer = styled(Layout)`
+  justify-content: center;
+  flex-direction: row;
+  width: 100%;
+  ${theme.media.tablet} {
+    flex-direction: column;
+  }
+`;
+
+const FormInputContainer = styled(Form)`
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+  justify-content: left;
+  flex-direction: column;
+  padding: 2.5vh;
+`;
+
+const NonFormInputContainer = styled(Layout)`
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 50%;
+  height: 50%;
+`;
+
+const EndFormContainer = styled(Layout)`
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+  justify-content: center;
+  gap: 2vw;
+`;
+
+const FlexContainer = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 2vw;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: left;
+  gap: 2vw;
+`;
+
+const NonFormButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 2vw;
+  flex-direction: column;
+`;
+
+const ButtonConfig = styled(Button)`
+  width: 180px;
+  // height: 44px;
+  // font-size: 20px;
+`;
+
+const ModalButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 2vw;
+  margin-top: 40vh;
+`;
+
+const ContentWrapper = styled.div`
+  margin-top: 10px;
+`;
+
+const CancelEventTitle = styled.h1`
+  font-size: 32px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const CancelEventContent = styled.h2`
+  font-size: 24px;
+  font-weight: normal;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 export default EditEventMain;

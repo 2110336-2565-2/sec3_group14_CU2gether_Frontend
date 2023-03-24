@@ -264,6 +264,7 @@ const DetailContainer = styled(Space)`
   grid-template-columns: repeat(auto-fill, 240px);
   grid-gap: 1rem;
   justify-content: space-around;
+  padding-bottom: 5vh;
 `;
 
 const EmptyWrapper = styled.div`

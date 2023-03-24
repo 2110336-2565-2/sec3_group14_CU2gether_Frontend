@@ -1,25 +1,25 @@
 export enum EventType {
-  "RESTAURANT",
-  "CAFE",
-  "BAR",
-  "SPORT",
-  "VOLUNTEER",
-  "CONCERT",
-  "PHOTO_TRIP",
-  "BOARDGAME",
-  "SEMINAR",
-  "SPECIAL_DAY",
-  "OTHERS",
+  RESTAURANT="RESTAURANT",
+  CAFE="CAFE",
+  BAR= "BAR",
+  SPORT="SPORT",
+  VOLUNTEER="VOLUNTEER",
+  CONCERT="CONCERT",
+  PHOTO_TRIP="PHOTO_TRIP",
+  BOARDGAME="BOARDGAME",
+  SEMINAR="SEMINAR",
+  SPECIAL_DAY="SPECIAL_DAY",
+  OTHERS="OTHERS",
 }
 
 export enum Visibility {
-  "PUBLIC",
-  "PRIVATE",
+  PUBLIC="PUBLIC",
+  PRIVATE="PRIVATE",
 }
 
 export enum MeetingType {
-  "ONSITE",
-  "ONLINE"
+  ONSITE="ONSITE",
+  ONLINE="ONLINE"
 }
 
 export type Event = {

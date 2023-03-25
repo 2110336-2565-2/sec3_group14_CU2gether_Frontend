@@ -1,10 +1,10 @@
 export enum ROLE {
-    STUDENT = 'student',
-    ORGANIZER = 'organizer'
+    STUDENT = 'STUDENT',
+    ORGANIZER = 'ORGANIZER',
 }
 
 export enum GENDER {
-    MALE = 'male',
-    FEMALE = 'female',
-    OTHERS = 'others',
+    MALE = 'MALE',
+    FEMALE = 'FEMALE',
+    OTHERS = 'OTHERS',
 }

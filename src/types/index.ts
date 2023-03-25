@@ -13,13 +13,13 @@ export enum EventType {
 }
 
 export enum Visibility {
-  "PUBLIC",
-  "PRIVATE",
+  PUBLIC="PUBLIC",
+  PRIVATE="PRIVATE",
 }
 
 export enum MeetingType {
-  "ONSITE",
-  "ONLINE"
+  ONSITE="ONSITE",
+  ONLINE="ONLINE"
 }
 
 export type Event = {

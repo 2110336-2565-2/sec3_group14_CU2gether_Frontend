@@ -37,6 +37,7 @@ export type Event = {
   location: string;
   website: string;
   pictures: string[];
+  ownerName: string; 
 };
 
 export type Student = {
@@ -57,5 +58,15 @@ export type Organizer = {
   description: string;
   password: string;
 };
+
+export type Review = {
+  eventName: string;
+  firstname: string;
+  lastname: string
+  reviewDate: string;
+  reviewTime: string;
+  score: number;
+  comment: string;
+}
 
 export type User = Student | Organizer;

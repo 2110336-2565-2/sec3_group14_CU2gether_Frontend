@@ -24,7 +24,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { EventType, Visibility, MeetingType } from "@/types";
 import useEventStore from "@/hooks/useEventStore";
-import event from "api/event";
 import { Event } from "@/types";
 
 import PictureForm from "@/components/edit-event/PictureForm";
@@ -71,6 +70,7 @@ const defaultEventDetail = {
   location: "Chulalongkorn",
   website: "www.exmaple.com",
   pictures: ["pictures"],
+  ownerName: "John Doe"
 };
 
 const EditEventMain: React.FC<{}> = ({}) => {
@@ -153,6 +153,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
         location,
         website,
       } = values;
+      const ownerName = event!.ownerName;
       const pictures = ["C:\Users\namo\Documents\GitHub\CU2gether\sec3_group14_CU2gether_Frontend\public\orangutan_show.png"];
       updateEventDetail(
         id, {
@@ -170,6 +171,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
           location,
           website,
           pictures,
+          ownerName,
         }
       );
     }

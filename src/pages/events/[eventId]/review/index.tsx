@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Form, Input, Rate, Typography } from "antd";
 
@@ -8,34 +8,42 @@ import eventType_logo from "../../../../../asset/eventType_logo.svg";
 import location_logo from "../../../../../asset/location_logo.svg";
 import UserReview from "@/components/review-event/UserReview";
 import { ContainedButton } from "@/common/button";
+import { Event, EventType, Visibility, MeetingType } from "@/types";
+import useEventStore from "@/hooks/useEventStore";
+import { useRouter } from "next/router";
+import useReviewStore from "@/hooks/useReviewStore";
 
 const { Text, Title } = Typography;
 const { TextArea } = Input;
 
 const mockedData = [
   {
-    username: "omomo",
+    firstname: "mo",
+    lastname: "dog",
     reviewDate: "2001-08-22",
     reviewTime: "23:11",
     score: 5,
     comment: "awesome!",
   },
   {
-    username: "omomo",
+    firstname: "ma",
+    lastname: "cat",
     reviewDate: "2001-08-22",
     reviewTime: "23:11",
     score: 5,
     comment: "awesome!",
   },
   {
-    username: "omomo",
+    firstname: "mee",
+    lastname: "bird",
     reviewDate: "2001-08-22",
     reviewTime: "23:11",
     score: 5,
     comment: "awesome!",
   },
   {
-    username: "omomo",
+    firstname: "mao",
+    lastname: "kai",
     reviewDate: "2001-08-22",
     reviewTime: "23:11",
     score: 5,
@@ -54,23 +62,15 @@ const ReviewPage: React.FC<{}> = () => {
       <Title>Review Event</Title>
       <EventContainer>
         <InsertPicture />
-        <EventDetailSummary
-          eventName="eiei show"
-          creator="gu"
-          eventType="SEMINAR"
-          location="krisada steak house"
-          startDate="Mon, 20 Aug 2001"
-          endDate="Tue, 21 Aug 2001"
-          startTime="8.00"
-          endTime="20.00"
-        />
+        <EventDetailSummary />
         <RateContainer>
           <AverageScore averageScore={5} totalReviews={4} />
           <SubmitReview />
           {mockedData.map((data) => {
             return (
               <UserReview
-                username={data.username}
+                firstname={data.firstname}
+                lastname={data.lastname}
                 reviewDate={data.reviewDate}
                 reviewTime={data.reviewTime}
                 score={data.score}
@@ -85,17 +85,6 @@ const ReviewPage: React.FC<{}> = () => {
 };
 
 export default ReviewPage;
-
-type EventDetail = {
-  eventName: string;
-  creator: string;
-  eventType: string;
-  location: string;
-  startDate: string;
-  endDate: string;
-  startTime: string;
-  endTime: string;
-};
 
 const RateContainer = styled.div`
   display: flex;
@@ -183,38 +172,46 @@ const StyledTextArea = styled(TextArea)`
   width: 100%;
 `;
 
-const EventDetailSummary: React.FC<EventDetail> = ({
-  eventName,
-  creator,
-  eventType,
-  location,
-  startDate,
-  endDate,
-  startTime,
-  endTime,
-}) => {
+const EventDetailSummary: React.FC<{}> = ({}) => {
+  const { event, getEventDetail } = useEventStore();
+  const router = useRouter();
+  const { eventId }  = router.query;
+
+  useEffect(() => {
+    if (eventId) {
+      const getData = async (id: string) => {
+        try {
+          await getEventDetail(id);
+        } catch (err) {
+          console.log(err)
+        }
+      };
+      getData(eventId.toString());
+    }
+  }, [eventId]);
+
   return (
     <DetailsContainer>
-      <HeaderText>{eventName}</HeaderText>
-      <NormalText>Created by {creator}</NormalText>
+      <HeaderText>{event?.eventName}</HeaderText>
+      <NormalText>Created by {event?.ownerName}</NormalText>
       <div>
         <img src={eventType_logo} />
-        <NormalText>{eventType}</NormalText>
+        <NormalText>{event?.eventType}</NormalText>
       </div>
       <div>
         <img src={location_logo} />
-        <NormalText>{location}</NormalText>
+        <NormalText>{event?.location}</NormalText>
       </div>
       <div>
         <img src={calendar_logo} />
         <NormalText>
-          {startTime}
+          {event?.startTime}
           {" - "}
-          {endTime}
+          {event?.endTime}
           {", "}
-          {startDate}
+          {event?.startDate}
           {" - "}
-          {endDate}
+          {event?.endDate}
         </NormalText>
       </div>
     </DetailsContainer>

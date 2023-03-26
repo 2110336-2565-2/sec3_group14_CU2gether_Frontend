@@ -1,20 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Rate, Typography } from "antd";
 import styled from "styled-components";
 import theme from "@/utils/theme";
 
+import useReviewStore from "@/hooks/useReviewStore";
+
 const { Text } = Typography;
 
 const UserReview: React.FC<{
-  username: string;
+  firstname: string;
+  lastname: string;
   reviewDate: string;
   reviewTime: string;
   score: number;
   comment?: string;
-}> = ({ username, reviewDate, reviewTime, score, comment }) => {
+}> = ({ firstname, lastname, reviewDate, reviewTime, score, comment }) => {
   return (
     <DetailsContainer>
-      <DetailText>{username}</DetailText>
+      <DetailText>{firstname} {lastname}</DetailText>
       <DetailText>
         {reviewDate} {reviewTime}
       </DetailText>
@@ -23,6 +26,36 @@ const UserReview: React.FC<{
     </DetailsContainer>
   );
 };
+
+// const UserReview: React.FC<{ 
+//   eventId: string 
+// }> = ({ eventId }) => {
+//   const { review, getReview } = useReviewStore();
+
+//   useEffect(() => {
+//     if (eventId) {
+//       const getData = async (id: string) => {
+//         try {
+//           await getReview(id);
+//         } catch (err) {
+//           console.log(err)
+//         }
+//       };
+//       getData(eventId.toString());
+//     }
+//   }, [eventId]);
+
+//   return (
+//     <DetailsContainer>
+//       <DetailText>{review?.firstname}{review?.firstname}</DetailText>
+//       <DetailText>
+//         {review?.reviewDate} {review?.reviewTime}
+//       </DetailText>
+//       <Rate value={review?.score} disabled={true} />
+//       {review?.comment && <CommentText>{review?.comment}</CommentText>}
+//     </DetailsContainer>
+//   );
+// };
 
 export default UserReview;
 

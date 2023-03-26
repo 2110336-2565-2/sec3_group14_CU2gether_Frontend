@@ -9,7 +9,7 @@ import location_logo from "../../../../../asset/location_logo.svg";
 import UserReview from "@/components/review-event/UserReview";
 import { ContainedButton } from "@/common/button";
 
-const { Text } = Typography;
+const { Text, Title } = Typography;
 const { TextArea } = Input;
 
 const mockedData = [
@@ -44,8 +44,14 @@ const mockedData = [
 ];
 
 const ReviewPage: React.FC<{}> = () => {
+  // namo -> this is main component
+  // InserPicture -> mock event picture
+  // AverageScore -> pink score
+  // SubmitReview -> submit review
+  // UserReview -> user's review for each user (mock from mockedData above)
   return (
     <ContentsContainer>
+      <Title>Review Event</Title>
       <EventContainer>
         <InsertPicture />
         <EventDetailSummary
@@ -106,6 +112,7 @@ const RateContainer = styled.div`
 
 const EventContainer = styled.div`
   display: grid;
+  align-self: center;
   grid-template-columns: 4fr 6fr;
   grid-template-rows: 25% auto;
   column-gap: 30px;
@@ -145,7 +152,8 @@ const ContentsContainer = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  padding: 2.5vh 5vw;
 `;
 
 const DetailsContainer = styled.div`

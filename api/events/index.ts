@@ -32,8 +32,22 @@ const getEvents = async (params: getEventsRequestParams) => {
   }
 };
 
+const getOwnEvents = async () => {
+    try {
+      const events = await client.get(CU_API+'userProfile/myevent');
+      if(events.status === 200) {
+        return events.data;
+      } else {
+        throw new Error("Error fetching own event with status code: " + events.status);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 const events = {
-  getEvents,
-};
+    getEvents,
+    getOwnEvents
+}
 
 export default events;

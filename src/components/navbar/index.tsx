@@ -17,6 +17,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import useProfileStore from "@/hooks/useProfileStore";
 import auth from "api/auth";
 import { ROLE } from "@/utils/Enum";
+import { CU_WEB } from "@/config";
 
 type NavbarProps = {};
 
@@ -69,7 +70,7 @@ const Navbar: React.FC<NavbarProps> = () => {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href="https://www.antgroup.com"
+            href="/profile/"
           >
             My Profile
           </a>,
@@ -82,7 +83,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             rel="noopener noreferrer"
             href="https://www.aliyun.com"
           >
-            Manage Account
+            Change Password
           </a>,
           "2",
           <ManageAccountsIcon />
@@ -105,7 +106,7 @@ const Navbar: React.FC<NavbarProps> = () => {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href="https://www.luohanacademy.com"
+            href="/"
           >
             Log Out
           </a>,

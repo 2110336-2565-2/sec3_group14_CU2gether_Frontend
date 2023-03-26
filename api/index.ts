@@ -12,8 +12,7 @@ export default {
 
 const registerStudentURL = CU_API + "register/student";
 const registerOrganizerURL = CU_API + "register/organizer";
-const loginURL = CU_API + "login/login";
-const loginStudentURL = CU_API + "login/student";
+const loginURL = CU_API + "auth/login";
 
 export const registerStudent = (
   studentId: String,
@@ -24,7 +23,6 @@ export const registerStudent = (
   image: String,
   cardId: String
 ) => {
-  console.log("url", CU_API);
   axios
     .post(registerStudentURL, {
       studentId,

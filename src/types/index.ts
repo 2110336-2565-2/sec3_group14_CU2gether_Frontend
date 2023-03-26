@@ -1,3 +1,5 @@
+import { ROLE } from "@/utils/Enum";
+
 export enum EventType {
   RESTAURANT="RESTAURANT",
   CAFE="CAFE",
@@ -45,8 +47,15 @@ export type Student = {
   password: string;
   firstName: string;
   lastName: string;
-  image: string;
+  imageUrl: string;
+  coverImageUrl: string;
   cardId: string;
+  description: string;
+  createTimes: number;
+  cancelTimes: number;
+  joinTimes: number;
+  unjoinTimes: number;
+  role: ROLE;
 };
 
 export type Organizer = {
@@ -56,6 +65,11 @@ export type Organizer = {
   phone: string;
   description: string;
   password: string;
+  createTimes: number;
+  cancelTimes: number;
+  imageUrl: string;
+  coverImageUrl: string;
+  role: ROLE;
 };
 
 export type User = Student | Organizer;

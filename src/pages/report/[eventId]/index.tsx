@@ -105,6 +105,9 @@ const ReportMain: React.FC<{}> = ({}) => {
         data.append("pictures", picture.originFileObj);
       });
     }
+    if (eventId) {
+      data.append("eventId", eventId.toString());
+    }
     //await createEventReport(data);
     console.log(data);
   };

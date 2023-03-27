@@ -56,7 +56,7 @@ const mockedData = [
 
 const ReviewPage: React.FC<{}> = () => {
   const { event, getEventDetail } = useEventStore();
-  const { reviews, getReviews } = useReviewStore();
+  const { reviewList, getReviews } = useReviewStore();
   
   const router = useRouter();
   const { eventId } = router.query;
@@ -76,7 +76,7 @@ const ReviewPage: React.FC<{}> = () => {
   }, [eventId]);
 
   const renderReviewsList = () => 
-    reviews.map((reviewDetail:ReviewDetail, idx: number) => (
+    reviewList.map((reviewDetail:ReviewDetail, idx: number) => (
       <UserReview key={`review-${idx}`} reviewDetail={reviewDetail} />
     ));  
 

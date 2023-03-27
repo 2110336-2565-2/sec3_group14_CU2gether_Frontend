@@ -2,7 +2,6 @@ import client from "@/utils/client";
 import { Event } from "@/types";
 import { create } from "zustand";
 import events, { getEventsRequestParams } from "api/events";
-import event from "api/event";
 
 type EventStore = {   
   event?: Event;
@@ -21,19 +20,19 @@ const useEventStore = create<EventStore>((set) => ({
   events: [],
   joinedEvents: [],
   getEventDetail: (id: string) => {
-    event.getEventByID(id)
+    events.getEventByID(id)
     .then((res: any) => set({event: res}));
   },
   updateEventDetail: (id: string, params: Event) => {
-    event.updateEventDetail(id, params)
+    events.updateEventDetail(id, params)
     .then((res: any) => set({event: res}));
   },
   updateEventDescription: (id: string, description: string) => {
-    event.updateEventDescription(id, description)
+    events.updateEventDescription(id, description)
     .then((res: any) => set({event: res}));
   },
   cancelEvent: (id: string) => {
-    event.cancelEvent(id)
+    events.cancelEvent(id)
   },
   fetchEvent: (id: string) => {
     client

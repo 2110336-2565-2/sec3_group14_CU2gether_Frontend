@@ -1,6 +1,5 @@
 import { Review } from "@/types";
 import { create } from "zustand";
-import review from "api/review";
 import reviews from "api/reviews";
 
 export type ReviewDetail = {
@@ -12,7 +11,7 @@ export type ReviewDetail = {
 
 type ReviewStore = {  
   reviewDetail?: ReviewDetail; 
-  reviews: ReviewDetail[];
+  reviewList: ReviewDetail[];
   review?: Review;
   getReviewDetail: (reviewId: string) => void;
   getReviews: (eventId: string) => void;
@@ -20,17 +19,17 @@ type ReviewStore = {
 };
 
 const useReviewStore = create<ReviewStore>((set) => ({
-  reviews: [],
+  reviewList: [],
   getReviewDetail: (reviewId: string) => {
-    review.getReviewDetailByReviewId(reviewId)
+    reviews.getReviewDetailByReviewId(reviewId)
     .then((res: any) => set({reviewDetail: res}));
   },
   getReviews: (eventId: string) => {
     reviews.getReviewsByEventID(eventId)
-    .then((res: any) => set({reviews: res}));
+    .then((res: any) => set({reviewList: res}));
   },
   submitReview: (eventId: string, params: Review) => {
-    review.submitReview(eventId, params)
+    reviews.submitReview(eventId, params)
     .then((res: any) => set({review: res}));
   },
 }));

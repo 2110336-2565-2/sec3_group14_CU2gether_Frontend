@@ -89,7 +89,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
             updateProfile(uid.toString(), role, { name });
             break;
         }
-        // router.reload();
+        router.reload();
       } catch (error) {
         console.log(error);
       }

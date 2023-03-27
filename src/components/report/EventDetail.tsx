@@ -6,26 +6,14 @@ import Image from "next/image";
 import FestivalIcon from "@mui/icons-material/Festival";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import { Event } from "@/types";
 
 const { Title } = Typography;
 
-type DisplayEvent = {
-  eventName: string;
-  eventType: string;
-  location: string;
-  startDate: Dayjs;
-  endDate: Dayjs;
-  startTime: string;
-  endTime: string;
-  pictures: string[];
-  description: string;
-  ownerName: string;
-};
-
 type EventDetailProps = {
-  displayEvent: DisplayEvent;
+  event: Event;
 };
-const EventDetail: React.FC<EventDetailProps> = ({ displayEvent }) => {
+const EventDetail: React.FC<EventDetailProps> = ({ event }) => {
   const {
     eventName,
     eventType,
@@ -35,8 +23,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ displayEvent }) => {
     startTime,
     endTime,
     ownerName,
-    description,
-  } = displayEvent;
+  } = event;
   return (
     <EventDetailContainer>
       {/* <LayoutContainer> */}
@@ -91,12 +78,12 @@ const EventDetailContainer = styled.div`
 const InformationLayout = styled.div`
   width: 100%;
   height: 100%;
-  margin: 0 auto;
+  margin: 0;
   font-size: 1rem;
-  ${theme.media.tablet} {
-    height: 60%;
-    width: 100%;
-  }
+  // ${theme.media.tablet} {
+  //   height: 60%;
+  //   width: 100%;
+  // }
 `;
 
 const Content = styled.div`
@@ -104,11 +91,15 @@ const Content = styled.div`
   color: #000;
   height: 80%;
   display: flex;
+  margin: 0;
   flex-direction: column;
   justify-content: space-evenly;
-  // ${theme.media.tablet} {
-  //   padding: 1.5rem 2.5rem;
-  // }
+  ${theme.media.tablet} {
+    padding-top: 0.5rem;
+  }
+  ${theme.media.mobile} {
+    padding-top: 0rem;
+  }
 `;
 const Header = styled.div`
   text-align: left;
@@ -117,9 +108,9 @@ const Header = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0;
-  ${theme.media.tablet} {
-    padding-bottom: 1rem;
-    gap: 0.5rem;
-  }
+  // ${theme.media.tablet} {
+  //   padding-bottom: 1rem;
+  //   gap: 0.5rem;
+  // }
 `;
 export default EventDetail;

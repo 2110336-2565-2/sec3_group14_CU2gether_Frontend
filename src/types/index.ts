@@ -1,27 +1,43 @@
 export enum EventType {
-  RESTAURANT="RESTAURANT",
-  CAFE="CAFE",
-  BAR= "BAR",
-  SPORT="SPORT",
-  VOLUNTEER="VOLUNTEER",
-  CONCERT="CONCERT",
-  PHOTO_TRIP="PHOTO_TRIP",
-  BOARDGAME="BOARDGAME",
-  SEMINAR="SEMINAR",
-  SPECIAL_DAY="SPECIAL_DAY",
-  OTHERS="OTHERS",
+  RESTAURANT = "RESTAURANT",
+  CAFE = "CAFE",
+  BAR = "BAR",
+  SPORT = "SPORT",
+  VOLUNTEER = "VOLUNTEER",
+  CONCERT = "CONCERT",
+  PHOTO_TRIP = "PHOTO_TRIP",
+  BOARDGAME = "BOARDGAME",
+  SEMINAR = "SEMINAR",
+  SPECIAL_DAY = "SPECIAL_DAY",
+  OTHERS = "OTHERS",
 }
 
 export enum Visibility {
-  PUBLIC="PUBLIC",
-  PRIVATE="PRIVATE",
+  PUBLIC = "PUBLIC",
+  PRIVATE = "PRIVATE",
 }
 
 export enum MeetingType {
-  ONSITE="ONSITE",
-  ONLINE="ONLINE"
+  ONSITE = "ONSITE",
+  ONLINE = "ONLINE",
 }
-
+export enum ProblemType {
+  SCAMMING = "SCAMMING",
+  DRUGS = "DRUGS",
+  UNAUTHORIZED_PUBLIC_RACING = "UNAUTHORIZED_PUBLIC_RACING",
+  PUBLIC_LEWD = "PUBLIC_LEWD",
+  GAMBLING = "GAMBLING",
+  VIOLENCE = "VIOLENCE",
+  DANGER = "DANGER",
+  FOOD_POISIONING = "FOOD_POISIONING",
+  OTHERS = "OTHERS",
+}
+export type EventReport = {
+  topic: string;
+  problemType: ProblemType;
+  description: string;
+  imageUrl?: string;
+};
 export type Event = {
   eventName: string;
   eventType: EventType;
@@ -37,6 +53,7 @@ export type Event = {
   location: string;
   website: string;
   pictures: string[];
+  ownerName?: string;
 };
 
 export type Student = {
@@ -57,5 +74,5 @@ export type Organizer = {
   description: string;
   password: string;
 };
-
+export type UserProfile = {};
 export type User = Student | Organizer;

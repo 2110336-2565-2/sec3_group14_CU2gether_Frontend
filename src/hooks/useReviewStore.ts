@@ -1,20 +1,36 @@
 import { Review } from "@/types";
 import { create } from "zustand";
 import review from "api/review";
+import reviews from "api/reviews";
 
-type ReviewStore = {   
+export type ReviewDetail = {
+  score: number,
+  comment: string,
+  authorName: string,
+  createdAt: string,
+}
+
+type ReviewStore = {  
+  reviewDetail?: ReviewDetail; 
+  reviews: ReviewDetail[];
   review?: Review;
-  getReview: (id: string) => void;
-  submitReview: (id: string, params: Review) => void;
+  getReviewDetail: (reviewId: string) => void;
+  getReviews: (eventId: string) => void;
+  submitReview: (eventId: string, params: Review) => void;
 };
 
 const useReviewStore = create<ReviewStore>((set) => ({
-  getReview: (id: string) => {
-    review.getReviewByEventID(id)
-    .then((res: any) => set({review: res}));
+  reviews: [],
+  getReviewDetail: (reviewId: string) => {
+    review.getReviewDetailByReviewId(reviewId)
+    .then((res: any) => set({reviewDetail: res}));
   },
-  submitReview: (id: string, params: Review) => {
-    review.submitReview(id, params)
+  getReviews: (eventId: string) => {
+    reviews.getReviewsByEventID(eventId)
+    .then((res: any) => set({reviews: res}));
+  },
+  submitReview: (eventId: string, params: Review) => {
+    review.submitReview(eventId, params)
     .then((res: any) => set({review: res}));
   },
 }));

@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export enum EventType {
   RESTAURANT="RESTAURANT",
   CAFE="CAFE",
@@ -60,11 +62,6 @@ export type Organizer = {
 };
 
 export type Review = {
-  eventName: string;
-  firstname: string;
-  lastname: string
-  reviewDate: string;
-  reviewTime: string;
   score: number;
   comment: string;
 }

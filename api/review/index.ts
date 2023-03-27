@@ -5,13 +5,13 @@ import { Review } from "@/types";
 
 const reviewUrl = CU_API + "review/event/";
 
-const getReviewByEventID = async (id: String) => {
+const getReviewDetailByReviewId = async (id: String) => {
     try {
-        const event = await client.get(`${reviewUrl}${id}`);
-        if (event.status === 200) {
-            return event.data;
+        const review = await client.get(`${reviewUrl}${id}`);
+        if (review.status === 200) {
+            return review.data;
         } else {
-            throw new Error("Error fetching events with status code: " + event.status);
+            throw new Error("Error fetching events with status code: " + review.status);
         }
     } catch(err) {
         console.log(err)
@@ -33,7 +33,7 @@ const submitReview = async (
 }
 
 const review = {
-    getReviewByEventID,
+    getReviewDetailByReviewId,
     submitReview,
 }
 

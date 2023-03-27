@@ -12,6 +12,9 @@ import { Event, EventType, Visibility, MeetingType } from "@/types";
 import useEventStore from "@/hooks/useEventStore";
 import { useRouter } from "next/router";
 import useReviewStore from "@/hooks/useReviewStore";
+import useProfileStore from "@/hooks/useProfileStore";
+import { ReviewDetail } from "@/hooks/useReviewStore";
+import { Review } from "@/types";
 
 const { Text, Title } = Typography;
 const { TextArea } = Input;
@@ -52,11 +55,31 @@ const mockedData = [
 ];
 
 const ReviewPage: React.FC<{}> = () => {
-  // namo -> this is main component
-  // InserPicture -> mock event picture
-  // AverageScore -> pink score
-  // SubmitReview -> submit review
-  // UserReview -> user's review for each user (mock from mockedData above)
+  const { event, getEventDetail } = useEventStore();
+  const { reviews, getReviews } = useReviewStore();
+  
+  const router = useRouter();
+  const { eventId } = router.query;
+
+  useEffect(() => {
+    if (eventId) {
+      const getData = async (eventId: string) => {
+        try {
+          await getEventDetail(eventId);
+          await getReviews(eventId);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      getData(eventId.toString());
+    }
+  }, [eventId]);
+
+  const renderReviewsList = () => 
+    reviews.map((reviewDetail:ReviewDetail, idx: number) => (
+      <UserReview key={`review-${idx}`} reviewDetail={reviewDetail} />
+    ));  
+
   return (
     <ContentsContainer>
       <Title>Review Event</Title>
@@ -65,19 +88,8 @@ const ReviewPage: React.FC<{}> = () => {
         <EventDetailSummary />
         <RateContainer>
           <AverageScore averageScore={5} totalReviews={4} />
-          <SubmitReview />
-          {mockedData.map((data) => {
-            return (
-              <UserReview
-                firstname={data.firstname}
-                lastname={data.lastname}
-                reviewDate={data.reviewDate}
-                reviewTime={data.reviewTime}
-                score={data.score}
-                comment={data.comment}
-              />
-            );
-          })}
+          <SubmitReview eventId={eventId?.toString()} />
+          {renderReviewsList()}
         </RateContainer>
       </EventContainer>
     </ContentsContainer>
@@ -175,7 +187,7 @@ const StyledTextArea = styled(TextArea)`
 const EventDetailSummary: React.FC<{}> = ({}) => {
   const { event, getEventDetail } = useEventStore();
   const router = useRouter();
-  const { eventId }  = router.query;
+  const { eventId } = router.query;
 
   useEffect(() => {
     if (eventId) {
@@ -183,7 +195,7 @@ const EventDetailSummary: React.FC<{}> = ({}) => {
         try {
           await getEventDetail(id);
         } catch (err) {
-          console.log(err)
+          console.log(err);
         }
       };
       getData(eventId.toString());
@@ -249,18 +261,36 @@ const ReviewContainer = styled.div`
   }
 `;
 
-const SubmitReview: React.FC<{}> = () => {
+const SubmitReview: React.FC<{
+  eventId?: string;
+}> = ({ eventId }) => {
   const [form] = Form.useForm();
+  const { review, submitReview } = useReviewStore();
 
   const submitHandler: () => void = () => {
     console.log(form.getFieldsValue(true));
   };
 
+  const onFormFinish = async (values: any) => {
+    if (eventId) {
+      const { score, comment } = values;
+
+      submitReview(eventId, {
+        score,
+        comment,
+      });
+    }
+  };
+
   return (
     <ReviewContainer>
       <Text>What would you rate this event?</Text>
-      <Form form={form} style={{ display: "flex", flexDirection: "column" }}>
-        <Form.Item name="rate">
+      <Form
+        form={form}
+        onFinish={onFormFinish}
+        style={{ display: "flex", flexDirection: "column" }}
+      >
+        <Form.Item name="score">
           <Rate allowHalf={true} allowClear={false} />
         </Form.Item>
 

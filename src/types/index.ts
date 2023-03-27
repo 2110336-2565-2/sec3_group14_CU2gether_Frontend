@@ -39,7 +39,7 @@ export type Event = {
   website: string;
   pictures: string[];
   description: string;
-  ownerName: string;
+  ownerName?: string;
 };
 
 export type Student = {

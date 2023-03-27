@@ -32,29 +32,9 @@ const getEvents = async (params: getEventsRequestParams) => {
   }
 };
 
-const getJoinedEvents = async (params: getEventsRequestParams) => {
-  try {
-    const joinedEvents = await client.get(
-      CU_API + "userProfile/joining-event",
-      {
-        ...params,
-      }
-    );
-    if (joinedEvents.status === 200) {
-      return joinedEvents.data;
-    } else {
-      throw new Error(
-        "Error fetching joinedEvents with status code: " + joinedEvents.status
-      );
-    }
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 const getEventById = async (eventId: string) => {
   try {
-    const event = await client.get(baseUrl + "/" + eventId);
+    const event = await client.get(`${baseUrl}/${eventId}`);
     if (event.status === 200) {
       return event.data;
     } else {
@@ -69,7 +49,7 @@ const getEventById = async (eventId: string) => {
 
 const joinEvent = async (eventId: string) => {
   try {
-    const event = await client.post(baseUrl + "/" + eventId + "/join");
+    const event = await client.post(`${baseUrl}/${eventId}/join`);
     if (event.status === 200) {
       return event.data;
     } else {
@@ -82,7 +62,7 @@ const joinEvent = async (eventId: string) => {
 
 const unjoinEvent = async (eventId: string) => {
   try {
-    const event = await client.delete(baseUrl + eventId + "/unjoin");
+    const event = await client.delete(`${baseUrl}/${eventId}/unjoin`);
     if (event.status === 200) {
       return event.data;
     } else {
@@ -95,7 +75,6 @@ const unjoinEvent = async (eventId: string) => {
 
 const events = {
   getEvents,
-  getJoinedEvents,
   getEventById,
   joinEvent,
   unjoinEvent,

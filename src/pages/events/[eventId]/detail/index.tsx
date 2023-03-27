@@ -39,7 +39,7 @@ const EventDetail: React.FC = () => {
   }, [eventId]);
 
   useEffect(() => {
-    joinedEvents.map((event: Event, idx: number) => {
+    joinedEvents.forEach((event: Event) => {
       if (event.id.toString() == eventId) {
         setJoin(true);
       }
@@ -104,6 +104,8 @@ const EventDetail: React.FC = () => {
     </Space>
   );
 
+  console.log("OAT", CU_API + pictures[0].slice(2));
+
   const EventDetailContainer = styled.div`
     padding: 8rem 0;
     height: 93vh;
@@ -116,7 +118,7 @@ const EventDetail: React.FC = () => {
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url(${CU_API + pictures[0].substring(2)});
+      background-image: url(${CU_API + pictures[0].slice(2)});
       background-size: cover;
       background-position: center;
       filter: blur(10px);
@@ -134,9 +136,10 @@ const EventDetail: React.FC = () => {
         <LayoutContainer>
           <Sider>
             <img
-              src={CU_API + pictures[0].substring(2)}
+              src={CU_API + pictures[0].slice(2)}
               alt={"Event Image"}
               style={{ height: "100%", width: "100%" }}
+              crossOrigin="anonymous"
             />
           </Sider>
           <RightLayout>

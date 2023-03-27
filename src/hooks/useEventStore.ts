@@ -1,6 +1,7 @@
 import { Event, EventType, MeetingType, Visibility } from "@/types";
 import { create } from "zustand";
 import events, { getEventsRequestParams } from "api/events";
+import userProfile from "api/user-profile";
 
 type EventStore = {
   event: Event;
@@ -37,7 +38,7 @@ const useEventStore = create<EventStore>((set) => ({
     events.getEvents(params).then((res: any) => set({ events: res }));
   },
   fetchJoinEvents: (params) => {
-    events
+    userProfile
       .getJoinedEvents(params)
       .then((res: any) => set({ joinedEvents: res }));
   },

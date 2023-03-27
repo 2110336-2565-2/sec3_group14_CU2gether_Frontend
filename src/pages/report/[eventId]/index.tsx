@@ -20,6 +20,7 @@ import EventDetail from "@/components/report/EventDetail";
 import Image from "next/image";
 import FormData from "form-data";
 import useEventReportStore from "@/hooks/useEventReportStore";
+import { CU_API } from "@/config";
 const { Content } = Layout;
 const { Title, Text } = Typography;
 
@@ -56,6 +57,7 @@ const defaultEventDetail = {
 const ReportMain: React.FC<{}> = ({}) => {
   const { event, getEventDetail, createEventReport } = useEventReportStore();
   const [eventDetail, setEventDetail] = useState<Event>(defaultEventDetail);
+  const [imageUrl, setImageUrl] = useState<string>("");
   const [form] = Form.useForm();
   const router = useRouter();
   const { eventId } = router.query;
@@ -76,6 +78,7 @@ const ReportMain: React.FC<{}> = ({}) => {
   useEffect(() => {
     if (event) {
       setEventDetail(event);
+      setImageUrl(CU_API + event.pictures[0].substring(2));
     }
   }, [event]);
   const onFormFinish = async () => {
@@ -102,6 +105,7 @@ const ReportMain: React.FC<{}> = ({}) => {
         data.append("pictures", picture.originFileObj);
       });
     }
+    //await createEventReport(data);
     console.log(data);
   };
 
@@ -167,8 +171,9 @@ const ReportMain: React.FC<{}> = ({}) => {
             <LayoutContainer>
               <PictureContainer>
                 <Image
-                  src={background}
-                  alt={"asdf"}
+                  loader={() => imageUrl}
+                  src={imageUrl}
+                  alt={"eventImage"}
                   fill
                   style={{ objectFit: "cover" }}
                   crossOrigin="anonymous"

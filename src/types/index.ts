@@ -74,5 +74,4 @@ export type Organizer = {
   description: string;
   password: string;
 };
-export type UserProfile = {};
 export type User = Student | Organizer;

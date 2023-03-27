@@ -18,9 +18,8 @@ import { useRouter } from "next/router";
 import { EventType, Visibility, MeetingType, Event } from "@/types";
 import EventDetail from "@/components/report/EventDetail";
 import Image from "next/image";
-import report from "api/report";
-import { CU_API } from "@/config";
 import FormData from "form-data";
+import useEventReportStore from "@/hooks/useEventReportStore";
 const { Content } = Layout;
 const { Title, Text } = Typography;
 
@@ -53,7 +52,9 @@ const defaultEventDetail = {
   pictures: [""],
   ownerName: "No Name",
 };
+
 const ReportMain: React.FC<{}> = ({}) => {
+  const { event, getEventDetail, createEventReport } = useEventReportStore();
   const [eventDetail, setEventDetail] = useState<Event>(defaultEventDetail);
   const [form] = Form.useForm();
   const router = useRouter();
@@ -63,16 +64,20 @@ const ReportMain: React.FC<{}> = ({}) => {
       console.log(eventId.toString());
       const getData = async (id: string) => {
         try {
-          const event = await report.getEventByID(id);
-          setEventDetail(event);
+          await getEventDetail(id);
         } catch (err) {
-          setEventDetail(defaultEventDetail);
           console.log(err);
         }
       };
       getData(eventId.toString());
     }
   }, [eventId]);
+
+  useEffect(() => {
+    if (event) {
+      setEventDetail(event);
+    }
+  }, [event]);
   const onFormFinish = async () => {
     const data = new FormData();
     const { subject, description, problemType, attachments } =
@@ -92,10 +97,12 @@ const ReportMain: React.FC<{}> = ({}) => {
     data.append("subject", subject);
     data.append("description", description);
     data.append("problemtype", problemType);
-    attachments.fileList.forEach((picture: any) => {
-      data.append("pictures", picture.originFileObj);
-    });
-    console.log(CU_API + eventDetail.pictures[0].substring(2));
+    if (attachments) {
+      attachments.fileList.forEach((picture: any) => {
+        data.append("pictures", picture.originFileObj);
+      });
+    }
+    console.log(data);
   };
 
   const handleReportHistoryClick = () => {

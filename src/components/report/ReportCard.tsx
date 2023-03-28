@@ -3,37 +3,17 @@ import styled from "styled-components";
 import theme from "@/utils/theme";
 import dayjs from "dayjs";
 import { Event, Report } from "@/types";
-import background from "../../../public/background.svg";
-import Image from "next/image";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Image as AntDImg } from "antd";
-import { useState } from "react";
 const { Title } = Typography;
 
 type ReportDetailProps = {
   report: Report;
 };
-const mockImageUrls = [background, background, background, background];
 
 const ReportCard: React.FC<ReportDetailProps> = ({ report }) => {
   const { eventName, ownerName, topic, description, createdAt, imageUrl } =
     report;
-  const [isPreviewVisible, setPreviewVisible] = useState<boolean>(false);
-  const handleClickImg = () => {
-    setPreviewVisible(!isPreviewVisible);
-  };
-  const renderShowImages = () =>
-    mockImageUrls.map((pic: string, index) => (
-      <OneImageContainer>
-        <Image
-          src={pic}
-          alt={`${index}`}
-          fill
-          style={{ objectFit: "cover" }}
-          onClick={handleClickImg}
-        ></Image>
-      </OneImageContainer>
-    ));
   const mockImageUrl2 = [
     "/background.svg",
     "/background.svg",
@@ -70,10 +50,7 @@ const ReportCard: React.FC<ReportDetailProps> = ({ report }) => {
               {eventName} by {ownerName}
             </Typography>
             <Typography style={{ lineHeight: "1em" }}>{description}</Typography>
-            <ImagesContainer>
-              {renderSlides()}
-              {/* <Typography style={{ fontSize: "50px" }}>...</Typography> */}
-            </ImagesContainer>
+            <ImagesContainer>{renderSlides()}</ImagesContainer>
           </Content>
         </InformationLayout>
       </EventDetailContainer>
@@ -134,17 +111,5 @@ const OneImageContainer = styled.div`
     height: 75px;
     width: 100px;
   }
-`;
-const CarouselContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: auto;
-  width: auto;
-  padding: 20px;
-`;
-const SlideContainer = styled.div`
-  width: auto;
-  height: auto;
 `;
 export default ReportCard;

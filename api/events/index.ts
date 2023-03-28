@@ -20,28 +20,18 @@ export type getEventsRequestParams = {
 const getEvents = async (params: getEventsRequestParams) => {
   try {
     const events = await client.get(baseUrl, { ...params });
-    if (events.status === 200) {
-      return events.data;
-    } else {
-      throw new Error(
-        "Error fetching events with status code: " + events.status
-      );
-    }
+    return events.data;
   } catch (err) {
-    console.log(err);
+    throw new Error("Error fetching events");
   }
 };
 
 const getOwnEvents = async () => {
     try {
       const events = await client.get(CU_API+'userProfile/myevent');
-      if(events.status === 200) {
-        return events.data;
-      } else {
-        throw new Error("Error fetching own event with status code: " + events.status);
-      }
+      return events.data;
     } catch (error) {
-      console.log(error);
+      throw new Error("Error fetching event");
     }
   }
 

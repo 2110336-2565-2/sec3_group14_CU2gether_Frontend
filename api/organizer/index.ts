@@ -18,23 +18,17 @@ const getOrganizerById = async (id: string) => {
 
 const updateOrganizerById = async (id: string, params: any) => {
   try {
-    const organizer = await client.patch(baseUrl+id, params);
-    if(organizer.status !== 200) {
-      throw new Error("Error update organizer with status code: " + organizer.status);
-    }
+    await client.patch(baseUrl+id, params);
   } catch (error) {
-    console.log(error);
+    throw new Error("Error update organizer");
   }
 }
 
 const resetOrganizerPasswordById = async (organizerId: string, params: any) => {
   try {
-    const organizer = await client.patch(baseUrl+'reset-password/'+organizerId);
-    if(organizer.status !== 200) {
-      throw new Error("Error reset organizer password with status code: " + organizer.status);
-    }
+    await client.patch(baseUrl+'reset-password/'+organizerId);
   } catch (error) {
-    console.log(error);
+    throw new Error("Error reset organizer password");
   }
 }
 

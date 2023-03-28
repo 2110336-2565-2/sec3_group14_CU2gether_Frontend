@@ -6,6 +6,7 @@ import student from "api/student";
 import organizer from "api/organizer";
 
 type ProfileStore = {
+  id?: string;
   name?: string;
   role?: ROLE;
   email?: string;
@@ -57,8 +58,8 @@ const useProfileStore = create<ProfileStore>((set, get) => ({
       .checkStatus()
       .then((data: any) => {
         if (!data) return;
-        const { role, name, email, imageUrl } = data;
-        set({ role, name, email, imageUrl });
+        const { id, role, name, email, imageUrl } = data;
+        set({ id, role, name, email, imageUrl });
       })
       .catch((err: any) => console.log(err));
   },
@@ -72,23 +73,23 @@ const useProfileStore = create<ProfileStore>((set, get) => ({
         break;
     }
   },
-  updateProfile: (id: string, role: ROLE, params: any) => {
+  updateProfile: async (id: string, role: ROLE, params: any) => {
     switch (role) {
       case ROLE.STUDENT:
-        student.updateStudentById(id, params).then((res: any) => set({ student: res }));
+        await student.updateStudentById(id, params).then((res: any) => set({ student: res }));
         break;   
       case ROLE.ORGANIZER:
-        organizer.updateOrganizerById(id, params).then((res: any) => set({ organizer: res }));
+        await organizer.updateOrganizerById(id, params).then((res: any) => set({ organizer: res }));
         break;
     }
   },
-  resetPassword: (id: string, role: ROLE, params: any) => {
+  resetPassword: async (id: string, role: ROLE, params: any) => {
     switch (role) {
       case ROLE.STUDENT:
-        student.resetStudentPasswordById(id, params).then((res: any) => set({ student: res }));
+        await student.resetStudentPasswordById(id, params).then((res: any) => set({ student: res }));
         break;   
       case ROLE.ORGANIZER:
-        organizer.resetOrganizerPasswordById(id, params).then((res: any) => set({ organizer: res }));
+        await organizer.resetOrganizerPasswordById(id, params).then((res: any) => set({ organizer: res }));
         break;
     }
   }

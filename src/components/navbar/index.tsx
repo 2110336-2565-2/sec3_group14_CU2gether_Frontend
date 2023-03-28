@@ -58,11 +58,10 @@ const Navbar: React.FC<NavbarProps> = () => {
   ];
 
   const adminMenus = [
-    { key: "1", label: "Home", href: "/" },
-    { key: "2", label: "Explore", href: "/events" },
-    { key: "3", label: "Organizer Requests", href: "/events/create" },
-    { key: "4", label: "Event Reports", href: "/events/joined" },
-    { key: "5", label: "Website Reports", href: "/events/mine" },
+    { key: "1", label: "Explore", href: "/events" },
+    { key: "2", label: "Organizer Requests", href: "/" },
+    { key: "3", label: "Event Reports", href: "/" },
+    { key: "4", label: "Website Reports", href: "/" },
   ];
 
   const getItem = (
@@ -112,7 +111,7 @@ const Navbar: React.FC<NavbarProps> = () => {
               query: { slug: "my-post" },
             }}
           >
-            Report Problem
+            Report
           </Link>,
           "3",
           <ReportIcon />

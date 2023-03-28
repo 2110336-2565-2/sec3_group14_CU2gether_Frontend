@@ -1,37 +1,37 @@
 export enum EventType {
-  RESTAURANT="RESTAURANT",
-  CAFE="CAFE",
-  BAR= "BAR",
-  SPORT="SPORT",
-  VOLUNTEER="VOLUNTEER",
-  CONCERT="CONCERT",
-  PHOTO_TRIP="PHOTO_TRIP",
-  BOARDGAME="BOARDGAME",
-  SEMINAR="SEMINAR",
-  SPECIAL_DAY="SPECIAL_DAY",
-  OTHERS="OTHERS",
+  RESTAURANT = "RESTAURANT",
+  CAFE = "CAFE",
+  BAR = "BAR",
+  SPORT = "SPORT",
+  VOLUNTEER = "VOLUNTEER",
+  CONCERT = "CONCERT",
+  PHOTO_TRIP = "PHOTO_TRIP",
+  BOARDGAME = "BOARDGAME",
+  SEMINAR = "SEMINAR",
+  SPECIAL_DAY = "SPECIAL_DAY",
+  OTHERS = "OTHERS",
 }
 
 export enum Visibility {
-  PUBLIC="PUBLIC",
-  PRIVATE="PRIVATE",
+  PUBLIC = "PUBLIC",
+  PRIVATE = "PRIVATE",
 }
 
 export enum MeetingType {
-  ONSITE="ONSITE",
-  ONLINE="ONLINE"
+  ONSITE = "ONSITE",
+  ONLINE = "ONLINE",
 }
 
 export enum ROLE {
-    STUDENT = 'STUDENT',
-    ORGANIZER = 'ORGANIZER',
-    ADMIN = 'ADMIN',
+  STUDENT = "STUDENT",
+  ORGANIZER = "ORGANIZER",
+  ADMIN = "ADMIN",
 }
 
 export enum GENDER {
-    MALE = 'MALE',
-    FEMALE = 'FEMALE',
-    OTHERS = 'OTHERS',
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+  OTHERS = "OTHERS",
 }
 
 export type Event = {
@@ -71,3 +71,19 @@ export type Organizer = {
 };
 
 export type User = Student | Organizer;
+
+export enum RequestStatus {
+  PENDING = "PENDING",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
+}
+
+export type OrganizerRequest = {
+  id: number;
+  email: string;
+  name: string;
+  coorName: string;
+  phone: string;
+  description: string;
+  status: RequestStatus;
+};

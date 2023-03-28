@@ -34,9 +34,17 @@ export enum ProblemType {
 }
 export type EventReport = {
   topic: string;
-  problemType: ProblemType;
   description: string;
-  imageUrl?: string;
+  createdAt: string;
+  eventName: string;
+  ownerName: string;
+  imageUrl: string[];
+};
+export type WebReport = {
+  topic: string;
+  description: string;
+  createdAt: string;
+  imageUrl: string[];
 };
 export type Event = {
   eventName: string;

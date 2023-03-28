@@ -1,8 +1,6 @@
-import client from "@/utils/client";
-import { User } from "@/types";
 import { create } from "zustand";
 import userProfile from "api/user-profile";
-import { ROLE } from "@/utils/Enum";
+import { ROLE } from "@/types";
 
 type ProfileStore = {
   name?: string;

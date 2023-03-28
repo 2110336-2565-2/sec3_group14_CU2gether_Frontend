@@ -1,22 +1,23 @@
-import { ContainedButton, OutlinedButton } from "@/common/button";
-import theme from "@/utils/theme";
-import { Drawer, MenuProps } from "antd";
-import { Dropdown, Layout, Typography } from "antd";
+import { Drawer, MenuProps, Dropdown, Layout, Typography } from "antd";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import MenuIcon from "@mui/icons-material/Menu";
 import styled from "styled-components";
 import Link from "next/link";
-import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+
+import MenuIcon from "@mui/icons-material/Menu";
+import ReportIcon from "@mui/icons-material/Report";
+import LockResetIcon from "@mui/icons-material/LockReset";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import useProfileStore from "@/hooks/useProfileStore";
+
 import auth from "api/auth";
-import { ROLE } from "@/utils/Enum";
+import { ContainedButton, OutlinedButton } from "@/common/button";
+import useProfileStore from "@/hooks/useProfileStore";
+import theme from "@/utils/theme";
+import { ROLE } from "@/types";
 
 type NavbarProps = {};
 
@@ -41,12 +42,27 @@ const Navbar: React.FC<NavbarProps> = () => {
     setIsMobileScreen(mobile);
   }, [mobile]);
 
-  const navMenus = [
+  const studentMenus = [
     { key: "1", label: "Home", href: "/" },
     { key: "2", label: "Explore", href: "/events" },
     { key: "3", label: "Create Event", href: "/events/create" },
     { key: "4", label: "Join Event", href: "/events/joined" },
-    { key: "5", label: "My Events", href: "/events/my-event" },
+    { key: "5", label: "My Events", href: "/events/mine" },
+  ];
+
+  const organizerMenus = [
+    { key: "1", label: "Home", href: "/" },
+    { key: "2", label: "Explore", href: "/events" },
+    { key: "3", label: "Create Event", href: "/events/create" },
+    { key: "4", label: "My Events", href: "/events/mine" },
+  ];
+
+  const adminMenus = [
+    { key: "1", label: "Home", href: "/" },
+    { key: "2", label: "Explore", href: "/events" },
+    { key: "3", label: "Organizer Requests", href: "/events/create" },
+    { key: "4", label: "Event Reports", href: "/events/joined" },
+    { key: "5", label: "Website Reports", href: "/events/mine" },
   ];
 
   const getItem = (
@@ -66,77 +82,100 @@ const Navbar: React.FC<NavbarProps> = () => {
   const ProfileMenuItems: MenuItem[] = role
     ? [
         getItem(
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.antgroup.com"
+          <Link
+            href={{
+              pathname: "/profile/[uid]",
+              // TODO: Need to change this to dynamic uid
+              query: { uid: "6331307321" },
+            }}
           >
             My Profile
-          </a>,
+          </Link>,
           "1",
           <AccountCircleIcon />
         ),
         getItem(
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.aliyun.com"
+          <Link
+            href={{
+              pathname: "/profile/change-password",
+            }}
           >
-            Manage Account
-          </a>,
+            Change Password
+          </Link>,
           "2",
-          <ManageAccountsIcon />
+          <LockResetIcon />
         ),
         getItem(
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.antgroup.com"
+          <Link
+            href={{
+              pathname: "/blog/[slug]",
+              query: { slug: "my-post" },
+            }}
           >
-            Report History
-          </a>,
+            Report Problem
+          </Link>,
           "3",
-          <ReportGmailerrorredIcon />
+          <ReportIcon />
         ),
         {
           type: "divider",
         },
         getItem(
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.luohanacademy.com"
+          <div
+            onClick={() => {
+              // TODO: Open logout modal
+            }}
           >
             Log Out
-          </a>,
+          </div>,
           "4",
           <LogoutIcon />
         ),
       ]
     : [
-        getItem(
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.antgroup.com"
-          >
-            Join Us
-          </a>,
-          "1",
-          <HandshakeIcon />
-        ),
-        getItem(
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.aliyun.com"
-          >
-            Log In
-          </a>,
-          "2",
-          <LoginIcon />
-        ),
+        getItem(<div>Join Us</div>, "1", <HandshakeIcon />),
+        getItem(<div>Log In</div>, "2", <LoginIcon />),
       ];
+
+  const renderNavMenu = () => {
+    switch (role) {
+      case ROLE.STUDENT:
+        return studentMenus.map((menu, idx) => (
+          <Link key={idx} href={menu.href}>
+            <MenuLabel>{menu.label}</MenuLabel>
+          </Link>
+        ));
+
+      case ROLE.ORGANIZER:
+        return organizerMenus.map((menu, idx) => (
+          <Link key={idx} href={menu.href}>
+            <MenuLabel>{menu.label}</MenuLabel>
+          </Link>
+        ));
+      case ROLE.ADMIN:
+        return adminMenus.map((menu, idx) => (
+          <Link key={idx} href={menu.href}>
+            <MenuLabel>{menu.label}</MenuLabel>
+          </Link>
+        ));
+      default:
+        return studentMenus.map((menu, idx) =>
+          menu.label === "Home" || menu.label === "Explore" ? (
+            <Link key={idx} href={menu.href}>
+              <MenuLabel>{menu.label}</MenuLabel>
+            </Link>
+          ) : (
+            <div
+              onClick={() => {
+                // TODO: Open login modal
+              }}
+            >
+              <MenuLabel>{menu.label}</MenuLabel>
+            </div>
+          )
+        );
+    }
+  };
 
   const renderMobileNav = () => (
     <Nav>
@@ -178,13 +217,7 @@ const Navbar: React.FC<NavbarProps> = () => {
         onClose={() => setIsDrawerOpen(false)}
         open={isDrawerOpen}
       >
-        {navMenus.map((menu, idx) => {
-          return menu.key === "4" && role === ROLE.ORGANIZER ? null : (
-            <Link key={idx} href={menu.href}>
-              <Paragraph>{menu.label}</Paragraph>
-            </Link>
-          );
-        })}
+        {renderNavMenu()}
       </Drawer>
     </Nav>
   );
@@ -199,21 +232,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             width={200}
             height={64}
           />
-          <Menu>
-            {navMenus.map((menu, idx) =>
-              menu.key === "4" && role === ROLE.ORGANIZER ? null : (
-                <Link key={idx} href={menu.href}>
-                  <div
-                    style={{
-                      color: theme.color.black,
-                    }}
-                  >
-                    {menu.label}
-                  </div>
-                </Link>
-              )
-            )}
-          </Menu>
+          <Menu>{renderNavMenu()}</Menu>
         </MenuContainer>
         {role ? (
           <ProfileContainer>
@@ -234,11 +253,16 @@ const Navbar: React.FC<NavbarProps> = () => {
           </ProfileContainer>
         ) : (
           <ProfileContainer>
-            <ContainedButton text={"Join Us"} onClick={() => {}} />
+            <ContainedButton
+              text={"Join Us"}
+              onClick={() => {
+                // TODO: Open signup modal
+              }}
+            />
             <OutlinedButton
               text={"Log in"}
               onClick={() => {
-                auth.login("tae@tae.com", "12345678");
+                // TODO: Open login modal
               }}
             />
           </ProfileContainer>
@@ -292,7 +316,12 @@ const Menu = styled.div`
   display: flex;
   flex-flow: row;
   height: 100%;
+  align-items: center;
   gap: 2vw;
+`;
+
+const MenuLabel = styled(Paragraph)`
+  margin: 0 !important;
 `;
 
 const Name = styled(Text)`

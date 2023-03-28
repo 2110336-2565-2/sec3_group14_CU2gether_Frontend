@@ -46,6 +46,19 @@ export type WebReport = {
   createdAt: string;
   imageUrl: string[];
 };
+
+export enum ROLE {
+  STUDENT = "STUDENT",
+  ORGANIZER = "ORGANIZER",
+  ADMIN = "ADMIN",
+}
+
+export enum GENDER {
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+  OTHERS = "OTHERS",
+}
+
 export type Event = {
   eventName: string;
   eventType: EventType;

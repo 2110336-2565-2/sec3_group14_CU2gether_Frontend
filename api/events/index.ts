@@ -1,6 +1,9 @@
 import { CU_API } from "@/config";
 import { EventType, MeetingType } from "@/types";
 import client from "@/utils/client";
+import FormData from "form-data";
+
+import { Event } from "@/types";
 
 const baseUrl = CU_API + "events";
 
@@ -73,11 +76,30 @@ const unjoinEvent = async (eventId: string) => {
   }
 };
 
+const createEvent = async (params: FormData) => {
+  try {
+    const events = await client.post(baseUrl, params, {
+      "Content-Type": "multipart/form-data",
+    });
+    if (events.status === 201) {
+      return true;
+    } else {
+      throw new Error(
+        "Error on creating event with status code: " + events.status
+      );
+    }
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
+
 const events = {
   getEvents,
   getEventById,
   joinEvent,
   unjoinEvent,
+  createEvent,
 };
 
 export default events;

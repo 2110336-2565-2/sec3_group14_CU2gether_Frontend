@@ -2,6 +2,7 @@ import { Event, EventType, MeetingType, Visibility } from "@/types";
 import { create } from "zustand";
 import events, { getEventsRequestParams } from "api/events";
 import userProfile from "api/user-profile";
+import FormData from "form-data";
 
 type EventStore = {
   event: Event;
@@ -10,6 +11,7 @@ type EventStore = {
   fetchEvents: (params: getEventsRequestParams) => void;
   fetchJoinEvents: (params: getEventsRequestParams) => void;
   setEvent: (params: Event) => void;
+  createEvent: (params: FormData) => Promise<boolean>;
 };
 
 const useEventStore = create<EventStore>((set) => ({
@@ -44,6 +46,10 @@ const useEventStore = create<EventStore>((set) => ({
   },
   setEvent: (params) => {
     set({ event: params });
+  },
+  createEvent: async (params: FormData) => {
+    const res = await events.createEvent(params);
+    return res;
   },
 }));
 

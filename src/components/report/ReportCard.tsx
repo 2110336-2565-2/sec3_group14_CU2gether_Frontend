@@ -3,12 +3,11 @@ import styled from "styled-components";
 import theme from "@/utils/theme";
 import dayjs from "dayjs";
 import { Event, Report } from "@/types";
-import { Carousel } from "react-responsive-carousel";
 import background from "../../../public/background.svg";
 import Image from "next/image";
-import { useModal } from "@/hooks";
-import CenteredModal from "@/common/modal";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Image as AntDImg } from "antd";
+import { useState } from "react";
 const { Title } = Typography;
 
 type ReportDetailProps = {
@@ -19,7 +18,10 @@ const mockImageUrls = [background, background, background, background];
 const ReportCard: React.FC<ReportDetailProps> = ({ report }) => {
   const { eventName, ownerName, topic, description, createdAt, imageUrl } =
     report;
-  const { openModal, isModalOpen, closeModal } = useModal();
+  const [isPreviewVisible, setPreviewVisible] = useState<boolean>(false);
+  const handleClickImg = () => {
+    setPreviewVisible(!isPreviewVisible);
+  };
   const renderShowImages = () =>
     mockImageUrls.map((pic: string, index) => (
       <OneImageContainer>
@@ -28,29 +30,29 @@ const ReportCard: React.FC<ReportDetailProps> = ({ report }) => {
           alt={`${index}`}
           fill
           style={{ objectFit: "cover" }}
-          onClick={openModal}
+          onClick={handleClickImg}
         ></Image>
       </OneImageContainer>
     ));
-
-  const renderSlides = () =>
-    mockImageUrls.map((pic: string, index) => (
-      <SlideContainer key={index}>
-        <Image
-          src={pic}
-          alt={`${index}`}
-          width={500}
-          height={500}
-          style={{ objectFit: "cover" }}
-        ></Image>
-      </SlideContainer>
+  const mockImageUrl2 = [
+    "/background.svg",
+    "/background.svg",
+    "/background.svg",
+    "/background.svg",
+  ];
+  const renderImages = () =>
+    mockImageUrl2.map((pic: string, index) => (
+      <OneImageContainer>
+        <AntDImg
+          src={`${pic}`}
+          style={{ fill: "Fill", objectFit: "cover" }}
+        ></AntDImg>
+      </OneImageContainer>
     ));
-
-  const renderCarousel = () => (
-    <CarouselContainer>
-      <Carousel showArrows={true}>{renderSlides()}</Carousel>
-    </CarouselContainer>
+  const renderSlides = () => (
+    <AntDImg.PreviewGroup>{renderImages()}</AntDImg.PreviewGroup>
   );
+
   return (
     <>
       <EventDetailContainer>
@@ -69,15 +71,12 @@ const ReportCard: React.FC<ReportDetailProps> = ({ report }) => {
             </Typography>
             <Typography style={{ lineHeight: "1em" }}>{description}</Typography>
             <ImagesContainer>
-              {renderShowImages()}
+              {renderSlides()}
               {/* <Typography style={{ fontSize: "50px" }}>...</Typography> */}
             </ImagesContainer>
           </Content>
         </InformationLayout>
       </EventDetailContainer>
-      <CenteredModal open={isModalOpen} onCancel={closeModal} footer={null}>
-        {renderCarousel()}
-      </CenteredModal>
     </>
   );
 };

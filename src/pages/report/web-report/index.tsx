@@ -4,7 +4,6 @@ import {
   Typography,
   Form,
   Input,
-  Select,
   Button,
   Layout,
   ConfigProvider,
@@ -13,43 +12,11 @@ import {
 import theme from "@/utils/theme";
 import { FormInput } from "@/common/input";
 import { useRouter } from "next/router";
-import { EventType, Visibility, MeetingType, Event } from "@/types";
-import EventDetail from "@/components/report/EventDetail";
 import FormData from "form-data";
 import ReportIcon from "@mui/icons-material/Report";
 import { useMediaQuery } from "react-responsive";
 const { Content } = Layout;
-const { Title, Text } = Typography;
-
-const typeList = [
-  { value: "SCAMMING", label: "Scamming" },
-  { value: "DRUGS", label: "Drugs" },
-  { value: "UNAUTHORIZED_PUBLIC_RACING", label: "Unauthorized public racing" },
-  { value: "PUBLIC_LEWD", label: "Public Lewd" },
-  { value: "GAMBLING", label: "Gambling" },
-  { value: "VIOLENCE", label: "Violence" },
-  { value: "DANGER", label: "Danger" },
-  { value: "FOOD_POISIONING", label: "Food poisioning" },
-  { value: "OTHERS", label: "Others" },
-];
-
-const defaultEventDetail = {
-  eventName: "No Event Name",
-  eventType: EventType.OTHERS,
-  visibility: Visibility.PRIVATE,
-  tags: ["No Tag"],
-  requireParticipantsMin: 1,
-  requireParticipantsMax: 20,
-  startDate: "2000-01-01",
-  endDate: "2000-01-02",
-  startTime: "08:00",
-  endTime: "16:00",
-  meetingType: MeetingType.ONSITE,
-  location: "Chulalongkorn",
-  website: "www.exmaple.com",
-  pictures: [""],
-  ownerName: "No Name",
-};
+const { Title } = Typography;
 
 const WebReport: React.FC<{}> = ({}) => {
   const [form] = Form.useForm();
@@ -93,7 +60,6 @@ const WebReport: React.FC<{}> = ({}) => {
   };
 
   const subjectForm = <Input placeholder="Subject" style={{ width: "80%" }} />;
-  const typeForm = <Select options={typeList} style={{ width: "80%" }} />;
   const descriptionForm = (
     <Input.TextArea
       placeholder="Description"
@@ -188,7 +154,7 @@ const WebReport: React.FC<{}> = ({}) => {
 const ReportContainer = styled(Layout)`
   margin-left: auto;
   margin-right: auto;
-  outline: 1px solid blue;
+  // outline: 1px solid blue;
   width: 70%;
   ${theme.media.tablet} {
     width: 90%;
@@ -232,19 +198,6 @@ const FormInputContainer = styled(Form)`
   // outline: 1px solid red;
   width: 100%;
   min-width: 350px;
-  ${theme.media.tablet} {
-    grid-column-start: 1;
-    grid-column-end: span 3;
-    grid-row-start: 2;
-    grid-row-end: span 2;
-  }
-  ${theme.media.mobile} {
-    width: 100%;
-    grid-column-start: 1;
-    grid-column-end: span 3;
-    grid-row-start: 3;
-    grid-row-end: span 2;
-  }
 `;
 
 const IconContainer = styled.div`
@@ -256,18 +209,6 @@ const IconContainer = styled.div`
   // outline: 1px solid red;
   position: relative;
   place-self: start;
-  ${theme.media.tablet} {
-    width: max(20vh, 20vw);
-    height: max(30vh, 30vw);
-    max-width: 150px;
-    max-height: 200px;
-    place-self: center;
-  }
-  ${theme.media.mobile} {
-    width: 20vh;
-    height: 30vh;
-    place-self: center;
-  }
 `;
 const ButtonContainer = styled.div`
   display: flex;

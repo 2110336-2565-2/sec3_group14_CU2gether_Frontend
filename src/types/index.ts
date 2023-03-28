@@ -32,18 +32,12 @@ export enum ProblemType {
   FOOD_POISIONING = "FOOD_POISIONING",
   OTHERS = "OTHERS",
 }
-export type EventReport = {
+export type Report = {
   topic: string;
   description: string;
   createdAt: string;
-  eventName: string;
-  ownerName: string;
-  imageUrl: string[];
-};
-export type WebReport = {
-  topic: string;
-  description: string;
-  createdAt: string;
+  eventName?: string;
+  ownerName?: string;
   imageUrl: string[];
 };
 

@@ -1,13 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Upload, Form, Image } from "antd";
-import { PictureOutlined } from "@ant-design/icons";
+import { Upload, Form, Image, FormInstance, UploadFile } from "antd";
+import { PictureOutlined, LoadingOutlined } from "@ant-design/icons";
+import styled from "styled-components";
+import theme from "@/utils/theme";
+import { Event } from "@/types";
+import { CU_API } from "@/config";
 
-const PictureForm: React.FC<{}> = ({}) => {
+const StyledForm = styled(Form.Item)`
+  width: 30%;
+  height: 100%;
+
+  ${theme.media.mobile} {
+    width: 100%;
+  }
+`;
+
+const PictureForm: React.FC<{ event?: Event }> = ({ event }) => {
   const [url, setUrl] = useState<string>("");
 
   const ShowImage = () => {
-    return url ? (
-      <Image src={url} width="100%" preview={false} />
+    return url !== "" ? (
+      <Image src={url} width="100%" preview={false} crossOrigin='anonymous' />
     ) : (
       <>
         <PictureOutlined style={{ fontSize: "3em" }} />
@@ -16,11 +29,27 @@ const PictureForm: React.FC<{}> = ({}) => {
     );
   };
 
+  const form = Form.useFormInstance();
+
+  useEffect(() => {
+    if (event) {
+      form.setFieldsValue({
+        "picture": setUrl(`${CU_API}${event.pictures[0].slice(2)}`),
+      });
+    }
+  }, [event]);
+
+  useEffect(() => {
+    const formPicture = form.getFieldValue("picture");
+    if (formPicture) {
+      setUrl(formPicture.file.thumbUrl);
+    }
+  }, []);
+
   return (
-    <Form.Item
+    <StyledForm
       name="picture"
       rules={[{ required: true, message: "Please insert picture" }]}
-      style={{ width: "50%", height: "100%" }}
     >
       <Upload.Dragger
         maxCount={1}
@@ -30,15 +59,21 @@ const PictureForm: React.FC<{}> = ({}) => {
             setUrl(reader.result as string);
           };
           reader.readAsDataURL(file);
-          return false;
+          // return false;
+        }}
+        onChange={({ file }) => {
+          if (file.status === "done") {
+            file.thumbUrl = url;
+          }
         }}
         onRemove={() => {
+          form.setFieldValue("picture", undefined);
           setUrl("");
         }}
       >
         <ShowImage />
       </Upload.Dragger>
-    </Form.Item>
+    </StyledForm>
   );
 };
 

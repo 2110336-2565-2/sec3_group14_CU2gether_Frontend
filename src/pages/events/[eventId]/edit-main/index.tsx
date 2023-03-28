@@ -13,7 +13,12 @@ import {
   Button,
   Layout,
   ConfigProvider,
+  Row,
+  Col,
+  message,
+  Image,
 } from "antd";
+import { PictureOutlined, LoadingOutlined } from "@ant-design/icons";
 import theme from "@/utils/theme";
 import { FormInput } from "@/common/input";
 import type { UploadProps } from "antd/es/upload";
@@ -25,6 +30,9 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { EventType, Visibility, MeetingType } from "@/types";
 import useEventStore from "@/hooks/useEventStore";
 import { Event } from "@/types";
+import { CU_API } from "@/config";
+import FormData from "form-data";
+
 
 import PictureForm from "@/components/edit-event/PictureForm";
 
@@ -70,15 +78,17 @@ const defaultEventDetail = {
   location: "Chulalongkorn",
   website: "www.exmaple.com",
   pictures: ["pictures"],
-  ownerName: "John Doe"
+  description: "Tell us something",
+  ownerName: "John Doe",
 };
 
 const EditEventMain: React.FC<{}> = ({}) => {
-  const { event, getEventDetail, updateEventDetail, cancelEvent } = useEventStore();
-  const [eventDetail, setEventDetail] =
-    useState<Event>(defaultEventDetail);
+  const { event, getEventDetail, updateEventDetail, cancelEvent } =
+    useEventStore();
+  const [eventDetail, setEventDetail] = useState<Event>(defaultEventDetail);
   const [onCancelEvent, setOnCancelEvent] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [messageApi, contextHolder] = message.useMessage();
   const [fileList, setFileList] = useState<UploadFile[]>([
     {
       uid: "0",
@@ -87,7 +97,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
       url: "/orangutan_show.png",
     },
   ]);
-
+  
   const handleImageChange: UploadProps["onChange"] = ({
     fileList: newFileList,
   }) => setFileList(newFileList);
@@ -98,12 +108,11 @@ const EditEventMain: React.FC<{}> = ({}) => {
 
   useEffect(() => {
     if (eventId) {
-      console.log(eventId.toString())
       const getData = async (id: string) => {
         try {
           await getEventDetail(id);
         } catch (err) {
-          console.log(err)
+          console.log(err);
         }
       };
       getData(eventId.toString());
@@ -113,35 +122,47 @@ const EditEventMain: React.FC<{}> = ({}) => {
   useEffect(() => {
     if (event) {
       form.setFieldsValue({
-        eventName: event.eventName,
-        eventType: event.eventType,
-        visibility: event.visibility,
-        tags: event.tags,
-        requireParticipantsMin: event.requireParticipantsMin,
-        requireParticipantsMax: event.requireParticipantsMax,
-        requireParticipants: [
+        'picture': `${CU_API}${event.pictures[0].slice(2)}`,
+        'eventName': event.eventName,
+        'eventType': event.eventType,
+        'visibility': event.visibility,
+        'tags': event.tags,
+        'requireParticipantsMin': event.requireParticipantsMin,
+        'requireParticipantsMax': event.requireParticipantsMax,
+        'requireParticipants': [
           event.requireParticipantsMin,
           event.requireParticipantsMax,
         ],
-        date: [
+        'date': [
           dayjs(event.startDate, dateFormat),
           dayjs(event.endDate, dateFormat),
         ],
-        time: [
+        'time': [
           dayjs(event.startTime, timeFormat),
           dayjs(event.endTime, timeFormat),
         ],
-        meetingType: event.meetingType,
-        location: event.location,
-        website: event.website,
+        'meetingType': event.meetingType,
+        'location': event.location,
+        'website': event.website,
       });
     }
   }, [event]);
 
-  const onFormFinish = async (values: any) => {
-    if (eventId) {
+  const success = () => {
+    messageApi.open({
+      type: 'success',
+      content: 'SUCCESS',
+      className: 'custom-class',
+    });
+  };
+
+  const onFormFinish = async () => {
+    const formData: FormData = new FormData();
+
+    if (eventId && event) {
       const id = eventId.toString();
       const {
+        picture,
         eventName,
         eventType,
         visibility,
@@ -152,28 +173,30 @@ const EditEventMain: React.FC<{}> = ({}) => {
         meetingType,
         location,
         website,
-      } = values;
-      const ownerName = event!.ownerName;
-      const pictures = ["C:\Users\namo\Documents\GitHub\CU2gether\sec3_group14_CU2gether_Frontend\public\orangutan_show.png"];
-      updateEventDetail(
-        id, {
-          eventName,
-          eventType,
-          visibility,
-          tags,
-          requireParticipantsMin: requireParticipants[0],
-          requireParticipantsMax: requireParticipants[1],
-          startDate: date[0].format("YYYY-MM-DD"),
-          endDate: date[1].format("YYYY-MM-DD"),
-          startTime: time[0].format("HH:mm"),
-          endTime: time[1].format("HH:mm"),
-          meetingType,
-          location,
-          website,
-          pictures,
-          ownerName,
-        }
+      } = form.getFieldsValue(true);
+      const description = event.description;
+
+      formData.append("eventName", eventName);
+      formData.append("eventType", eventType);
+      formData.append("visibility", visibility);
+      formData.append("tags", tags);
+      formData.append("requireParticipantsMin", requireParticipants[0]);
+      formData.append("requireParticipantsMax", requireParticipants[1]);
+      formData.append(
+        "startDate",
+        dayjs(date[0]).format("YYYY-MM-DD").toString()
       );
+      formData.append("endDate", dayjs(date[1]).format("YYYY-MM-DD").toString());
+      formData.append("startTime", dayjs(time[0]).format("HH:mm").toString());
+      formData.append("endTime", dayjs(time[1]).format("HH:mm").toString());
+      formData.append("meetingType", meetingType);
+      formData.append("location", location);
+      formData.append("website", website);
+      formData.append("pictures", picture.file.originFileObj);
+      console.log(picture)
+      formData.append("description", description);
+
+      updateEventDetail(id, formData);
     }
   };
 
@@ -245,7 +268,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
       <FormInput title="Min" name="requireParticipantsMin">
         <Input
           placeholder="Min"
-          style={{ width: "50%" }}
+          style={{ width: "100%" }}
           defaultValue={eventDetail.requireParticipantsMin}
         />
       </FormInput>
@@ -253,7 +276,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
       <FormInput title="Max" name="requireParticipantsMax">
         <Input
           placeholder="Max"
-          style={{ width: "50%" }}
+          style={{ width: "100%" }}
           defaultValue={eventDetail.requireParticipantsMax}
         />
       </FormInput>
@@ -377,19 +400,14 @@ const EditEventMain: React.FC<{}> = ({}) => {
       >
         Cancel
       </ButtonConfig>
-      <ButtonConfig type="primary" htmlType="submit">
+      <ButtonConfig 
+        type="primary" 
+        htmlType="submit" 
+        onClick={() => {success}}
+      >
         Submit
       </ButtonConfig>
     </ButtonContainer>
-  );
-
-  const editImageForm = (
-    <Upload.Dragger
-      listType="picture-card"
-      fileList={fileList}
-      onChange={handleImageChange}
-      style={{ alignItems: "center", justifyContent: "center" }}
-    ></Upload.Dragger>
   );
 
   return (
@@ -410,73 +428,114 @@ const EditEventMain: React.FC<{}> = ({}) => {
         <HeaderContainer>
           <Title className="ant-typography-title">Edit Event Detail</Title>
         </HeaderContainer>
-        <Content>
-          <ContentContainer>
-            <LayoutContainer>
-              <NonFormInputContainer>
-                <PictureForm />
-                {renderButtonForm}
-              </NonFormInputContainer>
-              <FormInputContainer form={form} onFinish={onFormFinish}>
-                <FormInput
-                  title="Event Name"
-                  name="eventName"
-                  isRequired={false}
-                >
-                  {eventNameForm}
-                </FormInput>
-                <FormInput title="Type" name="eventType" isRequired={false}>
-                  {typeForm}
-                </FormInput>
-                <FormInput
-                  title="Visibility"
-                  name="visibility"
-                  isRequired={false}
-                >
-                  {visibilityForm}
-                </FormInput>
-                <FormInput title="Tags" name="tags">
-                  {tagsForm}
-                </FormInput>
-                <FormInput
-                  title="Required Number of Participants"
-                  name="requireParticipants"
-                  isRequired={false}
-                >
-                  {participantCountForm}
-                </FormInput>
-                <FormInput title="Date" name="date" isRequired={false}>
-                  {dateForm}
-                </FormInput>
-                <FormInput title="Time" name="time" isRequired={false}>
-                  {timeForm}
-                </FormInput>
-                <FormInput
-                  title="Meeting Type"
-                  name="meetingType"
-                  isRequired={false}
-                >
-                  {meetingTypeForm}
-                </FormInput>
-                <FormInput title="Location" name="location" isRequired={false}>
-                  {locationForm}
-                </FormInput>
-                <FormInput title="Website" name="website">
-                  {websiteForm}
-                </FormInput>
-                <Form.Item>{buttonForm}</Form.Item>
-              </FormInputContainer>
-            </LayoutContainer>
-            {/* <EndFormContainer>
-            </EndFormContainer> */}
-          </ContentContainer>
-        </Content>
+        <ContentContainer>
+          <FormInputContainer form={form} onFinish={onFormFinish}>
+            <Row>
+              <LayoutContainer>
+                <LeftContentContainer>
+                  <Form.Item>
+                    <PictureInputContainer>
+                      <PictureForm event = {event} />
+                      {renderButtonForm}
+                    </PictureInputContainer>
+                  </Form.Item>
+                </LeftContentContainer>
+                <RightContentContainer>
+                  <FormInput
+                    title="Event Name"
+                    name="eventName"
+                    isRequired={true}
+                    rules={[
+                      { required: true, message: "Please Enter Event Name" },
+                    ]}
+                  >
+                    {eventNameForm}
+                  </FormInput>
+                  <FormInput
+                    title="Type"
+                    name="eventType"
+                    isRequired={true}
+                    rules={[{ required: true, message: "Please Enter Type" }]}
+                  >
+                    {typeForm}
+                  </FormInput>
+                  <FormInput
+                    title="Visibility"
+                    name="visibility"
+                    isRequired={true}
+                    rules={[
+                      { required: true, message: "Please Enter Visibility" },
+                    ]}
+                  >
+                    {visibilityForm}
+                  </FormInput>
+                  <FormInput title="Tags" name="tags">
+                    {tagsForm}
+                  </FormInput>
+                  <FormInput
+                    title="Required Number of Participants"
+                    name="requireParticipants"
+                    isRequired={false}
+                  >
+                    {participantCountForm}
+                  </FormInput>
+                  <FormInput
+                    title="Date"
+                    name="date"
+                    isRequired={true}
+                    rules={[{ required: true, message: "Please Enter Date" }]}
+                  >
+                    {dateForm}
+                  </FormInput>
+                  <FormInput
+                    title="Time"
+                    name="time"
+                    isRequired={true}
+                    rules={[{ required: true, message: "Please Enter Time" }]}
+                  >
+                    {timeForm}
+                  </FormInput>
+                  <FormInput
+                    title="Meeting Type"
+                    name="meetingType"
+                    isRequired={true}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please Enter Meeting Form",
+                      },
+                    ]}
+                  >
+                    {meetingTypeForm}
+                  </FormInput>
+                  <FormInput
+                    title="Location"
+                    name="location"
+                    isRequired={true}
+                    rules={[
+                      { required: true, message: "Please Enter Location" },
+                    ]}
+                  >
+                    {locationForm}
+                  </FormInput>
+                  <FormInput title="Website" name="website">
+                    {websiteForm}
+                  </FormInput>
+                </RightContentContainer>
+              </LayoutContainer>
+            </Row>
+            <Row>
+              <Form.Item>{contextHolder}{buttonForm}</Form.Item>
+            </Row>
+          </FormInputContainer>
+        </ContentContainer>
       </EditEventContainer>
     </ConfigProvider>
   );
 };
 
 const EditEventContainer = styled(Layout)`
+  display: flex;
   margin-left: auto;
   margin-right: auto;
   width: 70%;
@@ -493,6 +552,7 @@ const ContentContainer = styled(Content)`
   margin-right: auto;
   flex-direction: column;
   font-size: 20px;
+  width: 100%;
 `;
 
 const HeaderContainer = styled.div`
@@ -500,15 +560,6 @@ const HeaderContainer = styled.div`
   font-size: 40px;
   justify-content: left;
   padding-top: 5vh;
-`;
-
-const LayoutContainer = styled(Layout)`
-  justify-content: center;
-  flex-direction: row;
-  width: 100%;
-  ${theme.media.tablet} {
-    flex-direction: column;
-  }
 `;
 
 const FormInputContainer = styled(Form)`
@@ -521,24 +572,48 @@ const FormInputContainer = styled(Form)`
   padding: 2.5vh;
 `;
 
-const NonFormInputContainer = styled(Layout)`
+const LeftContentContainer = styled.div`
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  flex-direction: column;
+  width: 50%;
+  ${theme.media.tablet} {
+    width: 100%
+  }
+`;
+
+const RightContentContainer = styled.div`
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  flex-direction: column;
+  width: 50%;
+  ${theme.media.tablet} {
+    width: 100%;
+  }
+`;
+
+const LayoutContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  ${theme.media.tablet} {
+    flex-direction: column-reverse;
+  }
+`;
+
+const PictureInputContainer = styled.div`
   display: flex;
   margin-left: auto;
   margin-right: auto;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 50%;
-  height: 50%;
-`;
-
-const EndFormContainer = styled(Layout)`
-  display: flex;
-  margin-left: auto;
-  margin-right: auto;
-  align-items: center;
-  justify-content: center;
-  gap: 2vw;
+  width: 100%;
+  height: 100%;
 `;
 
 const FlexContainer = styled.div`
@@ -562,8 +637,6 @@ const NonFormButtonContainer = styled.div`
 
 const ButtonConfig = styled(Button)`
   width: 180px;
-  // height: 44px;
-  // font-size: 20px;
 `;
 
 const ModalButtonContainer = styled.div`
@@ -591,6 +664,15 @@ const CancelEventContent = styled.h2`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const StyledForm = styled(Form.Item)`
+  width: 30%;
+  height: 100%;
+
+  ${theme.media.mobile} {
+    width: 100%;
+  }
 `;
 
 export default EditEventMain;

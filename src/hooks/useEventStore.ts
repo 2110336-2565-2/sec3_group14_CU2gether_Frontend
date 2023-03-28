@@ -1,5 +1,5 @@
 import client from "@/utils/client";
-import { Event } from "@/types";
+import { Event, EventType, Visibility, MeetingType } from "@/types";
 import { create } from "zustand";
 import events, { getEventsRequestParams } from "api/events";
 import FormData from "form-data";
@@ -9,7 +9,7 @@ type EventStore = {
   events: Event[];
   joinedEvents: Event[];
   getEventDetail: (id: string) => void;
-  updateEventDetail: (id: string, params: Event) => void;
+  updateEventDetail: (id: string, params: FormData) => void;
   updateEventDescription: (id: string, description: string) => void;
   cancelEvent: (id: string) => void;
   fetchEvent: (id: string) => void
@@ -25,9 +25,8 @@ const useEventStore = create<EventStore>((set) => ({
     events.getEventByID(id)
     .then((res: any) => set({event: res}));
   },
-  updateEventDetail: (id: string, params: Event) => {
-    events.updateEventDetail(id, params)
-    .then((res: any) => set({event: res}));
+  updateEventDetail: async (id: string, params: FormData) => {
+    events.updateEventDetail(id, params);
   },
   updateEventDescription: (id: string, description: string) => {
     events.updateEventDescription(id, description)
@@ -52,7 +51,7 @@ const useEventStore = create<EventStore>((set) => ({
   createEvent: async (params: FormData) => {
     const res = await events.createEvent(params);
     return res;
-  }
+  },
 }));
 
 export default useEventStore;

@@ -3,8 +3,6 @@ import { Event, EventType, MeetingType } from "@/types";
 import client from "@/utils/client";
 import FormData from "form-data";
 
-import { Event } from "@/types";
-
 const baseUrl = CU_API + "events";
 
 export type getEventsRequestParams = {
@@ -50,11 +48,21 @@ const getEventByID = async (id: String) => {
   }
 };
 
-const updateEventDetail = async (id: string, params: Event) => {
+const updateEventDetail = async (id: string, params: FormData) => {
   try {
-    await client.patch(`${baseUrl}/${id}`, { ...params });
+    const events = await client.patch(`${baseUrl}/${id}`, params, {
+      "Content-Type": "multipart/form-data",
+    });
+    if (events.status === 201) {
+      return true;
+    } else {
+      throw new Error(
+        "Error on creating event with status code: " + events.status
+      );
+    }
   } catch (err) {
     console.log(err);
+    return false;
   }
 };
 

@@ -6,7 +6,7 @@ import theme from "@/utils/theme";
 import FormInput from "@/common/input/FormInput";
 import useProfileStore from "@/hooks/useProfileStore";
 import { LockReset } from "@mui/icons-material";
-import { ROLE } from "@/utils/Enum";
+import { ROLE } from "@/types";
 import CenteredModal from "@/common/modal";
 import { OutlinedButton } from "@/common/button";
 

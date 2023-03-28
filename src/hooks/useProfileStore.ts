@@ -1,7 +1,7 @@
 import { Organizer, Student } from "@/types";
 import { create } from "zustand";
 import userProfile from "api/user-profile";
-import { ROLE } from "@/utils/Enum";
+import { ROLE } from "@/types";
 import student from "api/student";
 import organizer from "api/organizer";
 

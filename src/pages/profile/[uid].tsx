@@ -21,7 +21,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ROLE } from "@/utils/Enum";
+import { ROLE } from "@/types";
 import useEventStore from "@/hooks/useEventStore";
 import EventCardInProfile from "@/components/event-card/CardInProfile";
 import { CU_API } from "@/config";

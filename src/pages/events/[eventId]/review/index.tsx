@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Form, Input, Rate, Typography } from "antd";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import FestivalIcon from "@mui/icons-material/Festival";
 
 import theme from "@/utils/theme";
-import calendar_logo from "../../../../../asset/calendar_logo.svg";
-import eventType_logo from "../../../../../asset/eventType_logo.svg";
-import location_logo from "../../../../../asset/location_logo.svg";
 import UserReview from "@/components/review-event/UserReview";
 import { ContainedButton } from "@/common/button";
 import { Event, EventType, Visibility, MeetingType } from "@/types";
@@ -57,7 +57,7 @@ const mockedData = [
 const ReviewPage: React.FC<{}> = () => {
   const { event, getEventDetail } = useEventStore();
   const { reviewList, getReviews } = useReviewStore();
-  
+
   const router = useRouter();
   const { eventId } = router.query;
 
@@ -75,10 +75,10 @@ const ReviewPage: React.FC<{}> = () => {
     }
   }, [eventId]);
 
-  const renderReviewsList = () => 
-    reviewList.map((reviewDetail:ReviewDetail, idx: number) => (
+  const renderReviewsList = () =>
+    reviewList.map((reviewDetail: ReviewDetail, idx: number) => (
       <UserReview key={`review-${idx}`} reviewDetail={reviewDetail} />
-    ));  
+    ));
 
   return (
     <ContentsContainer>
@@ -207,15 +207,15 @@ const EventDetailSummary: React.FC<{}> = ({}) => {
       <HeaderText>{event?.eventName}</HeaderText>
       <NormalText>Created by {event?.ownerName}</NormalText>
       <div>
-        <img src={eventType_logo} />
+        <FestivalIcon />
         <NormalText>{event?.eventType}</NormalText>
       </div>
       <div>
-        <img src={location_logo} />
+        <LocationOnIcon />
         <NormalText>{event?.location}</NormalText>
       </div>
       <div>
-        <img src={calendar_logo} />
+        <CalendarMonthIcon />
         <NormalText>
           {event?.startTime}
           {" - "}

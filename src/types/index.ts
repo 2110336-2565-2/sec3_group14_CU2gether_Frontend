@@ -51,7 +51,8 @@ export type Event = {
   location: string;
   website: string;
   pictures: string[];
-  ownerName: string; 
+  ownerName?: string; 
+  description: string;
 };
 
 export type Student = {

@@ -10,6 +10,7 @@ import theme from "@/utils/theme";
 import ResultContent from "@/components/create-event/ResultContent";
 import useEventStore from "@/hooks/useEventStore";
 import dayjs from "dayjs";
+import FormData from "form-data";
 
 const ContentContainer = styled.div`
   display: flex;
@@ -48,7 +49,7 @@ const StyledForm = styled(Form)`
 const CreateEvent: React.FC<{}> = ({}) => {
   const router = useRouter();
   const [form] = Form.useForm();
-  const { createEvent, isCreateEventSuccess } = useEventStore();
+  const { createEvent } = useEventStore();
   const [currentPageIndex, setCurrentPageIndex] = useState<number>(0);
   const [isSuccess, setIsSuccess] = useState<boolean | undefined>(undefined); // undefined is not yet submitted
 
@@ -92,7 +93,9 @@ const CreateEvent: React.FC<{}> = ({}) => {
     setCurrentPageIndex(0);
   };
 
-  const onFinish = () => {
+  const onFinish = async () => {
+    const formData: FormData = new FormData();
+
     const {
       eventName,
       eventType,
@@ -109,25 +112,28 @@ const CreateEvent: React.FC<{}> = ({}) => {
       description,
     } = form.getFieldsValue(true);
 
-    createEvent({
-      eventName,
-      eventType,
-      visibility,
-      tags,
-      requireParticipantsMin,
-      requireParticipantsMax,
-      startDate: dayjs(date[0]).format("YYYY-MM-DD").toString(),
-      endDate: dayjs(date[1]).format("YYYY-MM-DD").toString(),
-      startTime: dayjs(time[0]).format("HH:mm").toString(),
-      endTime: dayjs(time[1]).format("HH:mm").toString(),
-      meetingType,
-      location,
-      website,
-      pictures: picture.fileList,
-      description,
-    });
+    formData.append("eventName", eventName);
+    formData.append("eventType", eventType);
+    formData.append("visibility", visibility);
+    formData.append("tags", tags);
+    formData.append("requireParticipantsMin", requireParticipantsMin);
+    formData.append("requireParticipantsMax", requireParticipantsMax);
+    formData.append(
+      "startDate",
+      dayjs(date[0]).format("YYYY-MM-DD").toString()
+    );
+    formData.append("endDate", dayjs(date[1]).format("YYYY-MM-DD").toString());
+    formData.append("startTime", dayjs(time[0]).format("HH:mm").toString());
+    formData.append("endTime", dayjs(time[1]).format("HH:mm").toString());
+    formData.append("meetingType", meetingType);
+    formData.append("location", location);
+    formData.append("website", website);
+    formData.append("pictures", picture.file.originFileObj);
+    formData.append("description", description);
 
-    setIsSuccess(isCreateEventSuccess);
+    const res = await createEvent(formData);
+
+    setIsSuccess(res);
   };
 
   const content = [

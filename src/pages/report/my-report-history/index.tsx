@@ -1,39 +1,57 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Typography, Layout, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
 import ReportCard from "@/components/report/ReportCard";
 import { Report } from "@/types";
 import dayjs from "dayjs";
+import useEventReportStore from "@/hooks/useEventReportStore";
 const { Content } = Layout;
 const { Title } = Typography;
-
+const mocktime: string = dayjs().format();
+const mockImageUrl = [
+  "/background.svg",
+  "/background.svg",
+  "/background.svg",
+  "/background.svg",
+  "/background.svg",
+  "/background.svg",
+  "/background.svg",
+];
+const mockEventReport: Report = {
+  topic: "topic",
+  description:
+    " Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae reiciendis soluta deleniti provident temporibus deserunt officia inventore maxime modi. Itaque sint voluptatem eos inventore exercitationem nesciunt, deserunt ex. Tempore, eos!",
+  createdAt: mocktime,
+  eventName: "eventname",
+  ownerName: "ownername",
+  imageUrl: mockImageUrl,
+};
+const mockProblemReport: Report = {
+  topic: "topic",
+  description:
+    " Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae reiciendis soluta deleniti provident temporibus deserunt officia inventore maxime modi. Itaque sint voluptatem eos inventore exercitationem nesciunt, deserunt ex. Tempore, eos!",
+  createdAt: mocktime,
+};
 const MyReportHistory: React.FC<{}> = ({}) => {
-  const mocktime: string = dayjs().format();
-  const mockImageUrl = [
-    "/background.svg",
-    "/background.svg",
-    "/background.svg",
-    "/background.svg",
-    "/background.svg",
-    "/background.svg",
-    "/background.svg",
-  ];
-  const mockEventReport: Report = {
-    topic: "topic",
-    description:
-      " Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae reiciendis soluta deleniti provident temporibus deserunt officia inventore maxime modi. Itaque sint voluptatem eos inventore exercitationem nesciunt, deserunt ex. Tempore, eos!",
-    createdAt: mocktime,
-    eventName: "eventname",
-    ownerName: "ownername",
-    imageUrl: mockImageUrl,
-  };
-  const mockProblemReport: Report = {
-    topic: "topic",
-    description:
-      " Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae reiciendis soluta deleniti provident temporibus deserunt officia inventore maxime modi. Itaque sint voluptatem eos inventore exercitationem nesciunt, deserunt ex. Tempore, eos!",
-    createdAt: mocktime,
-  };
+  const { eventReports, webReports, fetchMyEventReports, fetchMyWebReports } =
+    useEventReportStore();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await Promise.all([fetchMyEventReports(), fetchMyWebReports()]);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
+  const renderReportList = (reportList: Report[]) =>
+    reportList.map((report: Report) => (
+      <ReportCard report={report}></ReportCard>
+    ));
+  //{renderReportList(eventReports)}
+  //{renderReportList(webReports)}
   return (
     <ConfigProvider
       theme={{
@@ -56,14 +74,25 @@ const MyReportHistory: React.FC<{}> = ({}) => {
         </HeaderContainer>
         <Content>
           <ContentContainer>
-            <Title className="ant-typography-title" level={2}>
+            <Title
+              className="ant-typography-title"
+              level={2}
+              style={{ margin: "0 " }}
+            >
               Event reports
             </Title>
+            {/* {renderReportList(eventReports)} */}
             <ReportCard report={mockEventReport} />
             <ReportCard report={mockEventReport} />
-            <Title className="ant-typography-title" level={2}>
+            <ReportCard report={mockEventReport} />
+            <Title
+              className="ant-typography-title"
+              level={2}
+              style={{ margin: "0 " }}
+            >
               Problem reports
             </Title>
+            {/* {renderReportList(webReports)} */}
             <ReportCard report={mockProblemReport}></ReportCard>
             <ReportCard report={mockProblemReport}></ReportCard>
           </ContentContainer>
@@ -89,7 +118,7 @@ const ContentContainer = styled(Content)`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 40px;
+  gap: 20px;
   margin-left: auto;
   margin-right: auto;
   flex-direction: column;

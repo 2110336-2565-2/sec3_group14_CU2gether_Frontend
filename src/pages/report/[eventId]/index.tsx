@@ -52,6 +52,7 @@ const defaultEventDetail = {
   website: "www.exmaple.com",
   pictures: [""],
   ownerName: "No Name",
+  description: "",
 };
 
 const ReportMain: React.FC<{}> = ({}) => {

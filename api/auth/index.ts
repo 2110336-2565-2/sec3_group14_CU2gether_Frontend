@@ -1,37 +1,29 @@
 import { CU_API } from "@/config";
 import client from "@/utils/client";
 
-const baseUrl = CU_API + "auth";
+const baseUrl = CU_API + "admin";
 
-const login = async (email: string, password: string) => {
+const approveOrganizer = async (id: string) => {
   try {
-    const res = await client.post(`${baseUrl}/login`, { email, password });
-    if (res.status === 201) {
-      return true;
-    } else {
-      throw new Error("Error occurs with status code: " + res.status);
-    }
-  } catch (err) {
-    console.log(err);
+    const res = await client.post(`${baseUrl}/approve-organizer/${id}`);
+    return res.data;
+  } catch (e) {
+    throw new Error("Error approving organizer");
   }
 };
 
-const logout = async () => {
+const rejectOrganizer = async (id: string) => {
   try {
-    const res = await client.post(`${baseUrl}/logout`);
-    if (res.status === 200) {
-      return true;
-    } else {
-      throw new Error("Error occurs with status code: " + res.status);
-    }
-  } catch (err) {
-    console.log(err);
+    const res = await client.post(`${baseUrl}/reject-organizer/${id}`);
+    return res.data;
+  } catch (e) {
+    throw new Error("Error rejecting organizer");
   }
 };
 
-const auth = {
-  login,
-  logout,
+const admin = {
+  approveOrganizer,
+  rejectOrganizer,
 };
 
-export default auth;
+export default admin;

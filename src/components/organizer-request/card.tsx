@@ -1,4 +1,4 @@
-import { Card, Typography } from "antd";
+import { Card, message, Typography } from "antd";
 import React from "react";
 import styled from "styled-components";
 
@@ -7,6 +7,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 import { ContainedButton, OutlinedButton } from "@/common/button";
 import { OrganizerRequest } from "@/types";
+import admin from "api/auth";
 
 type OrganizerRequestCardProps = {
   request: OrganizerRequest;
@@ -17,7 +18,7 @@ const { Title, Paragraph, Text } = Typography;
 const OrganizerRequestCard: React.FC<OrganizerRequestCardProps> = ({
   request,
 }) => {
-  const { email, name, coorName, phone, description, status } = request;
+  const { id, email, name, coorName, phone, description, status } = request;
   return (
     <Card>
       <Title level={3}>{name}</Title>
@@ -35,6 +36,14 @@ const OrganizerRequestCard: React.FC<OrganizerRequestCardProps> = ({
               <Text>Reject</Text>
             </ButtonTextContainer>
           }
+          onClick={async () => {
+            try {
+              await admin.approveOrganizer(id);
+              message.success("Rejected organizer request");
+            } catch (error: any) {
+              message.error(error.message);
+            }
+          }}
         />
         <ContainedButton
           text={
@@ -43,6 +52,14 @@ const OrganizerRequestCard: React.FC<OrganizerRequestCardProps> = ({
               <Text>Approve</Text>
             </ButtonTextContainer>
           }
+          onClick={async () => {
+            try {
+              await admin.approveOrganizer(id);
+              message.success("Rejected organizer request");
+            } catch (error: any) {
+              message.error(error.message);
+            }
+          }}
         />
       </ButtonContainer>
     </Card>

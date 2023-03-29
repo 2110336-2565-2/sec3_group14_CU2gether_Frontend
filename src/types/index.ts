@@ -80,7 +80,7 @@ export enum RequestStatus {
 }
 
 export type OrganizerRequest = {
-  id: number;
+  id: string;
   email: string;
   name: string;
   coorName: string;

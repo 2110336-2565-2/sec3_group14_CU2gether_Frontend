@@ -1,6 +1,9 @@
 import { CU_API } from "@/config";
 import { EventType, MeetingType } from "@/types";
 import client from "@/utils/client";
+import FormData from "form-data";
+
+import { Event } from "@/types"
 
 const baseUrl = CU_API + "events";
 
@@ -27,17 +30,32 @@ const getEvents = async (params: getEventsRequestParams) => {
 };
 
 const getOwnEvents = async () => {
-    try {
-      const events = await client.get(CU_API+'userProfile/myevent');
-      return events.data;
-    } catch (error) {
-      throw new Error("Error fetching event");
-    }
+  try {
+    const events = await client.get(CU_API+'userProfile/myevent');
+    return events.data;
+  } catch (error) {
+    throw new Error("Error fetching event");
   }
+}
+
+const createEvent = async (params: FormData) => {
+  try {
+    const events = await client.post(baseUrl, params, {"Content-Type": "multipart/form-data"});
+    if (events.status === 201) {
+        return true;
+    } else {
+        throw new Error("Error on creating event with status code: " + events.status);
+    }
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+}
 
 const events = {
     getEvents,
-    getOwnEvents
+    getOwnEvents,
+    createEvent
 }
 
 export default events;

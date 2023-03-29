@@ -1,11 +1,9 @@
-import axios, { AxiosError } from "axios";
 import { CU_API } from "@/config";
-import { Dayjs } from "dayjs";
 import client from "@/utils/client";
 import FormData from "form-data";
 const eventUrl = CU_API + "events/";
-const reportUrl = CU_API + "reports";
-const userProfileUrl = CU_API + "userProfile/";
+const eventReportUrl = CU_API + "reports/events/";
+const webReportUrl = CU_API + "reports/webs/";
 const getEventByID = async (id: String) => {
   try {
     const event = await client.get(`${eventUrl}${id}`);
@@ -20,16 +18,16 @@ const getEventByID = async (id: String) => {
     console.log(err);
   }
 };
-const createReport = async (params: FormData) => {
+const createEventReport = async (params: FormData) => {
   try {
-    const events = await client.post(reportUrl, params, {
+    const eventReport = await client.post(eventReportUrl, params, {
       "Content-Type": "multipart/form-data",
     });
-    if (events.status === 201) {
+    if (eventReport.status === 201) {
       return true;
     } else {
       throw new Error(
-        "Error on creating event with status code: " + events.status
+        "Error on creating event with status code: " + eventReport.status
       );
     }
   } catch (err) {
@@ -37,10 +35,57 @@ const createReport = async (params: FormData) => {
     return false;
   }
 };
-
+const createWebReport = async (params: FormData) => {
+  try {
+    const webReport = await client.post(webReportUrl, params, {
+      "Content-Type": "multipart/form-data",
+    });
+    if (webReport.status === 201) {
+      return true;
+    } else {
+      throw new Error(
+        "Error on creating event with status code: " + webReport.status
+      );
+    }
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
+const getMyEventReports = async () => {
+  try {
+    const eventReports = await client.get(eventReportUrl);
+    if (eventReports.status === 200) {
+      return eventReports.data;
+    } else {
+      throw new Error(
+        "Error on creating event with status code: " + eventReports.status
+      );
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+const getMyWebReports = async () => {
+  try {
+    const webReports = await client.get(webReportUrl);
+    if (webReports.status === 200) {
+      return webReports.data;
+    } else {
+      throw new Error(
+        "Error on creating event with status code: " + webReports.status
+      );
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
 const report = {
   getEventByID,
-  createReport,
+  createEventReport,
+  createWebReport,
+  getMyEventReports,
+  getMyWebReports,
 };
 
 export default report;

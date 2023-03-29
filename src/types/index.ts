@@ -38,7 +38,7 @@ export type Report = {
   createdAt: string;
   eventName?: string;
   ownerName?: string;
-  imageUrl: string[];
+  imageUrl?: string[];
 };
 
 export enum ROLE {

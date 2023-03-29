@@ -1,20 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import {
-  Typography,
-  Form,
-  Input,
-  Button,
-  Layout,
-  ConfigProvider,
-  Upload,
-} from "antd";
+import { Typography, Layout, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
-import { FormInput } from "@/common/input";
-import { useRouter } from "next/router";
-import FormData from "form-data";
-import ReportIcon from "@mui/icons-material/Report";
-import { useMediaQuery } from "react-responsive";
 import ReportCard from "@/components/report/ReportCard";
 import { Report } from "@/types";
 import dayjs from "dayjs";
@@ -23,14 +10,29 @@ const { Title } = Typography;
 
 const MyReportHistory: React.FC<{}> = ({}) => {
   const mocktime: string = dayjs().format();
-
-  const mockReport: Report = {
+  const mockImageUrl = [
+    "/background.svg",
+    "/background.svg",
+    "/background.svg",
+    "/background.svg",
+    "/background.svg",
+    "/background.svg",
+    "/background.svg",
+  ];
+  const mockEventReport: Report = {
     topic: "topic",
     description:
       " Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae reiciendis soluta deleniti provident temporibus deserunt officia inventore maxime modi. Itaque sint voluptatem eos inventore exercitationem nesciunt, deserunt ex. Tempore, eos!",
     createdAt: mocktime,
     eventName: "eventname",
     ownerName: "ownername",
+    imageUrl: mockImageUrl,
+  };
+  const mockProblemReport: Report = {
+    topic: "topic",
+    description:
+      " Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae reiciendis soluta deleniti provident temporibus deserunt officia inventore maxime modi. Itaque sint voluptatem eos inventore exercitationem nesciunt, deserunt ex. Tempore, eos!",
+    createdAt: mocktime,
   };
   return (
     <ConfigProvider
@@ -57,12 +59,13 @@ const MyReportHistory: React.FC<{}> = ({}) => {
             <Title className="ant-typography-title" level={2}>
               Event reports
             </Title>
-            <ReportCard report={mockReport} />
-            <ReportCard report={mockReport} />
+            <ReportCard report={mockEventReport} />
+            <ReportCard report={mockEventReport} />
             <Title className="ant-typography-title" level={2}>
               Problem reports
             </Title>
-            <LayoutContainer></LayoutContainer>
+            <ReportCard report={mockProblemReport}></ReportCard>
+            <ReportCard report={mockProblemReport}></ReportCard>
           </ContentContainer>
         </Content>
       </ReportContainer>

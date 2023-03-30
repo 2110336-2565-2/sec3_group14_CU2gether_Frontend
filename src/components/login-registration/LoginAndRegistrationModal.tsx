@@ -97,6 +97,7 @@ const LoginAndRegistrationModal: React.FC<LoginAndRegistrationModalProps> = ({
           onClick={closeLoginAndRegistrationModal}
           icon={faCircleXmark}
           size={"2x"}
+          transform={"left-4x"}
         />
       }
       footer={null}

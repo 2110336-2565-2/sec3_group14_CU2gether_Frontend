@@ -22,7 +22,7 @@ const SignUpFooterContainer = styled.div`
 `;
 
 const SignUpText = styled.p`
-  font-size: 24px;
+  font-size: 14px;
   text-align: center;
   color: ${theme.color_level.gray.light};
 `;

@@ -93,7 +93,7 @@ const Home: React.FC<HomeProps> = () => {
             You can create your own events <br></br> which will appear on this
             website to find participants.
           </CreateEventDescription>
-          <ContainedButton text={"Create Event"} big />
+          <ContainedButton text={"Create Event"} />
         </CreateEventSubSection>
         <CreateEventSubSection>
           <ExampleEventImage
@@ -159,6 +159,7 @@ const DownArrowIconWrapper = styled.div`
   color: white;
   width: 100px;
   opacity: 0.8;
+  cursor: pointer;
 `;
 
 const CreateEventSection = styled.div`

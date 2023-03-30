@@ -4,6 +4,9 @@ import { Event } from "@/types";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import dayjs from "dayjs";
+import styled from "styled-components";
+import Image from "next/image";
+import { CU_API } from "@/config";
 
 type EventCardProps = {
   event: Event;
@@ -13,6 +16,7 @@ const { Title } = Typography;
 
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const { pictures, startDate, endDate, eventName, location } = event;
+  const imgSrc = `${CU_API}${pictures[0]}`;
 
   const getDateTimeText = () => {
     const start = dayjs(startDate, "YYYY-MM-DD");
@@ -33,22 +37,47 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
       <Card
         hoverable
         style={{ width: 240 }}
-        cover={<img alt={"Event Image"} src={pictures[0]} />}
+        cover={
+          <ImageContainer>
+            <Image
+              alt={"Event Image"}
+              src={imgSrc}
+              loader={() => imgSrc}
+              crossOrigin="anonymous"
+              fill
+              style={{ objectFit: "cover" }}
+            />
+          </ImageContainer>
+        }
       >
-        <Title level={4} style={{ margin: "10px 0px" }}>
-          {eventName}
-        </Title>
-        <Space>
-          <CalendarMonthIcon fontSize="small" />
-          <Typography>{getDateTimeText()}</Typography>
-        </Space>
-        <Space>
-          <LocationOnIcon fontSize="small" />
-          <Typography>{location}</Typography>
-        </Space>
+        <EventDetailContainer>
+          <Title level={4} style={{ margin: "10px 0px" }}>
+            {eventName}
+          </Title>
+          <Space>
+            <CalendarMonthIcon fontSize="small" />
+            <Typography>{getDateTimeText()}</Typography>
+          </Space>
+          <Space>
+            <LocationOnIcon fontSize="small" />
+            <Typography>{location}</Typography>
+          </Space>
+        </EventDetailContainer>
       </Card>
     </>
   );
 };
+
+const ImageContainer = styled.div`
+  width: 240px;
+  height: 240px;
+  position: relative;
+`;
+
+const EventDetailContainer = styled.div`
+  display: flex;
+  flex-flow: column;
+  height: 120px;
+`;
 
 export default EventCard;

@@ -1,5 +1,6 @@
 import { CU_API } from "@/config";
 import client from "@/utils/client";
+import FormData from "form-data";
 
 const baseUrl = CU_API + "userProfile";
 
@@ -18,8 +19,35 @@ const checkStatus = async () => {
   }
 };
 
+const checkStatusById = async (id: string) => {
+  try {
+    const res = await client.get(baseUrl + '/' + id);
+    return res.data;
+  } catch (error) {
+    throw new Error(`Error to get check user: ${id} status`);
+  }
+};
+
+const uploadImage = async (email: string, photo_url: FormData) => {
+  try {
+    await client.post(baseUrl + '/uploadImage', {photo_url, email}, {"Content-Type": "multipart/form-data"});
+  } catch (error) {
+    throw new Error(`Error to upload image`);
+  }
+}
+
+const uploadCoverImage = async (email: string, photo_url: FormData) => {
+  try {
+    await client.post(baseUrl + '/uploadImage', {photo_url, email}, {"Content-Type": "multipart/form-data"});
+  } catch (error) {
+    throw new Error(`Error to upload image`);
+  }
+}
+
 const userProfile = {
   checkStatus,
+  checkStatusById,
+  uploadImage,
 };
 
 export default userProfile;

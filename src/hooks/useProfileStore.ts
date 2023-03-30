@@ -4,6 +4,7 @@ import userProfile from "api/user-profile";
 import { ROLE } from "@/types";
 import student from "api/student";
 import organizer from "api/organizer";
+import FormData from "form-data";
 
 type ProfileStore = {
   id?: string;
@@ -14,9 +15,12 @@ type ProfileStore = {
   student: Student;
   organizer: Organizer;
   checkStatus: () => void;
+  checkStatusById: (id: string) => void;
+  getRoleById: (id: string) => Promise<any>;
   getProfile: (id: string, role: ROLE) => void;
   updateProfile: (id: string, role: ROLE, params: any) => void;
   resetPassword: (id: string, role: ROLE, params: any) => void;
+  uploadImage: (photoUrl: FormData) => void;
 };
 
 const studentProfile = {
@@ -63,6 +67,20 @@ const useProfileStore = create<ProfileStore>((set, get) => ({
       })
       .catch((err: any) => console.log(err));
   },
+  checkStatusById: (id: string) => {
+    userProfile
+      .checkStatusById(id)
+      .then((data: any) => {
+        if (!data) return;
+        const { id, role, name, email, imageUrl } = data;
+        set({ id, role, name, email, imageUrl });
+      })
+      .catch((err: any) => console.log(err));
+  },
+  getRoleById: async (id: string): Promise<any> =>  {
+    const r = await userProfile.checkStatusById(id);
+    return r.role;
+  },
   getProfile: (id: string, role: ROLE) => {
     switch (role) {
       case ROLE.STUDENT:
@@ -92,6 +110,10 @@ const useProfileStore = create<ProfileStore>((set, get) => ({
         await organizer.resetOrganizerPasswordById(id, params).then((res: any) => set({ organizer: res }));
         break;
     }
+  },
+  uploadImage: (photoUrl: FormData) => {
+    const email = get().email;
+    userProfile.uploadImage(email? email: "a@a.com", photoUrl)
   }
 }));
 

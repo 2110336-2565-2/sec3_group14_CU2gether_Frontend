@@ -1,7 +1,7 @@
 import { CU_API } from "@/config";
 import client from "@/utils/client";
 
-const baseUrl = CU_API + 'organizer/';
+const baseUrl = CU_API + 'organizers/';
 
 const getOrganizerById = async (id: string) => {
   try {

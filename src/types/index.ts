@@ -1,5 +1,3 @@
-import { ROLE } from "@/utils/Enum";
-
 export enum EventType {
   RESTAURANT="RESTAURANT",
   CAFE="CAFE",

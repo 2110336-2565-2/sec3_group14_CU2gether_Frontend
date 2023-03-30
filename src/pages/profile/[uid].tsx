@@ -27,14 +27,18 @@ import EventCardInProfile from "@/components/event-card/CardInProfile";
 import { CU_API } from "@/config";
 import useProfileStore from "@/hooks/useProfileStore";
 import { CameraAltRounded, Edit } from "@mui/icons-material";
+import { useModal } from "@/hooks";
+import UploadImageModal from "@/components/upload-image-modal";
 
 const { Content } = Layout;
 const { Text } = Typography;
 
 const ProfilePage: React.FC<{}> = ({}) => {
-  const { role, student, organizer, getProfile, updateProfile } =
+  const { id, student, organizer, checkStatus, getRoleById, getProfile, updateProfile } =
     useProfileStore();
+  const { isModalOpen, openModal, closeModal } = useModal();
   const { events, fetchOwnEvents } = useEventStore();
+  const [ role, setRole ] = useState<ROLE>(ROLE.STUDENT); 
   const [loading, setLoading] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -50,24 +54,28 @@ const ProfilePage: React.FC<{}> = ({}) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      if (uid) {
-        try {
-          console.log(role);
-          await getProfile(uid.toString(), role ? role : ROLE.STUDENT);
+      if(uid && id) {
+        await checkStatus();
+        const profileRole = await getRoleById(uid.toString());
+        setRole(profileRole);
+        if(id.toString() === uid.toString()) {
+          setOwnUser(true);
+          await getProfile(id, profileRole ? profileRole : ROLE.STUDENT);
           await fetchOwnEvents();
-        } catch (error) {
-          console.log(error);
+        } else {
+          setOwnUser(false);
+          await getProfile(uid.toString(), profileRole ? profileRole : ROLE.STUDENT);
         }
         setLoading(false);
-      }
-    };
+      }  
+    }
     fetchData();
-  }, [uid]);
+  },[uid, id] );
 
-  const editDescription = () => {
+  const editDescription = async () => {
     if (uid) {
       try {
-        updateProfile(uid.toString(), role ? role : ROLE.STUDENT, {
+        await updateProfile(uid.toString(), role ? role : ROLE.STUDENT, {
           description,
         });
         router.reload();
@@ -78,15 +86,15 @@ const ProfilePage: React.FC<{}> = ({}) => {
     setEditingDescription(false);
   };
 
-  const editName = () => {
+  const editName = async () => {
     if (uid) {
       try {
         switch (role) {
           case ROLE.STUDENT:
-            updateProfile(uid.toString(), role, { firstName: name, lastName: lastName });
+            await updateProfile(uid.toString(), role, { firstName: name, lastName: lastName });
             break;
           case ROLE.ORGANIZER:
-            updateProfile(uid.toString(), role, { name });
+            await updateProfile(uid.toString(), role, { name });
             break;
         }
         router.reload();
@@ -211,12 +219,17 @@ const ProfilePage: React.FC<{}> = ({}) => {
         )}
       </AboutContentContainer>
     ) : null;
+  
+  const renderModal = () => (
+    <UploadImageModal isModalOpen={true}></UploadImageModal>
+  )
 
   if (loading || isReady) return <Skeleton></Skeleton>;
-
   return (
+
     <ProfileContainer>
       <Content>
+      {/* <UploadImageModal isModalOpen={true}></UploadImageModal> */}
         <CoverImageCard
           cover={
             <CoverImage
@@ -254,7 +267,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
                 : ""
             }
           />
-          {/* <Upload>
+            {/* <Upload>
                 <EditProfileImageButton 
                     shape="circle" 
                     icon={<CameraAltRounded fontSize='small'/>} 
@@ -462,6 +475,7 @@ const RecordCard = styled(ProfileCard)`
   ${theme.media.tablet} {
     width: 100%;
     height: 110px;
+    max-height: 300px;
   }
 `;
 
@@ -496,7 +510,8 @@ const PreviousEventCard = styled(ProfileCard)`
   height: 400px;
   ${theme.media.tablet} {
     width: 100%;
-    height: 210px;
+    height: 215px;
+    max-height: 300px;
   }
 `;
 

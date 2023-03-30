@@ -1,7 +1,7 @@
 import { CU_API } from "@/config";
 import client from "@/utils/client";
 
-const baseUrl = CU_API + 'student/';
+const baseUrl = CU_API + 'students/';
 
 const getStudentById = async (id: string) => {
   try {

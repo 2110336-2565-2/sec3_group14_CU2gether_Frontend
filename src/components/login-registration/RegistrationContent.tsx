@@ -108,8 +108,7 @@ type RegistrationContentProps = {
   mode: MODE;
   onSelectRole(role: ROLE): void;
   onSelectMode(mode: MODE): void;
-  toggleRegistrationModal(): void;
-  onRegistration: boolean;
+  closeRegistrationModal(): void;
 };
 
 const RegistrationContent: React.FC<RegistrationContentProps> = ({
@@ -117,8 +116,7 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
   mode,
   onSelectRole,
   onSelectMode,
-  onRegistration,
-  toggleRegistrationModal,
+  closeRegistrationModal,
 }) => {
   const [form] = Form.useForm();
 
@@ -374,7 +372,7 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
         <DonePageContainer>
           <SubtitleText1>{subtitle1}</SubtitleText1>
           <SubtitleText2>{subtitle2}</SubtitleText2>
-          <Button type="primary" onClick={() => toggleRegistrationModal()}>
+          <Button type="primary" onClick={() => closeRegistrationModal()}>
             Back to home
           </Button>
         </DonePageContainer>

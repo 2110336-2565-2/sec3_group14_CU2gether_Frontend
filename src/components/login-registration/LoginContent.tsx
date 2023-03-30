@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Form, Input, Button } from "antd";
 import { MODE } from "./LoginAndRegistrationModal";
-import { login } from "api";
+import { auth } from "api";
 import theme from "@/utils/theme";
 
 const LoginContentContainer = styled.div`
@@ -42,19 +42,19 @@ const ButtonContainer = styled.div`
 `;
 
 type LoginContentProps = {
-  setLogin(isLogin: boolean): void;
+  setLoggingIn(isLogin: boolean): void;
   onSelectMode(mode: string): void;
-  toggleRegistrationModal(): void;
+  closeLoginModal(): void;
 };
 
 const LoginContent: React.FC<LoginContentProps> = ({
-  setLogin,
+  setLoggingIn,
   onSelectMode,
-  toggleRegistrationModal,
+  closeLoginModal,
 }) => {
   const signupHandler = () => {
     console.log("signup");
-    setLogin(false);
+    setLoggingIn(false);
     onSelectMode(MODE.SELECTROLE);
   };
 
@@ -64,8 +64,8 @@ const LoginContent: React.FC<LoginContentProps> = ({
 
   const loginHandler = async (values: any) => {
     const { email, password } = values;
-    login(email, password);
-    toggleRegistrationModal();
+    auth.login(email, password);
+    closeLoginModal();
   };
 
   return (

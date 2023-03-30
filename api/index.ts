@@ -1,14 +1,8 @@
 import axios, { AxiosError } from "axios";
 import { CU_API } from "@/config";
-import auth from "./auth"
+import auth from "./auth";
 import events from "./events";
 import userProfile from "./user-profile";
-
-export default {
-  auth,
-  events,
-  userProfile,
-};
 
 const registerStudentURL = CU_API + "register/student";
 const registerOrganizerURL = CU_API + "register/organizer";
@@ -61,3 +55,5 @@ export const registerOrganizer = (
     })
     .catch((err: AxiosError) => console.log(err));
 };
+
+export { auth, events, userProfile };

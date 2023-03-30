@@ -1,16 +1,12 @@
 import { Inter } from "@next/font/google";
 import Image from "next/image";
-import { use, useRef } from "react";
+import { useRef } from "react";
 import { Carousel, Typography } from "antd";
 import styled from "styled-components";
 import React from "react";
 import { ContainedButton } from "@/common/button";
 
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
-
-import LoginAndRegistration from "@/components/login-registration/LoginAndRegistrationModal";
-
-const inter = Inter({ subsets: ["latin"] });
 
 const { Title, Paragraph } = Typography;
 

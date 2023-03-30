@@ -7,6 +7,7 @@ type ProfileStore = {
   role?: ROLE;
   email?: string;
   imageUrl?: string;
+  id?: number;
   checkStatus: () => void;
 };
 
@@ -16,8 +17,8 @@ const useProfileStore = create<ProfileStore>((set) => ({
       .checkStatus()
       .then((data: any) => {
         if (!data) return;
-        const { role, name, email, imageUrl } = data;
-        set({ role, name, email, imageUrl });
+        const { role, name, email, imageUrl, id } = data;
+        set({ role, name, email, imageUrl, id });
       })
       .catch((err: any) => console.log(err));
   },

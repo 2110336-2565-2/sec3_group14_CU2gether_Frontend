@@ -6,12 +6,14 @@ import { useRouter } from "next/router";
 import { ContainedButton, OutlinedButton } from "@/common/button";
 import theme from "@/utils/theme";
 import events from "api/events";
-import { Event, EventType, MeetingType, Visibility } from "@/types";
+import { Event, EventType, MeetingType, ROLE, Visibility } from "@/types";
 import useEventStore from "@/hooks/useEventStore";
 import FestivalIcon from "@mui/icons-material/Festival";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { CU_API } from "@/config";
+import useProfileStore from "@/hooks/useProfileStore";
+import Link from "next/link";
 
 const { Title } = Typography;
 
@@ -23,6 +25,14 @@ const EventDetail: React.FC = () => {
   const [join, setJoin] = useState<boolean>(false);
   const descriptionRef = useRef<null | HTMLDivElement>(null);
   const eventDetailRef = useRef<null | HTMLDivElement>(null);
+  const { id, role, checkStatus } = useProfileStore();
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      await checkStatus();
+    };
+    checkLoginStatus();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,6 +67,7 @@ const EventDetail: React.FC = () => {
     endTime,
     pictures,
     description,
+    ownerId,
   } = event;
 
   const JoinOrUnjoin = () => {
@@ -87,56 +98,91 @@ const EventDetail: React.FC = () => {
     });
   };
 
-  const LayoutFooter = (
-    <Space align="end">
-      <OutlinedButton text="Description" onClick={scrollToDescription} />
-      <ContainedButton text={join ? "Unjoin" : "Join"} onClick={JoinOrUnjoin} />
-    </Space>
-  );
-
-  const DescriptionFooter = (
-    <Space align="end">
-      <OutlinedButton text="Back To Top" onClick={scrollToEventDetail} />
-      <ContainedButton
-        text={join ? "Unjoin Event" : "Join Event"}
-        onClick={JoinOrUnjoin}
-      />
-    </Space>
-  );
-
-  console.log("OAT", CU_API + pictures[0].slice(2));
-
-  const EventDetailContainer = styled.div`
-    padding: 8rem 0;
-    height: 93vh;
-    position: relative;
-    z-index: 1;
-    ::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url(${CU_API + pictures[0].slice(2)});
-      background-size: cover;
-      background-position: center;
-      filter: blur(10px);
-      z-index: -1;
+  const LayoutFooter = () => {
+    if (ownerId == id) {
+      return (
+        <Space align="end">
+          <OutlinedButton text="Description" onClick={scrollToDescription} />
+          <Link href={`../${event.id}/edit-main`}>
+            <OutlinedButton text="Edit Event Detail" />
+          </Link>
+        </Space>
+      );
+    } else {
+      switch (role) {
+        case ROLE.STUDENT:
+          return (
+            <Space align="end">
+              <OutlinedButton
+                text="Description"
+                onClick={scrollToDescription}
+              />
+              <ContainedButton
+                text={join ? "Unjoin" : "Join"}
+                onClick={JoinOrUnjoin}
+              />
+            </Space>
+          );
+        case ROLE.ORGANIZER:
+          return (
+            <Space align="end">
+              <OutlinedButton
+                text="Description"
+                onClick={scrollToDescription}
+              />
+            </Space>
+          );
+      }
     }
-    ${theme.media.tablet} {
-      padding: 2rem 0;
+  };
+
+  const DescriptionFooter = () => {
+    if (ownerId == id) {
+      return (
+        <Space align="end">
+          <OutlinedButton text="Description" onClick={scrollToEventDetail} />
+          <Link href={`../${event.id}/edit-main`}>
+            <OutlinedButton text="Edit Event Detail" />
+          </Link>
+        </Space>
+      );
+    } else {
+      switch (role) {
+        case ROLE.STUDENT:
+          return (
+            <Space align="end">
+              <OutlinedButton
+                text="Back To Top"
+                onClick={scrollToEventDetail}
+              />
+              <ContainedButton
+                text={join ? "Unjoin Event" : "Join Event"}
+                onClick={JoinOrUnjoin}
+              />
+            </Space>
+          );
+        case ROLE.ORGANIZER:
+          return (
+            <Space align="end">
+              <OutlinedButton
+                text="Back To Top"
+                onClick={scrollToEventDetail}
+              />
+            </Space>
+          );
+      }
     }
-  `;
+  };
 
   return (
     <EventDetailPageContainer>
       <div ref={eventDetailRef} />
+
       <EventDetailContainer>
         <LayoutContainer>
           <Sider>
             <img
-              src={CU_API + pictures[0].slice(2)}
+              src={CU_API + pictures[0].slice(1)}
               alt={"Event Image"}
               style={{ height: "100%", width: "100%" }}
               crossOrigin="anonymous"
@@ -171,20 +217,43 @@ const EventDetail: React.FC = () => {
                 </div>
               </Space>
             </Content>
-            <Footer>{LayoutFooter}</Footer>
+            <Footer>{LayoutFooter()}</Footer>
           </RightLayout>
         </LayoutContainer>
+        <BlurBackgroundImg
+          src={CU_API + pictures[0].slice(1)}
+          alt={"Event Image"}
+          crossOrigin="anonymous"
+        />
       </EventDetailContainer>
       <div ref={descriptionRef} />
       <DescriptionContainer>
         <Description>{description}</Description>
         <DescriptionFooterContainer>
-          {DescriptionFooter}
+          {DescriptionFooter()}
         </DescriptionFooterContainer>
       </DescriptionContainer>
     </EventDetailPageContainer>
   );
 };
+
+const BlurBackgroundImg = styled.img`
+  filter: blur(5px);
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+`;
+
+const EventDetailContainer = styled.div`
+  position: relative;
+  padding: 8rem 0;
+  height: 93vh;
+  ${theme.media.tablet} {
+    padding: 2rem 0;
+  }
+`;
 
 const DescriptionContainer = styled.div`
   width: 100%;
@@ -206,17 +275,23 @@ const DescriptionFooterContainer = styled.div`
 `;
 
 const LayoutContainer = styled.div`
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   width: 60vw;
-  height: 100%;
+  height: 70%;
   margin: 0 auto;
+  background-color: rgb(0, 0, 0, 80%);
   ${theme.media.tablet} {
     flex-direction: column;
     align-items: center;
     width: 85%;
   }
   ${theme.media.mobile} {
-    width: 100%;
+    width: 90%;
   }
 `;
 
@@ -242,7 +317,6 @@ const Header = styled.div`
   color: #fff;
   height: 40%;
   width: 100%;
-  background-color: rgb(0, 0, 0, 80%);
   padding: 2rem 4rem;
   padding-top: 3rem;
   display: flex;
@@ -257,7 +331,6 @@ const Header = styled.div`
 const Content = styled.div`
   text-align: left;
   color: #fff;
-  background-color: rgb(0, 0, 0, 80%);
   padding: 1.5rem 4rem;
   height: 40%;
   display: flex;
@@ -269,7 +342,6 @@ const Content = styled.div`
 `;
 
 const Sider = styled.div`
-  background-color: rgb(0, 0, 0, 80%);
   color: #fff;
   width: 35%;
   height: 100%;
@@ -284,7 +356,6 @@ const Sider = styled.div`
 const Footer = styled.div`
   text-align: center;
   color: #fff;
-  background-color: rgb(0, 0, 0, 80%);
   font-weight: bold;
   height: 20%;
   display: flex;

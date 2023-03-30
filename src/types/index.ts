@@ -52,6 +52,7 @@ export type Event = {
   pictures: string[];
   description: string;
   ownerName?: string;
+  ownerId?: number;
 };
 
 export type Student = {

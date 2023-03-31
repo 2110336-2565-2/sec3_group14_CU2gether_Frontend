@@ -172,11 +172,6 @@ const CreateEvent: React.FC<{}> = ({}) => {
         token: {
           colorPrimary: `${theme.color.primary}`,
         },
-        // components: {
-        //   Button: {
-        //     colorPrimary: `${theme.color.primary}`,
-        //   },
-        // },
       }}
     >
       <ContentContainer>

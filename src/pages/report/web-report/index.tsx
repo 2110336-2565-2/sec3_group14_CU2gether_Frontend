@@ -96,12 +96,12 @@ const WebReport: React.FC<{}> = ({}) => {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: `${theme.color.cu_pink}`,
+          colorPrimary: `${theme.color.primary}`,
         },
         components: {
           Button: {
             colorPrimary: `${theme.color.primary}`,
-            colorPrimaryHover: `${theme.color.primaryHover}`,
+            // colorPrimaryHover: `${theme.color.primaryHover}`,
           },
         },
       }}

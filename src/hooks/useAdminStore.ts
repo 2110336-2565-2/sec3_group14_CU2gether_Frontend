@@ -1,4 +1,5 @@
 import { OrganizerRequest, RequestStatus } from "@/types";
+import admin from "api/admin";
 import { create } from "zustand";
 
 type EventStore = {
@@ -6,46 +7,21 @@ type EventStore = {
   fetchOrganizerRequests: () => void;
 };
 
-const useAdminStore = create<EventStore>((set) => ({
+const useAdminStore = create<EventStore>((set,get) => ({
   organizerRequests: [],
-  fetchOrganizerRequests: () => {
-    // TODO: fetch api for this content
-    const _organizerRequests = [
-      {
-        id: 1,
-        email: "wang@wang.in.th",
-        name: "Wang Data Market",
-        coorName: "Chayakorn Vongbunsin",
-        phone: "0617081377",
-        description:
-          "We are ... . We want to... . ;odiqwjdq[oij[dwqd;woqjdpoqwp[wqiohdpoqwdquwdpwqhuihdwqpuh puqwh pduwqh huiqwh dphqwp wpqh qhqhu ihqduhwqdhwq oiwqoh ioqhpoq powhqhqw phwqp hw qpohw qiphuiwqh uidwhqpdhqw hdqwhd kjqwhduwqhjk qeiyfgqy bfqnfbqlwif qwjb",
-        status: RequestStatus.PENDING,
-      },
-      {
-        id: 2,
-        email: "wang@wang.in.th",
-        name: "Wang Data Market",
-        coorName: "Chayakorn Vongbunsin",
-        phone: "0617081377",
-        description:
-          "We are ... . We want to... . ;odiqwjdq[oij[dwqd;woqjdpoqwp[wqiohdpoqwdquwdpwqhuihdwqpuh puqwh pduwqh huiqwh dphqwp wpqh qhqhu ihqduhwqdhwq oiwqoh ioqhpoq powhqhqw phwqp hw qpohw qiphuiwqh uidwhqpdhqw hdqwhd kjqwhduwqhjk qeiyfgqy bfqnfbqlwif qwjb",
-        status: RequestStatus.PENDING,
-      },
-      {
-        id: 3,
-        email: "wang@wang.in.th",
-        name: "Wang Data Market",
-        coorName: "Chayakorn Vongbunsin",
-        phone: "0617081377",
-        description:
-          "We are ... . We want to... . ;odiqwjdq[oij[dwqd;woqjdpoqwp[wqiohdpoqwdquwdpwqhuihdwqpuh puqwh pduwqh huiqwh dphqwp wpqh qhqhu ihqduhwqdhwq oiwqoh ioqhpoq powhqhqw phwqp hw qpohw qiphuiwqh uidwhqpdhqw hdqwhd kjqwhduwqhjk qeiyfgqy bfqnfbqlwif qwjb",
-        status: RequestStatus.PENDING,
-      },
-    ];
-    set({
-      organizerRequests: _organizerRequests,
-    });
+  fetchOrganizerRequests: async () => {
+    try {
+      const _organizerRequests = await admin.getOrganizerRequests();
+      set({
+        organizerRequests: _organizerRequests,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   },
+  removeOrganizerRequest: async (idx: string) => {
+    set({organizerRequests:_organizer})
+  }
 }));
 
 export default useAdminStore;

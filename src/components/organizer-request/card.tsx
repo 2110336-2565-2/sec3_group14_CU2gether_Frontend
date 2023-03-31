@@ -7,7 +7,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 import { ContainedButton, OutlinedButton } from "@/common/button";
 import { OrganizerRequest } from "@/types";
-import admin from "api/auth";
+import admin from "api/admin";
 
 type OrganizerRequestCardProps = {
   request: OrganizerRequest;
@@ -38,10 +38,12 @@ const OrganizerRequestCard: React.FC<OrganizerRequestCardProps> = ({
           }
           onClick={async () => {
             try {
-              await admin.approveOrganizer(id);
+              await admin.rejectOrganizer(id);
               message.success("Rejected organizer request");
             } catch (error: any) {
-              message.error(error.message);
+              message.error(
+                `${error.message} with status code: ${error.status}`
+              );
             }
           }}
         />
@@ -57,7 +59,7 @@ const OrganizerRequestCard: React.FC<OrganizerRequestCardProps> = ({
               await admin.approveOrganizer(id);
               message.success("Rejected organizer request");
             } catch (error: any) {
-              message.error(error.message);
+              message.error(`${error.message} with status code: ${error.code}`);
             }
           }}
         />

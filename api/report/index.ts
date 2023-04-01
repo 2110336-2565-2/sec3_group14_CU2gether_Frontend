@@ -1,26 +1,12 @@
 import { CU_API } from "@/config";
 import client from "@/utils/client";
 import FormData from "form-data";
-const eventUrl = CU_API + "events/";
-const eventReportUrl = CU_API + "event-report/";
+const eventReportUrl = CU_API + "event-report";
 const webReportUrl = CU_API + "web-report";
-const getEventByID = async (id: String) => {
-  try {
-    const event = await client.get(`${eventUrl}${id}`);
-    if (event.status === 200) {
-      return event.data;
-    } else {
-      throw new Error(
-        "Error fetching events with status code: " + event.status
-      );
-    }
-  } catch (err) {
-    console.log(err);
-  }
-};
+
 const createEventReport = async (params: FormData, id: string) => {
   try {
-    const eventReport = await client.post(`${eventReportUrl}${id}`, params, {
+    const eventReport = await client.post(`${eventReportUrl}/${id}`, params, {
       "Content-Type": "multipart/form-data",
     });
     if (eventReport.status === 201) {
@@ -54,7 +40,7 @@ const createWebReport = async (params: FormData) => {
 };
 const getMyEventReports = async () => {
   try {
-    const eventReports = await client.get(eventReportUrl + "myreport");
+    const eventReports = await client.get(`${eventReportUrl}/myreport`);
     if (eventReports.status === 200) {
       return eventReports.data;
     } else {
@@ -68,7 +54,7 @@ const getMyEventReports = async () => {
 };
 const getMyWebReports = async () => {
   try {
-    const webReports = await client.get(webReportUrl + "/myreport");
+    const webReports = await client.get(`${webReportUrl}/myreport`);
     if (webReports.status === 200) {
       return webReports.data;
     } else {
@@ -81,7 +67,6 @@ const getMyWebReports = async () => {
   }
 };
 const report = {
-  getEventByID,
   createEventReport,
   createWebReport,
   getMyEventReports,

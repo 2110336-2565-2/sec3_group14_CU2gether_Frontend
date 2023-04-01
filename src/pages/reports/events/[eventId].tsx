@@ -21,6 +21,7 @@ import Image from "next/image";
 import FormData from "form-data";
 import useEventReportStore from "@/hooks/useEventReportStore";
 import { CU_API } from "@/config";
+import useEventStore from "@/hooks/useEventStore";
 const { Content } = Layout;
 const { Title, Text } = Typography;
 
@@ -56,7 +57,8 @@ const defaultEventDetail = {
 };
 
 const ReportMain: React.FC<{}> = ({}) => {
-  const { event, getEventDetail, createEventReport } = useEventReportStore();
+  const { createEventReport } = useEventReportStore();
+  const { event, getEventDetail } = useEventStore();
   const [eventDetail, setEventDetail] = useState<Event>(defaultEventDetail);
   const [imageUrl, setImageUrl] = useState<string>("");
   const [form] = Form.useForm();

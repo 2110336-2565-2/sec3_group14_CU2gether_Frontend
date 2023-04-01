@@ -4,35 +4,11 @@ import { Typography, Layout, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
 import ReportCard from "@/components/report/ReportCard";
 import { Report } from "@/types";
-import dayjs from "dayjs";
 import useEventReportStore from "@/hooks/useEventReportStore";
+import ReportProvider from "@/components/report/Provider";
 const { Content } = Layout;
 const { Title } = Typography;
-const mocktime: string = dayjs().format();
-const mockImageUrl = [
-  "/background.svg",
-  "/background.svg",
-  "/background.svg",
-  "/background.svg",
-  "/background.svg",
-  "/background.svg",
-  "/background.svg",
-];
-const mockEventReport: Report = {
-  topic: "topic",
-  description:
-    " Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae reiciendis soluta deleniti provident temporibus deserunt officia inventore maxime modi. Itaque sint voluptatem eos inventore exercitationem nesciunt, deserunt ex. Tempore, eos!",
-  createdAt: mocktime,
-  eventName: "eventname",
-  ownerName: "ownername",
-  imageUrl: mockImageUrl,
-};
-const mockProblemReport: Report = {
-  topic: "topic",
-  description:
-    " Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae reiciendis soluta deleniti provident temporibus deserunt officia inventore maxime modi. Itaque sint voluptatem eos inventore exercitationem nesciunt, deserunt ex. Tempore, eos!",
-  createdAt: mocktime,
-};
+
 const MyReportHistory: React.FC<{}> = ({}) => {
   const { eventReports, webReports, fetchMyEventReports, fetchMyWebReports } =
     useEventReportStore();
@@ -51,8 +27,8 @@ const MyReportHistory: React.FC<{}> = ({}) => {
     fetchData();
   }, []);
   const renderReportList = (reportList: Report[] = []) =>
-    reportList.map((report: Report) => (
-      <ReportCard report={report}></ReportCard>
+    reportList.map((report: Report, index) => (
+      <ReportCard report={report} key={`${report.topic}${index}`}></ReportCard>
     ));
 
   if (loading)
@@ -72,24 +48,14 @@ const MyReportHistory: React.FC<{}> = ({}) => {
       >
         <ReportContainer>
           <HeaderContainer>
-            <Title className="ant-typography-title" level={1}>
-              My Report History
-            </Title>
+            <Title level={1}>My Report History</Title>
           </HeaderContainer>
           <Content>
             <ContentContainer>
-              <Title
-                className="ant-typography-title"
-                level={2}
-                style={{ margin: "0 " }}
-              >
+              <Title level={2} style={{ margin: "0 " }}>
                 Event reports
               </Title>
-              <Title
-                className="ant-typography-title"
-                level={2}
-                style={{ margin: "0 " }}
-              >
+              <Title level={2} style={{ margin: "0 " }}>
                 Problem reports
               </Title>
             </ContentContainer>
@@ -98,47 +64,25 @@ const MyReportHistory: React.FC<{}> = ({}) => {
       </ConfigProvider>
     );
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: `${theme.color.primary}`,
-        },
-        components: {
-          Button: {
-            colorPrimary: `${theme.color.primary}`,
-            // colorPrimaryHover: `${theme.color.primaryHover}`,
-          },
-        },
-      }}
-    >
+    <ReportProvider>
       <ReportContainer>
         <HeaderContainer>
-          <Title className="ant-typography-title" level={1}>
-            My Report History
-          </Title>
+          <Title level={1}>My Report History</Title>
         </HeaderContainer>
         <Content>
           <ContentContainer>
-            <Title
-              className="ant-typography-title"
-              level={2}
-              style={{ margin: "0 " }}
-            >
+            <Title level={2} style={{ margin: "0 " }}>
               Event reports
             </Title>
             {renderReportList(eventReports)}
-            <Title
-              className="ant-typography-title"
-              level={2}
-              style={{ margin: "0 " }}
-            >
+            <Title level={2} style={{ margin: "0 " }}>
               Problem reports
             </Title>
             {renderReportList(webReports)}
           </ContentContainer>
         </Content>
       </ReportContainer>
-    </ConfigProvider>
+    </ReportProvider>
   );
 };
 const ReportContainer = styled(Layout)`

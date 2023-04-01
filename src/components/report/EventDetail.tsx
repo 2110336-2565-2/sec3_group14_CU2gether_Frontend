@@ -2,7 +2,6 @@ import { Input, Form, Space, Typography } from "antd";
 import styled from "styled-components";
 import theme from "@/utils/theme";
 import dayjs, { Dayjs } from "dayjs";
-import Image from "next/image";
 import FestivalIcon from "@mui/icons-material/Festival";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";

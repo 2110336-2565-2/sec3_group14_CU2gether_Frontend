@@ -22,6 +22,7 @@ import FormData from "form-data";
 import useEventReportStore from "@/hooks/useEventReportStore";
 import { CU_API } from "@/config";
 import useEventStore from "@/hooks/useEventStore";
+import ReportProvider from "@/components/report/Provider";
 const { Content } = Layout;
 const { Title, Text } = Typography;
 
@@ -156,19 +157,7 @@ const ReportMain: React.FC<{}> = ({}) => {
   );
   const eventInfo = <EventDetail event={eventDetail} />;
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: `${theme.color.primary}`,
-        },
-        components: {
-          Button: {
-            colorPrimary: `${theme.color.primary}`,
-            // colorPrimaryHover: `${theme.color.primaryHover}`,
-          },
-        },
-      }}
-    >
+    <ReportProvider>
       <ReportContainer>
         <HeaderContainer>
           <Title className="ant-typography-title">Report Event</Title>
@@ -225,7 +214,7 @@ const ReportMain: React.FC<{}> = ({}) => {
           </ContentContainer>
         </Content>
       </ReportContainer>
-    </ConfigProvider>
+    </ReportProvider>
   );
 };
 const ReportContainer = styled(Layout)`

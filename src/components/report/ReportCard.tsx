@@ -25,7 +25,7 @@ const ReportCard: React.FC<ReportDetailProps> = ({ report }) => {
           src={`${CU_API}${pic.substring(2)}`}
           style={{ width: "100%", height: "100%" }}
           crossOrigin="anonymous"
-        ></AntDImg>
+        />
       </OneImageContainer>
     ));
   };

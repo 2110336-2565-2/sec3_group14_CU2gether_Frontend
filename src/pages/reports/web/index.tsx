@@ -16,6 +16,7 @@ import FormData from "form-data";
 import ReportIcon from "@mui/icons-material/Report";
 import { useMediaQuery } from "react-responsive";
 import useEventReportStore from "@/hooks/useEventReportStore";
+import ReportProvider from "@/components/report/Provider";
 const { Content } = Layout;
 const { Title } = Typography;
 
@@ -94,19 +95,7 @@ const WebReport: React.FC<{}> = ({}) => {
     </ButtonContainer>
   );
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: `${theme.color.primary}`,
-        },
-        components: {
-          Button: {
-            colorPrimary: `${theme.color.primary}`,
-            // colorPrimaryHover: `${theme.color.primaryHover}`,
-          },
-        },
-      }}
-    >
+    <ReportProvider>
       <ReportContainer>
         <HeaderContainer>
           <Title className="ant-typography-title">Report Problem</Title>
@@ -149,7 +138,7 @@ const WebReport: React.FC<{}> = ({}) => {
           </ContentContainer>
         </Content>
       </ReportContainer>
-    </ConfigProvider>
+    </ReportProvider>
   );
 };
 const ReportContainer = styled(Layout)`

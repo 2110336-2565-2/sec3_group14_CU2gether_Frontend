@@ -21,19 +21,12 @@ const color = {
   backgroundOnHover: "#D9D9D9",
   border: "#D6DADE",  
 
-<<<<<<< HEAD
-  primary50: "#F7F4FF",
-  primary100: "#DAD2F6",
-  primary200: "#B5A6ED",
-};
-=======
   primary50: '#F7F4FF',
   primary100: '#DAD2F6',
   primary200: '#B5A6ED',
 
   primaryHover: '#ED998E'
 }
->>>>>>> main
 
 const input = {
   label: "#717D8A",

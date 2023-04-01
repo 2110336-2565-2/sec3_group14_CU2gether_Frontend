@@ -1,6 +1,7 @@
 import { Drawer, MenuProps, Dropdown, Layout, Typography } from "antd";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { useModal } from "@/hooks";
 import { useMediaQuery } from "react-responsive";
 import styled from "styled-components";
 import Link from "next/link";
@@ -13,8 +14,8 @@ import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-import auth from "api/auth";
 import { ContainedButton, OutlinedButton } from "@/common/button";
+import { LoginAndRegistrationModal } from "@/components/login-registration";
 import useProfileStore from "@/hooks/useProfileStore";
 import theme from "@/utils/theme";
 import { ROLE } from "@/types";
@@ -27,9 +28,11 @@ type MenuItem = Required<MenuProps>["items"][number];
 
 const Navbar: React.FC<NavbarProps> = () => {
   const { role, name, imageUrl, checkStatus } = useProfileStore();
+  const [isLoggingIn, setLogginIn] = useState<boolean>(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
   const mobile = useMediaQuery({ query: "(max-width: 768px)" });
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -58,11 +61,10 @@ const Navbar: React.FC<NavbarProps> = () => {
   ];
 
   const adminMenus = [
-    { key: "1", label: "Home", href: "/" },
-    { key: "2", label: "Explore", href: "/events" },
-    { key: "3", label: "Organizer Requests", href: "/events/create" },
-    { key: "4", label: "Event Reports", href: "/events/joined" },
-    { key: "5", label: "Website Reports", href: "/events/mine" },
+    { key: "1", label: "Explore", href: "/events" },
+    { key: "2", label: "Organizer Requests", href: "/" },
+    { key: "3", label: "Event Reports", href: "/" },
+    { key: "4", label: "Website Reports", href: "/" },
   ];
 
   const getItem = (
@@ -112,7 +114,7 @@ const Navbar: React.FC<NavbarProps> = () => {
               query: { slug: "my-post" },
             }}
           >
-            Report Problem
+            Report
           </Link>,
           "3",
           <ReportIcon />
@@ -145,7 +147,6 @@ const Navbar: React.FC<NavbarProps> = () => {
             <MenuLabel>{menu.label}</MenuLabel>
           </Link>
         ));
-
       case ROLE.ORGANIZER:
         return organizerMenus.map((menu, idx) => (
           <Link key={idx} href={menu.href}>
@@ -167,7 +168,8 @@ const Navbar: React.FC<NavbarProps> = () => {
           ) : (
             <div
               onClick={() => {
-                // TODO: Open login modal
+                setLogginIn(true);
+                openModal();
               }}
             >
               <MenuLabel>{menu.label}</MenuLabel>
@@ -224,6 +226,12 @@ const Navbar: React.FC<NavbarProps> = () => {
 
   const renderPCNav = () => (
     <Nav>
+      <LoginAndRegistrationModal
+        isLoggingIn={isLoggingIn}
+        setLoggingIn={setLogginIn}
+        closeLoginAndRegistrationModal={closeModal}
+        isOpen={isModalOpen}
+      />
       <FullNavContainer>
         <MenuContainer>
           <Logo
@@ -256,13 +264,15 @@ const Navbar: React.FC<NavbarProps> = () => {
             <ContainedButton
               text={"Join Us"}
               onClick={() => {
-                // TODO: Open signup modal
+                setLogginIn(false);
+                openModal();
               }}
             />
             <OutlinedButton
               text={"Log in"}
               onClick={() => {
-                // TODO: Open login modal
+                setLogginIn(true);
+                openModal();
               }}
             />
           </ProfileContainer>

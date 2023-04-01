@@ -7,6 +7,7 @@ import { ROLE } from "@/types";
 import theme from "@/utils/theme";
 import { registerStudent } from "api";
 import { MODE } from "./LoginAndRegistrationModal";
+import { ContainedButton, OutlinedButton } from "@/common/button";
 
 const { TextArea } = Input;
 
@@ -87,20 +88,20 @@ const SubtitleText2 = styled.h3`
   }
 `;
 
-const SelectRoleButton = styled(Button)`
+const SelectStudentRoleButton = styled(ContainedButton)`
   width: 100%;
   height: 200px;
   margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: bold;
 `;
 
-const SelectStudentRoleButton = styled(SelectRoleButton)`
-  background-color: ${theme.color.cu_pink};
-  color: ${theme.color.white};
-`;
-
-const SelectOrganizerRoleButton = styled(SelectRoleButton)`
-  background-color: ${theme.color_level.gray.light};
-  color: ${theme.color_level.gray.dark};
+const SelectOrganizerRoleButton = styled(OutlinedButton)`
+  width: 100%;
+  height: 200px;
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: bold;
 `;
 
 type RegistrationContentProps = {
@@ -108,8 +109,7 @@ type RegistrationContentProps = {
   mode: MODE;
   onSelectRole(role: ROLE): void;
   onSelectMode(mode: MODE): void;
-  toggleRegistrationModal(): void;
-  onRegistration: boolean;
+  closeRegistrationModal(): void;
 };
 
 const RegistrationContent: React.FC<RegistrationContentProps> = ({
@@ -117,8 +117,7 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
   mode,
   onSelectRole,
   onSelectMode,
-  onRegistration,
-  toggleRegistrationModal,
+  closeRegistrationModal,
 }) => {
   const [form] = Form.useForm();
 
@@ -348,10 +347,14 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
     <>
       {mode === MODE.SELECTROLE ? (
         <SelectRoleButtonContainer>
-          <SelectStudentRoleButton onClick={() => onSelectRole(ROLE.STUDENT)}>
+          <SelectStudentRoleButton
+            text={"CU Student"}
+            onClick={() => onSelectRole(ROLE.STUDENT)}
+          >
             <SelectRoleButtonText>CU Student</SelectRoleButtonText>
           </SelectStudentRoleButton>
           <SelectOrganizerRoleButton
+            text={"Organizer"}
             onClick={() => onSelectRole(ROLE.ORGANIZER)}
           >
             <SelectRoleButtonText>Organizer</SelectRoleButtonText>
@@ -374,7 +377,7 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
         <DonePageContainer>
           <SubtitleText1>{subtitle1}</SubtitleText1>
           <SubtitleText2>{subtitle2}</SubtitleText2>
-          <Button type="primary" onClick={() => toggleRegistrationModal()}>
+          <Button type="primary" onClick={() => closeRegistrationModal()}>
             Back to home
           </Button>
         </DonePageContainer>

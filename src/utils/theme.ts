@@ -2,6 +2,7 @@ const color = {
   primary: "#F96491",
   white: "#FFFFFF",
   black: "#000000",
+  red: "#EA4040",
   border: "#D6DADE",
   backgroundColor: "#F5F5F5",
   backgroundOnHover: "#D9D9D9",

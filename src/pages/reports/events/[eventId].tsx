@@ -68,13 +68,10 @@ const ReportMain: React.FC<{}> = ({}) => {
   const { eventId } = router.query;
   useEffect(() => {
     if (eventId) {
-      console.log(eventId.toString());
       const getData = async (id: string) => {
         try {
           await getEventDetail(id);
-        } catch (err) {
-          console.log(err);
-        }
+        } catch (err) {}
       };
       getData(eventId.toString());
     }
@@ -91,7 +88,6 @@ const ReportMain: React.FC<{}> = ({}) => {
       const data = new FormData();
       const { subject, description, problemType, attachments } =
         form.getFieldsValue(true);
-      console.log(subject, description, problemType, attachments);
       /*Example
     attachments.fileList.forEach((picture: any) => {
       data.append("pictures", picture.originFileObj);
@@ -114,7 +110,6 @@ const ReportMain: React.FC<{}> = ({}) => {
 
       await createEventReport(data, eventId.toString());
       router.back();
-      console.log(data);
     }
   };
 

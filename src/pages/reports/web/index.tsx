@@ -34,7 +34,6 @@ const WebReport: React.FC<{}> = ({}) => {
   const onFormFinish = async () => {
     const data = new FormData();
     const { subject, description, attachments } = form.getFieldsValue(true);
-    console.log(subject, description, attachments);
     /*Example
     attachments.fileList.forEach((picture: any) => {
       data.append("pictures", picture.originFileObj);
@@ -55,7 +54,6 @@ const WebReport: React.FC<{}> = ({}) => {
     }
     await createWebReport(data);
     router.back();
-    console.log(data);
   };
 
   const handleReportHistoryClick = () => {

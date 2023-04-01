@@ -18,10 +18,7 @@ const MyReportHistory: React.FC<{}> = ({}) => {
       setLoading(true);
       try {
         await Promise.all([fetchMyEventReports(), fetchMyWebReports()]);
-      } catch (error) {
-        console.log(error);
-      }
-      console.log(eventReports, webReports);
+      } catch (error) {}
       setLoading(false);
     };
     fetchData();

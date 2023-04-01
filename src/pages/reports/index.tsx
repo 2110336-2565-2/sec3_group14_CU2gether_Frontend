@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Typography, Layout, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
@@ -36,22 +36,67 @@ const mockProblemReport: Report = {
 const MyReportHistory: React.FC<{}> = ({}) => {
   const { eventReports, webReports, fetchMyEventReports, fetchMyWebReports } =
     useEventReportStore();
+  const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         await Promise.all([fetchMyEventReports(), fetchMyWebReports()]);
       } catch (error) {
         console.log(error);
       }
+      console.log(eventReports, webReports);
+      setLoading(false);
     };
     fetchData();
   }, []);
-  const renderReportList = (reportList: Report[]) =>
+  const renderReportList = (reportList: Report[] = []) =>
     reportList.map((report: Report) => (
       <ReportCard report={report}></ReportCard>
     ));
-  //{renderReportList(eventReports)}
-  //{renderReportList(webReports)}
+
+  if (loading)
+    return (
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: `${theme.color.primary}`,
+          },
+          components: {
+            Button: {
+              colorPrimary: `${theme.color.primary}`,
+              // colorPrimaryHover: `${theme.color.primaryHover}`,
+            },
+          },
+        }}
+      >
+        <ReportContainer>
+          <HeaderContainer>
+            <Title className="ant-typography-title" level={1}>
+              My Report History
+            </Title>
+          </HeaderContainer>
+          <Content>
+            <ContentContainer>
+              <Title
+                className="ant-typography-title"
+                level={2}
+                style={{ margin: "0 " }}
+              >
+                Event reports
+              </Title>
+              <Title
+                className="ant-typography-title"
+                level={2}
+                style={{ margin: "0 " }}
+              >
+                Problem reports
+              </Title>
+            </ContentContainer>
+          </Content>
+        </ReportContainer>
+      </ConfigProvider>
+    );
   return (
     <ConfigProvider
       theme={{
@@ -81,10 +126,7 @@ const MyReportHistory: React.FC<{}> = ({}) => {
             >
               Event reports
             </Title>
-            {/* {renderReportList(eventReports)} */}
-            <ReportCard report={mockEventReport} />
-            <ReportCard report={mockEventReport} />
-            <ReportCard report={mockEventReport} />
+            {renderReportList(eventReports)}
             <Title
               className="ant-typography-title"
               level={2}
@@ -92,9 +134,7 @@ const MyReportHistory: React.FC<{}> = ({}) => {
             >
               Problem reports
             </Title>
-            {/* {renderReportList(webReports)} */}
-            <ReportCard report={mockProblemReport}></ReportCard>
-            <ReportCard report={mockProblemReport}></ReportCard>
+            {renderReportList(webReports)}
           </ContentContainer>
         </Content>
       </ReportContainer>

@@ -4,6 +4,7 @@ import theme from "@/utils/theme";
 import dayjs from "dayjs";
 import { Event, Report } from "@/types";
 import { Image as AntDImg } from "antd";
+import { CU_API } from "@/config";
 const { Title } = Typography;
 
 type ReportDetailProps = {
@@ -15,11 +16,15 @@ const ReportCard: React.FC<ReportDetailProps> = ({ report }) => {
     report;
 
   const renderImages = (imageUrl: string[]) => {
+    // imageUrl.map((pic: string, index) => {
+    //   console.log(`${CU_API}${pic.substring(2)}`);
+    // });
     return imageUrl.map((pic: string, index) => (
       <OneImageContainer key={index}>
         <AntDImg
-          src={`${pic}`}
-          style={{ fill: "Fill", objectFit: "contain" }}
+          src={`${CU_API}${pic.substring(2)}`}
+          style={{ width: "100%", height: "100%" }}
+          crossOrigin="anonymous"
         ></AntDImg>
       </OneImageContainer>
     ));
@@ -36,7 +41,7 @@ const ReportCard: React.FC<ReportDetailProps> = ({ report }) => {
             {topic}
           </Title>
           <Typography
-            style={{ color: `${theme.color.gray}`, fontSize: "16px" }}
+            style={{ color: `${theme.color.border}`, fontSize: "16px" }}
           >
             {dayjs(createdAt).format("YYYY-MM-DD HH:mm")}
           </Typography>
@@ -68,7 +73,7 @@ const ReportCardContainer = styled.div`
   height: 100%;
   width: 100%;
 
-  border: 1px solid ${theme.color.gray};
+  border: 1px solid ${theme.color.border};
   border-radius: 6px;
 `;
 

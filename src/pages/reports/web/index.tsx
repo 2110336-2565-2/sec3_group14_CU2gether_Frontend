@@ -15,10 +15,12 @@ import { useRouter } from "next/router";
 import FormData from "form-data";
 import ReportIcon from "@mui/icons-material/Report";
 import { useMediaQuery } from "react-responsive";
+import useEventReportStore from "@/hooks/useEventReportStore";
 const { Content } = Layout;
 const { Title } = Typography;
 
 const WebReport: React.FC<{}> = ({}) => {
+  const { createWebReport } = useEventReportStore();
   const [form] = Form.useForm();
   const router = useRouter();
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
@@ -29,9 +31,8 @@ const WebReport: React.FC<{}> = ({}) => {
 
   const onFormFinish = async () => {
     const data = new FormData();
-    const { subject, description, problemType, attachments } =
-      form.getFieldsValue(true);
-    console.log(subject, description, problemType, attachments);
+    const { subject, description, attachments } = form.getFieldsValue(true);
+    console.log(subject, description, attachments);
     /*Example
     attachments.fileList.forEach((picture: any) => {
       data.append("pictures", picture.originFileObj);
@@ -43,20 +44,20 @@ const WebReport: React.FC<{}> = ({}) => {
       },
     });
      */
-    data.append("subject", subject);
+    data.append("topic", subject);
     data.append("description", description);
-    data.append("problemtype", problemType);
     if (attachments) {
       attachments.fileList.forEach((picture: any) => {
-        data.append("pictures", picture.originFileObj);
+        data.append("imageUrl", picture.originFileObj);
       });
     }
-    //await createEventReport(data);
+    await createWebReport(data);
+    router.back();
     console.log(data);
   };
 
   const handleReportHistoryClick = () => {
-    router.push("/report/reporthistory");
+    router.push("/reports");
   };
 
   const subjectForm = <Input placeholder="Subject" style={{ width: "80%" }} />;

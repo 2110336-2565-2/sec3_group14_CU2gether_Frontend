@@ -83,11 +83,12 @@ const ReportMain: React.FC<{}> = ({}) => {
     }
   }, [event]);
   const onFormFinish = async () => {
-    const data = new FormData();
-    const { subject, description, problemType, attachments } =
-      form.getFieldsValue(true);
-    console.log(subject, description, problemType, attachments);
-    /*Example
+    if (eventId) {
+      const data = new FormData();
+      const { subject, description, problemType, attachments } =
+        form.getFieldsValue(true);
+      console.log(subject, description, problemType, attachments);
+      /*Example
     attachments.fileList.forEach((picture: any) => {
       data.append("pictures", picture.originFileObj);
     });
@@ -98,23 +99,23 @@ const ReportMain: React.FC<{}> = ({}) => {
       },
     });
      */
-    data.append("subject", subject);
-    data.append("description", description);
-    data.append("problemtype", problemType);
-    if (attachments) {
-      attachments.fileList.forEach((picture: any) => {
-        data.append("pictures", picture.originFileObj);
-      });
+      data.append("topic", subject);
+      data.append("description", description);
+      data.append("problemType", problemType);
+      if (attachments) {
+        attachments.fileList.forEach((picture: any) => {
+          data.append("imageUrl", picture.originFileObj);
+        });
+      }
+
+      await createEventReport(data, eventId.toString());
+      router.back();
+      console.log(data);
     }
-    if (eventId) {
-      data.append("eventId", eventId.toString());
-    }
-    //await createEventReport(data);
-    console.log(data);
   };
 
   const handleReportHistoryClick = () => {
-    router.push("/report/reporthistory");
+    router.push("/reports");
   };
 
   const subjectForm = <Input placeholder="Subject" style={{ width: "80%" }} />;

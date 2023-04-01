@@ -9,7 +9,8 @@ type EventReportStore = {
   webReports: Report[];
   isCreateReportSuccess: boolean;
   getEventDetail: (id: string) => void;
-  createEventReport: (params: FormData) => void;
+  createEventReport: (params: FormData, id: string) => void;
+  createWebReport: (params: FormData) => void;
   fetchMyEventReports: () => void;
   fetchMyWebReports: () => void;
 };
@@ -22,10 +23,13 @@ const useEventReportStore = create<EventReportStore>((set) => ({
     report.getEventByID(id).then((res: any) => set({ event: res }));
   },
 
-  createEventReport: (params: FormData) => {
+  createEventReport: (params: FormData, id: string) => {
     report
-      .createEventReport(params)
+      .createEventReport(params, id)
       .then((isSuccess: boolean) => set({ isCreateReportSuccess: isSuccess }));
+  },
+  createWebReport: (params: FormData) => {
+    report.createWebReport(params);
   },
   fetchMyEventReports: () => {
     report.getMyEventReports().then((res: any) => set({ eventReports: res }));

@@ -152,42 +152,46 @@ const Navbar: React.FC<NavbarProps> = () => {
       ];
 
   const renderNavMenu = () => {
-    switch (role) {
-      case ROLE.STUDENT:
-        return studentMenus.map((menu, idx) => (
-          <Link key={idx} href={menu.href}>
-            <MenuLabel>{menu.label}</MenuLabel>
-          </Link>
-        ));
-      case ROLE.ORGANIZER:
-        return organizerMenus.map((menu, idx) => (
-          <Link key={idx} href={menu.href}>
-            <MenuLabel>{menu.label}</MenuLabel>
-          </Link>
-        ));
-      case ROLE.ADMIN:
-        return adminMenus.map((menu, idx) => (
-          <Link key={idx} href={menu.href}>
-            <MenuLabel>{menu.label}</MenuLabel>
-          </Link>
-        ));
-      default:
-        return studentMenus.map((menu, idx) =>
-          menu.label === "Home" || menu.label === "Explore" ? (
+    if (isLoggedIn) {
+      switch (role) {
+        case ROLE.STUDENT:
+          return studentMenus.map((menu, idx) => (
             <Link key={idx} href={menu.href}>
               <MenuLabel>{menu.label}</MenuLabel>
             </Link>
-          ) : (
-            <div
-              onClick={() => {
-                setLogginIn(true);
-                openModal();
-              }}
-            >
+          ));
+        case ROLE.ORGANIZER:
+          return organizerMenus.map((menu, idx) => (
+            <Link key={idx} href={menu.href}>
               <MenuLabel>{menu.label}</MenuLabel>
-            </div>
-          )
-        );
+            </Link>
+          ));
+        case ROLE.ADMIN:
+          return adminMenus.map((menu, idx) => (
+            <Link key={idx} href={menu.href}>
+              <MenuLabel>{menu.label}</MenuLabel>
+            </Link>
+          ));
+        default:
+          return;
+      }
+    } else {
+      return studentMenus.map((menu, idx) =>
+        menu.label === "Home" || menu.label === "Explore" ? (
+          <Link key={idx} href={menu.href}>
+            <MenuLabel>{menu.label}</MenuLabel>
+          </Link>
+        ) : (
+          <div
+            onClick={() => {
+              setLogginIn(true);
+              openModal();
+            }}
+          >
+            <MenuLabel>{menu.label}</MenuLabel>
+          </div>
+        )
+      );
     }
   };
 
@@ -352,6 +356,9 @@ const Menu = styled.div`
 
 const MenuLabel = styled(Paragraph)`
   margin: 0 !important;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Name = styled(Text)`

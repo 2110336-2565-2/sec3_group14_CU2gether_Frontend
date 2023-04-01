@@ -170,13 +170,7 @@ const CreateEvent: React.FC<{}> = ({}) => {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: `${theme.color.cu_pink}`,
-        },
-        components: {
-          Button: {
-            colorPrimary: `${theme.color.primary}`,
-            colorPrimaryHover: `${theme.color.primaryHover}`,
-          },
+          colorPrimary: `${theme.color.primary}`,
         },
       }}
     >

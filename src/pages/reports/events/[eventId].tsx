@@ -23,6 +23,7 @@ import useEventReportStore from "@/hooks/useEventReportStore";
 import { CU_API } from "@/config";
 import useEventStore from "@/hooks/useEventStore";
 import ReportProvider from "@/components/report/Provider";
+import { ContainedButton, OutlinedButton } from "@/common/button";
 const { Content } = Layout;
 const { Title, Text } = Typography;
 
@@ -143,16 +144,13 @@ const ReportMain: React.FC<{}> = ({}) => {
 
   const buttonForm = (
     <ButtonContainer>
-      <ButtonConfig
+      <OutlinedButton
         type="default"
         htmlType="button"
         onClick={() => handleReportHistoryClick()}
-      >
-        Report history
-      </ButtonConfig>
-      <ButtonConfig type="primary" htmlType="submit">
-        Submit
-      </ButtonConfig>
+        text="Report History"
+      />
+      <ContainedButton text="Submit" htmlType="submit" />
     </ButtonContainer>
   );
   const eventInfo = <EventDetail event={eventDetail} />;

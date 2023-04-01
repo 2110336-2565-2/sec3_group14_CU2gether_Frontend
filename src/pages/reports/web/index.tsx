@@ -17,6 +17,7 @@ import ReportIcon from "@mui/icons-material/Report";
 import { useMediaQuery } from "react-responsive";
 import useEventReportStore from "@/hooks/useEventReportStore";
 import ReportProvider from "@/components/report/Provider";
+import { ContainedButton, OutlinedButton } from "@/common/button";
 const { Content } = Layout;
 const { Title } = Typography;
 
@@ -82,16 +83,13 @@ const WebReport: React.FC<{}> = ({}) => {
 
   const buttonForm = (
     <ButtonContainer>
-      <ButtonConfig
+      <OutlinedButton
         type="default"
         htmlType="button"
         onClick={() => handleReportHistoryClick()}
-      >
-        Report history
-      </ButtonConfig>
-      <ButtonConfig type="primary" htmlType="submit">
-        Submit
-      </ButtonConfig>
+        text="Report History"
+      />
+      <ContainedButton text="Submit" htmlType="submit" />
     </ButtonContainer>
   );
   return (
@@ -202,7 +200,7 @@ const IconContainer = styled.div`
 `;
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: right;
+  justify-content: center;
   gap: 2vw;
   ${theme.media.tablet} {
     justify-content: center;

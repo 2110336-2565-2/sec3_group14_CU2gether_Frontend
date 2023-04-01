@@ -33,19 +33,7 @@ const MyReportHistory: React.FC<{}> = ({}) => {
 
   if (loading)
     return (
-      <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: `${theme.color.primary}`,
-          },
-          components: {
-            Button: {
-              colorPrimary: `${theme.color.primary}`,
-              // colorPrimaryHover: `${theme.color.primaryHover}`,
-            },
-          },
-        }}
-      >
+      <ReportProvider>
         <ReportContainer>
           <HeaderContainer>
             <Title level={1}>My Report History</Title>
@@ -61,7 +49,7 @@ const MyReportHistory: React.FC<{}> = ({}) => {
             </ContentContainer>
           </Content>
         </ReportContainer>
-      </ConfigProvider>
+      </ReportProvider>
     );
   return (
     <ReportProvider>

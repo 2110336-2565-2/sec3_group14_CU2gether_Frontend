@@ -43,12 +43,14 @@ const ButtonContainer = styled.div`
 
 type LoginContentProps = {
   setLoggingIn(isLogin: boolean): void;
+  setLoggedIn(isLoggedIn: boolean): void;
   onSelectMode(mode: string): void;
   closeLoginModal(): void;
 };
 
 const LoginContent: React.FC<LoginContentProps> = ({
   setLoggingIn,
+  setLoggedIn,
   onSelectMode,
   closeLoginModal,
 }) => {
@@ -65,6 +67,7 @@ const LoginContent: React.FC<LoginContentProps> = ({
   const loginHandler = async (values: any) => {
     const { email, password } = values;
     auth.login(email, password);
+    setLoggedIn(true);
     closeLoginModal();
   };
 

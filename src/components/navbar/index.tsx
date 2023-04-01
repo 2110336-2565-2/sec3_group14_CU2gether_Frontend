@@ -1,4 +1,11 @@
-import { Drawer, MenuProps, Dropdown, Layout, Typography } from "antd";
+import {
+  Drawer,
+  MenuProps,
+  Dropdown,
+  Layout,
+  Typography,
+  notification,
+} from "antd";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useModal } from "@/hooks";
@@ -20,6 +27,8 @@ import useProfileStore from "@/hooks/useProfileStore";
 import theme from "@/utils/theme";
 import { ROLE } from "@/types";
 
+import { auth } from "api";
+
 type NavbarProps = {};
 
 const { Header } = Layout;
@@ -28,7 +37,8 @@ type MenuItem = Required<MenuProps>["items"][number];
 
 const Navbar: React.FC<NavbarProps> = () => {
   const { role, name, imageUrl, checkStatus } = useProfileStore();
-  const [isLoggingIn, setLogginIn] = useState<boolean>(true);
+  const [isLoggedIn, setLoggedIn] = useState<boolean>(false); // has the user logged in or not
+  const [isLoggingIn, setLogginIn] = useState<boolean>(true); // is the action is logging in or signing up
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
   const mobile = useMediaQuery({ query: "(max-width: 768px)" });
@@ -39,7 +49,9 @@ const Navbar: React.FC<NavbarProps> = () => {
       await checkStatus();
     };
     checkLoginStatus();
-  }, []);
+    if (isLoggedIn) notification.open({ message: "Logged in successfully" });
+    else notification.open({ message: "Logged out successfully" });
+  }, [isLoggedIn]);
 
   useEffect(() => {
     setIsMobileScreen(mobile);
@@ -79,6 +91,16 @@ const Navbar: React.FC<NavbarProps> = () => {
       children,
       label,
     } as MenuItem;
+  };
+
+  const logout = async () => {
+    try {
+      const res = await auth.logout();
+      if (res) setLoggedIn(false);
+      else throw new Error("Something went wrong, cannot logout");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const ProfileMenuItems: MenuItem[] = role
@@ -122,17 +144,7 @@ const Navbar: React.FC<NavbarProps> = () => {
         {
           type: "divider",
         },
-        getItem(
-          <div
-            onClick={() => {
-              // TODO: Open logout modal
-            }}
-          >
-            Log Out
-          </div>,
-          "4",
-          <LogoutIcon />
-        ),
+        getItem(<div onClick={logout}>Log Out</div>, "4", <LogoutIcon />),
       ]
     : [
         getItem(<div>Join Us</div>, "1", <HandshakeIcon />),
@@ -181,6 +193,13 @@ const Navbar: React.FC<NavbarProps> = () => {
 
   const renderMobileNav = () => (
     <Nav>
+      <LoginAndRegistrationModal
+        isLoggingIn={isLoggingIn}
+        setLoggingIn={setLogginIn}
+        setLoggedIn={setLoggedIn}
+        closeLoginAndRegistrationModal={closeModal}
+        isOpen={isModalOpen}
+      />
       <ShortNavContainer>
         <MenuIconWrapper>
           <MenuIcon onClick={() => setIsDrawerOpen(true)} />
@@ -229,6 +248,7 @@ const Navbar: React.FC<NavbarProps> = () => {
       <LoginAndRegistrationModal
         isLoggingIn={isLoggingIn}
         setLoggingIn={setLogginIn}
+        setLoggedIn={setLoggedIn}
         closeLoginAndRegistrationModal={closeModal}
         isOpen={isModalOpen}
       />
@@ -242,7 +262,7 @@ const Navbar: React.FC<NavbarProps> = () => {
           />
           <Menu>{renderNavMenu()}</Menu>
         </MenuContainer>
-        {role ? (
+        {isLoggedIn ? (
           <ProfileContainer>
             <Name style={{ color: theme.color.primary }}>Hello, {name}</Name>
             <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>

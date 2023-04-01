@@ -36,6 +36,7 @@ export enum MODE {
 type LoginAndRegistrationModalProps = {
   isLoggingIn: boolean;
   setLoggingIn(isLogin: boolean): void;
+  setLoggedIn(isLoggedIn: boolean): void;
   closeLoginAndRegistrationModal(): void;
   isOpen: boolean;
 };
@@ -43,6 +44,7 @@ type LoginAndRegistrationModalProps = {
 const LoginAndRegistrationModal: React.FC<LoginAndRegistrationModalProps> = ({
   isLoggingIn,
   setLoggingIn,
+  setLoggedIn,
   closeLoginAndRegistrationModal,
   isOpen,
 }) => {
@@ -71,6 +73,7 @@ const LoginAndRegistrationModal: React.FC<LoginAndRegistrationModalProps> = ({
     <LoginContent
       onSelectMode={onSelectMode}
       setLoggingIn={setLoggingIn}
+      setLoggedIn={setLoggedIn}
       closeLoginModal={closeLoginAndRegistrationModal}
     />
   ) : (

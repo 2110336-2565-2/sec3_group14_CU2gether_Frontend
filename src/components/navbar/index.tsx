@@ -28,6 +28,7 @@ import theme from "@/utils/theme";
 import { ROLE } from "@/types";
 
 import { auth } from "api";
+import { Router, useRouter } from "next/router";
 
 type NavbarProps = {};
 
@@ -43,19 +44,32 @@ const Navbar: React.FC<NavbarProps> = () => {
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
   const mobile = useMediaQuery({ query: "(max-width: 768px)" });
   const { isModalOpen, openModal, closeModal } = useModal();
+  const router = useRouter();
 
   useEffect(() => {
     const checkLoginStatus = async () => {
       await checkStatus();
     };
     checkLoginStatus();
-    if (isLoggedIn) notification.open({ message: "Logged in successfully" });
-    else notification.open({ message: "Logged out successfully" });
+    if (isLoggedIn) {
+      router.push("/events");
+      notification.open({ message: "Logged in successfully" });
+    } else notification.open({ message: "Logged out successfully" });
   }, [isLoggedIn]);
 
   useEffect(() => {
     setIsMobileScreen(mobile);
   }, [mobile]);
+
+  const logout = async () => {
+    try {
+      const res = await auth.logout();
+      if (res) setLoggedIn(false);
+      else throw new Error("Something went wrong, cannot logout");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const studentMenus = [
     { key: "1", label: "Home", href: "/" },
@@ -91,16 +105,6 @@ const Navbar: React.FC<NavbarProps> = () => {
       children,
       label,
     } as MenuItem;
-  };
-
-  const logout = async () => {
-    try {
-      const res = await auth.logout();
-      if (res) setLoggedIn(false);
-      else throw new Error("Something went wrong, cannot logout");
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   const ProfileMenuItems: MenuItem[] = role

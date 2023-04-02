@@ -93,8 +93,6 @@ const EventDetail: React.FC = () => {
   const scrollToEventDetail = () => {
     eventDetailRef.current?.scrollIntoView({
       behavior: "smooth",
-      block: "start",
-      inline: "nearest",
     });
   };
 
@@ -182,7 +180,7 @@ const EventDetail: React.FC = () => {
         <LayoutContainer>
           <Sider>
             <img
-              src={CU_API + pictures[0].slice(1)}
+              src={CU_API + pictures[0]}
               alt={"Event Image"}
               style={{ height: "100%", width: "100%" }}
               crossOrigin="anonymous"
@@ -193,7 +191,9 @@ const EventDetail: React.FC = () => {
               <Title style={StyleTitle} level={1}>
                 <b>{eventName}</b>
               </Title>
-              <div>Created by {ownerName}</div>
+              <Typography style={{ color: "white" }}>
+                Created by {ownerName}
+              </Typography>
             </Header>
             <Content>
               <Space size={"middle"}>
@@ -206,7 +206,7 @@ const EventDetail: React.FC = () => {
               </Space>
               <Space size={"middle"}>
                 <CalendarMonthIcon />
-                <div>
+                <Typography style={{ color: "white" }}>
                   {startDate ? dayjs(startDate).format("ddd, DD MMM YYYY") : ""}
                   {" - "}
                   {endDate
@@ -214,14 +214,14 @@ const EventDetail: React.FC = () => {
                     : ""} , {startTime}
                   {" - "}
                   {endTime}
-                </div>
+                </Typography>
               </Space>
             </Content>
             <Footer>{LayoutFooter()}</Footer>
           </RightLayout>
         </LayoutContainer>
         <BlurBackgroundImg
-          src={CU_API + pictures[0].slice(1)}
+          src={CU_API + pictures[0]}
           alt={"Event Image"}
           crossOrigin="anonymous"
         />
@@ -307,7 +307,7 @@ const RightLayout = styled.div`
 `;
 
 const StyleTitle = {
-  color: "#fff",
+  color: theme.color.white,
   fontSize: "2rem",
 };
 
@@ -317,8 +317,7 @@ const Header = styled.div`
   color: #fff;
   height: 40%;
   width: 100%;
-  padding: 2rem 4rem;
-  padding-top: 3rem;
+  padding: 3rem 4rem 2rem;
   display: flex;
   flex-direction: column;
   gap: 2.5rem;

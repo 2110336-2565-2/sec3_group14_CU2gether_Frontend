@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import styled from "styled-components";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, notification } from "antd";
 import { MODE } from "./LoginAndRegistrationModal";
 import { auth } from "api";
 import theme from "@/utils/theme";
@@ -45,6 +45,7 @@ type LoginContentProps = {
   setLoggingIn(isLogin: boolean): void;
   setLoggedIn(isLoggedIn: boolean): void;
   onSelectMode(mode: string): void;
+  onLogin(): void;
   closeLoginModal(): void;
 };
 
@@ -52,6 +53,7 @@ const LoginContent: React.FC<LoginContentProps> = ({
   setLoggingIn,
   setLoggedIn,
   onSelectMode,
+  onLogin,
   closeLoginModal,
 }) => {
   const signupHandler = () => {
@@ -66,9 +68,17 @@ const LoginContent: React.FC<LoginContentProps> = ({
 
   const loginHandler = async (values: any) => {
     const { email, password } = values;
-    auth.login(email, password);
-    setLoggedIn(true);
-    closeLoginModal();
+    const res = await auth.login(email, password);
+    if (res) {
+      setLoggedIn(true);
+      onLogin();
+      closeLoginModal();
+    } else {
+      notification.open({
+        message: "Login unsuccessfully",
+        description: "Email or password is incorrect",
+      });
+    }
   };
 
   return (

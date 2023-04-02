@@ -38,7 +38,7 @@ type MenuItem = Required<MenuProps>["items"][number];
 
 const Navbar: React.FC<NavbarProps> = () => {
   const { role, name, imageUrl, checkStatus } = useProfileStore();
-  const [isLoggedIn, setLoggedIn] = useState<boolean>(false); // has the user logged in or not
+  const [isLoggedIn, setLoggedIn] = useState<boolean>(false); // is the user logged in or not
   const [isLoggingIn, setLogginIn] = useState<boolean>(true); // is the action is logging in or signing up
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
@@ -51,21 +51,28 @@ const Navbar: React.FC<NavbarProps> = () => {
       await checkStatus();
     };
     checkLoginStatus();
-    if (isLoggedIn) {
-      router.push("/events");
-      notification.open({ message: "Logged in successfully" });
-    } else notification.open({ message: "Logged out successfully" });
   }, [isLoggedIn]);
 
   useEffect(() => {
     setIsMobileScreen(mobile);
   }, [mobile]);
 
+  const onLogin = () => {
+    router.push("/events");
+    notification.open({ message: "Logged in successfully" });
+  };
+
+  const onLogout = () => {
+    notification.open({ message: "Logged out successfully" });
+  };
+
   const logout = async () => {
     try {
       const res = await auth.logout();
-      if (res) setLoggedIn(false);
-      else throw new Error("Something went wrong, cannot logout");
+      if (res) {
+        setLoggedIn(false);
+        onLogout();
+      } else throw new Error("Something went wrong, cannot logout");
     } catch (err) {
       console.log(err);
     }
@@ -205,6 +212,7 @@ const Navbar: React.FC<NavbarProps> = () => {
         isLoggingIn={isLoggingIn}
         setLoggingIn={setLogginIn}
         setLoggedIn={setLoggedIn}
+        onLogin={onLogin}
         closeLoginAndRegistrationModal={closeModal}
         isOpen={isModalOpen}
       />
@@ -257,6 +265,7 @@ const Navbar: React.FC<NavbarProps> = () => {
         isLoggingIn={isLoggingIn}
         setLoggingIn={setLogginIn}
         setLoggedIn={setLoggedIn}
+        onLogin={onLogin}
         closeLoginAndRegistrationModal={closeModal}
         isOpen={isModalOpen}
       />

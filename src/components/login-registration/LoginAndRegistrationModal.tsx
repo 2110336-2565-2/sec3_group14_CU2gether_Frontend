@@ -37,6 +37,7 @@ type LoginAndRegistrationModalProps = {
   isLoggingIn: boolean;
   setLoggingIn(isLogin: boolean): void;
   setLoggedIn(isLoggedIn: boolean): void;
+  onLogin(): void;
   closeLoginAndRegistrationModal(): void;
   isOpen: boolean;
 };
@@ -45,6 +46,7 @@ const LoginAndRegistrationModal: React.FC<LoginAndRegistrationModalProps> = ({
   isLoggingIn,
   setLoggingIn,
   setLoggedIn,
+  onLogin,
   closeLoginAndRegistrationModal,
   isOpen,
 }) => {
@@ -74,6 +76,7 @@ const LoginAndRegistrationModal: React.FC<LoginAndRegistrationModalProps> = ({
       onSelectMode={onSelectMode}
       setLoggingIn={setLoggingIn}
       setLoggedIn={setLoggedIn}
+      onLogin={onLogin}
       closeLoginModal={closeLoginAndRegistrationModal}
     />
   ) : (

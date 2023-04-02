@@ -35,6 +35,7 @@ export enum GENDER {
 }
 
 export type Event = {
+  id: number;
   eventName: string;
   eventType: EventType;
   visibility: Visibility;

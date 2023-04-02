@@ -6,13 +6,9 @@ const baseUrl = CU_API + 'organizers/';
 const getOrganizerById = async (id: string) => {
   try {
     const organizer = await client.get(baseUrl+id);
-    if(organizer.status === 200) {
-      return organizer.data;
-    } else {
-      throw new Error("Error fetching organizer with status code: " + organizer.status);
-    }
+    return organizer.data;
   } catch (error) {
-    console.log(error);
+    throw new Error("Error fetching organizer");
   }
 }
 

@@ -25,7 +25,7 @@ import useEventStore from "@/hooks/useEventStore";
 import EventCardInProfile from "@/components/event-card/CardInProfile";
 import { CU_API } from "@/config";
 import useProfileStore from "@/hooks/useProfileStore";
-import { CameraAltRounded, Edit } from "@mui/icons-material";
+import { BorderColorRounded, CameraAltRounded, Edit } from "@mui/icons-material";
 import { useModal } from "@/hooks";
 import UploadImageModal from "@/components/upload-image-modal";
 
@@ -126,7 +126,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
           bordered={false}
           style={{width:'36%'}}
           allowClear
-        ></Input>
+        />
         <Space></Space>
         <Input
           maxLength={100}
@@ -136,7 +136,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
           bordered={false}
           style={{width:'35%'}}
           allowClear
-        ></Input>
+        />
       </>
     ) : role === ROLE.ORGANIZER ? (
       <Input
@@ -147,7 +147,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
         bordered={false}
         style={{width:'30%'}}
         allowClear
-      ></Input>
+      />
     ) : null;
 
   const renderRole = () => (
@@ -188,7 +188,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
         defaultValue={student.description}
         bordered={false}
         allowClear
-      ></Input>
+      />
     ) : role === ROLE.ORGANIZER ? (
       <Input
         showCount
@@ -198,7 +198,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
         defaultValue={organizer.description}
         bordered={false}
         allowClear
-      ></Input>
+      />
     ) : null);
 
   const renderDescription = () => (
@@ -287,11 +287,10 @@ const ProfilePage: React.FC<{}> = ({}) => {
             <NameContainer>
               {isEditingName ? renderEditNameInput() : renderTitleName()}
               {isOwnUser ? (
-                <FontAwesomeIcon
-                  icon={faPencil}
-                  style={{zIndex: 10}}
+                <BorderColorRounded
                   onClick={() => setEditingName(!isEditingName)}
-                ></FontAwesomeIcon>
+                  fontSize="small"
+                />
               ) : null}
             </NameContainer>
             {renderRole()}
@@ -303,10 +302,10 @@ const ProfilePage: React.FC<{}> = ({}) => {
           <CardTitleContainer>
             <CardTitle>About</CardTitle>
             {isOwnUser ? (
-              <FontAwesomeIcon
-                icon={faPencil}
+              <BorderColorRounded
                 onClick={() => setEditingDescription(!isEditingDescription)}
-              ></FontAwesomeIcon>
+                fontSize="small"
+              />
             ) : null}
           </CardTitleContainer>
           {isEditingDescription

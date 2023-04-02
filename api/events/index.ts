@@ -50,14 +50,9 @@ const getOwnEventsById = async (id: string) => {
 const createEvent = async (params: FormData) => {
   try {
     const events = await client.post(baseUrl, params, {"Content-Type": "multipart/form-data"});
-    if (events.status === 201) {
-        return true;
-    } else {
-        throw new Error("Error on creating event with status code: " + events.status);
-    }
+    return true;
   } catch (err) {
-    console.log(err);
-    return false;
+    throw new Error("Error on creating event");
   }
 }
 

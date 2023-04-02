@@ -41,7 +41,7 @@ const EditProfilePage: React.FC<{}> = ({}) => {
   const renderErrorResult = () => (
     <CenteredModal 
       open={isError}
-      footer={false}
+      footer={null}
     >
       <ModalContent>
         <Result
@@ -70,7 +70,7 @@ const EditProfilePage: React.FC<{}> = ({}) => {
               { required: true, message: "Please enter a password" },
             ]}
           >
-            <StyledInput placeholder="Old Password"></StyledInput>
+            <StyledInput placeholder="Old Password"/>
           </FormInput>
           <FormInput
             title="New password" 
@@ -85,7 +85,7 @@ const EditProfilePage: React.FC<{}> = ({}) => {
               },
             ]}
           >
-            <StyledInput type="password" placeholder="New Password"></StyledInput>
+            <StyledInput type="password" placeholder="New Password"/>
           </FormInput>
           <FormInput
             title="Confirm new password"
@@ -112,7 +112,7 @@ const EditProfilePage: React.FC<{}> = ({}) => {
             <StyledInput
               type="password"
               placeholder="Confirm New Password"
-            ></StyledInput>
+            />
           </FormInput>
           <Form.Item>
             <OperationButtonContainer>

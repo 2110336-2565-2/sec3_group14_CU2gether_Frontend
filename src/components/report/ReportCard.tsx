@@ -47,22 +47,18 @@ const ReportCard: React.FC<ReportDetailProps> = ({ report }) => {
           </Typography>
         </Header>
         <Content>
-          {eventName && ownerName ? (
+          {eventName && ownerName && (
             <Typography style={{ fontSize: "20px" }}>
               {eventName} by {ownerName}
             </Typography>
-          ) : (
-            <></>
           )}
           <Typography style={{ lineHeight: "1em", fontSize: "16px" }}>
             {description}
           </Typography>
-          {imageUrl ? (
+          {imageUrl && (
             <ImagesContainer className="imagesContainer">
               {renderSlides(imageUrl)}
             </ImagesContainer>
-          ) : (
-            <></>
           )}
         </Content>
       </InformationLayout>

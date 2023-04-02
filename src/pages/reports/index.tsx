@@ -28,26 +28,6 @@ const MyReportHistory: React.FC<{}> = ({}) => {
       <ReportCard report={report} key={`${report.topic}${index}`}></ReportCard>
     ));
 
-  if (loading)
-    return (
-      <ReportProvider>
-        <ReportContainer>
-          <HeaderContainer>
-            <Title level={1}>My Report History</Title>
-          </HeaderContainer>
-          <Content>
-            <ContentContainer>
-              <Title level={2} style={{ margin: "0 " }}>
-                Event reports
-              </Title>
-              <Title level={2} style={{ margin: "0 " }}>
-                Problem reports
-              </Title>
-            </ContentContainer>
-          </Content>
-        </ReportContainer>
-      </ReportProvider>
-    );
   return (
     <ReportProvider>
       <ReportContainer>
@@ -59,11 +39,11 @@ const MyReportHistory: React.FC<{}> = ({}) => {
             <Title level={2} style={{ margin: "0 " }}>
               Event reports
             </Title>
-            {renderReportList(eventReports)}
+            {!loading && renderReportList(eventReports)}
             <Title level={2} style={{ margin: "0 " }}>
               Problem reports
             </Title>
-            {renderReportList(webReports)}
+            {!loading && renderReportList(webReports)}
           </ContentContainer>
         </Content>
       </ReportContainer>

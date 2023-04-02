@@ -123,12 +123,10 @@ const WebReport: React.FC<{}> = ({}) => {
                 </FormInput>
                 <Form.Item>{buttonForm}</Form.Item>
               </FormInputContainer>
-              {!isMobileScreen ? (
+              {!isMobileScreen && (
                 <IconContainer>
                   <ReportIcon style={{ fontSize: "200px" }} />
                 </IconContainer>
-              ) : (
-                <></>
               )}
             </LayoutContainer>
           </ContentContainer>

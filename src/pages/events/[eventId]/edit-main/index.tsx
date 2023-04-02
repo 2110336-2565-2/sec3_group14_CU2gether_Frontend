@@ -33,7 +33,6 @@ import { Event } from "@/types";
 import { CU_API } from "@/config";
 import FormData from "form-data";
 
-
 import PictureForm from "@/components/edit-event/PictureForm";
 
 const { Content } = Layout;
@@ -79,7 +78,6 @@ const defaultEventDetail = {
   website: "www.exmaple.com",
   pictures: ["pictures"],
   description: "Tell us something",
-  ownerName: "John Doe",
 };
 
 const EditEventMain: React.FC<{}> = ({}) => {
@@ -97,7 +95,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
       url: "/orangutan_show.png",
     },
   ]);
-  
+
   const handleImageChange: UploadProps["onChange"] = ({
     fileList: newFileList,
   }) => setFileList(newFileList);
@@ -122,37 +120,37 @@ const EditEventMain: React.FC<{}> = ({}) => {
   useEffect(() => {
     if (event) {
       form.setFieldsValue({
-        'picture': `${CU_API}${event.pictures[0].slice(2)}`,
-        'eventName': event.eventName,
-        'eventType': event.eventType,
-        'visibility': event.visibility,
-        'tags': event.tags,
-        'requireParticipantsMin': event.requireParticipantsMin,
-        'requireParticipantsMax': event.requireParticipantsMax,
-        'requireParticipants': [
+        picture: `${CU_API}${event.pictures[event.pictures.length-1]}`,
+        eventName: event.eventName,
+        eventType: event.eventType,
+        visibility: event.visibility,
+        tags: event.tags,
+        requireParticipantsMin: event.requireParticipantsMin,
+        requireParticipantsMax: event.requireParticipantsMax,
+        requireParticipants: [
           event.requireParticipantsMin,
           event.requireParticipantsMax,
         ],
-        'date': [
+        date: [
           dayjs(event.startDate, dateFormat),
           dayjs(event.endDate, dateFormat),
         ],
-        'time': [
+        time: [
           dayjs(event.startTime, timeFormat),
           dayjs(event.endTime, timeFormat),
         ],
-        'meetingType': event.meetingType,
-        'location': event.location,
-        'website': event.website,
+        meetingType: event.meetingType,
+        location: event.location,
+        website: event.website,
       });
     }
   }, [event]);
 
   const success = () => {
     messageApi.open({
-      type: 'success',
-      content: 'SUCCESS',
-      className: 'custom-class',
+      type: "success",
+      content: "SUCCESS",
+      className: "custom-class",
     });
   };
 
@@ -186,14 +184,16 @@ const EditEventMain: React.FC<{}> = ({}) => {
         "startDate",
         dayjs(date[0]).format("YYYY-MM-DD").toString()
       );
-      formData.append("endDate", dayjs(date[1]).format("YYYY-MM-DD").toString());
+      formData.append(
+        "endDate",
+        dayjs(date[1]).format("YYYY-MM-DD").toString()
+      );
       formData.append("startTime", dayjs(time[0]).format("HH:mm").toString());
       formData.append("endTime", dayjs(time[1]).format("HH:mm").toString());
       formData.append("meetingType", meetingType);
       formData.append("location", location);
       formData.append("website", website);
       formData.append("pictures", picture.file.originFileObj);
-      console.log(picture)
       formData.append("description", description);
 
       updateEventDetail(id, formData);
@@ -201,7 +201,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
   };
 
   const handleCancelClick = () => {
-    router.push("/");
+    router.push(`/events/${eventId}`);
   };
 
   const handleEditDescriptionClick = () => {
@@ -400,10 +400,12 @@ const EditEventMain: React.FC<{}> = ({}) => {
       >
         Cancel
       </ButtonConfig>
-      <ButtonConfig 
-        type="primary" 
-        htmlType="submit" 
-        onClick={() => {success}}
+      <ButtonConfig
+        type="primary"
+        htmlType="submit"
+        onClick={() => {
+          success;
+        }}
       >
         Submit
       </ButtonConfig>
@@ -414,152 +416,130 @@ const EditEventMain: React.FC<{}> = ({}) => {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: `${theme.color.cu_pink}`,
-        },
-        components: {
-          Button: {
-            colorPrimary: `${theme.color.primary}`,
-            colorPrimaryHover: `${theme.color.primaryHover}`,
-          },
+          colorPrimary: `${theme.color.primary}`,
         },
       }}
     >
       <EditEventContainer>
-        <HeaderContainer>
-          <Title className="ant-typography-title">Edit Event Detail</Title>
-        </HeaderContainer>
-        <ContentContainer>
-          <FormInputContainer form={form} onFinish={onFormFinish}>
-            <Row>
-              <LayoutContainer>
-                <LeftContentContainer>
-                  <Form.Item>
-                    <PictureInputContainer>
-                      <PictureForm event = {event} />
-                      {renderButtonForm}
-                    </PictureInputContainer>
-                  </Form.Item>
-                </LeftContentContainer>
-                <RightContentContainer>
-                  <FormInput
-                    title="Event Name"
-                    name="eventName"
-                    isRequired={true}
-                    rules={[
-                      { required: true, message: "Please Enter Event Name" },
-                    ]}
-                  >
-                    {eventNameForm}
-                  </FormInput>
-                  <FormInput
-                    title="Type"
-                    name="eventType"
-                    isRequired={true}
-                    rules={[{ required: true, message: "Please Enter Type" }]}
-                  >
-                    {typeForm}
-                  </FormInput>
-                  <FormInput
-                    title="Visibility"
-                    name="visibility"
-                    isRequired={true}
-                    rules={[
-                      { required: true, message: "Please Enter Visibility" },
-                    ]}
-                  >
-                    {visibilityForm}
-                  </FormInput>
-                  <FormInput title="Tags" name="tags">
-                    {tagsForm}
-                  </FormInput>
-                  <FormInput
-                    title="Required Number of Participants"
-                    name="requireParticipants"
-                    isRequired={false}
-                  >
-                    {participantCountForm}
-                  </FormInput>
-                  <FormInput
-                    title="Date"
-                    name="date"
-                    isRequired={true}
-                    rules={[{ required: true, message: "Please Enter Date" }]}
-                  >
-                    {dateForm}
-                  </FormInput>
-                  <FormInput
-                    title="Time"
-                    name="time"
-                    isRequired={true}
-                    rules={[{ required: true, message: "Please Enter Time" }]}
-                  >
-                    {timeForm}
-                  </FormInput>
-                  <FormInput
-                    title="Meeting Type"
-                    name="meetingType"
-                    isRequired={true}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please Enter Meeting Form",
-                      },
-                    ]}
-                  >
-                    {meetingTypeForm}
-                  </FormInput>
-                  <FormInput
-                    title="Location"
-                    name="location"
-                    isRequired={true}
-                    rules={[
-                      { required: true, message: "Please Enter Location" },
-                    ]}
-                  >
-                    {locationForm}
-                  </FormInput>
-                  <FormInput title="Website" name="website">
-                    {websiteForm}
-                  </FormInput>
-                </RightContentContainer>
-              </LayoutContainer>
-            </Row>
-            <Row>
-              <Form.Item>{contextHolder}{buttonForm}</Form.Item>
-            </Row>
-          </FormInputContainer>
-        </ContentContainer>
+      <Title className="ant-typography-title">Edit Event Detail</Title>
+      <ContentContainer>
+        <FormInputContainer form={form} onFinish={onFormFinish}>
+          <Row>
+            <LayoutContainer>
+              <LeftContentContainer>
+                <Form.Item>
+                  <PictureInputContainer>
+                    <PictureForm event={event} />
+                    {renderButtonForm}
+                  </PictureInputContainer>
+                </Form.Item>
+              </LeftContentContainer>
+              <RightContentContainer>
+                <FormInput
+                  title="Event Name"
+                  name="eventName"
+                  isRequired={true}
+                  rules={[
+                    { required: true, message: "Please Enter Event Name" },
+                  ]}
+                >
+                  {eventNameForm}
+                </FormInput>
+                <FormInput
+                  title="Type"
+                  name="eventType"
+                  isRequired={true}
+                  rules={[{ required: true, message: "Please Enter Type" }]}
+                >
+                  {typeForm}
+                </FormInput>
+                <FormInput
+                  title="Visibility"
+                  name="visibility"
+                  isRequired={true}
+                  rules={[
+                    { required: true, message: "Please Enter Visibility" },
+                  ]}
+                >
+                  {visibilityForm}
+                </FormInput>
+                <FormInput title="Tags" name="tags">
+                  {tagsForm}
+                </FormInput>
+                <FormInput
+                  title="Required Number of Participants"
+                  name="requireParticipants"
+                  isRequired={false}
+                >
+                  {participantCountForm}
+                </FormInput>
+                <FormInput
+                  title="Date"
+                  name="date"
+                  isRequired={true}
+                  rules={[{ required: true, message: "Please Enter Date" }]}
+                >
+                  {dateForm}
+                </FormInput>
+                <FormInput
+                  title="Time"
+                  name="time"
+                  isRequired={true}
+                  rules={[{ required: true, message: "Please Enter Time" }]}
+                >
+                  {timeForm}
+                </FormInput>
+                <FormInput
+                  title="Meeting Type"
+                  name="meetingType"
+                  isRequired={true}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please Enter Meeting Form",
+                    },
+                  ]}
+                >
+                  {meetingTypeForm}
+                </FormInput>
+                <FormInput
+                  title="Location"
+                  name="location"
+                  isRequired={true}
+                  rules={[{ required: true, message: "Please Enter Location" }]}
+                >
+                  {locationForm}
+                </FormInput>
+                <FormInput title="Website" name="website">
+                  {websiteForm}
+                </FormInput>
+              </RightContentContainer>
+            </LayoutContainer>
+          </Row>
+          <Row>
+            <Form.Item>
+              {contextHolder}
+              {buttonForm}
+            </Form.Item>
+          </Row>
+        </FormInputContainer>
+      </ContentContainer>
       </EditEventContainer>
     </ConfigProvider>
   );
 };
 
-const EditEventContainer = styled(Layout)`
+
+const EditEventContainer = styled.div`
   display: flex;
-  margin-left: auto;
-  margin-right: auto;
-  width: 70%;
+  flex-direction: column;
+  height: 100%;
   padding: 2.5vh 5vw;
 `;
 
-const ContentContainer = styled(Content)`
+const ContentContainer = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 40px;
-  padding-top: 40px;
-  margin-left: auto;
-  margin-right: auto;
   flex-direction: column;
-  font-size: 20px;
-  width: 100%;
-`;
-
-const HeaderContainer = styled.div`
-  display: flex;
-  font-size: 40px;
-  justify-content: left;
-  padding-top: 5vh;
 `;
 
 const FormInputContainer = styled(Form)`
@@ -567,26 +547,11 @@ const FormInputContainer = styled(Form)`
   margin-left: auto;
   margin-right: auto;
   align-items: center;
-  justify-content: left;
   flex-direction: column;
-  padding: 2.5vh;
 `;
 
 const LeftContentContainer = styled.div`
   display: flex;
-  margin-left: auto;
-  margin-right: auto;
-  flex-direction: column;
-  width: 50%;
-  ${theme.media.tablet} {
-    width: 100%
-  }
-`;
-
-const RightContentContainer = styled.div`
-  display: flex;
-  margin-left: auto;
-  margin-right: auto;
   flex-direction: column;
   width: 50%;
   ${theme.media.tablet} {
@@ -594,14 +559,27 @@ const RightContentContainer = styled.div`
   }
 `;
 
+const RightContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+  ${theme.media.tablet} {
+    width: 100%;
+  }
+`;
+
 const LayoutContainer = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: row;
+  justify-content: center;
+  height: 90%;
   width: 100%;
-  ${theme.media.tablet} {
+  gap: 20px;
+  ${theme.media.mobile} {
     flex-direction: column-reverse;
+    align-items: center;
+    gap: 5px;
   }
 `;
 
@@ -664,15 +642,6 @@ const CancelEventContent = styled.h2`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const StyledForm = styled(Form.Item)`
-  width: 30%;
-  height: 100%;
-
-  ${theme.media.mobile} {
-    width: 100%;
-  }
 `;
 
 export default EditEventMain;

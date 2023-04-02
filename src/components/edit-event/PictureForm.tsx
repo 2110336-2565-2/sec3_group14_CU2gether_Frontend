@@ -11,7 +11,7 @@ const StyledForm = styled(Form.Item)`
   height: 100%;
 
   ${theme.media.mobile} {
-    width: 100%;
+    width: 50%;
   }
 `;
 
@@ -34,7 +34,7 @@ const PictureForm: React.FC<{ event?: Event }> = ({ event }) => {
   useEffect(() => {
     if (event) {
       form.setFieldsValue({
-        "picture": setUrl(`${CU_API}${event.pictures[0].slice(2)}`),
+        "picture": setUrl(`${CU_API}${event.pictures[event.pictures.length-1]}`),
       });
     }
   }, [event]);

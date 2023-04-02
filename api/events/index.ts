@@ -53,11 +53,11 @@ const updateEventDetail = async (id: string, params: FormData) => {
     const events = await client.patch(`${baseUrl}/${id}`, params, {
       "Content-Type": "multipart/form-data",
     });
-    if (events.status === 201) {
+    if (events.status === 200) {
       return true;
     } else {
       throw new Error(
-        "Error on creating event with status code: " + events.status
+        "Error on updating event with status code: " + events.status
       );
     }
   } catch (err) {

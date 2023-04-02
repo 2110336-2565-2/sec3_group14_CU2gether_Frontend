@@ -1,12 +1,13 @@
 const color = {
-  primary: '#F96491',
-  white: '#FFFFFF',
-  black: '#000000',
-  red: '#EA4040',
-  border: '#D6DADE',
-  backgroundColor: '#F5F5F5',
-  backgroundOnHover: '#D9D9D9',
-}
+  primary: "#F96491",
+  white: "#FFFFFF",
+  black: "#000000",
+  red: "#EA4040",
+  border: "#D6DADE",
+  lightGray: "#BABABA",
+  backgroundColor: "#F5F5F5",
+  backgroundOnHover: "#D9D9D9",
+};
 
 const media = {
   mobile: "@media screen and (max-width: 425px)",

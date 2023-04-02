@@ -57,7 +57,7 @@ const OrganizerRequestCard: React.FC<OrganizerRequestCardProps> = ({
           onClick={async () => {
             try {
               await admin.approveOrganizer(id);
-              message.success("Rejected organizer request");
+              message.success("Approved organizer request");
             } catch (error: any) {
               message.error(`${error.message} with status code: ${error.code}`);
             }

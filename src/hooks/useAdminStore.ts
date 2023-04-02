@@ -16,7 +16,7 @@ const useAdminStore = create<EventStore>((set,get) => ({
         organizerRequests: _organizerRequests,
       });
     } catch (error) {
-      console.log(error);
+      throw new Error(error.message)
     }
   },
   removeOrganizerRequest: async (idx: string) => {

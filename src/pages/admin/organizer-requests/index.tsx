@@ -1,9 +1,12 @@
-import OrganizerRequestCard from "@/components/organizer-request/card";
-import useAdminStore from "@/hooks/useAdminStore";
-import theme from "@/utils/theme";
 import { Empty, Skeleton, Typography } from "antd";
 import React, { useEffect } from "react";
 import styled from "styled-components";
+
+import { AdminLoginModal } from "@/components/login";
+import OrganizerRequestCard from "@/components/organizer-request/card";
+import useAdminStore from "@/hooks/useAdminStore";
+import useModal from "@/hooks/useModal";
+import theme from "@/utils/theme";
 
 type OrganizerRequestsPageProps = {};
 
@@ -11,9 +14,17 @@ const { Title } = Typography;
 
 const OrganizerRequestsPage: React.FC<OrganizerRequestsPageProps> = ({}) => {
   const { organizerRequests, fetchOrganizerRequests } = useAdminStore();
+  const { openModal, isModalOpen } = useModal();
 
   useEffect(() => {
-    fetchOrganizerRequests();
+    const fetchData = async () => {
+      try {
+        await fetchOrganizerRequests();
+      } catch (error) {
+        openModal();
+      }
+    };
+    fetchData();
   }, []);
 
   if (!organizerRequests) return <Skeleton></Skeleton>;
@@ -32,6 +43,7 @@ const OrganizerRequestsPage: React.FC<OrganizerRequestsPageProps> = ({}) => {
           </EmptyWrapper>
         )}
       </OrganizerRequestContainer>
+      <AdminLoginModal open={isModalOpen} />
     </RequestContainer>
   );
 };

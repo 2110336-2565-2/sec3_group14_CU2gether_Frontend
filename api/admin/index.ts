@@ -2,6 +2,7 @@ import { CU_API } from "@/config";
 import client from "@/utils/client";
 
 const baseUrl = CU_API + "admin";
+const authUrl = CU_API + "auth/admin";
 
 const approveOrganizer = async (id: string) => {
   try {
@@ -30,10 +31,20 @@ const getOrganizerRequests = async () => {
   }
 };
 
+const login = async (email:string, password:string) => {
+  try {
+    const res = await client.post(`${authUrl}/login`,{email, password});
+    return res.data;
+  } catch (e) {
+    throw new Error("Error logging in");
+  }
+}
+
 const admin = {
   approveOrganizer,
   rejectOrganizer,
   getOrganizerRequests,
+  login,
 };
 
 export default admin;

@@ -189,7 +189,7 @@ const EventDetail: React.FC = () => {
           <RightLayout>
             <Header>
               <Title style={StyleTitle} level={1}>
-                <b>{eventName}</b>
+                {eventName}
               </Title>
               <Typography style={{ color: "white" }}>
                 Created by {ownerName}
@@ -309,6 +309,7 @@ const RightLayout = styled.div`
 const StyleTitle = {
   color: theme.color.white,
   fontSize: "2rem",
+  fontWeight: "bold",
 };
 
 const Header = styled.div`

@@ -1,15 +1,15 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { Carousel, Typography } from "antd";
+import { Carousel, notification, Typography } from "antd";
 import styled from "styled-components";
 import React from "react";
 import { ContainedButton } from "@/common/button";
 import useEventStore from "@/hooks/useEventStore";
 
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
-import EventCard from "@/components/event-card";
 import { getImageURL } from "@/utils";
 import { useRouter } from "next/router";
+import useProfileStore from "@/hooks/useProfileStore";
 
 const { Title, Paragraph } = Typography;
 
@@ -22,19 +22,32 @@ const Home: React.FC<HomeProps> = () => {
     state.fetchEvents,
   ]);
   const router = useRouter();
+  const role = useProfileStore((state) => state.role);
 
   useEffect(() => {
     fetchEvents({});
   }, []);
 
   const redirectToEvent = (eventId: number) => {
-    router.push(`/events/${eventId}`);
+    if (role) {
+      router.push(`/events/${eventId}`);
+    } else {
+      notification.open({ message: "Please login first." });
+    }
   };
 
   const scrollToBottom = () => {
     createEventSectionRef && createEventSectionRef.current
       ? createEventSectionRef.current.scrollIntoView({ behavior: "smooth" })
       : null;
+  };
+
+  const handleClickCreateEvent = () => {
+    if (role) {
+      router.push(`/events/create`);
+    } else {
+      notification.open({ message: "Please login first." });
+    }
   };
 
   return (
@@ -82,7 +95,10 @@ const Home: React.FC<HomeProps> = () => {
             You can create your own events <br></br> which will appear on this
             website to find participants.
           </CreateEventDescription>
-          <ContainedButton text={"Create Event"} />
+          <ContainedButton
+            text={"Create Event"}
+            onClick={handleClickCreateEvent}
+          />
         </CreateEventSubSection>
         <CreateEventSubSection>
           <ExampleEventImage

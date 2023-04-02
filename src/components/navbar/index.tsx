@@ -12,6 +12,8 @@ import { useModal } from "@/hooks";
 import { useMediaQuery } from "react-responsive";
 import styled from "styled-components";
 import Link from "next/link";
+import { auth } from "api";
+import { useRouter } from "next/router";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import ReportIcon from "@mui/icons-material/Report";
@@ -27,8 +29,7 @@ import useProfileStore from "@/hooks/useProfileStore";
 import theme from "@/utils/theme";
 import { ROLE } from "@/types";
 
-import { auth } from "api";
-import { useRouter } from "next/router";
+import { getImageURL } from "@/utils";
 
 type NavbarProps = {};
 
@@ -39,7 +40,7 @@ type MenuItem = Required<MenuProps>["items"][number];
 const Navbar: React.FC<NavbarProps> = () => {
   const { role, name, imageUrl, checkStatus } = useProfileStore();
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false); // is the user logged in or not
-  const [isLoggingIn, setLogginIn] = useState<boolean>(true); // is the action is logging in or signing up
+  const [isLoggingIn, setLoggingIn] = useState<boolean>(true); // is the action is logging in or signing up
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
   const mobile = useMediaQuery({ query: "(max-width: 768px)" });
@@ -54,24 +55,39 @@ const Navbar: React.FC<NavbarProps> = () => {
   }, [isLoggedIn]);
 
   useEffect(() => {
+    if (role) setLoggedIn(true);
+    else setLoggedIn(false);
+  }, [role]);
+
+  useEffect(() => {
     setIsMobileScreen(mobile);
   }, [mobile]);
 
-  const onLogin = () => {
+  const handleSuccessLogin = () => {
     router.push("/events");
     notification.open({ message: "Logged in successfully" });
   };
 
-  const onLogout = () => {
+  const handleSuccessLogout = () => {
     notification.open({ message: "Logged out successfully" });
   };
 
-  const logout = async () => {
+  const handleClickLogin = () => {
+    setLoggingIn(true);
+    openModal();
+  };
+
+  const handleClickSignup = () => {
+    setLoggingIn(false);
+    openModal();
+  };
+
+  const handleClickLogout = async () => {
     try {
       const res = await auth.logout();
       if (res) {
         setLoggedIn(false);
-        onLogout();
+        handleSuccessLogout();
       } else throw new Error("Something went wrong, cannot logout");
     } catch (err) {
       console.log(err);
@@ -101,7 +117,7 @@ const Navbar: React.FC<NavbarProps> = () => {
   ];
 
   const getItem = (
-    label: React.ReactNode, 
+    label: React.ReactNode,
     key?: React.Key | null,
     icon?: React.ReactNode,
     children?: MenuItem[]
@@ -155,11 +171,23 @@ const Navbar: React.FC<NavbarProps> = () => {
         {
           type: "divider",
         },
-        getItem(<div onClick={logout}>Log Out</div>, "4", <LogoutIcon />),
+        getItem(
+          <div onClick={handleClickLogout}>Log Out</div>,
+          "4",
+          <LogoutIcon />
+        ),
       ]
     : [
-        getItem(<div>Join Us</div>, "1", <PersonAdd />),
-        getItem(<div>Log In</div>, "2", <LoginIcon />),
+        getItem(
+          <div onClick={handleClickSignup}>Join Us</div>,
+          "1",
+          <PersonAdd />
+        ),
+        getItem(
+          <div onClick={handleClickLogin}>Log In</div>,
+          "2",
+          <LoginIcon />
+        ),
       ];
 
   const renderNavMenu = () => {
@@ -193,12 +221,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             <MenuLabel>{menu.label}</MenuLabel>
           </Link>
         ) : (
-          <div
-            onClick={() => {
-              setLogginIn(true);
-              openModal();
-            }}
-          >
+          <div onClick={handleClickLogin}>
             <MenuLabel>{menu.label}</MenuLabel>
           </div>
         )
@@ -210,9 +233,9 @@ const Navbar: React.FC<NavbarProps> = () => {
     <Nav>
       <LoginAndRegistrationModal
         isLoggingIn={isLoggingIn}
-        setLoggingIn={setLogginIn}
+        setLoggingIn={setLoggingIn}
         setLoggedIn={setLoggedIn}
-        onLogin={onLogin}
+        onLogin={handleSuccessLogin}
         closeLoginAndRegistrationModal={closeModal}
         isOpen={isModalOpen}
       />
@@ -228,15 +251,17 @@ const Navbar: React.FC<NavbarProps> = () => {
         />
         <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
           {imageUrl ? (
-            <Image
-              src={imageUrl}
+            <ProfileImage
+              src={getImageURL(imageUrl)}
               alt={"profile image"}
+              loader={() => getImageURL(imageUrl)}
               width={36}
               height={36}
               style={{ borderRadius: "50%" }}
+              crossOrigin="anonymous"
             />
           ) : (
-            <AccountCircleIcon />
+            <MyAccountCircleIcon fontSize="large" />
           )}
         </Dropdown>
       </ShortNavContainer>
@@ -263,9 +288,9 @@ const Navbar: React.FC<NavbarProps> = () => {
     <Nav>
       <LoginAndRegistrationModal
         isLoggingIn={isLoggingIn}
-        setLoggingIn={setLogginIn}
+        setLoggingIn={setLoggingIn}
         setLoggedIn={setLoggedIn}
-        onLogin={onLogin}
+        onLogin={handleSuccessLogin}
         closeLoginAndRegistrationModal={closeModal}
         isOpen={isModalOpen}
       />
@@ -286,33 +311,23 @@ const Navbar: React.FC<NavbarProps> = () => {
             </>
           ) : (
             <>
-              <ContainedButton
-                text={"Join Us"}
-                onClick={() => {
-                  setLogginIn(false);
-                  openModal();
-                }}
-              />
-              <OutlinedButton
-                text={"Log in"}
-                onClick={() => {
-                  setLogginIn(true);
-                  openModal();
-                }}
-              />
+              <ContainedButton text={"Join Us"} onClick={handleClickSignup} />
+              <OutlinedButton text={"Log in"} onClick={handleClickLogin} />
             </>
           )}
           <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
             {imageUrl ? (
-              <Image
-                src={imageUrl}
+              <ProfileImage
+                src={getImageURL(imageUrl)}
                 alt={"profile image"}
+                loader={() => getImageURL(imageUrl)}
                 width={36}
                 height={36}
                 style={{ borderRadius: "50%" }}
+                crossOrigin="anonymous"
               />
             ) : (
-              <AccountCircleIcon fontSize="large"/>
+              <MyAccountCircleIcon fontSize="large" />
             )}
           </Dropdown>
         </ProfileContainer>
@@ -359,6 +374,19 @@ const ProfileContainer = styled.div`
   flex-flow: row;
   align-items: center;
   gap: 1vw;
+`;
+
+const ProfileImage = styled(Image)`
+  object-fit: cover;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const MyAccountCircleIcon = styled(AccountCircleIcon)`
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Menu = styled.div`

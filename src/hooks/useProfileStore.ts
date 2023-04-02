@@ -15,7 +15,15 @@ const useProfileStore = create<ProfileStore>((set) => ({
     userProfile
       .checkStatus()
       .then((data: any) => {
-        if (!data) return;
+        if (!data) {
+          set({
+            name: undefined,
+            role: undefined,
+            email: undefined,
+            imageUrl: undefined,
+          });
+          return;
+        }
         const { role, name, email, imageUrl } = data;
         set({ role, name, email, imageUrl });
       })

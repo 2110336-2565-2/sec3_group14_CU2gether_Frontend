@@ -53,7 +53,6 @@ const UploadImageModal: React.FC<UploadImageModalProps> = ({ isModalOpen, closeM
       onOk={() => onFinish()}
       okText="Save"
       onCancel={() => {closeModal(); form.setFieldValue("picture", undefined);}}
-      style={{width: '150vw'}}
       bodyStyle={{marginTop:'6vh', display: 'flex', alignItems: 'center'}}
     > 
       <StyledForm form={form}>

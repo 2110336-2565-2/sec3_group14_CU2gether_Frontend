@@ -4,7 +4,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { useState, useEffect } from "react";
 
 import { config } from "@fortawesome/fontawesome-svg-core";
-import { ConfigProvider, Layout } from "antd";
+import { ConfigProvider, Layout, notification } from "antd";
 import theme from "@/utils/theme";
 import Navbar from "@/components/navbar";
 import styled from "styled-components";
@@ -12,7 +12,12 @@ config.autoAddCss = false;
 
 const { Content } = Layout;
 export default function App({ Component, pageProps }: AppProps) {
-  useEffect(() => {}, []);
+  useEffect(() => {
+    notification.config({
+      duration: 2,
+      placement: "top",
+    });
+  }, []);
 
   return (
     <ConfigProvider

@@ -15,8 +15,8 @@ const login = async (email: string, password: string) => {
 };
 const logout = async () => {
   try {
-    const res = await client.post(`${baseUrl}/logout`);
-    if (res.status === 200) {
+    const res = await client.delete(`${baseUrl}/logout`);
+    if (res.status === 204) {
       return true;
     } else {
       throw new Error("Error occurs with status code: " + res.status);

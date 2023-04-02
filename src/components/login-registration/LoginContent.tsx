@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import styled from "styled-components";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, notification } from "antd";
 import { MODE } from "./LoginAndRegistrationModal";
 import { auth } from "api";
 import theme from "@/utils/theme";
@@ -24,11 +24,11 @@ const SignUpFooterContainer = styled.div`
 const SignUpText = styled.p`
   font-size: 14px;
   text-align: center;
-  color: ${theme.color_level.gray.light};
+  color: ${theme.color.lightGray};
 `;
 
 const SignUpLink = styled(SignUpText)`
-  color: ${theme.color.cu_pink};
+  color: ${theme.color.primary};
   text-decoration: underline;
   margin-left: 10px;
   cursor: pointer;
@@ -43,13 +43,17 @@ const ButtonContainer = styled.div`
 
 type LoginContentProps = {
   setLoggingIn(isLogin: boolean): void;
+  setLoggedIn(isLoggedIn: boolean): void;
   onSelectMode(mode: string): void;
+  onLogin(): void;
   closeLoginModal(): void;
 };
 
 const LoginContent: React.FC<LoginContentProps> = ({
   setLoggingIn,
+  setLoggedIn,
   onSelectMode,
+  onLogin,
   closeLoginModal,
 }) => {
   const signupHandler = () => {
@@ -64,8 +68,17 @@ const LoginContent: React.FC<LoginContentProps> = ({
 
   const loginHandler = async (values: any) => {
     const { email, password } = values;
-    auth.login(email, password);
-    closeLoginModal();
+    const res = await auth.login(email, password);
+    if (res) {
+      setLoggedIn(true);
+      onLogin();
+      closeLoginModal();
+    } else {
+      notification.open({
+        message: "Login unsuccessfully",
+        description: "Email or password is incorrect",
+      });
+    }
   };
 
   return (

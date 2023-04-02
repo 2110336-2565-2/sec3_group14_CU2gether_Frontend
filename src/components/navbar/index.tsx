@@ -1,4 +1,11 @@
-import { Drawer, MenuProps, Dropdown, Layout, Typography } from "antd";
+import {
+  Drawer,
+  MenuProps,
+  Dropdown,
+  Layout,
+  Typography,
+  notification,
+} from "antd";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useModal } from "@/hooks";
@@ -9,7 +16,7 @@ import Link from "next/link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ReportIcon from "@mui/icons-material/Report";
 import LockResetIcon from "@mui/icons-material/LockReset";
-import HandshakeIcon from "@mui/icons-material/Handshake";
+import PersonAdd from "@mui/icons-material/PersonAdd";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -20,6 +27,9 @@ import useProfileStore from "@/hooks/useProfileStore";
 import theme from "@/utils/theme";
 import { ROLE } from "@/types";
 
+import { auth } from "api";
+import { useRouter } from "next/router";
+
 type NavbarProps = {};
 
 const { Header } = Layout;
@@ -28,22 +38,45 @@ type MenuItem = Required<MenuProps>["items"][number];
 
 const Navbar: React.FC<NavbarProps> = () => {
   const { role, name, imageUrl, checkStatus } = useProfileStore();
-  const [isLoggingIn, setLogginIn] = useState<boolean>(true);
+  const [isLoggedIn, setLoggedIn] = useState<boolean>(false); // is the user logged in or not
+  const [isLoggingIn, setLogginIn] = useState<boolean>(true); // is the action is logging in or signing up
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
   const mobile = useMediaQuery({ query: "(max-width: 768px)" });
   const { isModalOpen, openModal, closeModal } = useModal();
+  const router = useRouter();
 
   useEffect(() => {
     const checkLoginStatus = async () => {
       await checkStatus();
     };
     checkLoginStatus();
-  }, []);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     setIsMobileScreen(mobile);
   }, [mobile]);
+
+  const onLogin = () => {
+    router.push("/events");
+    notification.open({ message: "Logged in successfully" });
+  };
+
+  const onLogout = () => {
+    notification.open({ message: "Logged out successfully" });
+  };
+
+  const logout = async () => {
+    try {
+      const res = await auth.logout();
+      if (res) {
+        setLoggedIn(false);
+        onLogout();
+      } else throw new Error("Something went wrong, cannot logout");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const studentMenus = [
     { key: "1", label: "Home", href: "/" },
@@ -68,7 +101,7 @@ const Navbar: React.FC<NavbarProps> = () => {
   ];
 
   const getItem = (
-    label: React.ReactNode,
+    label: React.ReactNode, 
     key?: React.Key | null,
     icon?: React.ReactNode,
     children?: MenuItem[]
@@ -81,7 +114,7 @@ const Navbar: React.FC<NavbarProps> = () => {
     } as MenuItem;
   };
 
-  const ProfileMenuItems: MenuItem[] = role
+  const ProfileMenuItems: MenuItem[] = isLoggedIn
     ? [
         getItem(
           <Link
@@ -122,65 +155,67 @@ const Navbar: React.FC<NavbarProps> = () => {
         {
           type: "divider",
         },
-        getItem(
-          <div
-            onClick={() => {
-              // TODO: Open logout modal
-            }}
-          >
-            Log Out
-          </div>,
-          "4",
-          <LogoutIcon />
-        ),
+        getItem(<div onClick={logout}>Log Out</div>, "4", <LogoutIcon />),
       ]
     : [
-        getItem(<div>Join Us</div>, "1", <HandshakeIcon />),
+        getItem(<div>Join Us</div>, "1", <PersonAdd />),
         getItem(<div>Log In</div>, "2", <LoginIcon />),
       ];
 
   const renderNavMenu = () => {
-    switch (role) {
-      case ROLE.STUDENT:
-        return studentMenus.map((menu, idx) => (
-          <Link key={idx} href={menu.href}>
-            <MenuLabel>{menu.label}</MenuLabel>
-          </Link>
-        ));
-      case ROLE.ORGANIZER:
-        return organizerMenus.map((menu, idx) => (
-          <Link key={idx} href={menu.href}>
-            <MenuLabel>{menu.label}</MenuLabel>
-          </Link>
-        ));
-      case ROLE.ADMIN:
-        return adminMenus.map((menu, idx) => (
-          <Link key={idx} href={menu.href}>
-            <MenuLabel>{menu.label}</MenuLabel>
-          </Link>
-        ));
-      default:
-        return studentMenus.map((menu, idx) =>
-          menu.label === "Home" || menu.label === "Explore" ? (
+    if (isLoggedIn) {
+      switch (role) {
+        case ROLE.STUDENT:
+          return studentMenus.map((menu, idx) => (
             <Link key={idx} href={menu.href}>
               <MenuLabel>{menu.label}</MenuLabel>
             </Link>
-          ) : (
-            <div
-              onClick={() => {
-                setLogginIn(true);
-                openModal();
-              }}
-            >
+          ));
+        case ROLE.ORGANIZER:
+          return organizerMenus.map((menu, idx) => (
+            <Link key={idx} href={menu.href}>
               <MenuLabel>{menu.label}</MenuLabel>
-            </div>
-          )
-        );
+            </Link>
+          ));
+        case ROLE.ADMIN:
+          return adminMenus.map((menu, idx) => (
+            <Link key={idx} href={menu.href}>
+              <MenuLabel>{menu.label}</MenuLabel>
+            </Link>
+          ));
+        default:
+          return;
+      }
+    } else {
+      return studentMenus.map((menu, idx) =>
+        menu.label === "Home" || menu.label === "Explore" ? (
+          <Link key={idx} href={menu.href}>
+            <MenuLabel>{menu.label}</MenuLabel>
+          </Link>
+        ) : (
+          <div
+            onClick={() => {
+              setLogginIn(true);
+              openModal();
+            }}
+          >
+            <MenuLabel>{menu.label}</MenuLabel>
+          </div>
+        )
+      );
     }
   };
 
   const renderMobileNav = () => (
     <Nav>
+      <LoginAndRegistrationModal
+        isLoggingIn={isLoggingIn}
+        setLoggingIn={setLogginIn}
+        setLoggedIn={setLoggedIn}
+        onLogin={onLogin}
+        closeLoginAndRegistrationModal={closeModal}
+        isOpen={isModalOpen}
+      />
       <ShortNavContainer>
         <MenuIconWrapper>
           <MenuIcon onClick={() => setIsDrawerOpen(true)} />
@@ -229,6 +264,8 @@ const Navbar: React.FC<NavbarProps> = () => {
       <LoginAndRegistrationModal
         isLoggingIn={isLoggingIn}
         setLoggingIn={setLogginIn}
+        setLoggedIn={setLoggedIn}
+        onLogin={onLogin}
         closeLoginAndRegistrationModal={closeModal}
         isOpen={isModalOpen}
       />
@@ -242,41 +279,43 @@ const Navbar: React.FC<NavbarProps> = () => {
           />
           <Menu>{renderNavMenu()}</Menu>
         </MenuContainer>
-        {role ? (
-          <ProfileContainer>
-            <Name style={{ color: theme.color.primary }}>Hello, {name}</Name>
-            <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
-              {imageUrl ? (
-                <Image
-                  src={imageUrl}
-                  alt={"profile image"}
-                  width={36}
-                  height={36}
-                  style={{ borderRadius: "50%" }}
-                />
-              ) : (
-                <AccountCircleIcon />
-              )}
-            </Dropdown>
-          </ProfileContainer>
-        ) : (
-          <ProfileContainer>
-            <ContainedButton
-              text={"Join Us"}
-              onClick={() => {
-                setLogginIn(false);
-                openModal();
-              }}
-            />
-            <OutlinedButton
-              text={"Log in"}
-              onClick={() => {
-                setLogginIn(true);
-                openModal();
-              }}
-            />
-          </ProfileContainer>
-        )}
+        <ProfileContainer>
+          {isLoggedIn ? (
+            <>
+              <Name style={{ color: theme.color.primary }}>Hello, {name}</Name>
+            </>
+          ) : (
+            <>
+              <ContainedButton
+                text={"Join Us"}
+                onClick={() => {
+                  setLogginIn(false);
+                  openModal();
+                }}
+              />
+              <OutlinedButton
+                text={"Log in"}
+                onClick={() => {
+                  setLogginIn(true);
+                  openModal();
+                }}
+              />
+            </>
+          )}
+          <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
+            {imageUrl ? (
+              <Image
+                src={imageUrl}
+                alt={"profile image"}
+                width={36}
+                height={36}
+                style={{ borderRadius: "50%" }}
+              />
+            ) : (
+              <AccountCircleIcon fontSize="large"/>
+            )}
+          </Dropdown>
+        </ProfileContainer>
       </FullNavContainer>
     </Nav>
   );
@@ -332,6 +371,9 @@ const Menu = styled.div`
 
 const MenuLabel = styled(Paragraph)`
   margin: 0 !important;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Name = styled(Text)`

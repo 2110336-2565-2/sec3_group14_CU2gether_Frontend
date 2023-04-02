@@ -34,6 +34,11 @@ export enum GENDER {
     OTHERS = 'OTHERS',
 }
 
+export enum UPLOAD_MODE {
+  PROFILE = 'Profile',
+  COVER = 'Cover',
+}
+
 export type Event = {
   eventName: string;
   eventType: EventType;

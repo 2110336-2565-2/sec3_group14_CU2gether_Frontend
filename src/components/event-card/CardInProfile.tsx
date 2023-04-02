@@ -1,8 +1,31 @@
 import React from "react";
-import { Card, Space, Typography } from "antd";
+import { Space, Typography } from "antd";
 import { Event } from "@/types";
 import dayjs from "dayjs";
 import styled from "styled-components";
+import { CU_API } from "@/config";
+import theme from "@/utils/theme";
+
+const EventCard = styled.div`
+  margin-top: 10px;
+`;
+
+const EventImage = styled.img`
+  width: 400px;
+  height: 265px;
+  border-radius: 4px;
+
+  ${theme.media.tablet} {
+    width: 100%;
+    height: 265px;
+  }
+`;
+
+const TextContainer = styled.div`
+  margin-top: -80px;
+  margin-left: 20px;
+  z-index: 1;
+`;
 
 type EventCardProps = {
   event: Event;
@@ -28,20 +51,17 @@ const EventCardInProfile: React.FC<EventCardProps> = ({ event }) => {
   };
 
   return (
-    <>
-      <Card
-        hoverable
-        style={{ width: '100%', height: '100%' }}
-        cover={<img crossOrigin="anonymous" alt={"Event Image"} src={pictures[0]} />}
-      >
-        <Title level={4} style={{ margin: "10px 0px" }}>
+    <EventCard>
+      <EventImage crossOrigin="anonymous" alt={"Event Image"} src={CU_API+pictures[0].substring(1)}/>
+      <TextContainer>
+        <Title level={4}>
           {eventName}
         </Title>
         <Space>
           <Typography>{getDateTimeText()}</Typography>
         </Space>
-      </Card>
-    </>
+      </TextContainer>
+    </EventCard>
   );
 };
 

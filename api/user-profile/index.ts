@@ -28,17 +28,17 @@ const checkStatusById = async (id: string) => {
   }
 };
 
-const uploadImage = async (email: string, photo_url: FormData) => {
+const uploadImage = async (params: FormData) => {
   try {
-    await client.post(baseUrl + '/uploadImage', {photo_url, email}, {"Content-Type": "multipart/form-data"});
+    await client.post(baseUrl + '/uploadImage', params, {"Content-Type": "multipart/form-data"});
   } catch (error) {
     throw new Error(`Error to upload image`);
   }
 }
 
-const uploadCoverImage = async (email: string, photo_url: FormData) => {
+const uploadCoverImage = async (params: FormData) => {
   try {
-    await client.post(baseUrl + '/uploadImage', {photo_url, email}, {"Content-Type": "multipart/form-data"});
+    await client.post(baseUrl + '/uploadCoverImage', params, {"Content-Type": "multipart/form-data"});
   } catch (error) {
     throw new Error(`Error to upload image`);
   }
@@ -48,6 +48,7 @@ const userProfile = {
   checkStatus,
   checkStatusById,
   uploadImage,
+  uploadCoverImage,
 };
 
 export default userProfile;

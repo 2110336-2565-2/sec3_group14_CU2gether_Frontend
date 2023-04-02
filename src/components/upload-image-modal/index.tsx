@@ -1,72 +1,64 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CenteredModal from "@/common/modal";
-import { useModal } from "@/hooks";
-import { PictureOutlined } from '@ant-design/icons';
-import { message, Upload, Image } from 'antd';
-import type { UploadChangeParam } from 'antd/es/upload';
-import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
+import { Form } from 'antd';
 import useProfileStore from "@/hooks/useProfileStore";
 import FormData from "form-data";
+import PictureForm from "../create-event/PictureForm";
+import { UPLOAD_MODE } from "@/types";
+import { useRouter } from "next/router";
+import styled from "styled-components";
+import theme from "@/utils/theme";
+
+const StyledForm = styled(Form)`
+  width: 100%;
+`;
 
 
 type UploadImageModalProps = {
   isModalOpen: boolean,
+  uploadMode: UPLOAD_MODE,
+  closeModal:() => void,
 };
 
-const UploadImageModal: React.FC<UploadImageModalProps> = ({ isModalOpen }) => {
-  const { uploadImage } = useProfileStore();
-  const formData: FormData = new FormData();
-  const [imageUrl, setImageUrl] = useState<string>("");
+const UploadImageModal: React.FC<UploadImageModalProps> = ({ isModalOpen, closeModal, uploadMode }) => {
+  const { email, uploadImage, uploadCoverImage, checkStatus } = useProfileStore();
+  const [ form ] = Form.useForm();
 
-  const ShowImage = () => {
-    return imageUrl !== "" ? (
-      <Image src={imageUrl} width="100%" preview={false} />
-    ) : (
-      <>
-        <PictureOutlined style={{ fontSize: "3em" }} />
-        <p>Upload Event Photo</p>
-      </>
-    );
-  };
+  const router = useRouter();
+
+  useEffect(() => {
+    checkStatus();
+  }, []);
 
   const onFinish = async () => {
-
-    // await formData.append("picture_url", imageUrl)
-
-    console.log(formData)
-    await uploadImage(formData);
+    const formData: FormData = new FormData();
+    const { picture } = form.getFieldsValue(true);
+    formData.append("email", email);
+    formData.append("photo_url", picture.file.originFileObj);
+    switch (uploadMode) {
+      case UPLOAD_MODE.PROFILE:
+        await uploadImage(formData);
+        break;
+      case UPLOAD_MODE.COVER:
+        await uploadCoverImage(formData);
+        break;
+    }
+    closeModal();
+    router.reload();
   }
 
   return (
     <CenteredModal 
       open={isModalOpen}
       onOk={() => onFinish()}
-      bodyStyle={{height: '70vh', paddingTop: '5vh'}}
+      okText="Save"
+      onCancel={() => {closeModal(); form.setFieldValue("picture", undefined);}}
+      style={{width: '150vw'}}
+      bodyStyle={{marginTop:'6vh', display: 'flex', alignItems: 'center'}}
     > 
-      <Upload.Dragger
-        maxCount = {1}
-        beforeUpload={(file: File) => {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            setImageUrl(reader.result as string);
-          }
-          reader.readAsDataURL(file);
-        }}
-        onChange={({ file }) => {
-          if (file.status === "done") {
-            file.thumbUrl = imageUrl;
-            if(file.originFileObj) {
-              // setImageUrl(file.originFileObj.name);
-              formData.append("picture_url", file.originFileObj)
-            }
-            console.log(file.thumbUrl);
-            console.log(file.originFileObj);
-          }
-        }}
-        onRemove={() => setImageUrl("") }
-      >
-        <ShowImage/>
-      </Upload.Dragger>
+      <StyledForm form={form}>
+        <PictureForm uploadFor={uploadMode}/>
+      </StyledForm>
     </CenteredModal>
   );
 };

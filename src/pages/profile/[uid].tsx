@@ -8,7 +8,6 @@ import {
   Layout,
   Skeleton,
   Typography,
-  Upload,
   Space,
 } from "antd";
 import styled from "styled-components";
@@ -21,7 +20,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ROLE } from "@/types";
+import { ROLE, UPLOAD_MODE } from "@/types";
 import useEventStore from "@/hooks/useEventStore";
 import EventCardInProfile from "@/components/event-card/CardInProfile";
 import { CU_API } from "@/config";
@@ -37,7 +36,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
   const { id, student, organizer, checkStatus, getRoleById, getProfile, updateProfile } =
     useProfileStore();
   const { isModalOpen, openModal, closeModal } = useModal();
-  const { events, fetchOwnEvents } = useEventStore();
+  const { events, fetchOwnEvents, fetchOwnEventsById } = useEventStore();
   const [ role, setRole ] = useState<ROLE>(ROLE.STUDENT); 
   const [loading, setLoading] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
@@ -47,6 +46,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
   const [isEditingDescription, setEditingDescription] =
     useState<boolean>(false);
   const [isOwnUser, setOwnUser] = useState<boolean>(true);
+  const [uploadMode, setUploadMode] = useState<UPLOAD_MODE>(UPLOAD_MODE.PROFILE);
 
   const router = useRouter();
   const { uid, isReady } = router.query;
@@ -65,6 +65,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
         } else {
           setOwnUser(false);
           await getProfile(uid.toString(), profileRole ? profileRole : ROLE.STUDENT);
+          await fetchOwnEventsById(uid.toString());
         }
         setLoading(false);
       }  
@@ -123,6 +124,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
           onPressEnter={() => editName()}
           defaultValue={student.firstName}
           bordered={false}
+          style={{width:'36%'}}
           allowClear
         ></Input>
         <Space></Space>
@@ -132,6 +134,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
           onPressEnter={() => editName()}
           defaultValue={student.lastName}
           bordered={false}
+          style={{width:'35%'}}
           allowClear
         ></Input>
       </>
@@ -142,11 +145,12 @@ const ProfilePage: React.FC<{}> = ({}) => {
         onPressEnter={() => editName()}
         defaultValue={organizer.name}
         bordered={false}
+        style={{width:'30%'}}
         allowClear
       ></Input>
     ) : null;
 
-  const renderRole = () =>
+  const renderRole = () => (
     role === ROLE.STUDENT ? (
       <RoleWrapper>
         <FontAwesomeIcon icon={faUserGraduate} />
@@ -157,9 +161,9 @@ const ProfilePage: React.FC<{}> = ({}) => {
         <FontAwesomeIcon icon={faUserTie} />
         <RoleSubtitle>{role.toLowerCase()}</RoleSubtitle>
       </RoleWrapper>
-    ) : null;
+    ) : null);
 
-  const renderRecord = () =>
+  const renderRecord = () => (
     role === ROLE.STUDENT ? (
       <StatisticContainer>
         <StatisticText>Join : {student.joinTimes}</StatisticText>
@@ -172,9 +176,9 @@ const ProfilePage: React.FC<{}> = ({}) => {
         <StatisticText>Create : {organizer.createTimes}</StatisticText>
         <StatisticText>Cancel : {organizer.cancelTimes}</StatisticText>
       </StatisticContainer>
-    ) : null;
+    ) : null);
 
-  const renderEditDescriptionInput = () =>
+  const renderEditDescriptionInput = () => (
     role === ROLE.STUDENT ? (
       <Input
         showCount
@@ -195,9 +199,9 @@ const ProfilePage: React.FC<{}> = ({}) => {
         bordered={false}
         allowClear
       ></Input>
-    ) : null;
+    ) : null);
 
-  const renderDescription = () =>
+  const renderDescription = () => (
     role === ROLE.STUDENT ? (
       <AboutContentContainer>
         {student.description ? (
@@ -218,10 +222,10 @@ const ProfilePage: React.FC<{}> = ({}) => {
           <AboutSubTitle>Tell us about yourself</AboutSubTitle>
         )}
       </AboutContentContainer>
-    ) : null;
+    ) : null);
   
   const renderModal = () => (
-    <UploadImageModal isModalOpen={true}></UploadImageModal>
+    <UploadImageModal isModalOpen={isModalOpen} closeModal={closeModal} uploadMode={uploadMode}></UploadImageModal>
   )
 
   if (loading || isReady) return <Skeleton></Skeleton>;
@@ -229,7 +233,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
 
     <ProfileContainer>
       <Content>
-      {/* <UploadImageModal isModalOpen={true}></UploadImageModal> */}
+        {renderModal()}
         <CoverImageCard
           cover={
             <CoverImage
@@ -246,13 +250,16 @@ const ProfilePage: React.FC<{}> = ({}) => {
             />
           }
         >
-          {/* <Upload>
-                <EditCoverImageButton
-                    icon={<CameraAltRounded fontSize='small'/>} 
-                >
-                        Edit Cover photo
-                </EditCoverImageButton>
-            </Upload> */}
+          {isOwnUser ? 
+          <EditCoverImageButton
+            shape="circle" 
+            icon={<CameraAltRounded fontSize='small'/>}
+            onClick={() => {
+              setUploadMode(UPLOAD_MODE.COVER)
+              openModal();
+            }}
+          >
+          </EditCoverImageButton> : null }
         </CoverImageCard>
         <ProfileInformationContainer>
           <ProfilePicture
@@ -267,12 +274,15 @@ const ProfilePage: React.FC<{}> = ({}) => {
                 : ""
             }
           />
-            {/* <Upload>
-                <EditProfileImageButton 
-                    shape="circle" 
-                    icon={<CameraAltRounded fontSize='small'/>} 
-                />
-            </Upload> */}
+          {isOwnUser ? 
+          <EditProfileImageButton 
+              shape="circle" 
+              icon={<CameraAltRounded fontSize='small'/>}
+              onClick={() => {
+                setUploadMode(UPLOAD_MODE.PROFILE);
+                openModal();
+              }}
+          /> : null }
           <InformationContainer>
             <NameContainer>
               {isEditingName ? renderEditNameInput() : renderTitleName()}
@@ -318,15 +328,13 @@ const ProfilePage: React.FC<{}> = ({}) => {
               </PreviousEventSubTital>
             </CardTitleContainer>
             <PreviousContentContainer>
-              {events ? (
-                events.length !== 0 ? (
+              {
+                events && events.length > 0 ? (               
                   <EventCardInProfile event={events[0]} />
                 ) : (
                   <EmptyData />
                 )
-              ) : (
-                <EmptyData />
-              )}
+              }
             </PreviousContentContainer>
           </PreviousEventCard>
         </ContentContainer>
@@ -337,7 +345,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
 
 const ProfileCard = styled(Card)`
   border-width: 1px;
-  border-color: ${theme.color_level.gray.low};
+  border-color: ${theme.color.gray};
 `;
 
 const ProfileContainer = styled(Layout)`
@@ -353,7 +361,7 @@ const ProfileContainer = styled(Layout)`
 const CoverImageCard = styled(ProfileCard)`
   height: 200px;
   border-width: 0px;
-  background-color: ${theme.color.cu_pink};
+  background-color: ${theme.color.primary};
 
   ${theme.media.mobile} {
     margin-top: 21px;
@@ -377,9 +385,13 @@ const CoverImage = styled.img`
 const EditCoverImageButton = styled(Button)`
   display: flex;
   justify-content: center;
+  align-items: center;
   position: relative;
-  top: -70px;
-  left: 550px;
+  top: -65px;
+  left: 730px;
+  ${theme.media.pc} {
+    left: 70vw;
+  }
 `;
 
 const ProfileInformationContainer = styled.div`
@@ -394,6 +406,11 @@ const EditProfileImageButton = styled(Button)`
   position: relative;
   top: 30px;
   left: 10px;
+  ${theme.media.mobile} {
+    position: absolute;
+    top: 175px;
+    left: 50vw;
+  }
 `;
 
 const ProfilePicture = styled(Avatar)`
@@ -403,8 +420,8 @@ const ProfilePicture = styled(Avatar)`
   width: 150px;
   height: 150px;
   border-width: 2px;
-  background-color: ${theme.color_level.gray.light};
-  border-color: ${theme.color.white};
+  background-color: ${theme.color.border};
+  border-color: ${theme.color.border};
 
   ${theme.media.mobile} {
     top: -35px;
@@ -448,7 +465,7 @@ const RoleWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 5px;
-  color: ${theme.color_level.gray.low};
+  color: ${theme.color.gray};
 `;
 
 const RoleSubtitle = styled.p`
@@ -502,7 +519,7 @@ const AboutSubTitle = styled(Text)`
 
 const NoDescriptionSubTitle = styled(Text)`
   font-size: 16px;
-  color: ${theme.color_level.gray.low};
+  color: ${theme.color.gray};
 `;
 
 const PreviousEventCard = styled(ProfileCard)`
@@ -510,8 +527,6 @@ const PreviousEventCard = styled(ProfileCard)`
   height: 400px;
   ${theme.media.tablet} {
     width: 100%;
-    height: 215px;
-    max-height: 300px;
   }
 `;
 
@@ -524,7 +539,7 @@ const PreviousContentContainer = styled.div`
 
 const PreviousEventSubTital = styled(Link)`
   font-size: 20px;
-  color: ${theme.color_level.gray.low};
+  color: ${theme.color.gray};
 
   ${theme.media.mobile} {
     font-size: 16px;

@@ -5,7 +5,6 @@ import styled from "styled-components";
 import theme from "@/utils/theme";
 
 const StyledForm = styled(Form.Item)`
-  width: 30%;
   height: 100%;
 
   ${theme.media.mobile} {
@@ -13,16 +12,20 @@ const StyledForm = styled(Form.Item)`
   }
 `;
 
-const PictureForm: React.FC<{}> = ({}) => {
+type PictureFormProps = {
+  uploadFor: string
+};
+
+const PictureForm: React.FC<PictureFormProps> = ({ uploadFor }) => {
   const [url, setUrl] = useState<string>("");
 
   const ShowImage = () => {
     return url !== "" ? (
-      <Image src={url} width="100%" preview={false} />
+      <Image src={url} width="100%" style={{maxHeight: '45vh'}} preview={false} />
     ) : (
       <>
         <PictureOutlined style={{ fontSize: "3em" }} />
-        <p>Upload Event Photo</p>
+        <p>Upload {uploadFor} Photo</p>
       </>
     );
   };
@@ -40,6 +43,7 @@ const PictureForm: React.FC<{}> = ({}) => {
     <StyledForm
       name="picture"
       rules={[{ required: true, message: "Please insert picture" }]}
+      style={{width: uploadFor === "Event" ? '30%': '100%'}}
     >
       <Upload.Dragger
         maxCount={1}

@@ -24,7 +24,7 @@ const ContentContainer = styled.div`
 const BasicsContent: React.FC<{}> = ({}) => {
   return (
     <ContentContainer>
-      <PictureForm />
+      <PictureForm uploadFor="Event"/>
       <BasicsForm />
     </ContentContainer>
   );

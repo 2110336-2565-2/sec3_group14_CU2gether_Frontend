@@ -20,7 +20,8 @@ type ProfileStore = {
   getProfile: (id: string, role: ROLE) => void;
   updateProfile: (id: string, role: ROLE, params: any) => void;
   resetPassword: (id: string, role: ROLE, params: any) => void;
-  uploadImage: (photoUrl: FormData) => void;
+  uploadImage: (params: FormData) => void;
+  uploadCoverImage: (params: FormData) => void;
 };
 
 const studentProfile = {
@@ -111,9 +112,11 @@ const useProfileStore = create<ProfileStore>((set, get) => ({
         break;
     }
   },
-  uploadImage: (photoUrl: FormData) => {
-    const email = get().email;
-    userProfile.uploadImage(email? email: "a@a.com", photoUrl)
+  uploadImage: (params: FormData) => {
+    userProfile.uploadImage(params);
+  },
+  uploadCoverImage: (params: FormData) => {
+    userProfile.uploadCoverImage(params);
   }
 }));
 

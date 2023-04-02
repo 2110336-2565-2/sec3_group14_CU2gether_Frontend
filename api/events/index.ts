@@ -36,7 +36,16 @@ const getOwnEvents = async () => {
   } catch (error) {
     throw new Error("Error fetching event");
   }
-}
+};
+
+const getOwnEventsById = async (id: string) => {
+  try {
+    const events = await client.get(baseUrl + '/' + id);
+    return events.data;
+  } catch (error) {
+    throw new Error("Error fetching event");
+  }
+};
 
 const createEvent = async (params: FormData) => {
   try {
@@ -55,6 +64,7 @@ const createEvent = async (params: FormData) => {
 const events = {
     getEvents,
     getOwnEvents,
+    getOwnEventsById,
     createEvent
 }
 

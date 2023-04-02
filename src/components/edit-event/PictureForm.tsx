@@ -7,7 +7,7 @@ import { Event } from "@/types";
 import { CU_API } from "@/config";
 
 const StyledForm = styled(Form.Item)`
-  width: 30%;
+  width: 50%;
   height: 100%;
 
   ${theme.media.mobile} {

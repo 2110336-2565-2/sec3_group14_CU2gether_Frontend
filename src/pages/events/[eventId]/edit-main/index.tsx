@@ -553,7 +553,7 @@ const FormInputContainer = styled(Form)`
 const LeftContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 30%;
   ${theme.media.tablet} {
     width: 100%;
   }
@@ -562,7 +562,7 @@ const LeftContentContainer = styled.div`
 const RightContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 55%;
   height: 100%;
   ${theme.media.tablet} {
     width: 100%;

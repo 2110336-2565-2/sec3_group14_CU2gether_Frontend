@@ -14,7 +14,6 @@ import styled from "styled-components";
 import theme from "@/utils/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faPencil,
   faUserGraduate,
   faUserTie,
 } from "@fortawesome/free-solid-svg-icons";
@@ -25,7 +24,7 @@ import useEventStore from "@/hooks/useEventStore";
 import EventCardInProfile from "@/components/event-card/CardInProfile";
 import { CU_API } from "@/config";
 import useProfileStore from "@/hooks/useProfileStore";
-import { BorderColorRounded, CameraAltRounded, Edit } from "@mui/icons-material";
+import { BorderColorRounded, CameraAltRounded } from "@mui/icons-material";
 import { useModal } from "@/hooks";
 import UploadImageModal from "@/components/upload-image-modal";
 

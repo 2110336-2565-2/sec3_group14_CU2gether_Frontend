@@ -1,16 +1,15 @@
-import { Inter } from "@next/font/google";
 import Image from "next/image";
-import { use, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Carousel, Typography } from "antd";
 import styled from "styled-components";
 import React from "react";
 import { ContainedButton } from "@/common/button";
+import useEventStore from "@/hooks/useEventStore";
 
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
-
-import LoginAndRegistration from "@/components/login-registration/LoginAndRegistrationModal";
-
-const inter = Inter({ subsets: ["latin"] });
+import EventCard from "@/components/event-card";
+import { getImageURL } from "@/utils";
+import { useRouter } from "next/router";
 
 const { Title, Paragraph } = Typography;
 
@@ -18,6 +17,19 @@ type HomeProps = {};
 
 const Home: React.FC<HomeProps> = () => {
   const createEventSectionRef: React.Ref<any> = useRef(null);
+  const [events, fetchEvents] = useEventStore((state) => [
+    state.events,
+    state.fetchEvents,
+  ]);
+  const router = useRouter();
+
+  useEffect(() => {
+    fetchEvents({});
+  }, []);
+
+  const redirectToEvent = (eventId: number) => {
+    router.push(`/events/${eventId}`);
+  };
 
   const scrollToBottom = () => {
     createEventSectionRef && createEventSectionRef.current
@@ -37,51 +49,24 @@ const Home: React.FC<HomeProps> = () => {
         />
         <HomePageTitle>Want Events?</HomePageTitle>
         <EventCarousel autoplay>
-          <EventImageContainer>
-            <EventImage
-              src={`./event1.svg`}
-              alt={`event image 1`}
-              loader={() => `./event1.svg`}
-              crossOrigin="anonymous"
-              fill
-            />
-          </EventImageContainer>
-          <EventImageContainer>
-            <EventImage
-              src={`./event2.svg`}
-              alt={`event image 2`}
-              loader={() => `./event2.svg`}
-              crossOrigin="anonymous"
-              fill
-            />
-          </EventImageContainer>
-          <EventImageContainer>
-            <EventImage
-              src={`./event3.svg`}
-              alt={`event image 3`}
-              loader={() => `./event3.svg`}
-              crossOrigin="anonymous"
-              fill
-            />
-          </EventImageContainer>
-          <EventImageContainer>
-            <EventImage
-              src={`./event4.svg`}
-              alt={`event image 4`}
-              loader={() => `./event4.svg`}
-              crossOrigin="anonymous"
-              fill
-            />
-          </EventImageContainer>
-          <EventImageContainer>
-            <EventImage
-              src={`./event5.svg`}
-              alt={`event image 5`}
-              loader={() => `./event5.svg`}
-              crossOrigin="anonymous"
-              fill
-            />
-          </EventImageContainer>
+          {events ? (
+            events.slice(0, 5).map((event, i) => {
+              console.log("event", i);
+              return (
+                <EventImageContainer onClick={() => redirectToEvent(event.id)}>
+                  <EventImage
+                    src={getImageURL(event.pictures[0])}
+                    alt={`${event.eventName} image`}
+                    loader={() => getImageURL(event.pictures[0])}
+                    crossOrigin="anonymous"
+                    fill
+                  />
+                </EventImageContainer>
+              );
+            })
+          ) : (
+            <></>
+          )}
         </EventCarousel>
         <DownArrowIconWrapper>
           <ArrowDropDownCircleOutlinedIcon
@@ -97,7 +82,7 @@ const Home: React.FC<HomeProps> = () => {
             You can create your own events <br></br> which will appear on this
             website to find participants.
           </CreateEventDescription>
-          <ContainedButton text={"Create Event"} big />
+          <ContainedButton text={"Create Event"} />
         </CreateEventSubSection>
         <CreateEventSubSection>
           <ExampleEventImage
@@ -126,16 +111,16 @@ const BackgroundImage = styled(Image)`
 
 const HomePageTitle = styled(Title)`
   color: white !important;
-  top: 80px;
+  top: 50px;
   text-align: center;
   position: relative;
   z-index: 1;
 `;
 
 const EventCarousel = styled(Carousel)`
-  top: 100px;
+  top: 50px;
   margin: auto;
-  max-height: 400px;
+  max-height: 600px;
   max-width: 600px;
   filter: drop-shadow(0 0 0.75rem black);
   z-index: 1;
@@ -143,13 +128,16 @@ const EventCarousel = styled(Carousel)`
 
 const EventImageContainer = styled.div`
   position: relative;
-  height: 400px !important;
+  height: 600px !important;
   width: 599px !important;
   margin: 0;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const EventImage = styled(Image)`
-  object-fit: cover;
+  object-fit: contain;
   width: 100%;
   margin: auto;
 `;
@@ -187,12 +175,6 @@ const CreateEventDescription = styled(Paragraph)`
   font-size: 24px;
   text-align: center;
 `;
-
-// const CreateEventRightSubSection = styled.div`
-//   float: left;
-//   width: 50%;
-//   height: 100%;
-// `;
 
 const ExampleEventImage = styled(Image)`
   padding: 5%;

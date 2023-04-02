@@ -45,21 +45,24 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
               loader={() => imgSrc}
               crossOrigin="anonymous"
               fill
+              style={{ objectFit: "cover" }}
             />
           </ImageContainer>
         }
       >
-        <Title level={4} style={{ margin: "10px 0px" }}>
-          {eventName}
-        </Title>
-        <Space>
-          <CalendarMonthIcon fontSize="small" />
-          <Typography>{getDateTimeText()}</Typography>
-        </Space>
-        <Space>
-          <LocationOnIcon fontSize="small" />
-          <Typography>{location}</Typography>
-        </Space>
+        <EventDetailContainer>
+          <Title level={4} style={{ margin: "10px 0px" }}>
+            {eventName}
+          </Title>
+          <Space>
+            <CalendarMonthIcon fontSize="small" />
+            <Typography>{getDateTimeText()}</Typography>
+          </Space>
+          <Space>
+            <LocationOnIcon fontSize="small" />
+            <Typography>{location}</Typography>
+          </Space>
+        </EventDetailContainer>
       </Card>
     </>
   );
@@ -69,6 +72,12 @@ const ImageContainer = styled.div`
   width: 240px;
   height: 240px;
   position: relative;
+`;
+
+const EventDetailContainer = styled.div`
+  display: flex;
+  flex-flow: column;
+  height: 120px;
 `;
 
 export default EventCard;

@@ -104,8 +104,6 @@ const EventDetail: React.FC = () => {
     </Space>
   );
 
-  console.log("OAT", CU_API + pictures[0].slice(2));
-
   const EventDetailContainer = styled.div`
     padding: 8rem 0;
     height: 93vh;
@@ -145,7 +143,7 @@ const EventDetail: React.FC = () => {
           <RightLayout>
             <Header>
               <Title style={StyleTitle} level={1}>
-                <b>{eventName}</b>
+                {eventName}
               </Title>
               <div>Created by {ownerName}</div>
             </Header>
@@ -234,6 +232,7 @@ const RightLayout = styled.div`
 const StyleTitle = {
   color: "#fff",
   fontSize: "2rem",
+  fontWeight: "bold",
 };
 
 const Header = styled.div`

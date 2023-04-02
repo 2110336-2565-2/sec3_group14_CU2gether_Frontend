@@ -101,7 +101,7 @@ const Navbar: React.FC<NavbarProps> = () => {
   ];
 
   const getItem = (
-    label: React.ReactNode,
+    label: React.ReactNode, 
     key?: React.Key | null,
     icon?: React.ReactNode,
     children?: MenuItem[]

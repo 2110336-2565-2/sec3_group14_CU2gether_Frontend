@@ -85,7 +85,7 @@ const SubtitleText2 = styled.h3`
   font-size: 20px;
   font-weight: bold;
   text-align: center;
-  color: ${theme.color_level.gray.medium};
+  color: ${theme.color.lightGray};
 
   ${theme.media.mobile} {
     font-size: 16px;

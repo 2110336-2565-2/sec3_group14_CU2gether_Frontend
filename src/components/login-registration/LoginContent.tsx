@@ -24,11 +24,11 @@ const SignUpFooterContainer = styled.div`
 const SignUpText = styled.p`
   font-size: 14px;
   text-align: center;
-  color: ${theme.color_level.gray.light};
+  color: ${theme.color.lightGray};
 `;
 
 const SignUpLink = styled(SignUpText)`
-  color: ${theme.color.cu_pink};
+  color: ${theme.color.primary};
   text-decoration: underline;
   margin-left: 10px;
   cursor: pointer;

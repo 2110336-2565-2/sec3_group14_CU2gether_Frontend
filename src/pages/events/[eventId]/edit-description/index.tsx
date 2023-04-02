@@ -25,14 +25,10 @@ const TextAreaContainer = styled(Layout)`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   padding-top: 2.5vh;
   gap: 2vw;
-`;
-
-const ButtonConfig = styled(Button)`
-  width: 180px;
-  // height: 44px;
-  // font-size: 20px;
+  width: 100%;
 `;
 
 const Description: React.FC<{}> = ({}) => {
@@ -85,20 +81,20 @@ const Description: React.FC<{}> = ({}) => {
 
   const buttonForm = (
     <ButtonContainer>
-      <ButtonConfig
+      <Button
         type="default"
         htmlType="button"
         onClick={() => handleCancelClick()}
       >
         Cancel
-      </ButtonConfig>
-      <ButtonConfig 
+      </Button>
+      <Button
         type="primary" 
         htmlType="submit"
         onClick={() => handleSaveClick()}
       >
         Save
-      </ButtonConfig>
+      </Button>
     </ButtonContainer>
   );
 

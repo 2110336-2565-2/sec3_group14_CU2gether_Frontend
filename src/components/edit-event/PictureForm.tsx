@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Upload, Form, Image, FormInstance, UploadFile } from "antd";
+import { Upload, Form, Image, Typography, FormInstance, UploadFile } from "antd";
 import { PictureOutlined, LoadingOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import theme from "@/utils/theme";
 import { Event } from "@/types";
 import { CU_API } from "@/config";
+
+const { Text } = Typography;
 
 const StyledForm = styled(Form.Item)`
   width: 50%;
@@ -24,7 +26,7 @@ const PictureForm: React.FC<{ event?: Event }> = ({ event }) => {
     ) : (
       <>
         <PictureOutlined style={{ fontSize: "3em" }} />
-        <p>Upload Event Photo</p>
+        <Text>Upload Event Photo</Text>
       </>
     );
   };

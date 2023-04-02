@@ -231,7 +231,7 @@ const EventDetailSummary: React.FC<{}> = ({}) => {
 };
 
 const ScoreText = styled(Text)`
-  color: ${theme.color.cu_pink};
+  color: ${theme.color.primary};
   font-size: 1.25rem;
 `;
 
@@ -251,7 +251,7 @@ const ReviewContainer = styled.div`
   width: 45vw;
   display: flex;
   flex-direction: column;
-  border-color: ${theme.color_level.gray.low};
+  border-color: ${theme.color.border};
   border-style: solid;
   border-radius: 0.4rem;
   padding: 5px 10px;

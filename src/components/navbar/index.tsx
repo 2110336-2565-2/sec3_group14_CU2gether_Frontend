@@ -16,7 +16,7 @@ import Link from "next/link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ReportIcon from "@mui/icons-material/Report";
 import LockResetIcon from "@mui/icons-material/LockReset";
-import HandshakeIcon from "@mui/icons-material/Handshake";
+import PersonAdd from "@mui/icons-material/PersonAdd";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -28,7 +28,7 @@ import theme from "@/utils/theme";
 import { ROLE } from "@/types";
 
 import { auth } from "api";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 type NavbarProps = {};
 
@@ -114,7 +114,7 @@ const Navbar: React.FC<NavbarProps> = () => {
     } as MenuItem;
   };
 
-  const ProfileMenuItems: MenuItem[] = role
+  const ProfileMenuItems: MenuItem[] = isLoggedIn
     ? [
         getItem(
           <Link
@@ -158,7 +158,7 @@ const Navbar: React.FC<NavbarProps> = () => {
         getItem(<div onClick={logout}>Log Out</div>, "4", <LogoutIcon />),
       ]
     : [
-        getItem(<div>Join Us</div>, "1", <HandshakeIcon />),
+        getItem(<div>Join Us</div>, "1", <PersonAdd />),
         getItem(<div>Log In</div>, "2", <LoginIcon />),
       ];
 
@@ -279,41 +279,43 @@ const Navbar: React.FC<NavbarProps> = () => {
           />
           <Menu>{renderNavMenu()}</Menu>
         </MenuContainer>
-        {isLoggedIn ? (
-          <ProfileContainer>
-            <Name style={{ color: theme.color.primary }}>Hello, {name}</Name>
-            <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
-              {imageUrl ? (
-                <Image
-                  src={imageUrl}
-                  alt={"profile image"}
-                  width={36}
-                  height={36}
-                  style={{ borderRadius: "50%" }}
-                />
-              ) : (
-                <AccountCircleIcon />
-              )}
-            </Dropdown>
-          </ProfileContainer>
-        ) : (
-          <ProfileContainer>
-            <ContainedButton
-              text={"Join Us"}
-              onClick={() => {
-                setLogginIn(false);
-                openModal();
-              }}
-            />
-            <OutlinedButton
-              text={"Log in"}
-              onClick={() => {
-                setLogginIn(true);
-                openModal();
-              }}
-            />
-          </ProfileContainer>
-        )}
+        <ProfileContainer>
+          {isLoggedIn ? (
+            <>
+              <Name style={{ color: theme.color.primary }}>Hello, {name}</Name>
+            </>
+          ) : (
+            <>
+              <ContainedButton
+                text={"Join Us"}
+                onClick={() => {
+                  setLogginIn(false);
+                  openModal();
+                }}
+              />
+              <OutlinedButton
+                text={"Log in"}
+                onClick={() => {
+                  setLogginIn(true);
+                  openModal();
+                }}
+              />
+            </>
+          )}
+          <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
+            {imageUrl ? (
+              <Image
+                src={imageUrl}
+                alt={"profile image"}
+                width={36}
+                height={36}
+                style={{ borderRadius: "50%" }}
+              />
+            ) : (
+              <AccountCircleIcon fontSize="large"/>
+            )}
+          </Dropdown>
+        </ProfileContainer>
       </FullNavContainer>
     </Nav>
   );

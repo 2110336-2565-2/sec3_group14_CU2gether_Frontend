@@ -16,6 +16,7 @@ import Link from "next/link";
 import Image from "next/legacy/image";
 import { getEventsRequestParams } from "api/events";
 import userProfile from "api/user-profile";
+import { finished } from "stream";
 
 const { Title } = Typography;
 
@@ -124,7 +125,19 @@ const EventDetail: React.FC = () => {
     });
   };
 
+  const finished = false;
+
   const LayoutFooter = () => {
+    if (finished) {
+      return (
+        <Space align="end">
+          <OutlinedButton text="Description" onClick={scrollToDescription} />
+          <Link href={`../${event!.id}/review`}>
+            <OutlinedButton text="Reviews" />
+          </Link>
+        </Space>
+      );
+    }
     if (ownerId == id) {
       return (
         <Space align="end">
@@ -163,6 +176,16 @@ const EventDetail: React.FC = () => {
   };
 
   const DescriptionFooter = () => {
+    if (finished) {
+      return (
+        <Space align="end">
+          <OutlinedButton text="Back To Top" onClick={scrollToEventDetail} />
+          <Link href={`../${event!.id}/review`}>
+            <OutlinedButton text="Reviews" />
+          </Link>
+        </Space>
+      );
+    }
     if (ownerId == id) {
       return (
         <Space align="end">

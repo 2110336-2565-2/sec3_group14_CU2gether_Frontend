@@ -23,6 +23,7 @@ import { useMediaQuery } from "react-responsive";
 import { getEventsRequestParams } from "api/events";
 import dayjs from "dayjs";
 import { RangePickerProps } from "antd/es/date-picker";
+import Link from "next/link";
 
 type EventProps = {};
 
@@ -64,7 +65,9 @@ const Event: React.FC<EventProps> = () => {
 
   const renderEventCardList = () =>
     events.map((event: Event, idx: number) => (
-      <EventCard key={`event-${idx}`} event={event} />
+      <Link href={`events/${event.id}/detail`}>
+        <EventCard key={`event-${idx}`} event={event} />
+      </Link>
     ));
 
   const eventTypeItems = Object.keys(EventType)

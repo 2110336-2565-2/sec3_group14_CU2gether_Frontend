@@ -14,6 +14,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { CU_API } from "@/config";
 import useProfileStore from "@/hooks/useProfileStore";
 import Link from "next/link";
+import Image from "next/legacy/image";
 
 const { Title } = Typography;
 
@@ -181,11 +182,14 @@ const EventDetail: React.FC = () => {
       <EventDetailContainer>
         <LayoutContainer>
           <Sider>
-            <img
+            <Image
               src={CU_API + pictures[0]}
               alt={"Event Image"}
-              style={{ height: "100%", width: "100%" }}
+              layout="fill"
+              objectFit="cover"
+              objectPosition="center"
               crossOrigin="anonymous"
+              loader={() => CU_API + pictures[0]}
             />
           </Sider>
           <RightLayout>
@@ -225,7 +229,11 @@ const EventDetail: React.FC = () => {
         <BlurBackgroundImg
           src={CU_API + pictures[0]}
           alt={"Event Image"}
+          layout="fill"
+          objectFit="cover"
+          objectPosition="center"
           crossOrigin="anonymous"
+          loader={() => CU_API + pictures[0]}
         />
       </EventDetailContainer>
       <div ref={descriptionRef} />
@@ -239,7 +247,7 @@ const EventDetail: React.FC = () => {
   );
 };
 
-const BlurBackgroundImg = styled.img`
+const BlurBackgroundImg = styled(Image)`
   filter: blur(5px);
   height: 100%;
   width: 100%;

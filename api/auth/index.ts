@@ -5,12 +5,8 @@ const baseUrl = CU_API + "auth";
 
 const login = async (email: string, password: string) => {
   try {
-    const res = await client.post(`${baseUrl}/login`, { email, password });
-    if (res.status === 201) {
-      return true;
-    } else {
-      throw new Error("Error occurs with status code: " + res.status);
-    }
+    await client.post(`${baseUrl}/login`, { email, password });
+    return true;
   } catch (err) {
     console.log(err);
   }
@@ -18,12 +14,8 @@ const login = async (email: string, password: string) => {
 
 const logout = async () => {
   try {
-    const res = await client.delete(`${baseUrl}/logout`);
-    if (res.status === 204) {
-      return true;
-    } else {
-      throw new Error("Error occurs with status code: " + res.status);
-    }
+    await client.delete(`${baseUrl}/logout`);
+    return true;
   } catch (err) {
     console.log(err);
   }

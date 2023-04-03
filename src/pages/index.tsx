@@ -65,7 +65,6 @@ const Home: React.FC<HomeProps> = () => {
           <EventCarousel autoplay>
             {events &&
               events.slice(0, 5).map((event, i) => {
-                console.log("event", i);
                 return (
                   <EventImageContainer
                     onClick={() => redirectToEvent(event.id)}

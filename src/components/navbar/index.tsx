@@ -4,7 +4,7 @@ import {
   Dropdown,
   Layout,
   Typography,
-  notification,
+  message,
 } from "antd";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -65,11 +65,14 @@ const Navbar: React.FC<NavbarProps> = () => {
 
   const handleSuccessLogin = () => {
     router.push("/events");
-    notification.open({ message: "Logged in successfully" });
+    message.open({
+      type: "success",
+      content: "Logged in successfully",
+    });
   };
 
   const handleSuccessLogout = () => {
-    notification.open({ message: "Logged out successfully" });
+    message.info("Logged out successfully");
   };
 
   const handleClickLogin = () => {

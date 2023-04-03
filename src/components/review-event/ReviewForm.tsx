@@ -1,6 +1,7 @@
 import { ContainedButton } from "@/common/button";
 import useReviewStore from "@/hooks/useReviewStore";
 import { Form, Input, Rate, Typography } from "antd";
+import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 
@@ -24,10 +25,11 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({ eventId }) => {
     if (eventId) {
       const { score, comment } = values;
 
-      submitReview(eventId, {
+      await submitReview(eventId, {
         score,
         comment,
       });
+      form.resetFields();
     }
   };
 

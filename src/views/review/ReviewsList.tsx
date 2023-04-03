@@ -31,7 +31,7 @@ export const ReviewsList: React.FC<ReviewFormProps> = ({
         </DetailContainer>
       </ReviewScoreContainer>
     );
-  }, []);
+  }, [reviewList]);
 
   const list = useMemo(
     () =>
@@ -64,6 +64,7 @@ const ReviewScoreContainer = styled.div`
 const DetailContainer = styled.div`
   display: flex;
   flex-flow: column;
+  text-align: center;
 `;
 
 const ReviewsListContainer = styled.div`

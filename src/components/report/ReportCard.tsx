@@ -40,11 +40,9 @@ const ReportCard: React.FC<ReportDetailProps> = ({ report }) => {
           <Title level={3} style={{ margin: 0 }}>
             {topic}
           </Title>
-          <Typography
-            style={{ color: `${theme.color.gray}`, fontSize: "16px" }}
-          >
+          <Paragraph style={{ color: `${theme.color.gray}`, fontSize: "16px" }}>
             {dayjs(createdAt).format("YYYY-MM-DD HH:mm")}
-          </Typography>
+          </Paragraph>
         </Header>
         <Content>
           {eventName && ownerName && (
@@ -52,9 +50,9 @@ const ReportCard: React.FC<ReportDetailProps> = ({ report }) => {
               {eventName} by {ownerName}
             </Paragraph>
           )}
-          <Typography style={{ lineHeight: "1em", fontSize: "16px" }}>
+          <Paragraph style={{ lineHeight: "1em", fontSize: "16px" }}>
             {description}
-          </Typography>
+          </Paragraph>
           {imageUrl && (
             <ImagesContainer>{renderSlides(imageUrl)}</ImagesContainer>
           )}

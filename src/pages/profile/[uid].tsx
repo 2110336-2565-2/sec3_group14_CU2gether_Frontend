@@ -25,6 +25,7 @@ import { BorderColorRounded, CameraAltRounded } from "@mui/icons-material";
 import { useModal } from "@/hooks";
 import UploadImageModal from "@/components/upload-image-modal";
 import { ReviewsList } from "@/views/review";
+import useReviewStore from "@/hooks/useReviewStore";
 
 const { Content } = Layout;
 const { Text } = Typography;
@@ -41,6 +42,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
   } = useProfileStore();
   const { isModalOpen, openModal, closeModal } = useModal();
   const { events, fetchOwnEvents, fetchOwnEventsById } = useEventStore();
+  const { allEventReviewsList, getReviewsByUserID } = useReviewStore();
   const [role, setRole] = useState<ROLE>(ROLE.STUDENT);
   const [loading, setLoading] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
@@ -63,6 +65,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
       if (uid && id) {
         await checkStatus();
         const profileRole = await getRoleById(uid.toString());
+        await getReviewsByUserID(uid.toString());
         setRole(profileRole);
         if (id.toString() === uid.toString()) {
           setOwnUser(true);

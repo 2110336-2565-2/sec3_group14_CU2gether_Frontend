@@ -12,8 +12,10 @@ export type ReviewDetail = {
 type ReviewStore = {
   reviewDetail?: ReviewDetail;
   reviewList: ReviewDetail[];
+  allEventReviewsList?: ReviewDetail[];
   review?: Review;
   getReviewDetail: (reviewId: string) => void;
+  getReviewsByUserID: (userId: string) => void;
   getReviews: (eventId: string) => void;
   submitReview: (eventId: string, params: Review) => void;
 };
@@ -24,6 +26,11 @@ const useReviewStore = create<ReviewStore>((set, get) => ({
     reviews
       .getReviewDetailByReviewId(reviewId)
       .then((res: any) => set({ reviewDetail: res }));
+  },
+  getReviewsByUserID: (userId: string) => {
+    reviews
+      .getReviewDetailByUserID(userId)
+      .then((res: any) => set({ allEventReviewsList: res }));
   },
   getReviews: (eventId: string) => {
     reviews

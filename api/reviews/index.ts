@@ -13,6 +13,15 @@ const getReviewsByEventID = async (id: String) => {
   }
 };
 
+const getReviewDetailByUserID = async (id: String) => {
+  try {
+    const review = await client.get(`${reviewUrl}${id}`);
+    return review.data;
+  } catch (err) {
+    throw new Error("Error fetching event's review detail");
+  }
+};
+
 const getReviewDetailByReviewId = async (id: String) => {
   try {
     const review = await client.get(`${reviewUrl}${id}`);
@@ -33,6 +42,7 @@ const submitReview = async (id: string, params: Review) => {
 
 const reviews = {
   getReviewsByEventID,
+  getReviewDetailByUserID,
   getReviewDetailByReviewId,
   submitReview,
 };

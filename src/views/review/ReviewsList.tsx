@@ -1,7 +1,7 @@
 import UserReview from "@/components/review-event/UserReview";
 import { ReviewDetail } from "@/hooks/useReviewStore";
 import theme from "@/utils/theme";
-import { Typography } from "antd";
+import { Empty, Typography } from "antd";
 import React, { useMemo } from "react";
 import styled from "styled-components";
 
@@ -35,9 +35,13 @@ export const ReviewsList: React.FC<ReviewFormProps> = ({
 
   const list = useMemo(
     () =>
-      reviewList.map((reviewDetail: ReviewDetail, idx: number) => (
-        <UserReview key={`review-${idx}`} reviewDetail={reviewDetail} />
-      )),
+      reviewList.length > 0 ? (
+        reviewList.map((reviewDetail: ReviewDetail, idx: number) => (
+          <UserReview key={`review-${idx}`} reviewDetail={reviewDetail} />
+        ))
+      ) : (
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No review" />
+      ),
     [reviewList]
   );
 

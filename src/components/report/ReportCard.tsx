@@ -41,7 +41,7 @@ const ReportCard: React.FC<ReportDetailProps> = ({ report }) => {
             {topic}
           </Title>
           <Typography
-            style={{ color: `${theme.color.border}`, fontSize: "16px" }}
+            style={{ color: `${theme.color.gray}`, fontSize: "16px" }}
           >
             {dayjs(createdAt).format("YYYY-MM-DD HH:mm")}
           </Typography>

@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import {
-  Typography,
-  Form,
-  Input,
-  Button,
-  Layout,
-  ConfigProvider,
-  Upload,
-} from "antd";
+import { Typography, Form, Input, Button, Layout, Upload } from "antd";
 import theme from "@/utils/theme";
 import { FormInput } from "@/common/input";
 import { useRouter } from "next/router";
@@ -64,7 +56,7 @@ const WebReport: React.FC<{}> = ({}) => {
 
   const attachmentsForm = (
     <Upload.Dragger style={{ width: "80%" }}>
-      <p className="ant-upload-hint">Add files or drop files here</p>
+      <Typography.Paragraph>Add files or drop files here</Typography.Paragraph>
     </Upload.Dragger>
   );
 
@@ -73,7 +65,7 @@ const WebReport: React.FC<{}> = ({}) => {
       <OutlinedButton
         type="default"
         htmlType="button"
-        onClick={() => handleReportHistoryClick()}
+        onClick={handleReportHistoryClick}
         text="Report History"
       />
       <ContainedButton text="Submit" htmlType="submit" />
@@ -83,7 +75,7 @@ const WebReport: React.FC<{}> = ({}) => {
     <ReportProvider>
       <ReportContainer>
         <HeaderContainer>
-          <Title className="ant-typography-title">Report Problem</Title>
+          <Title>Report Problem</Title>
         </HeaderContainer>
         <Content>
           <ContentContainer>

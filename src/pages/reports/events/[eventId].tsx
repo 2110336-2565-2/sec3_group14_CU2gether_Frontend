@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import background from "../../../../public/background.svg";
 
-import {
-  Typography,
-  Form,
-  Input,
-  Select,
-  Button,
-  Layout,
-  ConfigProvider,
-  Upload,
-} from "antd";
+import { Typography, Form, Input, Select, Button, Layout, Upload } from "antd";
 import theme from "@/utils/theme";
 import { FormInput } from "@/common/input";
 import { useRouter } from "next/router";
@@ -99,7 +89,7 @@ const ReportMain: React.FC<{}> = ({}) => {
       }
 
       await createEventReport(data, eventId.toString());
-      router.push("/reports");
+      router.back();
     }
   };
 
@@ -123,7 +113,9 @@ const ReportMain: React.FC<{}> = ({}) => {
 
   const attachmentsForm = (
     <Upload.Dragger style={{ width: "80%" }}>
-      <p className="ant-upload-hint">Add files or drop files here</p>
+      <Typography.Paragraph className="ant-upload-hint">
+        Add files or drop files here
+      </Typography.Paragraph>
     </Upload.Dragger>
   );
 
@@ -132,7 +124,7 @@ const ReportMain: React.FC<{}> = ({}) => {
       <OutlinedButton
         type="default"
         htmlType="button"
-        onClick={() => handleReportHistoryClick()}
+        onClick={handleReportHistoryClick}
         text="Report History"
       />
       <ContainedButton text="Submit" htmlType="submit" />
@@ -143,7 +135,7 @@ const ReportMain: React.FC<{}> = ({}) => {
     <ReportProvider>
       <ReportContainer>
         <HeaderContainer>
-          <Title className="ant-typography-title">Report Event</Title>
+          <Title>Report Event</Title>
         </HeaderContainer>
         <Content>
           <ContentContainer>

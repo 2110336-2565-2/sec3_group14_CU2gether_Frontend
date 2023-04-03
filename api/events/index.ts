@@ -50,41 +50,27 @@ const getOwnEventsById = async (id: string) => {
 const getEventById = async (eventId: string) => {
   try {
     const event = await client.get(`${baseUrl}/${eventId}`);
-    if (event.status === 200) {
-      return event.data;
-    } else {
-      throw new Error(
-        "Error fetching event by eventId with status code: " + event.status
-      );
-    }
+    return event.data;
   } catch (err) {
-    console.log(err);
+    console.log("Error fetching event by eventId");
   }
 };
 
 const joinEvent = async (eventId: string) => {
   try {
     const event = await client.post(`${baseUrl}/${eventId}/join`);
-    if (event.status === 200) {
-      return event.data;
-    } else {
-      throw new Error("Error join event with status code: " + event.status);
-    }
+    return event.data;
   } catch (err) {
-    console.log(err);
+    console.log("Error fetching join event");
   }
 };
 
 const unjoinEvent = async (eventId: string) => {
   try {
     const event = await client.delete(`${baseUrl}/${eventId}/unjoin`);
-    if (event.status === 200) {
-      return event.data;
-    } else {
-      throw new Error("Error unjoin event with status code: " + event.status);
-    }
+    return event.data;
   } catch (err) {
-    console.log(err);
+    console.log("Error fetching unjoin event");
   }
 };
 
@@ -93,15 +79,9 @@ const createEvent = async (params: FormData) => {
     const events = await client.post(baseUrl, params, {
       "Content-Type": "multipart/form-data",
     });
-    if (events.status === 201) {
-      return true;
-    } else {
-      throw new Error(
-        "Error on creating event with status code: " + events.status
-      );
-    }
+    return true;
   } catch (err) {
-    console.log(err);
+    console.log("Error on creating event");
     return false;
   }
 };

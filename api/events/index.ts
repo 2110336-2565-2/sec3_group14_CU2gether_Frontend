@@ -78,7 +78,7 @@ const cancelEvent = async (id: String) => {
 
 const getOwnEvents = async () => {
   try {
-    const events = await client.get(CU_API + "userProfile/myevent");
+    const events = await client.get(`${CU_API}userProfile/myevent`);
     return events.data;
   } catch (error) {
     throw new Error("Error fetching event");
@@ -87,7 +87,7 @@ const getOwnEvents = async () => {
 
 const getOwnEventsById = async (id: string) => {
   try {
-    const events = await client.get(baseUrl + "/" + id);
+    const events = await client.get(`${baseUrl}/${id}`);
     return events.data;
   } catch (error) {
     throw new Error("Error fetching event");

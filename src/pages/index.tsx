@@ -62,10 +62,7 @@ const Home: React.FC<HomeProps> = () => {
         />
         <HomePageTitle>Want Events?</HomePageTitle>
         <EventCarousel autoplay>
-          {events ? (
-            events.slice(0, 5).map((event, i) => {
-              console.log("event", i);
-              return (
+          {events &&  events.slice(0, 5).map((event, i) => (
                 <EventImageContainer onClick={() => redirectToEvent(event.id)}>
                   <EventImage
                     src={getImageURL(event.pictures[0])}
@@ -75,11 +72,8 @@ const Home: React.FC<HomeProps> = () => {
                     fill
                   />
                 </EventImageContainer>
-              );
-            })
-          ) : (
-            <></>
-          )}
+              )
+            )}
         </EventCarousel>
         <DownArrowIconWrapper>
           <ArrowDropDownCircleOutlinedIcon

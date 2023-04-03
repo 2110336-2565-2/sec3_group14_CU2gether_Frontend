@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Form, Input, Button } from "antd";
 import { MODE } from "./LoginAndRegistrationModal";
-import { login } from "api";
+import { login } from "api/student";
 import theme from "@/utils/theme";
 
 const LoginContentContainer = styled.div`

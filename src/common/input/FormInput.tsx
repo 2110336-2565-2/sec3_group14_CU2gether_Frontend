@@ -11,7 +11,6 @@ const TextBox = styled.div<{ width: number | string; fontSize: number }>`
   word-wrap: break-word;
   width: ${(props) => props.width};
   margin-right: 10px;
-
   ${theme.media.mobile} {
     font-size: 0.8rem;
   }

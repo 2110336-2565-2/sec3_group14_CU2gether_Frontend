@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Form, Input, Button } from "antd";
 import { ROLE } from "@/types";
 import theme from "@/utils/theme";
-import { registerStudent } from "api";
+import { registerStudent } from "api/student";
 import { MODE } from "./LoginAndRegistrationModal";
 
 const { TextArea } = Input;

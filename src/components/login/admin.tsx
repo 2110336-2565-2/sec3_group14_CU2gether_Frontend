@@ -22,6 +22,7 @@ export const AdminLoginModal: React.FC<LoginModalProps> = ({ open }) => {
     try {
       const { email, password } = values;
       await admin.login(email, password);
+      closeModal();
       router.reload();
     } catch (error: any) {
       message.error(error.message);

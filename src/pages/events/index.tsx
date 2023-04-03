@@ -7,7 +7,6 @@ import {
   DatePicker,
   Divider,
   Empty,
-  MenuProps,
   Radio,
   Select,
   Skeleton,

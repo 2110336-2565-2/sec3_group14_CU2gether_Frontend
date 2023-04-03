@@ -38,7 +38,6 @@ const getJoinedEvents = async (params: getEventsRequestParams) => {
     const joinedEvents = await client.get(`${baseUrl}/joining-event`, {
       ...params,
     });
-
     return joinedEvents.data;
   } catch (err) {
     console.log("Error fetching joinedEvents");
@@ -91,6 +90,31 @@ const getMyEvents = async (params: getEventsRequestParams) => {
   }
 };
 
+const getJoinedEventsFinished = async (params: getEventsRequestParams) => {
+  try {
+    const joinedEventsFinished = await client.get(
+      `${baseUrl}/joining-event/finished`,
+      {
+        ...params,
+      }
+    );
+    return joinedEventsFinished.data;
+  } catch (err) {
+    console.log("Error fetching joinedEventsFinished");
+  }
+};
+
+const getMyEventsFinished = async (params: getEventsRequestParams) => {
+  try {
+    const MyEventsFinished = await client.get(`${baseUrl}/myevent/finished`, {
+      ...params,
+    });
+    return MyEventsFinished.data;
+  } catch (err) {
+    console.log("Error fetching MyEventsFinished");
+  }
+};
+
 const userProfile = {
   checkStatus,
   getJoinedEvents,
@@ -98,6 +122,8 @@ const userProfile = {
   uploadImage,
   uploadCoverImage,
   getMyEvents,
+  getJoinedEventsFinished,
+  getMyEventsFinished,
 };
 
 export default userProfile;

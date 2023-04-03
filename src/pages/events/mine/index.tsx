@@ -1,4 +1,3 @@
-import { SearchInput } from "@/common/input";
 import EventCard from "@/components/event-card";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -16,15 +15,11 @@ import {
   Typography,
 } from "antd";
 import { ContainedButton, OutlinedButton } from "@/common/button";
-import useEventStore from "@/hooks/useEventStore";
 import { Event, EventType, MeetingType } from "@/types";
-import { DropdownButton } from "@/common/dropdown";
 import { useMediaQuery } from "react-responsive";
 import { getEventsRequestParams } from "api/events";
-import dayjs from "dayjs";
-import { RangePickerProps } from "antd/es/date-picker";
-import theme from "@/utils/theme";
 import Link from "next/link";
+import userProfile from "api/user-profile";
 
 type JoinEventProps = {};
 
@@ -33,29 +28,33 @@ const { Meta } = Card;
 const { Image } = Skeleton;
 const { Group, Button } = Radio;
 
-const MyEvent: React.FC<JoinEventProps> = () => {
-  const [eventsParams, setEventsParams] = useState<getEventsRequestParams>({});
+const JoinEvent: React.FC<JoinEventProps> = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const { myEvents, fetchMyEvents } = useEventStore();
-  const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
-  const mobile = useMediaQuery({ query: "(max-width: 768px)" });
+  const [myEvents, setMyEvents] = useState<Event[]>([]);
+  const [myEventsFinished, setJmyEventsFinished] = useState<Event[]>([]);
 
   useEffect(() => {
-    setIsMobileScreen(mobile);
-  }, [mobile]);
-  useEffect(() => {
+    const fetchMyEvents = (params: getEventsRequestParams) => {
+      userProfile.getMyEvents(params).then((res: any) => setMyEvents(res));
+    };
+    const fetchMyEventsFinished = (params: getEventsRequestParams) => {
+      userProfile
+        .getMyEventsFinished(params)
+        .then((res: any) => setJmyEventsFinished(res));
+    };
     const fetchData = async () => {
       setLoading(true);
       try {
         await fetchMyEvents({});
+        await fetchMyEventsFinished({});
       } catch (e) {}
       setLoading(false);
     };
     fetchData();
   }, []);
 
-  const renderEventCardList = () =>
-    myEvents.map((event: Event, idx: number) => (
+  const renderEventCardList = (events: Event[]) =>
+    events.map((event: Event, idx: number) => (
       <Link href={`./${event.id}/detail`}>
         <EventCard key={`event-${idx}`} event={event} />
       </Link>
@@ -98,7 +97,7 @@ const MyEvent: React.FC<JoinEventProps> = () => {
       <div>
         <Title level={3}>Upcoming events</Title>
         {myEvents && myEvents.length > 0 ? (
-          <DetailContainer>{renderEventCardList()}</DetailContainer>
+          <DetailContainer>{renderEventCardList(myEvents)}</DetailContainer>
         ) : (
           <EmptyWrapper>
             <Empty description={"No event"} />
@@ -107,8 +106,10 @@ const MyEvent: React.FC<JoinEventProps> = () => {
       </div>
       <div>
         <Title level={3}>Past events</Title>
-        {myEvents && myEvents.length > 0 ? (
-          <DetailContainer>{renderEventCardList()}</DetailContainer>
+        {myEventsFinished && myEventsFinished.length > 0 ? (
+          <DetailContainer>
+            {renderEventCardList(myEventsFinished)}
+          </DetailContainer>
         ) : (
           <EmptyWrapper>
             <Empty description={"No event"} />
@@ -181,4 +182,4 @@ const RightAlignedRow = styled.div`
   justify-content: flex-end;
 `;
 
-export default MyEvent;
+export default JoinEvent;

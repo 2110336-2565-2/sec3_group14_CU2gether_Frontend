@@ -30,8 +30,8 @@ const { Group, Button } = Radio;
 
 const JoinEvent: React.FC<JoinEventProps> = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  // const { joinedEvents, fetchJoinEvents } = useEventStore();
   const [joinedEvents, setJoinedEvents] = useState<Event[]>([]);
+  const [joinedEventsFinished, setJoinedEventsFinished] = useState<Event[]>([]);
 
   useEffect(() => {
     const fetchJoinEvents = (params: getEventsRequestParams) => {
@@ -39,18 +39,24 @@ const JoinEvent: React.FC<JoinEventProps> = () => {
         .getJoinedEvents(params)
         .then((res: any) => setJoinedEvents(res));
     };
+    const fetchJoinEventsFinished = (params: getEventsRequestParams) => {
+      userProfile
+        .getJoinedEventsFinished(params)
+        .then((res: any) => setJoinedEventsFinished(res));
+    };
     const fetchData = async () => {
       setLoading(true);
       try {
         await fetchJoinEvents({});
+        await fetchJoinEventsFinished({});
       } catch (e) {}
       setLoading(false);
     };
     fetchData();
   }, []);
 
-  const renderEventCardList = () =>
-    joinedEvents.map((event: Event, idx: number) => (
+  const renderEventCardList = (events: Event[]) =>
+    events.map((event: Event, idx: number) => (
       <Link href={`./${event.id}/detail`}>
         <EventCard key={`event-${idx}`} event={event} />
       </Link>
@@ -93,7 +99,7 @@ const JoinEvent: React.FC<JoinEventProps> = () => {
       <div>
         <Title level={3}>Upcoming events</Title>
         {joinedEvents && joinedEvents.length > 0 ? (
-          <DetailContainer>{renderEventCardList()}</DetailContainer>
+          <DetailContainer>{renderEventCardList(joinedEvents)}</DetailContainer>
         ) : (
           <EmptyWrapper>
             <Empty description={"No event"} />
@@ -102,8 +108,10 @@ const JoinEvent: React.FC<JoinEventProps> = () => {
       </div>
       <div>
         <Title level={3}>Past events</Title>
-        {joinedEvents && joinedEvents.length > 0 ? (
-          <DetailContainer>{renderEventCardList()}</DetailContainer>
+        {joinedEventsFinished && joinedEventsFinished.length > 0 ? (
+          <DetailContainer>
+            {renderEventCardList(joinedEventsFinished)}
+          </DetailContainer>
         ) : (
           <EmptyWrapper>
             <Empty description={"No event"} />

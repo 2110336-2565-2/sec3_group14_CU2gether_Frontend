@@ -6,7 +6,7 @@ import userProfile from "api/user-profile";
 import FormData from "form-data";
 
 type EventStore = {   
-  event?: Event;
+  event: Event;
   events: Event[];
   joinedEvents: Event[];
   getEventDetail: (id: string) => void;
@@ -22,25 +22,25 @@ type EventStore = {
 };
 
 const useEventStore = create<EventStore>((set) => ({
-  // event: {
-  //   id: 0,
-  //   eventName: "",
-  //   eventType: EventType.CONCERT,
-  //   visibility: Visibility.PUBLIC,
-  //   tags: [],
-  //   requireParticipantsMin: 1,
-  //   requireParticipantsMax: 10,
-  //   startDate: "",
-  //   endDate: "",
-  //   startTime: "",
-  //   endTime: "",
-  //   meetingType: MeetingType.ONSITE,
-  //   location: "",
-  //   website: "",
-  //   description: "",
-  //   pictures: [""],
-  //   ownerName: "",
-  // },
+  event: {
+    id: 0,
+    eventName: "",
+    eventType: EventType.CONCERT,
+    visibility: Visibility.PUBLIC,
+    tags: [],
+    requireParticipantsMin: 1,
+    requireParticipantsMax: 10,
+    startDate: "",
+    endDate: "",
+    startTime: "",
+    endTime: "",
+    meetingType: MeetingType.ONSITE,
+    location: "",
+    website: "",
+    description: "",
+    pictures: [""],
+    ownerName: "",
+  },
   events: [],
   joinedEvents: [],
   getEventDetail: (id: string) => {

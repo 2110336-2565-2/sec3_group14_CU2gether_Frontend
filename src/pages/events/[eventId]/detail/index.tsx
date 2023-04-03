@@ -56,10 +56,15 @@ const EventDetail: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const fetchJoinEvents = (params: getEventsRequestParams) => {
+      userProfile
+        .getJoinedEvents(params)
+        .then((res: any) => setJoinedEvents(res));
+    };
     const fetchData = async () => {
       if (eventId) {
         try {
-          setEvent(await events.getEventById(eventId.toString()));
+          setEvent(await events.getEventByID(eventId.toString()));
           await fetchJoinEvents({});
         } catch (error) {
           console.log(error);
@@ -68,24 +73,6 @@ const EventDetail: React.FC = () => {
     };
     fetchData();
   }, [eventId]);
-
-  // useEffect(() => {
-  //   const fetchJoinEvents = (params: getEventsRequestParams) => {
-  //     userProfile
-  //       .getJoinedEvents(params)
-  //       .then((res: any) => setJoinedEvents(res));
-  //   };
-  //   const fetchData = async () => {
-  //     if (eventId) {
-  //       try {
-  //         await getEventDetail(id);
-  //       } catch (err) {
-  //         console.log(err);
-  //       }
-  //     };
-  //     getData(eventId.toString());
-  //   }
-  // }, [eventId]);
 
   useEffect(() => {
     joinedEvents.forEach((event: Event) => {
@@ -221,13 +208,13 @@ const EventDetail: React.FC = () => {
         <LayoutContainer>
           <Sider>
             <Image
-              src={CU_API + pictures[0]}
+              src={CU_API + pictures[pictures.length - 1]}
               alt={"Event Image"}
               layout="fill"
               objectFit="cover"
               objectPosition="center"
               crossOrigin="anonymous"
-              loader={() => CU_API + pictures[0]}
+              loader={() => CU_API + pictures[pictures.length - 1]}
             />
           </Sider>
           <RightLayout>
@@ -265,13 +252,13 @@ const EventDetail: React.FC = () => {
           </RightLayout>
         </LayoutContainer>
         <BlurBackgroundImg
-          src={CU_API + pictures[0]}
+          src={CU_API + pictures[pictures.length - 1]}
           alt={"Event Image"}
           layout="fill"
           objectFit="cover"
           objectPosition="center"
           crossOrigin="anonymous"
-          loader={() => CU_API + pictures[0]}
+          loader={() => CU_API + pictures[pictures.length - 1]}
         />
       </EventDetailContainer>
       <div ref={descriptionRef} />

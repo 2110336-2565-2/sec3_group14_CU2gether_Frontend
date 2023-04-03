@@ -19,7 +19,7 @@ const getReviewDetailByReviewId = async (id: String) => {
         const review = await client.get(`${reviewUrl}${id}`);
         return review.data;
     } catch(err) {
-        throw new Error("Error get event's review detail")
+        throw new Error("Error fetching event's review detail")
     }
 }
 

@@ -17,7 +17,7 @@ const StyledForm = styled(Form.Item)`
   }
 `;
 
-const PictureForm: React.FC<{ event?: Event }> = ({ event }) => {
+const PictureForm: React.FC<{ event: Event }> = ({ event }) => {
   const [url, setUrl] = useState<string>("");
 
   const ShowImage = () => {

@@ -32,6 +32,7 @@ import useEventStore from "@/hooks/useEventStore";
 import { Event } from "@/types";
 import { CU_API } from "@/config";
 import FormData from "form-data";
+import events from "api/events";
 
 import PictureForm from "@/components/edit-event/PictureForm";
 
@@ -75,9 +76,7 @@ const defaultEventDetail = {
 };
 
 const EditEventMain: React.FC<{}> = ({}) => {
-  const { event, getEventDetail, updateEventDetail, cancelEvent } =
-    useEventStore();
-  const [eventDetail, setEventDetail] = useState<Event>(defaultEventDetail);
+  const [event, setEventDetail] = useState<Event>(defaultEventDetail);
   const [onCancelEvent, setOnCancelEvent] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [messageApi, contextHolder] = message.useMessage();
@@ -100,17 +99,36 @@ const EditEventMain: React.FC<{}> = ({}) => {
 
   useEffect(() => {
     if (eventId) {
-      const getData = async (id: string) => {
-        try {
-          await getEventDetail(id);
-        } catch (err) {
+      events
+        .getEventByID(eventId.toString())
+        .then((data) => {
+          const newEvent = {
+            id: data.id,
+            eventName: data.eventName,
+            eventType: data.eventType,
+            visibility: data.visibility,
+            tags: data.tags,
+            requireParticipantsMin: data.requireParticipantsMin,
+            requireParticipantsMax: data.requireParticipantsMax,
+            startDate: data.startDate,
+            endDate: data.endDate,
+            startTime: data.startTime,
+            endTime: data.endTime,
+            meetingType: data.meetingType,
+            location: data.location,
+            website: data.website,
+            pictures: data.pictures,
+            description: data.description,
+          };
+          setEventDetail(newEvent);
+        })
+        .catch((err) => {
           console.log(err);
-        }
-      };
-      getData(eventId.toString());
+        });
     }
   }, [eventId]);
 
+        
   useEffect(() => {
     if (event) {
       form.setFieldsValue({
@@ -190,12 +208,12 @@ const EditEventMain: React.FC<{}> = ({}) => {
       formData.append("pictures", picture.file.originFileObj);
       formData.append("description", description);
 
-      updateEventDetail(id, formData);
+      events.updateEventDetail(id, formData);
     }
   };
 
   const handleCancelClick = () => {
-    router.push(`/events/${eventId}`);
+    router.push(`/events/${eventId}/detail`);
   };
 
   const handleEditDescriptionClick = () => {
@@ -210,7 +228,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
 
   const handleCancelEventSureClick = () => {
     if (eventId) {
-      cancelEvent(eventId.toString());
+      events.cancelEvent(eventId.toString());
     }
   };
 
@@ -219,16 +237,16 @@ const EditEventMain: React.FC<{}> = ({}) => {
   };
 
   const eventNameForm = (
-    <Input placeholder="Event Name" defaultValue={eventDetail.eventName} />
+    <Input placeholder="Event Name" defaultValue={event.eventName} />
   );
 
   const typeForm = (
-    <Select defaultValue={eventDetail.eventType} options={typeList} />
+    <Select defaultValue={event.eventType} options={typeList} />
   );
 
   const visibilityForm = (
     <Radio.Group
-      defaultValue={eventDetail.visibility}
+      defaultValue={event.visibility}
       buttonStyle="solid"
       style={{ width: "100%" }}
     >
@@ -251,8 +269,8 @@ const EditEventMain: React.FC<{}> = ({}) => {
     <Select
       mode="tags"
       placeholder="Tags"
-      defaultValue={eventDetail.tags}
-      value={eventDetail.tags}
+      defaultValue={event.tags}
+      value={event.tags}
     />
   );
 
@@ -262,7 +280,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
         <Input
           placeholder="Min"
           style={{ width: "100%" }}
-          defaultValue={eventDetail.requireParticipantsMin}
+          defaultValue={event.requireParticipantsMin}
         />
       </FormInput>
 
@@ -270,7 +288,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
         <Input
           placeholder="Max"
           style={{ width: "100%" }}
-          defaultValue={eventDetail.requireParticipantsMax}
+          defaultValue={event.requireParticipantsMax}
         />
       </FormInput>
     </FlexContainer>
@@ -300,7 +318,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
 
   const meetingTypeForm = (
     <Radio.Group
-      defaultValue={eventDetail.meetingType}
+      defaultValue={event.meetingType}
       buttonStyle="solid"
       style={{ width: "100%" }}
     >
@@ -319,11 +337,11 @@ const EditEventMain: React.FC<{}> = ({}) => {
     </Radio.Group>
   );
   const locationForm = (
-    <Input placeholder="Location" defaultValue={eventDetail.location} />
+    <Input placeholder="Location" defaultValue={event.location} />
   );
 
   const websiteForm = (
-    <Input placeholder="Website" defaultValue={eventDetail.website} />
+    <Input placeholder="Website" defaultValue={event.website} />
   );
 
   const title = (

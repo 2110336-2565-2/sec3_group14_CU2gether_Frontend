@@ -127,9 +127,11 @@ const CreateEvent: React.FC<{}> = ({}) => {
     formData.append("endTime", dayjs(time[1]).format("HH:mm").toString());
     formData.append("meetingType", meetingType);
     formData.append("location", location);
-    formData.append("website", website);
     formData.append("pictures", picture.file.originFileObj);
-    formData.append("description", description);
+    formData.append("description", description ? description : "This event has no description.");
+    if (website !== undefined) {
+      formData.append("website", website);
+    }
 
     const res = await createEvent(formData);
 

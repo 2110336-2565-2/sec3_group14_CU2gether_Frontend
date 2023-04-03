@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { Event, Report } from "@/types";
 import { Image as AntDImg } from "antd";
 import { CU_API } from "@/config";
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 
 type ReportDetailProps = {
   report: Report;
@@ -48,17 +48,15 @@ const ReportCard: React.FC<ReportDetailProps> = ({ report }) => {
         </Header>
         <Content>
           {eventName && ownerName && (
-            <Typography style={{ fontSize: "20px" }}>
+            <Paragraph style={{ fontSize: "20px" }}>
               {eventName} by {ownerName}
-            </Typography>
+            </Paragraph>
           )}
           <Typography style={{ lineHeight: "1em", fontSize: "16px" }}>
             {description}
           </Typography>
           {imageUrl && (
-            <ImagesContainer className="imagesContainer">
-              {renderSlides(imageUrl)}
-            </ImagesContainer>
+            <ImagesContainer>{renderSlides(imageUrl)}</ImagesContainer>
           )}
         </Content>
       </InformationLayout>

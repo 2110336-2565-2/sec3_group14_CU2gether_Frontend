@@ -3,55 +3,46 @@ import styled from "styled-components";
 import { Typography, Layout, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
 import ReportCard from "@/components/report/ReportCard";
-import { Report, ReportStatus } from "@/types";
+import { Report } from "@/types";
 import ReportProvider from "@/components/report/Provider";
-import { OutlinedButton } from "@/common/button";
 import useReportStore from "@/hooks/useReportStore";
 const { Content } = Layout;
 const { Title } = Typography;
-type WebsiteReportsPageProps = {};
 
-const WebsiteReportsPage: React.FC<WebsiteReportsPageProps> = ({}) => {
-  const { webReports, fetchWebReports, updateWebReportStatus } =
+const MyReportHistory: React.FC<{}> = ({}) => {
+  const { eventReports, webReports, fetchMyEventReports, fetchMyWebReports } =
     useReportStore();
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
-    const getData = async () => {
+    const fetchData = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        await fetchWebReports({});
-      } catch (err) {}
+        await Promise.all([fetchMyEventReports(), fetchMyWebReports()]);
+      } catch (error) {}
       setLoading(false);
     };
-    getData();
+    fetchData();
   }, []);
-  const archiveReport = async (reportId: string) => {
-    await updateWebReportStatus(reportId, {
-      adminNote: "",
-      problemStatus: ReportStatus.CLOSED,
-    });
-    await fetchWebReports({});
-  };
   const renderReportList = (reportList: Report[] = []) =>
     reportList.map((report: Report, index) => (
-      <ReportCard report={report} key={`${report.topic}${index}`}>
-        <ButtonContainer>
-          <OutlinedButton
-            text="Archive"
-            style={{ width: "150px" }}
-            onClick={() => archiveReport(report.id.toString())}
-          />
-        </ButtonContainer>
-      </ReportCard>
+      <ReportCard report={report} key={`${report.topic}${index}`}></ReportCard>
     ));
+
   return (
     <ReportProvider>
       <ReportContainer>
         <HeaderContainer>
-          <Title level={1}>Web Reports</Title>
+          <Title level={1}>My Report History</Title>
         </HeaderContainer>
         <Content>
           <ContentContainer>
+            <Title level={2} style={{ margin: "0 " }}>
+              Event reports
+            </Title>
+            {!loading && renderReportList(eventReports)}
+            <Title level={2} style={{ margin: "0 " }}>
+              Problem reports
+            </Title>
             {!loading && renderReportList(webReports)}
           </ContentContainer>
         </Content>
@@ -91,11 +82,12 @@ const HeaderContainer = styled.div`
   justify-content: left;
   padding-top: 5vh;
 `;
-const ButtonContainer = styled.div`
+
+const LayoutContainer = styled(Layout)`
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  align-content: start;
   width: 100%;
-  // outline: 1px solid red;
 `;
 
-export default WebsiteReportsPage;
+export default MyReportHistory;

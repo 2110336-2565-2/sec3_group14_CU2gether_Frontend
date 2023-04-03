@@ -28,7 +28,7 @@ const Home: React.FC<HomeProps> = () => {
     fetchEvents({});
   }, []);
 
-  const redirectToEvent = (eventId: number) => {
+  const redirectToEvent = (eventId: string) => {
     if (role) {
       router.push(`/events/${eventId}`);
     } else {

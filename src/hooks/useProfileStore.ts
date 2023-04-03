@@ -64,6 +64,7 @@ const useProfileStore = create<ProfileStore>((set, get) => ({
       .then((data: any) => {
         if (!data) {
           set({
+            id: undefined,
             name: undefined,
             role: undefined,
             email: undefined,
@@ -71,8 +72,8 @@ const useProfileStore = create<ProfileStore>((set, get) => ({
           });
           return;
         }
-        const { role, name, email, imageUrl } = data;
-        set({ role, name, email, imageUrl });
+        const { id, role, name, email, imageUrl } = data;
+        set({ id, role, name, email, imageUrl });
       })
       .catch((err: any) => console.log(err));
   },

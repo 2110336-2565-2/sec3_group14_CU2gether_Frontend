@@ -64,7 +64,7 @@ export enum UPLOAD_MODE {
 }
 
 export type Event = {
-  id: string;
+  id: number;
   eventName: string;
   eventType: EventType;
   visibility: Visibility;
@@ -113,6 +113,11 @@ export type Organizer = {
   imageUrl: string;
   coverImageUrl: string;
   role: ROLE;
+};
+
+export type Review = {
+  score: number;
+  comment: string;
 };
 
 export type User = Student | Organizer;

@@ -28,7 +28,7 @@ const Home: React.FC<HomeProps> = () => {
     fetchEvents({});
   }, []);
 
-  const redirectToEvent = (eventId: string) => {
+  const redirectToEvent = (eventId: number) => {
     if (role) {
       router.push(`/events/${eventId}`);
     } else {
@@ -65,7 +65,6 @@ const Home: React.FC<HomeProps> = () => {
           <EventCarousel autoplay>
             {events &&
               events.slice(0, 5).map((event, i) => {
-                console.log("event", i);
                 return (
                   <EventImageContainer
                     onClick={() => redirectToEvent(event.id)}

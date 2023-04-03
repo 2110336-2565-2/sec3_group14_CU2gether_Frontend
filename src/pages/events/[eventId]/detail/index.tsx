@@ -7,7 +7,6 @@ import { ContainedButton, OutlinedButton } from "@/common/button";
 import theme from "@/utils/theme";
 import events from "api/events";
 import { Event, EventType, MeetingType, ROLE, Visibility } from "@/types";
-import useEventStore from "@/hooks/useEventStore";
 import FestivalIcon from "@mui/icons-material/Festival";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
@@ -15,6 +14,8 @@ import { CU_API } from "@/config";
 import useProfileStore from "@/hooks/useProfileStore";
 import Link from "next/link";
 import Image from "next/legacy/image";
+import { getEventsRequestParams } from "api/events";
+import userProfile from "api/user-profile";
 
 const { Title } = Typography;
 
@@ -22,7 +23,26 @@ const EventDetail: React.FC = () => {
   const router = useRouter();
   const { eventId } = router.query;
 
-  const { event, setEvent, joinedEvents, fetchJoinEvents } = useEventStore();
+  const [event, setEvent] = useState<Event>({
+    id: 0,
+    eventName: "",
+    eventType: EventType.CONCERT,
+    visibility: Visibility.PUBLIC,
+    tags: [],
+    requireParticipantsMin: 1,
+    requireParticipantsMax: 10,
+    startDate: "",
+    endDate: "",
+    startTime: "",
+    endTime: "",
+    meetingType: MeetingType.ONSITE,
+    location: "",
+    website: "",
+    description: "",
+    pictures: [""],
+    ownerName: "",
+  });
+  const [joinedEvents, setJoinedEvents] = useState<Event[]>([]);
   const [join, setJoin] = useState<boolean>(false);
   const descriptionRef = useRef<null | HTMLDivElement>(null);
   const eventDetailRef = useRef<null | HTMLDivElement>(null);
@@ -36,10 +56,15 @@ const EventDetail: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const fetchJoinEvents = (params: getEventsRequestParams) => {
+      userProfile
+        .getJoinedEvents(params)
+        .then((res: any) => setJoinedEvents(res));
+    };
     const fetchData = async () => {
       if (eventId) {
         try {
-          setEvent(await events.getEventById(eventId.toString()));
+          setEvent(await events.getEventByID(eventId.toString()));
           await fetchJoinEvents({});
         } catch (error) {
           console.log(error);
@@ -104,7 +129,7 @@ const EventDetail: React.FC = () => {
       return (
         <Space align="end">
           <OutlinedButton text="Description" onClick={scrollToDescription} />
-          <Link href={`../${event.id}/edit-main`}>
+          <Link href={`../${event!.id}/edit-main`}>
             <OutlinedButton text="Edit Event Detail" />
           </Link>
         </Space>
@@ -183,13 +208,13 @@ const EventDetail: React.FC = () => {
         <LayoutContainer>
           <Sider>
             <Image
-              src={CU_API + pictures[0]}
+              src={CU_API + pictures[pictures.length - 1]}
               alt={"Event Image"}
               layout="fill"
               objectFit="cover"
               objectPosition="center"
               crossOrigin="anonymous"
-              loader={() => CU_API + pictures[0]}
+              loader={() => CU_API + pictures[pictures.length - 1]}
             />
           </Sider>
           <RightLayout>
@@ -227,13 +252,13 @@ const EventDetail: React.FC = () => {
           </RightLayout>
         </LayoutContainer>
         <BlurBackgroundImg
-          src={CU_API + pictures[0]}
+          src={CU_API + pictures[pictures.length - 1]}
           alt={"Event Image"}
           layout="fill"
           objectFit="cover"
           objectPosition="center"
           crossOrigin="anonymous"
-          loader={() => CU_API + pictures[0]}
+          loader={() => CU_API + pictures[pictures.length - 1]}
         />
       </EventDetailContainer>
       <div ref={descriptionRef} />

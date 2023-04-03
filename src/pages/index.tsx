@@ -60,27 +60,34 @@ const Home: React.FC<HomeProps> = () => {
           crossOrigin="anonymous"
           fill
         />
-        <HomePageTitle>Want Events?</HomePageTitle>
-        <EventCarousel autoplay>
-          {events &&  events.slice(0, 5).map((event, i) => (
-                <EventImageContainer onClick={() => redirectToEvent(event.id)}>
-                  <EventImage
-                    src={getImageURL(event.pictures[0])}
-                    alt={`${event.eventName} image`}
-                    loader={() => getImageURL(event.pictures[0])}
-                    crossOrigin="anonymous"
-                    fill
-                  />
-                </EventImageContainer>
-              )
-            )}
-        </EventCarousel>
-        <DownArrowIconWrapper>
-          <ArrowDropDownCircleOutlinedIcon
-            sx={{ fontSize: 100 }}
-            onClick={() => scrollToBottom()}
-          />
-        </DownArrowIconWrapper>
+        <HomeContentContainer>
+          <HomePageTitle>Want to join events?</HomePageTitle>
+          <EventCarousel autoplay>
+            {events &&
+              events.slice(0, 5).map((event, i) => {
+                console.log("event", i);
+                return (
+                  <EventImageContainer
+                    onClick={() => redirectToEvent(event.id)}
+                  >
+                    <EventImage
+                      src={getImageURL(event.pictures[0])}
+                      alt={`${event.eventName} image`}
+                      loader={() => getImageURL(event.pictures[0])}
+                      crossOrigin="anonymous"
+                      fill
+                    />
+                  </EventImageContainer>
+                );
+              })}
+          </EventCarousel>
+          <DownArrowIconWrapper>
+            <ArrowDropDownCircleOutlinedIcon
+              sx={{ fontSize: 100 }}
+              onClick={() => scrollToBottom()}
+            />
+          </DownArrowIconWrapper>
+        </HomeContentContainer>
       </MainSection>
       <CreateEventSection ref={createEventSectionRef}>
         <CreateEventSubSection>
@@ -119,27 +126,36 @@ const BackgroundImage = styled(Image)`
   z-index: 0;
 `;
 
+const HomeContentContainer = styled.div`
+  top: 50px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 90%;
+`;
+
 const HomePageTitle = styled(Title)`
   color: white !important;
-  top: 50px;
   text-align: center;
   position: relative;
   z-index: 1;
 `;
 
 const EventCarousel = styled(Carousel)`
-  top: 50px;
-  margin: auto;
-  max-height: 600px;
-  max-width: 600px;
+  height: 400px;
+  width: 600px;
   filter: drop-shadow(0 0 0.75rem black);
   z-index: 1;
 `;
 
 const EventImageContainer = styled.div`
   position: relative;
-  height: 600px !important;
-  width: 599px !important;
+  min-height: 400px !important;
+  min-width: 599px !important;
   margin: 0;
   &:hover {
     cursor: pointer;
@@ -148,16 +164,11 @@ const EventImageContainer = styled.div`
 
 const EventImage = styled(Image)`
   object-fit: contain;
-  width: 100%;
+  // width: 100%;
   margin: auto;
 `;
 
 const DownArrowIconWrapper = styled.div`
-  margin: auto;
-  position: absolute;
-  bottom: 50px;
-  left: 50%;
-  transform: translateX(-50%);
   color: white;
   width: 100px;
   opacity: 0.8;

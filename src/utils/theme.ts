@@ -3,8 +3,9 @@ const color = {
   white: "#FFFFFF",
   black: "#000000",
   red: "#EA4040",
-  gray: "#AEAEAE",
   border: "#D6DADE",
+  gray: "#AEAEAE",
+  lightGray: "#BABABA",
   backgroundColor: "#F5F5F5",
   backgroundOnHover: "#D9D9D9",
 };

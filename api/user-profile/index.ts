@@ -1,6 +1,7 @@
 import { CU_API } from "@/config";
 import { EventType, MeetingType } from "@/types";
 import client from "@/utils/client";
+import FormData from "form-data";
 
 const baseUrl = CU_API + "userProfile";
 
@@ -49,9 +50,41 @@ const getJoinedEvents = async (params: getEventsRequestParams) => {
   }
 };
 
+const checkStatusById = async (id: string) => {
+  try {
+    const res = await client.get(baseUrl + "/" + id);
+    return res.data;
+  } catch (error) {
+    throw new Error(`Error to get check user: ${id} status`);
+  }
+};
+
+const uploadImage = async (params: FormData) => {
+  try {
+    await client.post(baseUrl + "/uploadImage", params, {
+      "Content-Type": "multipart/form-data",
+    });
+  } catch (error) {
+    throw new Error(`Error to upload image`);
+  }
+};
+
+const uploadCoverImage = async (params: FormData) => {
+  try {
+    await client.post(baseUrl + "/uploadCoverImage", params, {
+      "Content-Type": "multipart/form-data",
+    });
+  } catch (error) {
+    throw new Error(`Error to upload image`);
+  }
+};
+
 const userProfile = {
   checkStatus,
   getJoinedEvents,
+  checkStatusById,
+  uploadImage,
+  uploadCoverImage,
 };
 
 export default userProfile;

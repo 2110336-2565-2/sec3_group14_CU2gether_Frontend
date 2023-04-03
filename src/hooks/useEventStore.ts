@@ -12,6 +12,8 @@ type EventStore = {
   fetchJoinEvents: (params: getEventsRequestParams) => void;
   setEvent: (params: Event) => void;
   createEvent: (params: FormData) => Promise<boolean>;
+  fetchOwnEvents: () => void;
+  fetchOwnEventsById: (id: string) => void;
 };
 
 const useEventStore = create<EventStore>((set) => ({
@@ -50,6 +52,12 @@ const useEventStore = create<EventStore>((set) => ({
   createEvent: async (params: FormData) => {
     const res = await events.createEvent(params);
     return res;
+  },
+  fetchOwnEvents: () => {
+    events.getOwnEvents().then((res: any) => set({ events: res }));
+  },
+  fetchOwnEventsById: (id: string) => {
+    events.getOwnEventsById(id).then((res: any) => set({ events: res }));
   },
 }));
 

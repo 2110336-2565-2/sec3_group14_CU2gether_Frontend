@@ -38,15 +38,10 @@ const getJoinedEvents = async (params: getEventsRequestParams) => {
     const joinedEvents = await client.get(`${baseUrl}/joining-event`, {
       ...params,
     });
-    if (joinedEvents.status === 200) {
-      return joinedEvents.data;
-    } else {
-      throw new Error(
-        "Error fetching joinedEvents with status code: " + joinedEvents.status
-      );
-    }
+
+    return joinedEvents.data;
   } catch (err) {
-    console.log(err);
+    console.log("Error fetching joinedEvents");
   }
 };
 

@@ -4,8 +4,10 @@
     "commonjs": true,
     "es2021": true
   },
-  "extends": "next/core-web-vitals",
+  "extends": ["next/core-web-vitals", "prettier"],
+  "plugins": ["prettier"],
   "rules": {
+    "prettier/prettier": ["error"],
     "comma-dangle": ["error", "always-multiline"],
     "indent": ["error", "2"],
     "semi": ["error", "never"],

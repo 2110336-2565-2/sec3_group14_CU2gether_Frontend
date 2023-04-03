@@ -21,6 +21,25 @@ export enum MeetingType {
   ONSITE = "ONSITE",
   ONLINE = "ONLINE",
 }
+export enum ProblemType {
+  SCAMMING = "SCAMMING",
+  DRUGS = "DRUGS",
+  UNAUTHORIZED_PUBLIC_RACING = "UNAUTHORIZED_PUBLIC_RACING",
+  PUBLIC_LEWD = "PUBLIC_LEWD",
+  GAMBLING = "GAMBLING",
+  VIOLENCE = "VIOLENCE",
+  DANGER = "DANGER",
+  FOOD_POISIONING = "FOOD_POISIONING",
+  OTHERS = "OTHERS",
+}
+export type Report = {
+  topic: string;
+  description: string;
+  createdAt: string;
+  eventName?: string;
+  ownerName?: string;
+  imageUrl?: string[];
+};
 
 export enum ROLE {
   STUDENT = "STUDENT",
@@ -57,6 +76,7 @@ export type Event = {
   pictures: string[];
   description: string;
   ownerName?: string;
+  ownerId?: number;
 };
 
 export type Student = {

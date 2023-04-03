@@ -12,6 +12,7 @@ type EventStore = {
   fetchEvents: (params: getEventsRequestParams) => void;
   fetchJoinEvents: (params: getEventsRequestParams) => void;
   fetchMyEvents: (params: getEventsRequestParams) => void;
+  getEventDetail: (id: string) => void;
   setEvent: (params: Event) => void;
   createEvent: (params: FormData) => Promise<boolean>;
   fetchOwnEvents: () => void;
@@ -41,6 +42,9 @@ const useEventStore = create<EventStore>((set) => ({
   events: [],
   joinedEvents: [],
   myEvents: [],
+  getEventDetail: (id: string) => {
+    events.getEventById(id).then((res: any) => set({ event: res }));
+  },
   fetchEvents: (params) => {
     events.getEvents(params).then((res: any) => set({ events: res }));
   },

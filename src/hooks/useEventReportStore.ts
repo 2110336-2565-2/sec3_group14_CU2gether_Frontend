@@ -13,8 +13,8 @@ type EventReportStore = {
   fetchMyWebReports: () => Promise<void>;
   fetchEventReports: (params: getReportsRequestParams) => Promise<void>;
   fetchWebReports: (params: getReportsRequestParams) => Promise<void>;
-  updateEventReportStatus: (webReportId: string) => Promise<void>;
-  updateWebReportStatus: (eventReportId: string) => Promise<void>;
+  updateEventReportStatus: (webReportId: string, params: any) => Promise<void>;
+  updateWebReportStatus: (eventReportId: string, params: any) => Promise<void>;
 };
 
 const useEventReportStore = create<EventReportStore>((set) => ({
@@ -37,25 +37,19 @@ const useEventReportStore = create<EventReportStore>((set) => ({
     set({ webReports: res });
   },
   fetchEventReports: async (params: getReportsRequestParams) => {
-    const res = await report.getAllEventReports(params);
+    const res = await report.getAllUnFinishEventReports(params);
     set({ eventReports: res });
   },
   fetchWebReports: async (params: getReportsRequestParams) => {
-    const res = await report.getAllEventReports(params);
+    const res = await report.getAllUnFinishWebReports(params);
     set({ webReports: res });
   },
-  updateEventReportStatus: async (webReportId: string) => {
-    const res = await report.updateEventReportStatus(webReportId, {
-      adminNote: "",
-      problemStatus: ReportStatus.CLOSED,
-    });
+  updateEventReportStatus: async (webReportId: string, params: any) => {
+    const res = await report.updateEventReportStatus(webReportId, params);
   },
 
-  updateWebReportStatus: async (eventReportId: string) => {
-    const res = await report.updateEventReportStatus(eventReportId, {
-      adminNote: "",
-      problemStatus: ReportStatus.CLOSED,
-    });
+  updateWebReportStatus: async (eventReportId: string, params: any) => {
+    const res = await report.updateWebReportStatus(eventReportId, params);
   },
 }));
 

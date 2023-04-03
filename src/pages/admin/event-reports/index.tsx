@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Typography, Layout, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
 import ReportCard from "@/components/report/ReportCard";
-import { Report } from "@/types";
+import { Report, ReportStatus } from "@/types";
 import useEventReportStore from "@/hooks/useEventReportStore";
 import ReportProvider from "@/components/report/Provider";
 import { OutlinedButton } from "@/common/button";
@@ -27,7 +27,11 @@ const EventReportsPage: React.FC<EventReportsPageProps> = ({}) => {
     getData();
   }, []);
   const updateReportStatus = async (reportId: string) => {
-    await updateEventReportStatus(reportId);
+    await updateEventReportStatus(reportId, {
+      adminNote: "",
+      problemStatus: ReportStatus.CLOSED,
+    });
+    await fetchEventReports({});
   };
   const renderReportList = (reportList: Report[] = []) =>
     reportList.map((report: Report, index) => (
@@ -35,7 +39,7 @@ const EventReportsPage: React.FC<EventReportsPageProps> = ({}) => {
         <ButtonContainer>
           <OutlinedButton
             text="Archive"
-            onClick={updateReportStatus(report.id.toString())}
+            onClick={() => updateReportStatus(report.id.toString())}
           />
         </ButtonContainer>
       </ReportCard>

@@ -45,17 +45,21 @@ const getMyWebReports = async () => {
     throw new Error("Error fetching web report");
   }
 };
-const getAllEventReports = async (params: getReportsRequestParams) => {
+const getAllUnFinishEventReports = async (params: getReportsRequestParams) => {
   try {
-    const webReports = await client.get(`${eventReportUrl}`, { ...params });
-    return webReports.data;
+    const eventReports = await client.get(`${eventReportUrl}/unfinished`, {
+      ...params,
+    });
+    return eventReports.data;
   } catch (err) {
     throw new Error("Error fetching web reports");
   }
 };
-const getAllWebReports = async (params: getReportsRequestParams) => {
+const getAllUnFinishWebReports = async (params: getReportsRequestParams) => {
   try {
-    const webReports = await client.get(`${webReportUrl}`, { ...params });
+    const webReports = await client.get(`${webReportUrl}/unfinished`, {
+      ...params,
+    });
     return webReports.data;
   } catch (err) {
     throw new Error("Error fetching web reports");
@@ -90,8 +94,8 @@ const report = {
   createWebReport,
   getMyEventReports,
   getMyWebReports,
-  getAllEventReports,
-  getAllWebReports,
+  getAllUnFinishEventReports,
+  getAllUnFinishWebReports,
   updateWebReportStatus,
   updateEventReportStatus,
 };

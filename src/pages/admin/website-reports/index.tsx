@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Typography, Layout, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
 import ReportCard from "@/components/report/ReportCard";
-import { Report } from "@/types";
+import { Report, ReportStatus } from "@/types";
 import useEventReportStore from "@/hooks/useEventReportStore";
 import ReportProvider from "@/components/report/Provider";
 import { OutlinedButton } from "@/common/button";
@@ -26,7 +26,11 @@ const WebsiteReportsPage: React.FC<WebsiteReportsPageProps> = ({}) => {
     getData();
   }, []);
   const updateReportStatus = async (reportId: string) => {
-    await updateWebReportStatus(reportId);
+    await updateWebReportStatus(reportId, {
+      adminNote: "",
+      problemStatus: ReportStatus.CLOSED,
+    });
+    await fetchWebReports({});
   };
   const renderReportList = (reportList: Report[] = []) =>
     reportList.map((report: Report, index) => (

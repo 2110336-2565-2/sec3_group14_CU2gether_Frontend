@@ -93,6 +93,8 @@ const EventDetail: React.FC = () => {
   const scrollToEventDetail = () => {
     eventDetailRef.current?.scrollIntoView({
       behavior: "smooth",
+      block: "start",
+      inline: "nearest",
     });
   };
 

@@ -40,6 +40,7 @@ const typeList = [
 ];
 
 const defaultEventDetail = {
+  id: 0,
   eventName: "No Event Name",
   eventType: EventType.OTHERS,
   visibility: Visibility.PRIVATE,
@@ -88,17 +89,6 @@ const ReportMain: React.FC<{}> = ({}) => {
       const data = new FormData();
       const { subject, description, problemType, attachments } =
         form.getFieldsValue(true);
-      /*Example
-    attachments.fileList.forEach((picture: any) => {
-      data.append("pictures", picture.originFileObj);
-    });
-    data.append("eventId", "1");
-    await axios.post(CU_API + "events/uploadImage", data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-     */
       data.append("topic", subject);
       data.append("description", description);
       data.append("problemType", problemType);

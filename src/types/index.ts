@@ -74,7 +74,6 @@ export type Event = {
   location: string;
   website: string;
   pictures: string[];
-  ownerName?: string;
   description: string;
   ownerName?: string;
   ownerId?: number;

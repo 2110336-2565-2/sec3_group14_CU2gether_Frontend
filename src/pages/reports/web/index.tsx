@@ -34,17 +34,6 @@ const WebReport: React.FC<{}> = ({}) => {
   const onFormFinish = async () => {
     const data = new FormData();
     const { subject, description, attachments } = form.getFieldsValue(true);
-    /*Example
-    attachments.fileList.forEach((picture: any) => {
-      data.append("pictures", picture.originFileObj);
-    });
-    data.append("eventId", "1");
-    await axios.post(CU_API + "events/uploadImage", data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-     */
     data.append("topic", subject);
     data.append("description", description);
     if (attachments) {

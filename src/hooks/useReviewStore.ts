@@ -42,7 +42,6 @@ const useReviewStore = create<ReviewStore>((set, get) => ({
     const { reviewList } = get();
     reviews.submitReview(eventId, params).then((res: any) => {
       const _reviewList = [...reviewList, res];
-      console.log("tae", _reviewList);
       set({ reviewList: _reviewList });
     });
   },

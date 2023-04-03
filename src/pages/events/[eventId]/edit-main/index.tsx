@@ -79,19 +79,8 @@ const EditEventMain: React.FC<{}> = ({}) => {
   const [event, setEventDetail] = useState<Event>(defaultEventDetail);
   const [onCancelEvent, setOnCancelEvent] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isImageChange, setIsImageChange] = useState<boolean>(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const [fileList, setFileList] = useState<UploadFile[]>([
-    {
-      uid: "0",
-      name: "poster.png",
-      status: "done",
-      url: "/orangutan_show.png",
-    },
-  ]);
-
-  const handleImageChange: UploadProps["onChange"] = ({
-    fileList: newFileList,
-  }) => setFileList(newFileList);
 
   const [form] = Form.useForm();
   const router = useRouter();
@@ -205,8 +194,9 @@ const EditEventMain: React.FC<{}> = ({}) => {
       formData.append("meetingType", meetingType);
       formData.append("location", location);
       formData.append("website", website);
-      formData.append("pictures", picture.file.originFileObj);
       formData.append("description", description);
+
+      if (isImageChange) formData.append("pictures", picture.file.originFileObj);
 
       events.updateEventDetail(id, formData);
     }
@@ -440,7 +430,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
                 <LeftContentContainer>
                   <Form.Item>
                     <PictureInputContainer>
-                      <PictureForm event={event} />
+                      <PictureForm event={event} isImageChange={isImageChange} setIsImageChange={setIsImageChange}/>
                       {renderButtonForm}
                     </PictureInputContainer>
                   </Form.Item>

@@ -17,7 +17,11 @@ const StyledForm = styled(Form.Item)`
   }
 `;
 
-const PictureForm: React.FC<{ event: Event }> = ({ event }) => {
+const PictureForm: React.FC<{ 
+  event: Event
+  isImageChange: boolean 
+  setIsImageChange: React.Dispatch<React.SetStateAction<boolean>>
+}> = ({ event, isImageChange, setIsImageChange }) => {
   const [url, setUrl] = useState<string>("");
 
   const ShowImage = () => {
@@ -66,6 +70,7 @@ const PictureForm: React.FC<{ event: Event }> = ({ event }) => {
         onChange={({ file }) => {
           if (file.status === "done") {
             file.thumbUrl = url;
+            setIsImageChange(true);
           }
         }}
         onRemove={() => {

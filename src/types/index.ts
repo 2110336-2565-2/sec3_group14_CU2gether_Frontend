@@ -64,7 +64,7 @@ export enum UPLOAD_MODE {
 }
 
 export type Event = {
-  id: number;
+  id: string;
   eventName: string;
   eventType: EventType;
   visibility: Visibility;

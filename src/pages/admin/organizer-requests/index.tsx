@@ -14,7 +14,7 @@ const { Title } = Typography;
 
 const OrganizerRequestsPage: React.FC<OrganizerRequestsPageProps> = ({}) => {
   const { organizerRequests, fetchOrganizerRequests } = useAdminStore();
-  const { openModal, isModalOpen } = useModal();
+  const { openModal, closeModal, isModalOpen } = useModal();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,6 +24,7 @@ const OrganizerRequestsPage: React.FC<OrganizerRequestsPageProps> = ({}) => {
         openModal();
       }
     };
+    console.log(isModalOpen && "MODAL IS OPEN");
     fetchData();
   }, []);
 
@@ -43,7 +44,7 @@ const OrganizerRequestsPage: React.FC<OrganizerRequestsPageProps> = ({}) => {
           </EmptyWrapper>
         )}
       </OrganizerRequestContainer>
-      <AdminLoginModal open={isModalOpen} />
+      <AdminLoginModal open={isModalOpen} closeModal={closeModal}/>
     </RequestContainer>
   );
 };

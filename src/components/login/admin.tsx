@@ -10,18 +10,22 @@ import { useRouter } from "next/router";
 
 type LoginModalProps = {
   open: boolean;
+  closeModal: () => void;
 };
 
 const { Title } = Typography;
 const { Item } = Form;
 
-export const AdminLoginModal: React.FC<LoginModalProps> = ({ open }) => {
-  const { closeModal } = useModal();
+export const AdminLoginModal: React.FC<LoginModalProps> = ({
+  open,
+  closeModal,
+}) => {
   const router = useRouter();
   const loginHandler = async (values: any) => {
     try {
       const { email, password } = values;
       await admin.login(email, password);
+      closeModal();
       router.reload();
     } catch (error: any) {
       message.error(error.message);

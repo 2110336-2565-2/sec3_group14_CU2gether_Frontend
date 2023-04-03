@@ -64,7 +64,7 @@ const EventDetail: React.FC = () => {
     const fetchData = async () => {
       if (eventId) {
         try {
-          setEvent(await events.getEventById(eventId.toString()));
+          setEvent(await events.getEventByID(eventId.toString()));
           await fetchJoinEvents({});
         } catch (error) {
           console.log(error);
@@ -129,7 +129,7 @@ const EventDetail: React.FC = () => {
       return (
         <Space align="end">
           <OutlinedButton text="Description" onClick={scrollToDescription} />
-          <Link href={`../${event.id}/edit-main`}>
+          <Link href={`../${event!.id}/edit-main`}>
             <OutlinedButton text="Edit Event Detail" />
           </Link>
         </Space>
@@ -208,13 +208,13 @@ const EventDetail: React.FC = () => {
         <LayoutContainer>
           <Sider>
             <Image
-              src={CU_API + pictures[0]}
+              src={CU_API + pictures[pictures.length - 1]}
               alt={"Event Image"}
               layout="fill"
               objectFit="cover"
               objectPosition="center"
               crossOrigin="anonymous"
-              loader={() => CU_API + pictures[0]}
+              loader={() => CU_API + pictures[pictures.length - 1]}
             />
           </Sider>
           <RightLayout>
@@ -252,13 +252,13 @@ const EventDetail: React.FC = () => {
           </RightLayout>
         </LayoutContainer>
         <BlurBackgroundImg
-          src={CU_API + pictures[0]}
+          src={CU_API + pictures[pictures.length - 1]}
           alt={"Event Image"}
           layout="fill"
           objectFit="cover"
           objectPosition="center"
           crossOrigin="anonymous"
-          loader={() => CU_API + pictures[0]}
+          loader={() => CU_API + pictures[pictures.length - 1]}
         />
       </EventDetailContainer>
       <div ref={descriptionRef} />

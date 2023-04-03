@@ -1,4 +1,5 @@
-import { Event, EventType, MeetingType, Visibility } from "@/types";
+import client from "@/utils/client";
+import { Event, EventType, Visibility, MeetingType } from "@/types";
 import { create } from "zustand";
 import events, { getEventsRequestParams } from "api/events";
 import userProfile from "api/user-profile";
@@ -14,6 +15,10 @@ type EventStore = {
   fetchMyEvents: (params: getEventsRequestParams) => void;
   getEventDetail: (id: string) => void;
   setEvent: (params: Event) => void;
+  updateEventDetail: (id: string, params: FormData) => void;
+  updateEventDescription: (id: string, description: string) => void;
+  cancelEvent: (id: string) => void;
+  fetchEvent: (id: string) => void;
   createEvent: (params: FormData) => Promise<boolean>;
   fetchOwnEvents: () => void;
   fetchOwnEventsById: (id: string) => void;
@@ -43,7 +48,21 @@ const useEventStore = create<EventStore>((set) => ({
   joinedEvents: [],
   myEvents: [],
   getEventDetail: (id: string) => {
-    events.getEventById(id).then((res: any) => set({ event: res }));
+    events.getEventByID(id).then((res: any) => set({ event: res }));
+  },
+  updateEventDetail: async (id: string, params: FormData) => {
+    events.updateEventDetail(id, params);
+  },
+  updateEventDescription: (id: string, description: string) => {
+    events
+      .updateEventDescription(id, description)
+      .then((res: any) => set({ event: res }));
+  },
+  cancelEvent: (id: string) => {
+    events.cancelEvent(id);
+  },
+  fetchEvent: (id: string) => {
+    client.get(`/events/${id}`).then((res: any) => set({ events: res.data }));
   },
   fetchEvents: (params) => {
     events.getEvents(params).then((res: any) => set({ events: res }));

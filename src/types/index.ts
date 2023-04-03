@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export enum EventType {
   RESTAURANT = "RESTAURANT",
   CAFE = "CAFE",
@@ -109,5 +111,10 @@ export type Organizer = {
   coverImageUrl: string;
   role: ROLE;
 };
+
+export type Review = {
+  score: number;
+  comment: string;
+}
 
 export type User = Student | Organizer;

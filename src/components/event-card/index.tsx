@@ -16,7 +16,7 @@ const { Title } = Typography;
 
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const { pictures, startDate, endDate, eventName, location } = event;
-  const imgSrc = `${CU_API}${pictures[0]}`;
+  const imgSrc = `${CU_API}${pictures[pictures.length - 1]}`;
 
   const getDateTimeText = () => {
     const start = dayjs(startDate, "YYYY-MM-DD");

@@ -52,7 +52,7 @@ const EventCardInProfile: React.FC<EventCardProps> = ({ event }) => {
 
   return (
     <EventCard>
-      <EventImage crossOrigin="anonymous" alt={"Event Image"} src={CU_API+pictures[0].substring(1)}/>
+      <EventImage crossOrigin="anonymous" alt={"Event Image"} src={CU_API+pictures[pictures.length - 1].substring(1)}/>
       <TextContainer>
         <Title level={4}>
           {eventName}

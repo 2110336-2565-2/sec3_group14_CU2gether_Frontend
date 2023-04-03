@@ -82,7 +82,7 @@ export type Event = {
   description: string;
   ownerName?: string;
   ownerId?: number;
-  finished: boolean;
+  finished?: boolean;
 };
 
 export type Student = {

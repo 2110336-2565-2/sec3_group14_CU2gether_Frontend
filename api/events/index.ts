@@ -21,7 +21,6 @@ export type getEventsRequestParams = {
 const getEvents = async (params: getEventsRequestParams) => {
   try {
     const events = await client.get(baseUrl, { ...params });
-    
   } catch (err) {
     throw new Error("Error fetching events")
   }
@@ -78,35 +77,46 @@ const cancelEvent = async (id: String) => {
   try {
     await client.delete(`${baseUrl}/${id}`);
   } catch (err) {
-    console.log(err);
+    throw new Error("Error cancel event");
+  } 
+};
+
+const getOwnEvents = async () => {
+  try {
+    const events = await client.get(CU_API+'userProfile/myevent');
+    return events.data;
+  } catch (error) {
+    throw new Error("Error fetching event");
+  }
+};
+
+const getOwnEventsById = async (id: string) => {
+  try {
+    const events = await client.get(baseUrl + '/' + id);
+    return events.data;
+  } catch (error) {
+    throw new Error("Error fetching event");
   }
 };
 
 const createEvent = async (params: FormData) => {
   try {
-    const events = await client.post(baseUrl, params, {
-      "Content-Type": "multipart/form-data",
-    });
-    if (events.status === 201) {
-      return true;
-    } else {
-      throw new Error(
-        "Error on creating event with status code: " + events.status
-      );
-    }
+    const events = await client.post(baseUrl, params, {"Content-Type": "multipart/form-data"});
+    return true;
   } catch (err) {
-    console.log(err);
-    return false;
+    throw new Error("Error on creating event");
   }
 };
 
 const events = {
-  getEvents,
-  getEventByID,
-  updateEventDetail,
-  updateEventDescription,
-  cancelEvent,
-  createEvent,
-};
+    getEvents,
+    getEventByID,
+    updateEventDetail,
+    updateEventDescription,
+    cancelEvent,
+    getOwnEvents,
+    getOwnEventsById,
+    createEvent
+}
 
 export default events;

@@ -17,7 +17,7 @@ const UserReview: React.FC<{
       <DetailText>
         {dayjs(reviewDetail.createdAt).format("YYYY-MM-DD HH:mm")}
       </DetailText>
-      <Rate value={reviewDetail.score} disabled={true} />
+      <Rate allowHalf value={reviewDetail.score} disabled={true} />
       {reviewDetail.comment && (
         <CommentText>{reviewDetail.comment}</CommentText>
       )}

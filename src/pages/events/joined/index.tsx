@@ -1,4 +1,3 @@
-import { SearchInput } from "@/common/input";
 import EventCard from "@/components/event-card";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -16,15 +15,11 @@ import {
   Typography,
 } from "antd";
 import { ContainedButton, OutlinedButton } from "@/common/button";
-import useEventStore from "@/hooks/useEventStore";
 import { Event, EventType, MeetingType } from "@/types";
-import { DropdownButton } from "@/common/dropdown";
 import { useMediaQuery } from "react-responsive";
 import { getEventsRequestParams } from "api/events";
-import dayjs from "dayjs";
-import { RangePickerProps } from "antd/es/date-picker";
-import theme from "@/utils/theme";
 import Link from "next/link";
+import userProfile from "api/user-profile";
 
 type JoinEventProps = {};
 
@@ -34,16 +29,16 @@ const { Image } = Skeleton;
 const { Group, Button } = Radio;
 
 const JoinEvent: React.FC<JoinEventProps> = () => {
-  const [eventsParams, setEventsParams] = useState<getEventsRequestParams>({});
   const [loading, setLoading] = useState<boolean>(false);
-  const { joinedEvents, fetchJoinEvents } = useEventStore();
-  const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
-  const mobile = useMediaQuery({ query: "(max-width: 768px)" });
+  // const { joinedEvents, fetchJoinEvents } = useEventStore();
+  const [joinedEvents, setJoinedEvents] = useState<Event[]>([]);
 
   useEffect(() => {
-    setIsMobileScreen(mobile);
-  }, [mobile]);
-  useEffect(() => {
+    const fetchJoinEvents = (params: getEventsRequestParams) => {
+      userProfile
+        .getJoinedEvents(params)
+        .then((res: any) => setJoinedEvents(res));
+    };
     const fetchData = async () => {
       setLoading(true);
       try {

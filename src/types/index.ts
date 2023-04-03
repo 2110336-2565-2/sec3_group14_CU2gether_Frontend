@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export enum EventType {
   RESTAURANT = "RESTAURANT",
   CAFE = "CAFE",
@@ -21,6 +23,25 @@ export enum MeetingType {
   ONSITE = "ONSITE",
   ONLINE = "ONLINE",
 }
+export enum ProblemType {
+  SCAMMING = "SCAMMING",
+  DRUGS = "DRUGS",
+  UNAUTHORIZED_PUBLIC_RACING = "UNAUTHORIZED_PUBLIC_RACING",
+  PUBLIC_LEWD = "PUBLIC_LEWD",
+  GAMBLING = "GAMBLING",
+  VIOLENCE = "VIOLENCE",
+  DANGER = "DANGER",
+  FOOD_POISIONING = "FOOD_POISIONING",
+  OTHERS = "OTHERS",
+}
+export type Report = {
+  topic: string;
+  description: string;
+  createdAt: string;
+  eventName?: string;
+  ownerName?: string;
+  imageUrl?: string[];
+};
 
 export enum ROLE {
   STUDENT = "STUDENT",
@@ -40,7 +61,7 @@ export enum UPLOAD_MODE {
 }
 
 export type Event = {
-  id: string;
+  id: number;
   eventName: string;
   eventType: EventType;
   visibility: Visibility;
@@ -56,6 +77,8 @@ export type Event = {
   website: string;
   pictures: string[];
   description: string;
+  ownerName?: string;
+  ownerId?: number;
 };
 
 export type Student = {
@@ -88,5 +111,10 @@ export type Organizer = {
   coverImageUrl: string;
   role: ROLE;
 };
+
+export type Review = {
+  score: number;
+  comment: string;
+}
 
 export type User = Student | Organizer;

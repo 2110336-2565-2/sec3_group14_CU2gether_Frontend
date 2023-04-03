@@ -9,16 +9,9 @@ const createEventReport = async (params: FormData, id: string) => {
     const eventReport = await client.post(`${eventReportUrl}/${id}`, params, {
       "Content-Type": "multipart/form-data",
     });
-    if (eventReport.status === 201) {
-      return true;
-    } else {
-      throw new Error(
-        "Error on creating event with status code: " + eventReport.status
-      );
-    }
+    return true;
   } catch (err) {
-    console.log(err);
-    return false;
+    throw new Error("Error on creating event report");
   }
 };
 const createWebReport = async (params: FormData) => {
@@ -26,44 +19,25 @@ const createWebReport = async (params: FormData) => {
     const webReport = await client.post(webReportUrl, params, {
       "Content-Type": "multipart/form-data",
     });
-    if (webReport.status === 201) {
-      return true;
-    } else {
-      throw new Error(
-        "Error on creating event with status code: " + webReport.status
-      );
-    }
+    return true;
   } catch (err) {
-    console.log(err);
-    return false;
+    throw new Error("Error on creating web report");
   }
 };
 const getMyEventReports = async () => {
   try {
     const eventReports = await client.get(`${eventReportUrl}/myreport`);
-    if (eventReports.status === 200) {
-      return eventReports.data;
-    } else {
-      throw new Error(
-        "Error on creating event with status code: " + eventReports.status
-      );
-    }
+    return eventReports.data;
   } catch (err) {
-    console.log(err);
+    throw new Error("Error fetching event report");
   }
 };
 const getMyWebReports = async () => {
   try {
     const webReports = await client.get(`${webReportUrl}/myreport`);
-    if (webReports.status === 200) {
-      return webReports.data;
-    } else {
-      throw new Error(
-        "Error on creating event with status code: " + webReports.status
-      );
-    }
+    return webReports.data;
   } catch (err) {
-    console.log(err);
+    throw new Error("Error fetching web report");
   }
 };
 const report = {

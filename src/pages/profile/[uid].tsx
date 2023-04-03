@@ -355,7 +355,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
           </PreviousEventCard>
         </ContentContainer>
       </Layout>
-      <ReviewsList reviewList={[]} />
+      <ReviewsList reviewList={allEventReviewsList} />
     </ProfileContainer>
   );
 };

@@ -242,7 +242,7 @@ const EventDetail: React.FC = () => {
           </Sider>
           <RightLayout>
             <Header>
-              <Link href={`/reports/${event.id}`}>
+              <Link href={`/reports/events/${event.id}`}>
                 <ReportContainer>
                   <Space>
                     <Typography.Text style={{ color: theme.color.gray }}>
@@ -258,9 +258,11 @@ const EventDetail: React.FC = () => {
               <Title style={StyleTitle} level={1}>
                 {eventName}
               </Title>
-              <Typography style={{ color: "white" }}>
-                Created by {ownerName}
-              </Typography>
+              <Link href={`/profile/${id}`}>
+                <Typography style={{ color: "white" }}>
+                  Created by {ownerName}
+                </Typography>
+              </Link>
             </Header>
             <Content>
               <Space size={"middle"}>

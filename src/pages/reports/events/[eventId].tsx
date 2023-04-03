@@ -113,9 +113,7 @@ const ReportMain: React.FC<{}> = ({}) => {
 
   const attachmentsForm = (
     <Upload.Dragger style={{ width: "80%" }}>
-      <Typography.Paragraph className="ant-upload-hint">
-        Add files or drop files here
-      </Typography.Paragraph>
+      <Typography.Paragraph>Add files or drop files here</Typography.Paragraph>
     </Upload.Dragger>
   );
 

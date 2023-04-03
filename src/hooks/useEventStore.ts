@@ -8,6 +8,7 @@ type EventStore = {
   event: Event;
   events: Event[];
   joinedEvents: Event[];
+  getEventDetail: (id: string) => void;
   fetchEvents: (params: getEventsRequestParams) => void;
   fetchJoinEvents: (params: getEventsRequestParams) => void;
   setEvent: (params: Event) => void;
@@ -38,6 +39,9 @@ const useEventStore = create<EventStore>((set) => ({
   },
   events: [],
   joinedEvents: [],
+  getEventDetail: (id: string) => {
+    events.getEventById(id).then((res: any) => set({ event: res }));
+  },
   fetchEvents: (params) => {
     events.getEvents(params).then((res: any) => set({ events: res }));
   },

@@ -5,8 +5,13 @@ import styled from "styled-components";
 import { Form, Input, Button } from "antd";
 import { ROLE } from "@/types";
 import theme from "@/utils/theme";
-import { registerStudent } from "api/student";
+import { registration } from "api";
 import { MODE } from "./LoginAndRegistrationModal";
+import { ContainedButton, OutlinedButton } from "@/common/button";
+import {
+  registerStudentParams,
+  registerOrganizerParams,
+} from "api/registration";
 
 const { TextArea } = Input;
 
@@ -80,27 +85,27 @@ const SubtitleText2 = styled.h3`
   font-size: 20px;
   font-weight: bold;
   text-align: center;
-  color: ${theme.color_level.gray.medium};
+  color: ${theme.color.lightGray};
 
   ${theme.media.mobile} {
     font-size: 16px;
   }
 `;
 
-const SelectRoleButton = styled(Button)`
+const SelectStudentRoleButton = styled(ContainedButton)`
   width: 100%;
   height: 200px;
   margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: bold;
 `;
 
-const SelectStudentRoleButton = styled(SelectRoleButton)`
-  background-color: ${theme.color.cu_pink};
-  color: ${theme.color.white};
-`;
-
-const SelectOrganizerRoleButton = styled(SelectRoleButton)`
-  background-color: ${theme.color_level.gray.light};
-  color: ${theme.color_level.gray.dark};
+const SelectOrganizerRoleButton = styled(OutlinedButton)`
+  width: 100%;
+  height: 200px;
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: bold;
 `;
 
 type RegistrationContentProps = {
@@ -108,8 +113,7 @@ type RegistrationContentProps = {
   mode: MODE;
   onSelectRole(role: ROLE): void;
   onSelectMode(mode: MODE): void;
-  toggleRegistrationModal(): void;
-  onRegistration: boolean;
+  closeRegistrationModal(): void;
 };
 
 const RegistrationContent: React.FC<RegistrationContentProps> = ({
@@ -117,41 +121,39 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
   mode,
   onSelectRole,
   onSelectMode,
-  onRegistration,
-  toggleRegistrationModal,
+  closeRegistrationModal,
 }) => {
   const [form] = Form.useForm();
 
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
+  const onFinish = async (registrationValues: any) => {
+    console.log("Submitted:", registrationValues);
     if (role === ROLE.STUDENT) {
-      const { email, password, studentId, firstname, lastname } = values;
-      const image = "image1";
-      const cardId = "cardID1";
-      registerStudent(
-        studentId,
-        email,
-        password,
-        firstname,
-        lastname,
-        image,
-        cardId
-      );
-    } else if (role === ROLE.ORGANIZER) {
-      const { email, name, coorName, phone, description } = values;
-      axios
-        .post("http://localhost:3001/register/organizer", {
+      const { studentId, email, password, firstName, lastName } =
+        registrationValues;
+      try {
+        await registration.registerStudent({
+          studentId,
           email,
-          name,
-          coorName,
+          password,
+          firstName,
+          lastName,
+        } as registerStudentParams);
+      } catch (err) {
+        console.log(err);
+      }
+    } else if (role === ROLE.ORGANIZER) {
+      const { organizerEmail, organizerName, coordinatorName, phone } =
+        registrationValues;
+      try {
+        await registration.registerOrganizer({
+          email: organizerEmail,
+          name: organizerName,
+          coorName: coordinatorName,
           phone,
-          description,
-        })
-        .then((res) => {
-          console.log(res);
-          onSelectMode(MODE.DONE);
-        })
-        .catch((err) => console.log(err));
+        } as registerOrganizerParams);
+      } catch (err) {
+        console.log(err);
+      }
     }
     onSelectMode(MODE.DONE);
   };
@@ -307,7 +309,7 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
           <Input placeholder="CU student ID" />
         </Form.Item>
         <Form.Item
-          name="firstname"
+          name="firstName"
           rules={[
             {
               required: true,
@@ -315,10 +317,10 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
             },
           ]}
         >
-          <Input placeholder="Firstname"></Input>
+          <Input placeholder="First name"></Input>
         </Form.Item>
         <Form.Item
-          name="lastname"
+          name="lastName"
           rules={[
             {
               required: true,
@@ -326,7 +328,7 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
             },
           ]}
         >
-          <Input placeholder="Lastname"></Input>
+          <Input placeholder="Last name"></Input>
         </Form.Item>
         <Form.Item>
           <OperationButtonContainer>
@@ -348,10 +350,14 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
     <>
       {mode === MODE.SELECTROLE ? (
         <SelectRoleButtonContainer>
-          <SelectStudentRoleButton onClick={() => onSelectRole(ROLE.STUDENT)}>
+          <SelectStudentRoleButton
+            text={"CU Student"}
+            onClick={() => onSelectRole(ROLE.STUDENT)}
+          >
             <SelectRoleButtonText>CU Student</SelectRoleButtonText>
           </SelectStudentRoleButton>
           <SelectOrganizerRoleButton
+            text={"Organizer"}
             onClick={() => onSelectRole(ROLE.ORGANIZER)}
           >
             <SelectRoleButtonText>Organizer</SelectRoleButtonText>
@@ -374,7 +380,7 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
         <DonePageContainer>
           <SubtitleText1>{subtitle1}</SubtitleText1>
           <SubtitleText2>{subtitle2}</SubtitleText2>
-          <Button type="primary" onClick={() => toggleRegistrationModal()}>
+          <Button type="primary" onClick={() => closeRegistrationModal()}>
             Back to home
           </Button>
         </DonePageContainer>

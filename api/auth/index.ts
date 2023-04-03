@@ -1,31 +1,21 @@
 import { CU_API } from "@/config";
 import client from "@/utils/client";
-
 const baseUrl = CU_API + "auth";
-
 const login = async (email: string, password: string) => {
   try {
-    const res = await client.post(`${baseUrl}/login`, { email, password });
-    if (res.status === 201) {
-      return true;
-    } else {
-      throw new Error("Error occurs with status code: " + res.status);
-    }
-  } catch (err) {
-    console.log(err);
+    await client.post(`${baseUrl}/login`, { email, password });
+    return true
+  } catch (error) {
+    throw new Error("Error logging in with this error: " + error);
+
   }
 };
-
 const logout = async () => {
   try {
-    const res = await client.post(`${baseUrl}/logout`);
-    if (res.status === 200) {
-      return true;
-    } else {
-      throw new Error("Error occurs with status code: " + res.status);
-    }
-  } catch (err) {
-    console.log(err);
+    await client.delete(`${baseUrl}/logout`);
+    return true
+  } catch (error) {
+    throw new Error("Error logging out with this error: " + error);
   }
 };
 
@@ -33,5 +23,4 @@ const auth = {
   login,
   logout,
 };
-
 export default auth;

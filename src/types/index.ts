@@ -33,6 +33,7 @@ export enum ProblemType {
   OTHERS = "OTHERS",
 }
 export type Report = {
+  id: number;
   topic: string;
   description: string;
   createdAt: string;
@@ -40,7 +41,11 @@ export type Report = {
   ownerName?: string;
   imageUrl?: string[];
 };
-
+export enum ReportStatus {
+  INITIATED = "INITIATED",
+  WORKING = "WORKING",
+  CLOSED = "CLOSED",
+}
 export enum ROLE {
   STUDENT = "STUDENT",
   ORGANIZER = "ORGANIZER",

@@ -1,7 +1,7 @@
 import client from "@/utils/client";
-import { Event, Report } from "@/types";
+import { Event, Report, ReportStatus } from "@/types";
 import { create } from "zustand";
-import report from "api/report";
+import report, { getReportsRequestParams } from "api/report";
 import FormData from "form-data";
 type EventReportStore = {
   eventReports: Report[];
@@ -11,6 +11,10 @@ type EventReportStore = {
   createWebReport: (params: FormData) => Promise<void>;
   fetchMyEventReports: () => Promise<void>;
   fetchMyWebReports: () => Promise<void>;
+  fetchEventReports: (params: getReportsRequestParams) => Promise<void>;
+  fetchWebReports: (params: getReportsRequestParams) => Promise<void>;
+  updateEventReportStatus: (webReportId: string) => Promise<void>;
+  updateWebReportStatus: (eventReportId: string) => Promise<void>;
 };
 
 const useEventReportStore = create<EventReportStore>((set) => ({
@@ -31,6 +35,27 @@ const useEventReportStore = create<EventReportStore>((set) => ({
   fetchMyWebReports: async () => {
     const res = await report.getMyWebReports();
     set({ webReports: res });
+  },
+  fetchEventReports: async (params: getReportsRequestParams) => {
+    const res = await report.getAllEventReports(params);
+    set({ eventReports: res });
+  },
+  fetchWebReports: async (params: getReportsRequestParams) => {
+    const res = await report.getAllEventReports(params);
+    set({ webReports: res });
+  },
+  updateEventReportStatus: async (webReportId: string) => {
+    const res = await report.updateEventReportStatus(webReportId, {
+      adminNote: "",
+      problemStatus: ReportStatus.CLOSED,
+    });
+  },
+
+  updateWebReportStatus: async (eventReportId: string) => {
+    const res = await report.updateEventReportStatus(eventReportId, {
+      adminNote: "",
+      problemStatus: ReportStatus.CLOSED,
+    });
   },
 }));
 

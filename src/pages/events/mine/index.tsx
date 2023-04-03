@@ -34,19 +34,21 @@ const JoinEvent: React.FC<JoinEventProps> = () => {
   const [myEventsFinished, setJmyEventsFinished] = useState<Event[]>([]);
 
   useEffect(() => {
-    const fetchMyEvents = (params: getEventsRequestParams) => {
+    const fetchMyEvents = (params?: getEventsRequestParams) => {
       userProfile.getMyEvents(params).then((res: any) => setMyEvents(res));
     };
-    const fetchMyEventsFinished = (params: getEventsRequestParams) => {
-      userProfile
-        .getMyEventsFinished(params)
-        .then((res: any) => setJmyEventsFinished(res));
+    const fetchMyEventsFinished = (params?: getEventsRequestParams) => {
+      if (params) {
+        userProfile
+          .getMyEventsFinished(params)
+          .then((res: any) => setJmyEventsFinished(res));
+      }
     };
     const fetchData = async () => {
       setLoading(true);
       try {
-        await fetchMyEvents({});
-        await fetchMyEventsFinished({});
+        await fetchMyEvents();
+        await fetchMyEventsFinished();
       } catch (e) {}
       setLoading(false);
     };

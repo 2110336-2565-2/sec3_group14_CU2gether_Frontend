@@ -73,20 +73,12 @@ const uploadCoverImage = async (params: FormData) => {
   }
 };
 
-const getMyEvents = async (params: getEventsRequestParams) => {
+const getMyEvents = async (params?: getEventsRequestParams) => {
   try {
-    const MyEvents = await client.get(`${baseUrl}/myevent`, {
-      ...params,
-    });
-    if (MyEvents.status === 200) {
-      return MyEvents.data;
-    } else {
-      throw new Error(
-        "Error fetching joinedEvents with status code: " + MyEvents.status
-      );
-    }
+    const MyEvents = await client.get(`${baseUrl}/myevent`, params);
+    return MyEvents.data;
   } catch (err) {
-    console.log(err);
+    throw new Error("Error getting my events");
   }
 };
 
@@ -94,9 +86,7 @@ const getJoinedEventsFinished = async (params: getEventsRequestParams) => {
   try {
     const joinedEventsFinished = await client.get(
       `${baseUrl}/joining-event/finished`,
-      {
-        ...params,
-      }
+      params
     );
     return joinedEventsFinished.data;
   } catch (err) {
@@ -106,9 +96,10 @@ const getJoinedEventsFinished = async (params: getEventsRequestParams) => {
 
 const getMyEventsFinished = async (params: getEventsRequestParams) => {
   try {
-    const MyEventsFinished = await client.get(`${baseUrl}/myevent/finished`, {
-      ...params,
-    });
+    const MyEventsFinished = await client.get(
+      `${baseUrl}/myevent/finished`,
+      params
+    );
     return MyEventsFinished.data;
   } catch (err) {
     console.log("Error fetching MyEventsFinished");

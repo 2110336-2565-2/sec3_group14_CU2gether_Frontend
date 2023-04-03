@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 
-import { ROLE } from "@/utils/Enum";
+import { ROLE } from "@/types";
 import styled from "styled-components";
-import theme from "@/utils/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
-import { Modal } from "antd";
+import CenteredModal from "@/common/modal";
 import LoginContent from "./LoginContent";
 import RegistrationContent from "./RegistrationContent";
-import Image from "next/image";
-import CU2Gether_logo from "../../../asset/CU2Gether_logo.png";
 
 const ContentWrapper = styled.div`
   margin-top: 10px;
@@ -37,17 +34,21 @@ export enum MODE {
 }
 
 type LoginAndRegistrationModalProps = {
-  isLogin: boolean;
-  setLogin(isLogin: boolean): void;
-  toggleLoginAndRegistrationModal(): void;
-  onLoginAndRegistrationModal: boolean;
+  isLoggingIn: boolean;
+  setLoggingIn(isLogin: boolean): void;
+  setLoggedIn(isLoggedIn: boolean): void;
+  onLogin(): void;
+  closeLoginAndRegistrationModal(): void;
+  isOpen: boolean;
 };
 
 const LoginAndRegistrationModal: React.FC<LoginAndRegistrationModalProps> = ({
-  isLogin,
-  setLogin,
-  toggleLoginAndRegistrationModal,
-  onLoginAndRegistrationModal,
+  isLoggingIn,
+  setLoggingIn,
+  setLoggedIn,
+  onLogin,
+  closeLoginAndRegistrationModal,
+  isOpen,
 }) => {
   const [mode, setMode] = useState<MODE>(MODE.SELECTROLE);
   const [role, setRole] = useState<ROLE>(ROLE.STUDENT);
@@ -70,11 +71,13 @@ const LoginAndRegistrationModal: React.FC<LoginAndRegistrationModalProps> = ({
         : "Sign Up"
       : null;
 
-  const Content = isLogin ? (
+  const Content = isLoggingIn ? (
     <LoginContent
       onSelectMode={onSelectMode}
-      setLogin={setLogin}
-      toggleRegistrationModal={toggleLoginAndRegistrationModal}
+      setLoggingIn={setLoggingIn}
+      setLoggedIn={setLoggedIn}
+      onLogin={onLogin}
+      closeLoginModal={closeLoginAndRegistrationModal}
     />
   ) : (
     <RegistrationContent
@@ -82,29 +85,30 @@ const LoginAndRegistrationModal: React.FC<LoginAndRegistrationModalProps> = ({
       onSelectRole={onSelectRole}
       mode={mode}
       onSelectMode={onSelectMode}
-      toggleRegistrationModal={toggleLoginAndRegistrationModal}
-      onRegistration={onLoginAndRegistrationModal}
+      closeRegistrationModal={closeLoginAndRegistrationModal}
     />
   );
 
   return (
-    <Modal
-      open={onLoginAndRegistrationModal}
+    <CenteredModal
+      open={isOpen}
       width={600}
       centered={true}
       closable={true}
+      onCancel={closeLoginAndRegistrationModal}
       afterClose={() => setMode(MODE.SELECTROLE)}
       bodyStyle={{ minHeight: 500, marginTop: 40 }}
       closeIcon={
         <FontAwesomeIcon
-          onClick={() => toggleLoginAndRegistrationModal()}
+          onClick={closeLoginAndRegistrationModal}
           icon={faCircleXmark}
           size={"2x"}
+          transform={"left-4x"}
         />
       }
       footer={null}
       title={
-        isLogin ? (
+        isLoggingIn ? (
           <LoginTitle>
             Log in to
             <span style={{ color: "#F96491" }}> CU</span>
@@ -117,7 +121,7 @@ const LoginAndRegistrationModal: React.FC<LoginAndRegistrationModalProps> = ({
       }
     >
       {<ContentWrapper>{Content}</ContentWrapper>}
-    </Modal>
+    </CenteredModal>
   );
 };
 

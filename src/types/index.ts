@@ -79,6 +79,7 @@ export type Event = {
   description: string;
   ownerName?: string;
   ownerId?: number;
+  finished: boolean;
 };
 
 export type Student = {
@@ -115,6 +116,6 @@ export type Organizer = {
 export type Review = {
   score: number;
   comment: string;
-}
+};
 
 export type User = Student | Organizer;

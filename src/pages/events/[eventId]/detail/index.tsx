@@ -42,6 +42,7 @@ const EventDetail: React.FC = () => {
     description: "",
     pictures: [""],
     ownerName: "",
+    finished: false,
   });
   const [joinedEvents, setJoinedEvents] = useState<Event[]>([]);
   const [join, setJoin] = useState<boolean>(false);
@@ -67,6 +68,7 @@ const EventDetail: React.FC = () => {
         try {
           setEvent(await events.getEventByID(eventId.toString()));
           await fetchJoinEvents({});
+          console.log(event);
         } catch (error) {
           console.log(error);
         }
@@ -128,7 +130,7 @@ const EventDetail: React.FC = () => {
   const finished = true;
 
   const LayoutFooter = () => {
-    if (finished) {
+    if (event.finished) {
       return (
         <Space align="end">
           <OutlinedButton text="Description" onClick={scrollToDescription} />
@@ -176,7 +178,7 @@ const EventDetail: React.FC = () => {
   };
 
   const DescriptionFooter = () => {
-    if (finished) {
+    if (event.finished) {
       return (
         <Space align="end">
           <OutlinedButton text="Back To Top" onClick={scrollToEventDetail} />
@@ -258,7 +260,7 @@ const EventDetail: React.FC = () => {
               <Title style={StyleTitle} level={1}>
                 {eventName}
               </Title>
-              <Link href={`/profile/${id}`}>
+              <Link href={`/profile/${ownerId}`}>
                 <Typography style={{ color: "white" }}>
                   Created by {ownerName}
                 </Typography>

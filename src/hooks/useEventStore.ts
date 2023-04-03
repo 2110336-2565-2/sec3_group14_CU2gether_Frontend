@@ -5,7 +5,7 @@ import events, { getEventsRequestParams } from "api/events";
 import userProfile from "api/user-profile";
 import FormData from "form-data";
 
-type EventStore = {   
+type EventStore = {
   event: Event;
   events: Event[];
   joinedEvents: Event[];
@@ -13,7 +13,7 @@ type EventStore = {
   updateEventDetail: (id: string, params: FormData) => void;
   updateEventDescription: (id: string, description: string) => void;
   cancelEvent: (id: string) => void;
-  fetchEvent: (id: string) => void
+  fetchEvent: (id: string) => void;
   fetchEvents: (params: getEventsRequestParams) => void;
   fetchJoinEvents: (params: getEventsRequestParams) => void;
   createEvent: (params: FormData) => Promise<boolean>;
@@ -40,27 +40,26 @@ const useEventStore = create<EventStore>((set) => ({
     description: "",
     pictures: [""],
     ownerName: "",
+    finished: false,
   },
   events: [],
   joinedEvents: [],
   getEventDetail: (id: string) => {
-    events.getEventByID(id)
-    .then((res: any) => set({event: res}));
+    events.getEventByID(id).then((res: any) => set({ event: res }));
   },
   updateEventDetail: async (id: string, params: FormData) => {
     events.updateEventDetail(id, params);
   },
   updateEventDescription: (id: string, description: string) => {
-    events.updateEventDescription(id, description)
-    .then((res: any) => set({event: res}));
+    events
+      .updateEventDescription(id, description)
+      .then((res: any) => set({ event: res }));
   },
   cancelEvent: (id: string) => {
-    events.cancelEvent(id)
+    events.cancelEvent(id);
   },
   fetchEvent: (id: string) => {
-    client
-    .get(`/events/${id}`)
-    .then((res: any) => set({ events: res.data }));
+    client.get(`/events/${id}`).then((res: any) => set({ events: res.data }));
   },
   fetchEvents: (params) => {
     events.getEvents(params).then((res: any) => set({ events: res }));

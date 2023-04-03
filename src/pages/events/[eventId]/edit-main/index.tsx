@@ -117,7 +117,6 @@ const EditEventMain: React.FC<{}> = ({}) => {
     }
   }, [eventId]);
 
-        
   useEffect(() => {
     if (event) {
       form.setFieldsValue({
@@ -196,13 +195,18 @@ const EditEventMain: React.FC<{}> = ({}) => {
       formData.append("website", website);
       formData.append("description", description);
 
-      if (isImageChange) formData.append("pictures", picture.file.originFileObj);
+      if (isImageChange)
+        formData.append("pictures", picture.file.originFileObj);
 
       events.updateEventDetail(id, formData);
     }
   };
 
   const handleCancelClick = () => {
+    router.push(`/events/${eventId}/detail`);
+  };
+
+  const handleSubmitClick = () => {
     router.push(`/events/${eventId}/detail`);
   };
 
@@ -230,9 +234,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
     <Input placeholder="Event Name" defaultValue={event.eventName} />
   );
 
-  const typeForm = (
-    <Select defaultValue={event.eventType} options={typeList} />
-  );
+  const typeForm = <Select defaultValue={event.eventType} options={typeList} />;
 
   const visibilityForm = (
     <Radio.Group
@@ -406,6 +408,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
         htmlType="submit"
         onClick={() => {
           success;
+          handleSubmitClick();
         }}
       >
         Submit
@@ -430,7 +433,11 @@ const EditEventMain: React.FC<{}> = ({}) => {
                 <LeftContentContainer>
                   <Form.Item>
                     <PictureInputContainer>
-                      <PictureForm event={event} isImageChange={isImageChange} setIsImageChange={setIsImageChange}/>
+                      <PictureForm
+                        event={event}
+                        isImageChange={isImageChange}
+                        setIsImageChange={setIsImageChange}
+                      />
                       {renderButtonForm}
                     </PictureInputContainer>
                   </Form.Item>

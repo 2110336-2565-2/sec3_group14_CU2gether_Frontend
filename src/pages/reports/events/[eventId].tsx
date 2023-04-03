@@ -81,7 +81,7 @@ const ReportMain: React.FC<{}> = ({}) => {
   useEffect(() => {
     if (event) {
       setEventDetail(event);
-      setImageUrl(CU_API + event.pictures[0].substring(2));
+      setImageUrl(CU_API + event.pictures[0]);
     }
   }, [event]);
   const onFormFinish = async () => {
@@ -99,7 +99,7 @@ const ReportMain: React.FC<{}> = ({}) => {
       }
 
       await createEventReport(data, eventId.toString());
-      router.back();
+      router.push("/reports");
     }
   };
 

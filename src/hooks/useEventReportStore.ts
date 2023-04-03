@@ -7,10 +7,10 @@ type EventReportStore = {
   eventReports: Report[];
   webReports: Report[];
   isCreateReportSuccess: boolean;
-  createEventReport: (params: FormData, id: string) => void;
-  createWebReport: (params: FormData) => void;
-  fetchMyEventReports: () => void;
-  fetchMyWebReports: () => void;
+  createEventReport: (params: FormData, id: string) => Promise<void>;
+  createWebReport: (params: FormData) => Promise<void>;
+  fetchMyEventReports: () => Promise<void>;
+  fetchMyWebReports: () => Promise<void>;
 };
 
 const useEventReportStore = create<EventReportStore>((set) => ({
@@ -18,19 +18,19 @@ const useEventReportStore = create<EventReportStore>((set) => ({
   eventReports: [],
   webReports: [],
 
-  createEventReport: (params: FormData, id: string) => {
-    report
-      .createEventReport(params, id)
-      .then((isSuccess: boolean) => set({ isCreateReportSuccess: isSuccess }));
+  createEventReport: async (params: FormData, id: string) => {
+    await report.createEventReport(params, id);
   },
-  createWebReport: (params: FormData) => {
-    report.createWebReport(params);
+  createWebReport: async (params: FormData) => {
+    await report.createWebReport(params);
   },
-  fetchMyEventReports: () => {
-    report.getMyEventReports().then((res: any) => set({ eventReports: res }));
+  fetchMyEventReports: async () => {
+    const res = await report.getMyEventReports();
+    set({ eventReports: res });
   },
-  fetchMyWebReports: () => {
-    report.getMyWebReports().then((res: any) => set({ webReports: res }));
+  fetchMyWebReports: async () => {
+    const res = await report.getMyWebReports();
+    set({ webReports: res });
   },
 }));
 

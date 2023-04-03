@@ -13,10 +13,7 @@ import {
 import styled from "styled-components";
 import theme from "@/utils/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUserGraduate,
-  faUserTie,
-} from "@fortawesome/free-solid-svg-icons";
+import { faUserGraduate, faUserTie } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ROLE, UPLOAD_MODE } from "@/types";
@@ -27,16 +24,24 @@ import useProfileStore from "@/hooks/useProfileStore";
 import { BorderColorRounded, CameraAltRounded } from "@mui/icons-material";
 import { useModal } from "@/hooks";
 import UploadImageModal from "@/components/upload-image-modal";
+import { ReviewsList } from "@/views/review";
 
 const { Content } = Layout;
 const { Text } = Typography;
 
 const ProfilePage: React.FC<{}> = ({}) => {
-  const { id, student, organizer, checkStatus, getRoleById, getProfile, updateProfile } =
-    useProfileStore();
+  const {
+    id,
+    student,
+    organizer,
+    checkStatus,
+    getRoleById,
+    getProfile,
+    updateProfile,
+  } = useProfileStore();
   const { isModalOpen, openModal, closeModal } = useModal();
   const { events, fetchOwnEvents, fetchOwnEventsById } = useEventStore();
-  const [ role, setRole ] = useState<ROLE>(ROLE.STUDENT); 
+  const [role, setRole] = useState<ROLE>(ROLE.STUDENT);
   const [loading, setLoading] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -45,7 +50,9 @@ const ProfilePage: React.FC<{}> = ({}) => {
   const [isEditingDescription, setEditingDescription] =
     useState<boolean>(false);
   const [isOwnUser, setOwnUser] = useState<boolean>(true);
-  const [uploadMode, setUploadMode] = useState<UPLOAD_MODE>(UPLOAD_MODE.PROFILE);
+  const [uploadMode, setUploadMode] = useState<UPLOAD_MODE>(
+    UPLOAD_MODE.PROFILE
+  );
 
   const router = useRouter();
   const { uid, isReady } = router.query;
@@ -53,24 +60,27 @@ const ProfilePage: React.FC<{}> = ({}) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      if(uid && id) {
+      if (uid && id) {
         await checkStatus();
         const profileRole = await getRoleById(uid.toString());
         setRole(profileRole);
-        if(id.toString() === uid.toString()) {
+        if (id.toString() === uid.toString()) {
           setOwnUser(true);
           await getProfile(id, profileRole ? profileRole : ROLE.STUDENT);
           await fetchOwnEvents();
         } else {
           setOwnUser(false);
-          await getProfile(uid.toString(), profileRole ? profileRole : ROLE.STUDENT);
+          await getProfile(
+            uid.toString(),
+            profileRole ? profileRole : ROLE.STUDENT
+          );
           await fetchOwnEventsById(uid.toString());
         }
         setLoading(false);
-      }  
-    }
+      }
+    };
     fetchData();
-  },[uid, id] );
+  }, [uid, id]);
 
   const editDescription = async () => {
     if (uid) {
@@ -91,7 +101,10 @@ const ProfilePage: React.FC<{}> = ({}) => {
       try {
         switch (role) {
           case ROLE.STUDENT:
-            await updateProfile(uid.toString(), role, { firstName: name, lastName: lastName });
+            await updateProfile(uid.toString(), role, {
+              firstName: name,
+              lastName: lastName,
+            });
             break;
           case ROLE.ORGANIZER:
             await updateProfile(uid.toString(), role, { name });
@@ -123,7 +136,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
           onPressEnter={() => editName()}
           defaultValue={student.firstName}
           bordered={false}
-          style={{width:'36%'}}
+          style={{ width: "36%" }}
           allowClear
         />
         <Space></Space>
@@ -133,7 +146,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
           onPressEnter={() => editName()}
           defaultValue={student.lastName}
           bordered={false}
-          style={{width:'35%'}}
+          style={{ width: "35%" }}
           allowClear
         />
       </>
@@ -144,12 +157,12 @@ const ProfilePage: React.FC<{}> = ({}) => {
         onPressEnter={() => editName()}
         defaultValue={organizer.name}
         bordered={false}
-        style={{width:'30%'}}
+        style={{ width: "30%" }}
         allowClear
       />
     ) : null;
 
-  const renderRole = () => (
+  const renderRole = () =>
     role === ROLE.STUDENT ? (
       <RoleWrapper>
         <FontAwesomeIcon icon={faUserGraduate} />
@@ -160,9 +173,9 @@ const ProfilePage: React.FC<{}> = ({}) => {
         <FontAwesomeIcon icon={faUserTie} />
         <RoleSubtitle>{role.toLowerCase()}</RoleSubtitle>
       </RoleWrapper>
-    ) : null);
+    ) : null;
 
-  const renderRecord = () => (
+  const renderRecord = () =>
     role === ROLE.STUDENT ? (
       <StatisticContainer>
         <StatisticText>Join : {student.joinTimes}</StatisticText>
@@ -175,9 +188,9 @@ const ProfilePage: React.FC<{}> = ({}) => {
         <StatisticText>Create : {organizer.createTimes}</StatisticText>
         <StatisticText>Cancel : {organizer.cancelTimes}</StatisticText>
       </StatisticContainer>
-    ) : null);
+    ) : null;
 
-  const renderEditDescriptionInput = () => (
+  const renderEditDescriptionInput = () =>
     role === ROLE.STUDENT ? (
       <Input
         showCount
@@ -198,9 +211,9 @@ const ProfilePage: React.FC<{}> = ({}) => {
         bordered={false}
         allowClear
       />
-    ) : null);
+    ) : null;
 
-  const renderDescription = () => (
+  const renderDescription = () =>
     role === ROLE.STUDENT ? (
       <AboutContentContainer>
         {student.description ? (
@@ -221,15 +234,18 @@ const ProfilePage: React.FC<{}> = ({}) => {
           <AboutSubTitle>Tell us about yourself</AboutSubTitle>
         )}
       </AboutContentContainer>
-    ) : null);
-  
+    ) : null;
+
   const renderModal = () => (
-    <UploadImageModal isModalOpen={isModalOpen} closeModal={closeModal} uploadMode={uploadMode}></UploadImageModal>
-  )
+    <UploadImageModal
+      isModalOpen={isModalOpen}
+      closeModal={closeModal}
+      uploadMode={uploadMode}
+    ></UploadImageModal>
+  );
 
   if (loading || isReady) return <Skeleton></Skeleton>;
   return (
-
     <ProfileContainer>
       <Content>
         {renderModal()}
@@ -240,25 +256,25 @@ const ProfilePage: React.FC<{}> = ({}) => {
               src={
                 role === ROLE.STUDENT
                   ? student.coverImageUrl
-                    ? CU_API + student.coverImageUrl.substring(1)
+                    ? CU_API + student.coverImageUrl
                     : ""
                   : organizer.coverImageUrl
-                  ? CU_API + organizer.coverImageUrl.substring(1)
+                  ? CU_API + organizer.coverImageUrl
                   : ""
               }
             />
           }
         >
-          {isOwnUser ? 
-          <EditCoverImageButton
-            shape="circle" 
-            icon={<CameraAltRounded fontSize='small'/>}
-            onClick={() => {
-              setUploadMode(UPLOAD_MODE.COVER)
-              openModal();
-            }}
-          >
-          </EditCoverImageButton> : null }
+          {isOwnUser ? (
+            <EditCoverImageButton
+              shape="circle"
+              icon={<CameraAltRounded fontSize="small" />}
+              onClick={() => {
+                setUploadMode(UPLOAD_MODE.COVER);
+                openModal();
+              }}
+            ></EditCoverImageButton>
+          ) : null}
         </CoverImageCard>
         <ProfileInformationContainer>
           <ProfilePicture
@@ -266,22 +282,23 @@ const ProfilePage: React.FC<{}> = ({}) => {
             src={
               role === ROLE.STUDENT
                 ? student.imageUrl
-                  ? CU_API + student.imageUrl.substring(1)
+                  ? CU_API + student.imageUrl
                   : ""
                 : organizer.imageUrl
-                ? CU_API + organizer.imageUrl.substring(1)
+                ? CU_API + organizer.imageUrl
                 : ""
             }
           />
-          {isOwnUser ? 
-          <EditProfileImageButton 
-              shape="circle" 
-              icon={<CameraAltRounded fontSize='small'/>}
+          {isOwnUser ? (
+            <EditProfileImageButton
+              shape="circle"
+              icon={<CameraAltRounded fontSize="small" />}
               onClick={() => {
                 setUploadMode(UPLOAD_MODE.PROFILE);
                 openModal();
               }}
-          /> : null }
+            />
+          ) : null}
           <InformationContainer>
             <NameContainer>
               {isEditingName ? renderEditNameInput() : renderTitleName()}
@@ -326,17 +343,16 @@ const ProfilePage: React.FC<{}> = ({}) => {
               </PreviousEventSubTital>
             </CardTitleContainer>
             <PreviousContentContainer>
-              {
-                events && events.length > 0 ? (               
-                  <EventCardInProfile event={events[0]} />
-                ) : (
-                  <EmptyData />
-                )
-              }
+              {events && events.length > 0 ? (
+                <EventCardInProfile event={events[0]} />
+              ) : (
+                <EmptyData />
+              )}
             </PreviousContentContainer>
           </PreviousEventCard>
         </ContentContainer>
       </Layout>
+      <ReviewsList reviewList={[]} />
     </ProfileContainer>
   );
 };

@@ -5,16 +5,18 @@ import dayjs from "dayjs";
 import styled from "styled-components";
 import { CU_API } from "@/config";
 import theme from "@/utils/theme";
+import Image from "next/image";
 
 const EventCard = styled.div`
   margin-top: 10px;
 `;
 
-const EventImage = styled.img`
+const ImageWrapper = styled.div`
   width: 400px;
   height: 265px;
   border-radius: 4px;
-
+  position: relative;
+  z-index: 0;
   ${theme.media.tablet} {
     width: 100%;
     height: 265px;
@@ -24,6 +26,7 @@ const EventImage = styled.img`
 const TextContainer = styled.div`
   margin-top: -80px;
   margin-left: 20px;
+  position: relative;
   z-index: 1;
 `;
 
@@ -50,13 +53,22 @@ const EventCardInProfile: React.FC<EventCardProps> = ({ event }) => {
     }
   };
 
+  const imgSrc = `${CU_API}${pictures[pictures.length - 1]}`;
+
   return (
     <EventCard>
-      <EventImage crossOrigin="anonymous" alt={"Event Image"} src={CU_API+pictures[pictures.length - 1].substring(1)}/>
+      <ImageWrapper>
+        <Image
+          crossOrigin="anonymous"
+          alt={"Event Image"}
+          src={imgSrc}
+          loader={() => imgSrc}
+          fill
+          style={{ objectFit: "cover" }}
+        />
+      </ImageWrapper>
       <TextContainer>
-        <Title level={4}>
-          {eventName}
-        </Title>
+        <Title level={4}>{eventName}</Title>
         <Space>
           <Typography>{getDateTimeText()}</Typography>
         </Space>

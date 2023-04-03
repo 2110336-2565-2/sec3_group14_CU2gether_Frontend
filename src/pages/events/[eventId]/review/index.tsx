@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Skeleton, Typography } from "antd";
+import { Image, Skeleton, Typography } from "antd";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import FestivalIcon from "@mui/icons-material/Festival";
 import { CU_API } from "@/config";
-import Image from "next/legacy/image";
+// import Image from "next/legacy/image";
 import { Event, EventType, MeetingType, ROLE, Visibility } from "@/types";
 import { events } from "api";
 
@@ -70,11 +70,8 @@ const ReviewPage: React.FC<{}> = () => {
           <Image
             src={CU_API + pictures[pictures.length - 1]}
             alt={"Event Image"}
-            layout="fill"
-            objectFit="cover"
-            objectPosition="center"
+            width={'50%'}
             crossOrigin="anonymous"
-            loader={() => CU_API + pictures[pictures.length - 1]}
           />
         </InsertPictureContainer>
         <EventDetailSummary />
@@ -126,10 +123,10 @@ const EventContainer = styled.div`
 
 const InsertPictureContainer = styled.div`
   display: flex;
-  width: 35%;
+  width: 100%;
   height: 100%;
   position: relative;
-  left: 50%;
+  left: 40%;
   top: 10%;
   ${theme.media.tablet} {
     width: 100%;

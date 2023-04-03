@@ -3,6 +3,7 @@ const color = {
   white: "#FFFFFF",
   black: "#000000",
   red: "#EA4040",
+  gray: "#AEAEAE",
   border: "#D6DADE",
   backgroundColor: "#F5F5F5",
   backgroundOnHover: "#D9D9D9",

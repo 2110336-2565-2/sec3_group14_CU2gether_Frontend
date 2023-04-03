@@ -36,15 +36,27 @@ const getEventById = async (id: String) => {
 const getEvents = async (params: getEventsRequestParams) => {
   try {
     const events = await client.get(baseUrl, { ...params });
-    if (events.status === 200) {
-      return events.data;
-    } else {
-      throw new Error(
-        "Error fetching events with status code: " + events.status
-      );
-    }
+    return events.data;
   } catch (err) {
-    console.log(err);
+    throw new Error("Error fetching events");
+  }
+};
+
+const getOwnEvents = async () => {
+  try {
+    const events = await client.get(CU_API + "userProfile/myevent");
+    return events.data;
+  } catch (error) {
+    throw new Error("Error fetching event");
+  }
+};
+
+const getOwnEventsById = async (id: string) => {
+  try {
+    const events = await client.get(baseUrl + "/" + id);
+    return events.data;
+  } catch (error) {
+    throw new Error("Error fetching event");
   }
 };
 
@@ -53,22 +65,17 @@ const createEvent = async (params: FormData) => {
     const events = await client.post(baseUrl, params, {
       "Content-Type": "multipart/form-data",
     });
-    if (events.status === 201) {
-      return true;
-    } else {
-      throw new Error(
-        "Error on creating event with status code: " + events.status
-      );
-    }
+    return true;
   } catch (err) {
-    console.log(err);
-    return false;
+    throw new Error("Error on creating event");
   }
 };
 
 const events = {
-  getEventById,
   getEvents,
+  getEventById,
+  getOwnEvents,
+  getOwnEventsById,
   createEvent,
 };
 

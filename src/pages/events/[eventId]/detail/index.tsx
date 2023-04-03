@@ -16,7 +16,7 @@ import Link from "next/link";
 import Image from "next/legacy/image";
 import { getEventsRequestParams } from "api/events";
 import userProfile from "api/user-profile";
-import { finished } from "stream";
+import ReportIcon from "@mui/icons-material/Report";
 
 const { Title } = Typography;
 
@@ -242,6 +242,19 @@ const EventDetail: React.FC = () => {
           </Sider>
           <RightLayout>
             <Header>
+              <Link href={`/reports/${event.id}`}>
+                <ReportContainer>
+                  <Space>
+                    <Typography.Text style={{ color: theme.color.gray }}>
+                      Report problem
+                    </Typography.Text>
+                    <ReportIcon
+                      style={{ color: theme.color.gray }}
+                      fontSize="large"
+                    />
+                  </Space>
+                </ReportContainer>
+              </Link>
               <Title style={StyleTitle} level={1}>
                 {eventName}
               </Title>
@@ -294,6 +307,12 @@ const EventDetail: React.FC = () => {
     </EventDetailPageContainer>
   );
 };
+
+const ReportContainer = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+`;
 
 const BlurBackgroundImg = styled(Image)`
   filter: blur(5px);
@@ -371,6 +390,7 @@ const StyleTitle = {
 };
 
 const Header = styled.div`
+  position: relative;
   height: 200px;
   text-align: left;
   color: #fff;

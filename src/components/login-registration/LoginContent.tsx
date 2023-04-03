@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 
 import styled from "styled-components";
-import { Form, Input, Button, notification } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { MODE } from "./LoginAndRegistrationModal";
 import { auth } from "api";
 import theme from "@/utils/theme";
@@ -74,9 +74,9 @@ const LoginContent: React.FC<LoginContentProps> = ({
       onLogin();
       closeLoginModal();
     } else {
-      notification.open({
-        message: "Login unsuccessfully",
-        description: "Email or password is incorrect",
+      message.open({
+        type: "error",
+        content: "Email or password is incorrect.",
       });
     }
   };

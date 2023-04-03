@@ -22,15 +22,9 @@ export type getEventsRequestParams = {
 const getEventById = async (id: String) => {
   try {
     const event = await client.get(`${baseUrl}/${id}`);
-    if (event.status === 200) {
-      return event.data;
-    } else {
-      throw new Error(
-        "Error fetching events with status code: " + event.status
-      );
-    }
+    return event.data;
   } catch (err) {
-    console.log(err);
+    throw new Error("Error fetching an event");
   }
 };
 const getEvents = async (params: getEventsRequestParams) => {

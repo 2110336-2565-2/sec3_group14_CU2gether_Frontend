@@ -141,7 +141,7 @@ const EventDetail: React.FC = () => {
     if (ownerId == id) {
       return (
         <Space align="end">
-          <OutlinedButton text="Description" onClick={scrollToEventDetail} />
+          <OutlinedButton text="Back To Top" onClick={scrollToEventDetail} />
           <Link href={`../${event.id}/edit-main`}>
             <OutlinedButton text="Edit Event Detail" />
           </Link>

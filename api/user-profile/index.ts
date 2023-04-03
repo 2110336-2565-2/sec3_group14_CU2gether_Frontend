@@ -1,8 +1,22 @@
 import { CU_API } from "@/config";
+import { EventType, MeetingType } from "@/types";
 import client from "@/utils/client";
 import FormData from "form-data";
 
 const baseUrl = CU_API + "userProfile";
+
+export type getEventsRequestParams = {
+  page?: number;
+  limit?: number;
+  searchKey?: string;
+  location?: string;
+  eventType?: EventType;
+  meetingType?: MeetingType;
+  startDate?: string;
+  endDate?: string;
+  startTime?: string;
+  endTime?: string;
+};
 
 const checkStatus = async () => {
   try {
@@ -19,9 +33,21 @@ const checkStatus = async () => {
   }
 };
 
+const getJoinedEvents = async (params: getEventsRequestParams) => {
+  try {
+    const joinedEvents = await client.get(`${baseUrl}/joining-event`, {
+      ...params,
+    });
+
+    return joinedEvents.data;
+  } catch (err) {
+    console.log("Error fetching joinedEvents");
+  }
+};
+
 const checkStatusById = async (id: string) => {
   try {
-    const res = await client.get(baseUrl + '/' + id);
+    const res = await client.get(baseUrl + "/" + id);
     return res.data;
   } catch (error) {
     throw new Error(`Error to get check user: ${id} status`);
@@ -30,22 +56,27 @@ const checkStatusById = async (id: string) => {
 
 const uploadImage = async (params: FormData) => {
   try {
-    await client.post(baseUrl + '/uploadImage', params, {"Content-Type": "multipart/form-data"});
+    await client.post(baseUrl + "/uploadImage", params, {
+      "Content-Type": "multipart/form-data",
+    });
   } catch (error) {
     throw new Error(`Error to upload image`);
   }
-}
+};
 
 const uploadCoverImage = async (params: FormData) => {
   try {
-    await client.post(baseUrl + '/uploadCoverImage', params, {"Content-Type": "multipart/form-data"});
+    await client.post(baseUrl + "/uploadCoverImage", params, {
+      "Content-Type": "multipart/form-data",
+    });
   } catch (error) {
     throw new Error(`Error to upload image`);
   }
-}
+};
 
 const userProfile = {
   checkStatus,
+  getJoinedEvents,
   checkStatusById,
   uploadImage,
   uploadCoverImage,

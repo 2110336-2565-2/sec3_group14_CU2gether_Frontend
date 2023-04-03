@@ -19,14 +19,7 @@ export type getEventsRequestParams = {
   startTime?: string;
   endTime?: string;
 };
-const getEventById = async (id: String) => {
-  try {
-    const event = await client.get(`${baseUrl}/${id}`);
-    return event.data;
-  } catch (err) {
-    throw new Error("Error fetching an event");
-  }
-};
+
 const getEvents = async (params: getEventsRequestParams) => {
   try {
     const events = await client.get(baseUrl, { ...params });
@@ -54,6 +47,33 @@ const getOwnEventsById = async (id: string) => {
   }
 };
 
+const getEventById = async (eventId: string) => {
+  try {
+    const event = await client.get(`${baseUrl}/${eventId}`);
+    return event.data;
+  } catch (err) {
+    console.log("Error fetching event by eventId");
+  }
+};
+
+const joinEvent = async (eventId: string) => {
+  try {
+    const event = await client.post(`${baseUrl}/${eventId}/join`);
+    return event.data;
+  } catch (err) {
+    console.log("Error fetching join event");
+  }
+};
+
+const unjoinEvent = async (eventId: string) => {
+  try {
+    const event = await client.delete(`${baseUrl}/${eventId}/unjoin`);
+    return event.data;
+  } catch (err) {
+    console.log("Error fetching unjoin event");
+  }
+};
+
 const createEvent = async (params: FormData) => {
   try {
     const events = await client.post(baseUrl, params, {
@@ -61,16 +81,19 @@ const createEvent = async (params: FormData) => {
     });
     return true;
   } catch (err) {
-    throw new Error("Error on creating event");
+    console.log("Error on creating event");
+    return false;
   }
 };
 
 const events = {
   getEvents,
   getEventById,
+  joinEvent,
+  unjoinEvent,
+  createEvent,
   getOwnEvents,
   getOwnEventsById,
-  createEvent,
 };
 
 export default events;

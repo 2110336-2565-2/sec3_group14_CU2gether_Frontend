@@ -59,6 +59,7 @@ export enum UPLOAD_MODE {
 }
 
 export type Event = {
+  id: number;
   eventName: string;
   eventType: EventType;
   visibility: Visibility;
@@ -75,6 +76,8 @@ export type Event = {
   pictures: string[];
   ownerName?: string;
   description: string;
+  ownerName?: string;
+  ownerId?: number;
 };
 
 export type Student = {

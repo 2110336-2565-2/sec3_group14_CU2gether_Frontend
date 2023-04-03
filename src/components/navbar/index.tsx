@@ -101,7 +101,7 @@ const Navbar: React.FC<NavbarProps> = () => {
     { key: "1", label: "Home", href: "/" },
     { key: "2", label: "Explore", href: "/events" },
     { key: "3", label: "Create Event", href: "/events/create" },
-    { key: "4", label: "Join Event", href: "/events/joined" },
+    { key: "4", label: "Joined Events", href: "/events/joined" },
     { key: "5", label: "My Events", href: "/events/mine" },
   ];
 
@@ -165,8 +165,7 @@ const Navbar: React.FC<NavbarProps> = () => {
         getItem(
           <Link
             href={{
-              pathname: "/blog/[slug]",
-              query: { slug: "my-post" },
+              pathname: "/reports/web",
             }}
           >
             Report

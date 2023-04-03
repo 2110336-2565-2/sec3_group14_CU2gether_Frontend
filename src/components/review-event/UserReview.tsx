@@ -1,11 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Rate, Typography } from "antd";
 import styled from "styled-components";
 import theme from "@/utils/theme";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { ReviewDetail } from "@/hooks/useReviewStore";
-
-import useReviewStore from "@/hooks/useReviewStore";
 
 const { Text } = Typography;
 
@@ -16,8 +14,10 @@ const UserReview: React.FC<{
   return (
     <DetailsContainer>
       <DetailText>{reviewDetail.authorName}</DetailText>
-      <DetailText>{dayjs(reviewDetail.createdAt).format("YYYY-MM-DD HH:mm")}</DetailText>
-      <Rate value={reviewDetail.score} disabled={true} />
+      <DetailText>
+        {dayjs(reviewDetail.createdAt).format("YYYY-MM-DD HH:mm")}
+      </DetailText>
+      <Rate allowHalf value={reviewDetail.score} disabled={true} />
       {reviewDetail.comment && (
         <CommentText>{reviewDetail.comment}</CommentText>
       )}
@@ -32,7 +32,7 @@ const DetailsContainer = styled.div`
   min-height: 100px;
   display: flex;
   flex-direction: column;
-  border-color: ${theme.color_level.gray.low};
+  border-color: ${theme.color.border};
   border-style: solid;
   border-radius: 0.4rem;
   padding: 5px 10px;

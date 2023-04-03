@@ -1,9 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Skeleton, Typography } from "antd";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import FestivalIcon from "@mui/icons-material/Festival";
+import { CU_API } from "@/config";
+import Image from "next/legacy/image";
+import { Event, EventType, MeetingType, ROLE, Visibility } from "@/types";
+import { events } from "api";
 
 import theme from "@/utils/theme";
 import useEventStore from "@/hooks/useEventStore";
@@ -15,8 +19,26 @@ import { ReviewForm } from "@/components/review-event";
 const { Text, Title } = Typography;
 
 const ReviewPage: React.FC<{}> = () => {
-  const { getEventDetail } = useEventStore();
   const { reviewList, getReviews } = useReviewStore();
+  const [event, setEvent] = useState<Event>({
+    id: 0,
+    eventName: "",
+    eventType: EventType.CONCERT,
+    visibility: Visibility.PUBLIC,
+    tags: [],
+    requireParticipantsMin: 1,
+    requireParticipantsMax: 10,
+    startDate: "",
+    endDate: "",
+    startTime: "",
+    endTime: "",
+    meetingType: MeetingType.ONSITE,
+    location: "",
+    website: "",
+    description: "",
+    pictures: [""],
+    ownerName: "",
+  });
 
   const router = useRouter();
   const { query, isReady } = router;
@@ -26,7 +48,7 @@ const ReviewPage: React.FC<{}> = () => {
     if (eventId) {
       const getData = async (eventId: string) => {
         try {
-          await getEventDetail(eventId);
+          setEvent(await events.getEventByID(eventId.toString()));
           await getReviews(eventId);
         } catch (err) {
           console.log(err);
@@ -36,13 +58,25 @@ const ReviewPage: React.FC<{}> = () => {
     }
   }, [eventId]);
 
+  const { pictures } = event;
+
   if (!isReady) return <Skeleton></Skeleton>;
 
   return (
     <ContentsContainer>
       <Title>Review Event</Title>
       <EventContainer>
-        <InsertPicture />
+        <InsertPictureContainer>
+          <Image
+            src={CU_API + pictures[pictures.length - 1]}
+            alt={"Event Image"}
+            layout="fill"
+            objectFit="cover"
+            objectPosition="center"
+            crossOrigin="anonymous"
+            loader={() => CU_API + pictures[pictures.length - 1]}
+          />
+        </InsertPictureContainer>
         <EventDetailSummary />
         <RateContainer>
           <ReviewsList
@@ -90,21 +124,16 @@ const EventContainer = styled.div`
   }
 `;
 
-const InsertPicture = styled.div`
-  background-color: rgb(34, 211, 238);
-  width: 100%;
-  height: auto;
-  grid-row-start: 1;
-  grid-row-end: span 2;
-  grid-column-start: 1;
-
+const InsertPictureContainer = styled.div`
+  display: flex;
+  width: 35%;
+  height: 100%;
+  position: relative;
+  left: 50%;
+  top: 10%;
   ${theme.media.tablet} {
-    grid-row-end: 2;
-  }
-
-  ${theme.media.mobile} {
-    min-height: 200px;
-    width: auto;
+    width: 100%;
+    height: 50%;
   }
 `;
 

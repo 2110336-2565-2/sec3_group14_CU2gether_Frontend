@@ -17,7 +17,7 @@ type EventReportStore = {
   updateWebReportStatus: (eventReportId: string, params: any) => Promise<void>;
 };
 
-const useEventReportStore = create<EventReportStore>((set) => ({
+const useReportStore = create<EventReportStore>((set) => ({
   isCreateReportSuccess: false,
   eventReports: [],
   webReports: [],
@@ -53,4 +53,4 @@ const useEventReportStore = create<EventReportStore>((set) => ({
   },
 }));
 
-export default useEventReportStore;
+export default useReportStore;

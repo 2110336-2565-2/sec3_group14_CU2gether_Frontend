@@ -7,14 +7,14 @@ import { useRouter } from "next/router";
 import FormData from "form-data";
 import ReportIcon from "@mui/icons-material/Report";
 import { useMediaQuery } from "react-responsive";
-import useEventReportStore from "@/hooks/useEventReportStore";
 import ReportProvider from "@/components/report/Provider";
 import { ContainedButton, OutlinedButton } from "@/common/button";
+import useReportStore from "@/hooks/useReportStore";
 const { Content } = Layout;
 const { Title } = Typography;
 
 const WebReport: React.FC<{}> = ({}) => {
-  const { createWebReport } = useEventReportStore();
+  const { createWebReport } = useReportStore();
   const [form] = Form.useForm();
   const router = useRouter();
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);

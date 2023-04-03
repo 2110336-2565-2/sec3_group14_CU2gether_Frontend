@@ -4,14 +4,14 @@ import { Typography, Layout, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
 import ReportCard from "@/components/report/ReportCard";
 import { Report } from "@/types";
-import useEventReportStore from "@/hooks/useEventReportStore";
 import ReportProvider from "@/components/report/Provider";
+import useReportStore from "@/hooks/useReportStore";
 const { Content } = Layout;
 const { Title } = Typography;
 
 const MyReportHistory: React.FC<{}> = ({}) => {
   const { eventReports, webReports, fetchMyEventReports, fetchMyWebReports } =
-    useEventReportStore();
+    useReportStore();
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     const fetchData = async () => {

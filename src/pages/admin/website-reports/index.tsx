@@ -4,16 +4,16 @@ import { Typography, Layout, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
 import ReportCard from "@/components/report/ReportCard";
 import { Report, ReportStatus } from "@/types";
-import useEventReportStore from "@/hooks/useEventReportStore";
 import ReportProvider from "@/components/report/Provider";
 import { OutlinedButton } from "@/common/button";
+import useReportStore from "@/hooks/useReportStore";
 const { Content } = Layout;
 const { Title } = Typography;
 type WebsiteReportsPageProps = {};
 
 const WebsiteReportsPage: React.FC<WebsiteReportsPageProps> = ({}) => {
   const { webReports, fetchWebReports, updateWebReportStatus } =
-    useEventReportStore();
+    useReportStore();
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     const getData = async () => {
@@ -25,7 +25,7 @@ const WebsiteReportsPage: React.FC<WebsiteReportsPageProps> = ({}) => {
     };
     getData();
   }, []);
-  const updateReportStatus = async (reportId: string) => {
+  const archiveReport = async (reportId: string) => {
     await updateWebReportStatus(reportId, {
       adminNote: "",
       problemStatus: ReportStatus.CLOSED,
@@ -39,7 +39,7 @@ const WebsiteReportsPage: React.FC<WebsiteReportsPageProps> = ({}) => {
           <OutlinedButton
             text="Archive"
             style={{ width: "150px" }}
-            onClick={() => updateReportStatus(report.id.toString())}
+            onClick={() => archiveReport(report.id.toString())}
           />
         </ButtonContainer>
       </ReportCard>

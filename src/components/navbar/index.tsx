@@ -38,7 +38,7 @@ const { Paragraph, Text } = Typography;
 type MenuItem = Required<MenuProps>["items"][number];
 
 const Navbar: React.FC<NavbarProps> = () => {
-  const { role, name, imageUrl, checkStatus } = useProfileStore();
+  const { id, role, name, imageUrl, checkStatus } = useProfileStore();
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false); // is the user logged in or not
   const [isLoggingIn, setLoggingIn] = useState<boolean>(true); // is the action is logging in or signing up
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
@@ -136,8 +136,7 @@ const Navbar: React.FC<NavbarProps> = () => {
           <Link
             href={{
               pathname: "/profile/[uid]",
-              // TODO: Need to change this to dynamic uid
-              query: { uid: "6331307321" },
+              query: { uid: id },
             }}
           >
             My Profile

@@ -39,7 +39,7 @@ const studentProfile = {
   joinTimes: 3,
   unjoinTimes: 4,
   role: ROLE.STUDENT,
-}
+};
 
 const organizerProfile = {
   email: "Jane@Doe.com",
@@ -53,7 +53,7 @@ const organizerProfile = {
   imageUrl: "",
   coverImageUrl: "",
   role: ROLE.ORGANIZER,
-}
+};
 
 const useProfileStore = create<ProfileStore>((set, get) => ({
   student: studentProfile,
@@ -64,6 +64,7 @@ const useProfileStore = create<ProfileStore>((set, get) => ({
       .then((data: any) => {
         if (!data) {
           set({
+            id: undefined,
             name: undefined,
             role: undefined,
             email: undefined,
@@ -71,8 +72,8 @@ const useProfileStore = create<ProfileStore>((set, get) => ({
           });
           return;
         }
-        const { role, name, email, imageUrl } = data;
-        set({ role, name, email, imageUrl });
+        const { id, role, name, email, imageUrl } = data;
+        set({ id, role, name, email, imageUrl });
       })
       .catch((err: any) => console.log(err));
   },
@@ -86,7 +87,7 @@ const useProfileStore = create<ProfileStore>((set, get) => ({
       })
       .catch((err: any) => console.log(err));
   },
-  getRoleById: async (id: string): Promise<any> =>  {
+  getRoleById: async (id: string): Promise<any> => {
     const r = await userProfile.checkStatusById(id);
     return r.role;
   },
@@ -94,29 +95,39 @@ const useProfileStore = create<ProfileStore>((set, get) => ({
     switch (role) {
       case ROLE.STUDENT:
         student.getStudentById(id).then((res: any) => set({ student: res }));
-        break;   
+        break;
       case ROLE.ORGANIZER:
-        organizer.getOrganizerById(id).then((res: any) => set({ organizer: res }));
+        organizer
+          .getOrganizerById(id)
+          .then((res: any) => set({ organizer: res }));
         break;
     }
   },
   updateProfile: async (id: string, role: ROLE, params: any) => {
     switch (role) {
       case ROLE.STUDENT:
-        await student.updateStudentById(id, params).then((res: any) => set({ student: res }));
-        break;   
+        await student
+          .updateStudentById(id, params)
+          .then((res: any) => set({ student: res }));
+        break;
       case ROLE.ORGANIZER:
-        await organizer.updateOrganizerById(id, params).then((res: any) => set({ organizer: res }));
+        await organizer
+          .updateOrganizerById(id, params)
+          .then((res: any) => set({ organizer: res }));
         break;
     }
   },
   resetPassword: async (id: string, role: ROLE, params: any) => {
     switch (role) {
       case ROLE.STUDENT:
-        await student.resetStudentPasswordById(id, params).then((res: any) => set({ student: res }));
-        break;   
+        await student
+          .resetStudentPasswordById(id, params)
+          .then((res: any) => set({ student: res }));
+        break;
       case ROLE.ORGANIZER:
-        await organizer.resetOrganizerPasswordById(id, params).then((res: any) => set({ organizer: res }));
+        await organizer
+          .resetOrganizerPasswordById(id, params)
+          .then((res: any) => set({ organizer: res }));
         break;
     }
   },
@@ -125,7 +136,7 @@ const useProfileStore = create<ProfileStore>((set, get) => ({
   },
   uploadCoverImage: (params: FormData) => {
     userProfile.uploadCoverImage(params);
-  }
+  },
 }));
 
 export default useProfileStore;

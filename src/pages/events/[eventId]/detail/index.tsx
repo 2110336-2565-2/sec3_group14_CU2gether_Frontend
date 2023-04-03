@@ -16,6 +16,7 @@ import Link from "next/link";
 import Image from "next/legacy/image";
 import { getEventsRequestParams } from "api/events";
 import userProfile from "api/user-profile";
+import ReportIcon from "@mui/icons-material/Report";
 
 const { Title } = Typography;
 
@@ -41,6 +42,7 @@ const EventDetail: React.FC = () => {
     description: "",
     pictures: [""],
     ownerName: "",
+    finished: false,
   });
   const [joinedEvents, setJoinedEvents] = useState<Event[]>([]);
   const [join, setJoin] = useState<boolean>(false);
@@ -66,6 +68,7 @@ const EventDetail: React.FC = () => {
         try {
           setEvent(await events.getEventByID(eventId.toString()));
           await fetchJoinEvents({});
+          console.log(event);
         } catch (error) {
           console.log(error);
         }
@@ -124,7 +127,19 @@ const EventDetail: React.FC = () => {
     });
   };
 
+  const finished = true;
+
   const LayoutFooter = () => {
+    if (event.finished) {
+      return (
+        <Space align="end">
+          <OutlinedButton text="Description" onClick={scrollToDescription} />
+          <Link href={`../${event!.id}/review`}>
+            <OutlinedButton text="Reviews" />
+          </Link>
+        </Space>
+      );
+    }
     if (ownerId == id) {
       return (
         <Space align="end">
@@ -163,6 +178,16 @@ const EventDetail: React.FC = () => {
   };
 
   const DescriptionFooter = () => {
+    if (event.finished) {
+      return (
+        <Space align="end">
+          <OutlinedButton text="Back To Top" onClick={scrollToEventDetail} />
+          <Link href={`../${event!.id}/review`}>
+            <OutlinedButton text="Reviews" />
+          </Link>
+        </Space>
+      );
+    }
     if (ownerId == id) {
       return (
         <Space align="end">
@@ -219,12 +244,27 @@ const EventDetail: React.FC = () => {
           </Sider>
           <RightLayout>
             <Header>
+              <Link href={`/reports/events/${event.id}`}>
+                <ReportContainer>
+                  <Space>
+                    <Typography.Text style={{ color: theme.color.gray }}>
+                      Report problem
+                    </Typography.Text>
+                    <ReportIcon
+                      style={{ color: theme.color.gray }}
+                      fontSize="large"
+                    />
+                  </Space>
+                </ReportContainer>
+              </Link>
               <Title style={StyleTitle} level={1}>
                 {eventName}
               </Title>
-              <Typography style={{ color: "white" }}>
-                Created by {ownerName}
-              </Typography>
+              <Link href={`/profile/${ownerId}`}>
+                <Typography style={{ color: "white" }}>
+                  Created by {ownerName}
+                </Typography>
+              </Link>
             </Header>
             <Content>
               <Space size={"middle"}>
@@ -271,6 +311,12 @@ const EventDetail: React.FC = () => {
     </EventDetailPageContainer>
   );
 };
+
+const ReportContainer = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+`;
 
 const BlurBackgroundImg = styled(Image)`
   filter: blur(5px);
@@ -348,6 +394,7 @@ const StyleTitle = {
 };
 
 const Header = styled.div`
+  position: relative;
   height: 200px;
   text-align: left;
   color: #fff;

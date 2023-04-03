@@ -43,6 +43,7 @@ const useEventStore = create<EventStore>((set) => ({
     description: "",
     pictures: [""],
     ownerName: "",
+    finished: false,
   },
   events: [],
   joinedEvents: [],

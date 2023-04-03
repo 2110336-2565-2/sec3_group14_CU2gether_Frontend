@@ -16,32 +16,31 @@ type EventStore = {
   fetchEvent: (id: string) => void
   fetchEvents: (params: getEventsRequestParams) => void;
   fetchJoinEvents: (params: getEventsRequestParams) => void;
-  setEvent: (params: Event) => void;
   createEvent: (params: FormData) => Promise<boolean>;
   fetchOwnEvents: () => void;
   fetchOwnEventsById: (id: string) => void;
 };
 
 const useEventStore = create<EventStore>((set) => ({
-  event: {
-    id: 0,
-    eventName: "",
-    eventType: EventType.CONCERT,
-    visibility: Visibility.PUBLIC,
-    tags: [],
-    requireParticipantsMin: 1,
-    requireParticipantsMax: 10,
-    startDate: "",
-    endDate: "",
-    startTime: "",
-    endTime: "",
-    meetingType: MeetingType.ONSITE,
-    location: "",
-    website: "",
-    description: "",
-    pictures: [""],
-    ownerName: "",
-  },
+  // event: {
+  //   id: 0,
+  //   eventName: "",
+  //   eventType: EventType.CONCERT,
+  //   visibility: Visibility.PUBLIC,
+  //   tags: [],
+  //   requireParticipantsMin: 1,
+  //   requireParticipantsMax: 10,
+  //   startDate: "",
+  //   endDate: "",
+  //   startTime: "",
+  //   endTime: "",
+  //   meetingType: MeetingType.ONSITE,
+  //   location: "",
+  //   website: "",
+  //   description: "",
+  //   pictures: [""],
+  //   ownerName: "",
+  // },
   events: [],
   joinedEvents: [],
   getEventDetail: (id: string) => {
@@ -70,9 +69,6 @@ const useEventStore = create<EventStore>((set) => ({
     userProfile
       .getJoinedEvents(params)
       .then((res: any) => set({ joinedEvents: res }));
-  },
-  setEvent: (params) => {
-    set({ event: params });
   },
   createEvent: async (params: FormData) => {
     const res = await events.createEvent(params);

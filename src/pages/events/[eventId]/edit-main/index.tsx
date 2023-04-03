@@ -56,6 +56,7 @@ const dateFormat = "YYYY-MM-DD";
 const timeFormat = "HH:mm";
 
 const defaultEventDetail = {
+  id: 0,
   eventName: "No Event Name",
   eventType: EventType.OTHERS,
   visibility: Visibility.PRIVATE,
@@ -555,7 +556,6 @@ const LeftContentContainer = styled.div`
 const RightContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 55%;
   height: 100%;
   ${theme.media.tablet} {
     width: 100%;

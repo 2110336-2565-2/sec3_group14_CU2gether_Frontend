@@ -22,7 +22,7 @@ const EventDetail: React.FC = () => {
   const router = useRouter();
   const { eventId } = router.query;
 
-  const { event, setEvent, joinedEvents, fetchJoinEvents } = useEventStore();
+  const { event, getEventDetail, joinedEvents, fetchJoinEvents } = useEventStore();
   const [join, setJoin] = useState<boolean>(false);
   const descriptionRef = useRef<null | HTMLDivElement>(null);
   const eventDetailRef = useRef<null | HTMLDivElement>(null);
@@ -35,18 +35,31 @@ const EventDetail: React.FC = () => {
     checkLoginStatus();
   }, []);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (eventId) {
+  //       try {
+  //         setEvent(await events.getEventById(eventId.toString()));
+  //         await fetchJoinEvents({});
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     }
+  //   };
+  //   fetchData();
+  // }, [eventId]);
+
   useEffect(() => {
-    const fetchData = async () => {
-      if (eventId) {
+    if (eventId) {
+      const getData = async (id: string) => {
         try {
-          setEvent(await events.getEventById(eventId.toString()));
-          await fetchJoinEvents({});
-        } catch (error) {
-          console.log(error);
+          await getEventDetail(id);
+        } catch (err) {
+          console.log(err);
         }
-      }
-    };
-    fetchData();
+      };
+      getData(eventId.toString());
+    }
   }, [eventId]);
 
   useEffect(() => {
@@ -104,7 +117,7 @@ const EventDetail: React.FC = () => {
       return (
         <Space align="end">
           <OutlinedButton text="Description" onClick={scrollToDescription} />
-          <Link href={`../${event.id}/edit-main`}>
+          <Link href={`../${event!.id}/edit-main`}>
             <OutlinedButton text="Edit Event Detail" />
           </Link>
         </Space>
@@ -142,7 +155,7 @@ const EventDetail: React.FC = () => {
       return (
         <Space align="end">
           <OutlinedButton text="Description" onClick={scrollToEventDetail} />
-          <Link href={`../${event.id}/edit-main`}>
+          <Link href={`../${event!.id}/edit-main`}>
             <OutlinedButton text="Edit Event Detail" />
           </Link>
         </Space>

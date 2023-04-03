@@ -21,6 +21,7 @@ export type getEventsRequestParams = {
 const getEvents = async (params: getEventsRequestParams) => {
   try {
     const events = await client.get(baseUrl, { ...params });
+    return events.data;
   } catch (err) {
     throw new Error("Error fetching events")
   }
@@ -40,16 +41,9 @@ const updateEventDetail = async (id: string, params: FormData) => {
     const events = await client.patch(`${baseUrl}/${id}`, params, {
       "Content-Type": "multipart/form-data",
     });
-    if (events.status === 200) {
-      return true;
-    } else {
-      throw new Error(
-        "Error on updating event with status code: " + events.status
-      );
-    }
+    return true;
   } catch (err) {
-    console.log(err);
-    return false;
+    throw new Error("Error updating event's detail");
   }
 };
 
@@ -58,8 +52,9 @@ const updateEventDescription = async (id: String, description: String) => {
     await client.patch(`${baseUrl}/${id}`, {
       description,
     });
+    return true;
   } catch (err) {
-    console.log(err);
+    throw new Error("Error updating event's description");
   }
 };
 
@@ -96,15 +91,6 @@ const getOwnEventsById = async (id: string) => {
     return events.data;
   } catch (error) {
     throw new Error("Error fetching event");
-  }
-};
-
-const getEventById = async (eventId: string) => {
-  try {
-    const event = await client.get(`${baseUrl}/${eventId}`);
-    return event.data;
-  } catch (err) {
-    console.log("Error fetching event by eventId");
   }
 };
 

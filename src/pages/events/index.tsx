@@ -7,7 +7,6 @@ import {
   DatePicker,
   Divider,
   Empty,
-  MenuProps,
   Radio,
   Select,
   Skeleton,
@@ -196,7 +195,7 @@ const Event: React.FC<EventProps> = () => {
     }
   };
 
-  if (loading)
+  if (loading || !events)
     return (
       <EventContainer>
         <HeaderContainer>
@@ -237,7 +236,7 @@ const Event: React.FC<EventProps> = () => {
           />
         </SearchFilterContainer>
       </HeaderContainer>
-      {events && events.length > 0 ? (
+      {events.length > 0 ? (
         <DetailContainer>{renderEventCardList()}</DetailContainer>
       ) : (
         <EmptyWrapper>

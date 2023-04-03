@@ -1,5 +1,3 @@
-import { Dayjs } from "dayjs";
-
 export enum EventType {
   RESTAURANT = "RESTAURANT",
   CAFE = "CAFE",
@@ -35,6 +33,7 @@ export enum ProblemType {
   OTHERS = "OTHERS",
 }
 export type Report = {
+  id: number;
   topic: string;
   description: string;
   createdAt: string;
@@ -42,7 +41,11 @@ export type Report = {
   ownerName?: string;
   imageUrl?: string[];
 };
-
+export enum ReportStatus {
+  INITIATED = "INITIATED",
+  WORKING = "WORKING",
+  CLOSED = "CLOSED",
+}
 export enum ROLE {
   STUDENT = "STUDENT",
   ORGANIZER = "ORGANIZER",
@@ -115,6 +118,22 @@ export type Organizer = {
 export type Review = {
   score: number;
   comment: string;
-}
+};
 
 export type User = Student | Organizer;
+
+export enum RequestStatus {
+  PENDING = "PENDING",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
+}
+
+export type OrganizerRequest = {
+  id: string;
+  email: string;
+  name: string;
+  coorName: string;
+  phone: string;
+  description: string;
+  status: RequestStatus;
+};

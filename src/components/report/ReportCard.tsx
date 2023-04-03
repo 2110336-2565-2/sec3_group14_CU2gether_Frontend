@@ -9,20 +9,18 @@ const { Title, Paragraph } = Typography;
 
 type ReportDetailProps = {
   report: Report;
+  children?: JSX.Element;
 };
 
-const ReportCard: React.FC<ReportDetailProps> = ({ report }) => {
+const ReportCard: React.FC<ReportDetailProps> = ({ report, children }) => {
   const { eventName, ownerName, topic, description, createdAt, imageUrl } =
     report;
 
   const renderImages = (imageUrl: string[]) => {
-    // imageUrl.map((pic: string, index) => {
-    //   console.log(`${CU_API}${pic.substring(2)}`);
-    // });
     return imageUrl.map((pic: string, index) => (
       <OneImageContainer key={index}>
         <AntDImg
-          src={`${CU_API}${pic.substring(2)}`}
+          src={`${CU_API}${pic}`}
           style={{ width: "100%", height: "100%" }}
           crossOrigin="anonymous"
         />
@@ -37,10 +35,16 @@ const ReportCard: React.FC<ReportDetailProps> = ({ report }) => {
     <ReportCardContainer>
       <InformationLayout>
         <Header>
-          <Title level={3} style={{ margin: 0 }}>
+          <Title level={3} style={{ margin: "0px" }}>
             {topic}
           </Title>
-          <Paragraph style={{ color: `${theme.color.gray}`, fontSize: "16px" }}>
+          <Paragraph
+            style={{
+              color: `${theme.color.gray}`,
+              fontSize: "16px",
+              margin: "0",
+            }}
+          >
             {dayjs(createdAt).format("YYYY-MM-DD HH:mm")}
           </Paragraph>
         </Header>
@@ -56,6 +60,7 @@ const ReportCard: React.FC<ReportDetailProps> = ({ report }) => {
           {imageUrl && (
             <ImagesContainer>{renderSlides(imageUrl)}</ImagesContainer>
           )}
+          {children}
         </Content>
       </InformationLayout>
     </ReportCardContainer>

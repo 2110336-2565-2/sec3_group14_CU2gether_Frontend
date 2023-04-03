@@ -9,11 +9,11 @@ import { EventType, Visibility, MeetingType, Event } from "@/types";
 import EventDetail from "@/components/report/EventDetail";
 import Image from "next/image";
 import FormData from "form-data";
-import useEventReportStore from "@/hooks/useEventReportStore";
 import { CU_API } from "@/config";
 import useEventStore from "@/hooks/useEventStore";
 import ReportProvider from "@/components/report/Provider";
 import { ContainedButton, OutlinedButton } from "@/common/button";
+import useReportStore from "@/hooks/useReportStore";
 const { Content } = Layout;
 const { Title, Text } = Typography;
 
@@ -50,7 +50,7 @@ const defaultEventDetail = {
 };
 
 const ReportMain: React.FC<{}> = ({}) => {
-  const { createEventReport } = useEventReportStore();
+  const { createEventReport } = useReportStore();
   const { event, getEventDetail } = useEventStore();
   const [eventDetail, setEventDetail] = useState<Event>(defaultEventDetail);
   const [imageUrl, setImageUrl] = useState<string>("");

@@ -4,6 +4,11 @@ import FormData from "form-data";
 const eventReportUrl = CU_API + "event-report";
 const webReportUrl = CU_API + "web-report";
 
+export type getReportsRequestParams = {
+  page?: number;
+  limit?: number;
+};
+
 const createEventReport = async (params: FormData, id: string) => {
   try {
     const eventReport = await client.post(`${eventReportUrl}/${id}`, params, {
@@ -40,11 +45,59 @@ const getMyWebReports = async () => {
     throw new Error("Error fetching web report");
   }
 };
+const getAllUnFinishEventReports = async (params: getReportsRequestParams) => {
+  try {
+    const eventReports = await client.get(`${eventReportUrl}/unfinished`, {
+      ...params,
+    });
+    return eventReports.data;
+  } catch (err) {
+    throw new Error("Error fetching web reports");
+  }
+};
+const getAllUnFinishWebReports = async (params: getReportsRequestParams) => {
+  try {
+    const webReports = await client.get(`${webReportUrl}/unfinished`, {
+      ...params,
+    });
+    return webReports.data;
+  } catch (err) {
+    throw new Error("Error fetching web reports");
+  }
+};
+const updateWebReportStatus = async (webReportId: string, params: any) => {
+  try {
+    const webReports = await client.patch(
+      `${webReportUrl}/${webReportId}/updateAdmin`,
+      params
+    );
+    return webReports.data;
+  } catch (err) {
+    throw new Error("Error fetching web reports");
+  }
+};
+
+const updateEventReportStatus = async (eventReportId: string, params: any) => {
+  try {
+    const webReports = await client.patch(
+      `${eventReportUrl}/${eventReportId}/updateAdmin`,
+      params
+    );
+    return webReports.data;
+  } catch (err) {
+    throw new Error("Error fetching web reports");
+  }
+};
+
 const report = {
   createEventReport,
   createWebReport,
   getMyEventReports,
   getMyWebReports,
+  getAllUnFinishEventReports,
+  getAllUnFinishWebReports,
+  updateWebReportStatus,
+  updateEventReportStatus,
 };
 
 export default report;

@@ -114,9 +114,13 @@ const Navbar: React.FC<NavbarProps> = () => {
 
   const adminMenus = [
     { key: "1", label: "Explore", href: "/events" },
-    { key: "2", label: "Organizer Requests", href: "/" },
-    { key: "3", label: "Event Reports", href: "/" },
-    { key: "4", label: "Website Reports", href: "/" },
+    {
+      key: "2",
+      label: "Organizer Requests",
+      href: "/admin/organizer-requests",
+    },
+    { key: "3", label: "Event Reports", href: "/admin/event-reports" },
+    { key: "4", label: "Website Reports", href: "/admin/website-reports" },
   ];
 
   const getItem = (
@@ -251,21 +255,25 @@ const Navbar: React.FC<NavbarProps> = () => {
           width={200}
           height={64}
         />
-        <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
-          {imageUrl ? (
-            <ProfileImage
-              src={getImageURL(imageUrl)}
-              alt={"profile image"}
-              loader={() => getImageURL(imageUrl)}
-              width={36}
-              height={36}
-              style={{ borderRadius: "50%" }}
-              crossOrigin="anonymous"
-            />
-          ) : (
-            <MyAccountCircleIcon fontSize="large" />
-          )}
-        </Dropdown>
+        {role === ROLE.ADMIN ? (
+          <Name style={{ color: theme.color.primary }}>Admin</Name>
+        ) : (
+          <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
+            {imageUrl ? (
+              <ProfileImage
+                src={getImageURL(imageUrl)}
+                alt={"profile image"}
+                loader={() => getImageURL(imageUrl)}
+                width={36}
+                height={36}
+                style={{ borderRadius: "50%" }}
+                crossOrigin="anonymous"
+              />
+            ) : (
+              <MyAccountCircleIcon fontSize="large" />
+            )}
+          </Dropdown>
+        )}
       </ShortNavContainer>
       <Drawer
         title={
@@ -307,31 +315,40 @@ const Navbar: React.FC<NavbarProps> = () => {
           <Menu>{renderNavMenu()}</Menu>
         </MenuContainer>
         <ProfileContainer>
-          {isLoggedIn ? (
-            <>
-              <Name style={{ color: theme.color.primary }}>Hello, {name}</Name>
-            </>
+          {role === ROLE.ADMIN ? (
+            <Name style={{ color: theme.color.primary }}>Admin</Name>
           ) : (
             <>
-              <ContainedButton text={"Join Us"} onClick={handleClickSignup} />
-              <OutlinedButton text={"Log in"} onClick={handleClickLogin} />
+              {isLoggedIn ? (
+                <Name style={{ color: theme.color.primary }}>
+                  Hello, {name}
+                </Name>
+              ) : (
+                <>
+                  <ContainedButton
+                    text={"Join Us"}
+                    onClick={handleClickSignup}
+                  />
+                  <OutlinedButton text={"Log in"} onClick={handleClickLogin} />
+                </>
+              )}
+              <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
+                {imageUrl ? (
+                  <ProfileImage
+                    src={getImageURL(imageUrl)}
+                    alt={"profile image"}
+                    loader={() => getImageURL(imageUrl)}
+                    width={36}
+                    height={36}
+                    style={{ borderRadius: "50%" }}
+                    crossOrigin="anonymous"
+                  />
+                ) : (
+                  <MyAccountCircleIcon fontSize="large" />
+                )}
+              </Dropdown>
             </>
           )}
-          <Dropdown menu={{ items: ProfileMenuItems }} trigger={["click"]}>
-            {imageUrl ? (
-              <ProfileImage
-                src={getImageURL(imageUrl)}
-                alt={"profile image"}
-                loader={() => getImageURL(imageUrl)}
-                width={36}
-                height={36}
-                style={{ borderRadius: "50%" }}
-                crossOrigin="anonymous"
-              />
-            ) : (
-              <MyAccountCircleIcon fontSize="large" />
-            )}
-          </Dropdown>
         </ProfileContainer>
       </FullNavContainer>
     </Nav>

@@ -1,39 +1,39 @@
 import { Dayjs } from "dayjs";
 
 export enum EventType {
-  RESTAURANT="RESTAURANT",
-  CAFE="CAFE",
-  BAR= "BAR",
-  SPORT="SPORT",
-  VOLUNTEER="VOLUNTEER",
-  CONCERT="CONCERT",
-  PHOTO_TRIP="PHOTO_TRIP",
-  BOARDGAME="BOARDGAME",
-  SEMINAR="SEMINAR",
-  SPECIAL_DAY="SPECIAL_DAY",
-  OTHERS="OTHERS",
+  RESTAURANT = "RESTAURANT",
+  CAFE = "CAFE",
+  BAR = "BAR",
+  SPORT = "SPORT",
+  VOLUNTEER = "VOLUNTEER",
+  CONCERT = "CONCERT",
+  PHOTO_TRIP = "PHOTO_TRIP",
+  BOARDGAME = "BOARDGAME",
+  SEMINAR = "SEMINAR",
+  SPECIAL_DAY = "SPECIAL_DAY",
+  OTHERS = "OTHERS",
 }
 
 export enum Visibility {
-  PUBLIC="PUBLIC",
-  PRIVATE="PRIVATE",
+  PUBLIC = "PUBLIC",
+  PRIVATE = "PRIVATE",
 }
 
 export enum MeetingType {
-  ONSITE="ONSITE",
-  ONLINE="ONLINE"
+  ONSITE = "ONSITE",
+  ONLINE = "ONLINE",
 }
 
 export enum ROLE {
-    STUDENT = 'STUDENT',
-    ORGANIZER = 'ORGANIZER',
-    ADMIN = 'ADMIN',
+  STUDENT = "STUDENT",
+  ORGANIZER = "ORGANIZER",
+  ADMIN = "ADMIN",
 }
 
 export enum GENDER {
-    MALE = 'MALE',
-    FEMALE = 'FEMALE',
-    OTHERS = 'OTHERS',
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+  OTHERS = "OTHERS",
 }
 
 export enum UPLOAD_MODE {
@@ -42,6 +42,7 @@ export enum UPLOAD_MODE {
 }
 
 export type Event = {
+  id: number;
   eventName: string;
   eventType: EventType;
   visibility: Visibility;
@@ -58,6 +59,8 @@ export type Event = {
   pictures: string[];
   ownerName?: string; 
   description: string;
+  ownerName?: string;
+  ownerId?: number;
 };
 
 export type Student = {

@@ -125,7 +125,7 @@ const EventDetail: React.FC = () => {
     });
   };
 
-  const finished = false;
+  const finished = true;
 
   const LayoutFooter = () => {
     if (finished) {

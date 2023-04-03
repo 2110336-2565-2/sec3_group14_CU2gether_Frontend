@@ -33,10 +33,10 @@ const { Meta } = Card;
 const { Image } = Skeleton;
 const { Group, Button } = Radio;
 
-const JoinEvent: React.FC<JoinEventProps> = () => {
+const MyEvent: React.FC<JoinEventProps> = () => {
   const [eventsParams, setEventsParams] = useState<getEventsRequestParams>({});
   const [loading, setLoading] = useState<boolean>(false);
-  const { joinedEvents, fetchJoinEvents } = useEventStore();
+  const { myEvents, fetchMyEvents } = useEventStore();
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
   const mobile = useMediaQuery({ query: "(max-width: 768px)" });
 
@@ -47,7 +47,7 @@ const JoinEvent: React.FC<JoinEventProps> = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        await fetchJoinEvents({});
+        await fetchMyEvents({});
       } catch (e) {}
       setLoading(false);
     };
@@ -55,7 +55,7 @@ const JoinEvent: React.FC<JoinEventProps> = () => {
   }, []);
 
   const renderEventCardList = () =>
-    joinedEvents.map((event: Event, idx: number) => (
+    myEvents.map((event: Event, idx: number) => (
       <Link href={`./${event.id}/detail`}>
         <EventCard key={`event-${idx}`} event={event} />
       </Link>
@@ -88,7 +88,7 @@ const JoinEvent: React.FC<JoinEventProps> = () => {
   return (
     <EventContainer>
       <HeaderContainer>
-        <Title>Joined Events</Title>
+        <Title>My Events</Title>
       </HeaderContainer>
       <ButtonContainer>
         <Link href={`./create`}>
@@ -97,7 +97,7 @@ const JoinEvent: React.FC<JoinEventProps> = () => {
       </ButtonContainer>
       <div>
         <Title level={3}>Upcoming events</Title>
-        {joinedEvents && joinedEvents.length > 0 ? (
+        {myEvents && myEvents.length > 0 ? (
           <DetailContainer>{renderEventCardList()}</DetailContainer>
         ) : (
           <EmptyWrapper>
@@ -107,7 +107,7 @@ const JoinEvent: React.FC<JoinEventProps> = () => {
       </div>
       <div>
         <Title level={3}>Past events</Title>
-        {joinedEvents && joinedEvents.length > 0 ? (
+        {myEvents && myEvents.length > 0 ? (
           <DetailContainer>{renderEventCardList()}</DetailContainer>
         ) : (
           <EmptyWrapper>
@@ -181,4 +181,4 @@ const RightAlignedRow = styled.div`
   justify-content: flex-end;
 `;
 
-export default JoinEvent;
+export default MyEvent;

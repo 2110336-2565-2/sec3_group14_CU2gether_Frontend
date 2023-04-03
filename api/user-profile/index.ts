@@ -79,12 +79,30 @@ const uploadCoverImage = async (params: FormData) => {
   }
 };
 
+const getMyEvents = async (params: getEventsRequestParams) => {
+  try {
+    const MyEvents = await client.get(`${baseUrl}/myevent`, {
+      ...params,
+    });
+    if (MyEvents.status === 200) {
+      return MyEvents.data;
+    } else {
+      throw new Error(
+        "Error fetching joinedEvents with status code: " + MyEvents.status
+      );
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const userProfile = {
   checkStatus,
   getJoinedEvents,
   checkStatusById,
   uploadImage,
   uploadCoverImage,
+  getMyEvents,
 };
 
 export default userProfile;

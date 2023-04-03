@@ -71,7 +71,7 @@ const ReportMain: React.FC<{}> = ({}) => {
   useEffect(() => {
     if (event) {
       setEventDetail(event);
-      setImageUrl(CU_API + event.pictures[0]);
+      setImageUrl(CU_API + event.pictures[event.pictures.length - 1]);
     }
   }, [event]);
   const onFormFinish = async () => {

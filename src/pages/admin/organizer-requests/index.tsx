@@ -24,7 +24,6 @@ const OrganizerRequestsPage: React.FC<OrganizerRequestsPageProps> = ({}) => {
         openModal();
       }
     };
-    console.log(isModalOpen && "MODAL IS OPEN");
     fetchData();
   }, []);
 
@@ -44,7 +43,7 @@ const OrganizerRequestsPage: React.FC<OrganizerRequestsPageProps> = ({}) => {
           </EmptyWrapper>
         )}
       </OrganizerRequestContainer>
-      <AdminLoginModal open={isModalOpen} closeModal={closeModal}/>
+      <AdminLoginModal open={isModalOpen} closeModal={closeModal} />
     </RequestContainer>
   );
 };

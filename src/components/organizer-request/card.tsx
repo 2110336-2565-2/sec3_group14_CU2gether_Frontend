@@ -8,6 +8,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { ContainedButton, OutlinedButton } from "@/common/button";
 import { OrganizerRequest } from "@/types";
 import admin from "api/admin";
+import useAdminStore from "@/hooks/useAdminStore";
 
 type OrganizerRequestCardProps = {
   request: OrganizerRequest;
@@ -18,6 +19,7 @@ const { Title, Paragraph, Text } = Typography;
 const OrganizerRequestCard: React.FC<OrganizerRequestCardProps> = ({
   request,
 }) => {
+  const { fetchOrganizerRequests } = useAdminStore();
   const { id, email, name, coorName, phone, description, status } = request;
   return (
     <Card>
@@ -40,6 +42,7 @@ const OrganizerRequestCard: React.FC<OrganizerRequestCardProps> = ({
             try {
               await admin.rejectOrganizer(id);
               message.success("Rejected organizer request");
+              await fetchOrganizerRequests();
             } catch (error: any) {
               message.error(
                 `${error.message} with status code: ${error.status}`
@@ -58,6 +61,7 @@ const OrganizerRequestCard: React.FC<OrganizerRequestCardProps> = ({
             try {
               await admin.approveOrganizer(id);
               message.success("Approved organizer request");
+              await fetchOrganizerRequests();
             } catch (error: any) {
               message.error(`${error.message} with status code: ${error.code}`);
             }

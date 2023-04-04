@@ -249,7 +249,7 @@ const Navbar: React.FC<NavbarProps> = () => {
           <MenuIcon onClick={() => setIsDrawerOpen(true)} />
         </MenuIconWrapper>
         <Logo
-          src={"./logo_black.svg"}
+          src={"/logo_black.svg"}
           alt={"CU2Gether Logo"}
           width={200}
           height={64}
@@ -277,7 +277,7 @@ const Navbar: React.FC<NavbarProps> = () => {
       <Drawer
         title={
           <Logo
-            src={"./logo_black.svg"}
+            src={"/logo_black.svg"}
             alt={"CU2Gether Logo"}
             width={200}
             height={48}
@@ -306,7 +306,7 @@ const Navbar: React.FC<NavbarProps> = () => {
       <FullNavContainer>
         <MenuContainer>
           <Logo
-            src={"./logo_black.svg"}
+            src={"/logo_black.svg"}
             alt={"CU2Gether Logo"}
             width={200}
             height={64}

@@ -192,7 +192,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
       formData.append("endTime", dayjs(time[1]).format("HH:mm").toString());
       formData.append("meetingType", meetingType);
       formData.append("location", location);
-      formData.append("website", website);
+      if (website) formData.append("website", website);
       formData.append("description", description);
 
       if (isImageChange)

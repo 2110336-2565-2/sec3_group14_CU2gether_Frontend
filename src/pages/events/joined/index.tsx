@@ -95,11 +95,6 @@ const JoinEvent: React.FC<JoinEventProps> = () => {
       <HeaderContainer>
         <Title>Joined Events</Title>
       </HeaderContainer>
-      <ButtonContainer>
-        <Link href={`./create`}>
-          <ContainedButton text="Create New Event" />
-        </Link>
-      </ButtonContainer>
       <div>
         <Title level={3}>Upcoming events</Title>
         {joinedEvents && joinedEvents.length > 0 ? (

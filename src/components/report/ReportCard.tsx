@@ -69,7 +69,7 @@ const ReportCard: React.FC<ReportDetailProps> = ({ report, children }) => {
 const ReportCardContainer = styled.div`
   height: 100%;
   width: 100%;
-
+  background-color: ${theme.color.white};
   border: 1px solid ${theme.color.border};
   border-radius: 6px;
 `;

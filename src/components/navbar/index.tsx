@@ -1,11 +1,4 @@
-import {
-  Drawer,
-  MenuProps,
-  Dropdown,
-  Layout,
-  Typography,
-  message,
-} from "antd";
+import { Drawer, MenuProps, Dropdown, Layout, Typography, message } from "antd";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useModal } from "@/hooks";
@@ -22,6 +15,7 @@ import PersonAdd from "@mui/icons-material/PersonAdd";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import PaymentIcon from "@mui/icons-material/Payment";
 
 import { ContainedButton, OutlinedButton } from "@/common/button";
 import { LoginAndRegistrationModal } from "@/components/login-registration";
@@ -30,6 +24,7 @@ import theme from "@/utils/theme";
 import { ROLE } from "@/types";
 
 import { getImageURL } from "@/utils";
+import useTopupStore from "@/hooks/useTopupStore";
 
 type NavbarProps = {};
 
@@ -45,6 +40,7 @@ const Navbar: React.FC<NavbarProps> = () => {
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
   const mobile = useMediaQuery({ query: "(max-width: 768px)" });
   const { isModalOpen, openModal, closeModal } = useModal();
+  const { cash } = useTopupStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -165,12 +161,23 @@ const Navbar: React.FC<NavbarProps> = () => {
         getItem(
           <Link
             href={{
+              pathname: "/topup",
+            }}
+          >
+            Top up ฿{cash}
+          </Link>,
+          "3",
+          <PaymentIcon />
+        ),
+        getItem(
+          <Link
+            href={{
               pathname: "/reports/web",
             }}
           >
             Report
           </Link>,
-          "3",
+          "4",
           <ReportIcon />
         ),
         {
@@ -178,7 +185,7 @@ const Navbar: React.FC<NavbarProps> = () => {
         },
         getItem(
           <div onClick={handleClickLogout}>Log Out</div>,
-          "4",
+          "5",
           <LogoutIcon />
         ),
       ]

@@ -21,7 +21,7 @@ const TopupPage: React.FC<TopupPageProps> = () => {
   const paymentStep = () => {
     switch (step) {
       case 0:
-        return <TopupSelectAmount />;
+        return <TopupSelectAmount amount={amount} setAmount={setAmount} />;
       case 1:
         return <TopupConfirm />;
       default:
@@ -34,11 +34,12 @@ const TopupPage: React.FC<TopupPageProps> = () => {
 
 const PaymentContainer = styled.div`
   display: flex;
+  flex-flow: column;
   width: 100vw;
   height: 100%;
-  padding: 10% 20%;
+  padding: 2% 20%;
   ${theme.media.tablet} {
-    padding: 10% 10%;
+    padding: 2% 10%;
   }
 `;
 

@@ -8,6 +8,15 @@ type TopupPageProps = {};
 
 const TopupPage: React.FC<TopupPageProps> = () => {
   const [step, setStep] = useState<number>(0);
+  const [amount, setAmount] = useState<number>();
+
+  const onNextStep = () => {
+    if (step < 2) setStep(step + 1);
+  };
+
+  const onPrevStep = () => {
+    if (step > 0) setStep(step - 1);
+  };
 
   const paymentStep = () => {
     switch (step) {

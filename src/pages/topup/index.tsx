@@ -23,7 +23,13 @@ const TopupPage: React.FC<TopupPageProps> = () => {
       case 0:
         return <TopupSelectAmount amount={amount} setAmount={setAmount} />;
       case 1:
-        return <TopupConfirm />;
+        return (
+          <TopupConfirm
+            amount={amount}
+            onNextStep={onNextStep}
+            onPrevStep={onPrevStep}
+          />
+        );
       default:
         return <TopupResult />;
     }

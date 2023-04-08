@@ -63,16 +63,14 @@ const EventDetail: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const fetchJoinEvents = (params: getEventsRequestParams) => {
-      userProfile
-        .getJoinedEvents(params)
-        .then((res: any) => setJoinedEvents(res));
+    const fetchJoinEvents = () => {
+      userProfile.getJoinedEvents().then((res: any) => setJoinedEvents(res));
     };
     const fetchData = async () => {
       if (eventId) {
         try {
           setEvent(await events.getEventByID(eventId.toString()));
-          await fetchJoinEvents({});
+          await fetchJoinEvents();
           console.log(event);
         } catch (error) {
           console.log(error);

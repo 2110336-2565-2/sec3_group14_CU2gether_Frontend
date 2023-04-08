@@ -83,6 +83,7 @@ export type Event = {
   ownerName?: string;
   ownerId?: number;
   finished?: boolean;
+  ticketPrice?: number;
 };
 
 export type Student = {

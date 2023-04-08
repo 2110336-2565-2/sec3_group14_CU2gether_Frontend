@@ -12,6 +12,7 @@ type ProfileStore = {
   role?: ROLE;
   email?: string;
   imageUrl?: string;
+  credits?: number;
   student: Student;
   organizer: Organizer;
   checkStatus: () => void;
@@ -39,6 +40,7 @@ const studentProfile = {
   joinTimes: 3,
   unjoinTimes: 4,
   role: ROLE.STUDENT,
+  credits: 0,
 };
 
 const organizerProfile = {
@@ -53,6 +55,7 @@ const organizerProfile = {
   imageUrl: "",
   coverImageUrl: "",
   role: ROLE.ORGANIZER,
+  credits: 0,
 };
 
 const useProfileStore = create<ProfileStore>((set, get) => ({
@@ -69,11 +72,12 @@ const useProfileStore = create<ProfileStore>((set, get) => ({
             role: undefined,
             email: undefined,
             imageUrl: undefined,
+            credits: undefined,
           });
           return;
         }
-        const { id, role, name, email, imageUrl } = data;
-        set({ id, role, name, email, imageUrl });
+        const { id, role, name, email, imageUrl, credits } = data;
+        set({ id, role, name, email, imageUrl, credits });
       })
       .catch((err: any) => console.log(err));
   },

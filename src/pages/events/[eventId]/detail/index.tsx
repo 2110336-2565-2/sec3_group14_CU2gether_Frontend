@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import dayjs, { Dayjs } from "dayjs";
-import { Space, Typography, Layout } from "antd";
+import { Space, Typography, Layout, Modal } from "antd";
 import { useRouter } from "next/router";
 import { ContainedButton, OutlinedButton } from "@/common/button";
 import theme from "@/utils/theme";
@@ -10,13 +10,16 @@ import { Event, EventType, MeetingType, ROLE, Visibility } from "@/types";
 import FestivalIcon from "@mui/icons-material/Festival";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import { CU_API } from "@/config";
+import { CU_API, CU_WEB } from "@/config";
 import useProfileStore from "@/hooks/useProfileStore";
 import Link from "next/link";
 import Image from "next/legacy/image";
 import { getEventsRequestParams } from "api/events";
 import userProfile from "api/user-profile";
 import ReportIcon from "@mui/icons-material/Report";
+import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
+import { useModal } from "@/hooks";
+import payment from "api/payment";
 
 const { Title } = Typography;
 
@@ -43,12 +46,14 @@ const EventDetail: React.FC = () => {
     pictures: [""],
     ownerName: "",
     finished: false,
+    ticketPrice: 0,
   });
   const [joinedEvents, setJoinedEvents] = useState<Event[]>([]);
   const [join, setJoin] = useState<boolean>(false);
   const descriptionRef = useRef<null | HTMLDivElement>(null);
   const eventDetailRef = useRef<null | HTMLDivElement>(null);
-  const { id, role, checkStatus } = useProfileStore();
+  const { id, role, credits, checkStatus } = useProfileStore();
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -97,19 +102,8 @@ const EventDetail: React.FC = () => {
     pictures,
     description,
     ownerId,
+    ticketPrice,
   } = event;
-
-  const JoinOrUnjoin = () => {
-    if (eventId) {
-      if (join) {
-        events.unjoinEvent(eventId.toString());
-        setJoin(false);
-      } else {
-        events.joinEvent(eventId.toString());
-        setJoin(true);
-      }
-    }
-  };
 
   const scrollToDescription = () => {
     descriptionRef.current?.scrollIntoView({
@@ -126,8 +120,6 @@ const EventDetail: React.FC = () => {
       inline: "nearest",
     });
   };
-
-  const finished = true;
 
   const LayoutFooter = () => {
     if (event.finished) {
@@ -160,7 +152,7 @@ const EventDetail: React.FC = () => {
               />
               <ContainedButton
                 text={join ? "Unjoin" : "Join"}
-                onClick={JoinOrUnjoin}
+                onClick={openModal}
               />
             </Space>
           );
@@ -208,7 +200,7 @@ const EventDetail: React.FC = () => {
               />
               <ContainedButton
                 text={join ? "Unjoin Event" : "Join Event"}
-                onClick={JoinOrUnjoin}
+                onClick={openModal}
               />
             </Space>
           );
@@ -225,10 +217,67 @@ const EventDetail: React.FC = () => {
     }
   };
 
+  const handleOk = () => {
+    if (eventId) {
+      if (join) {
+        events.unjoinEvent(eventId.toString());
+        setJoin(false);
+        payment.refundPaymentByEventId(eventId.toString());
+      } else {
+        events.joinEvent(eventId.toString());
+        setJoin(true);
+        payment.createPaymentByEventId(eventId.toString());
+      }
+    }
+    closeModal();
+  };
+
+  const renderModal = () => {
+    if (join) {
+      return (
+        <Modal
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={closeModal}
+          okText={"Confirm"}
+          closable={false}
+        >
+          <p>After you unjoin, ฿{ticketPrice} will be refunded.</p>
+        </Modal>
+      );
+    } else {
+      if (credits && ticketPrice) {
+        if (credits < 1000) {
+          return (
+            <Modal
+              open={isModalOpen}
+              onCancel={closeModal}
+              okText={<Link href={`${CU_WEB}/topup`}>Top up</Link>}
+              closable={false}
+            >
+              <p>You don't have enough credit, please top up first.</p>
+            </Modal>
+          );
+        } else {
+          return (
+            <Modal
+              open={isModalOpen}
+              onOk={handleOk}
+              onCancel={closeModal}
+              okText={"Confirm"}
+              closable={false}
+            >
+              <p>After confirmed, ฿{ticketPrice} will be paid. Are you sure?</p>
+            </Modal>
+          );
+        }
+      }
+    }
+  };
+
   return (
     <EventDetailPageContainer>
       <div ref={eventDetailRef} />
-
       <EventDetailContainer>
         <LayoutContainer>
           <Sider>
@@ -261,21 +310,21 @@ const EventDetail: React.FC = () => {
                 {eventName}
               </Title>
               <Link href={`/profile/${ownerId}`}>
-                <Typography style={{ color: "white" }}>
+                <Typography style={{ color: "white", height: "100%" }}>
                   Created by {ownerName}
                 </Typography>
               </Link>
             </Header>
             <Content>
-              <Space size={"middle"}>
+              <Space size={"middle"} style={{ height: "100%" }}>
                 <FestivalIcon />
                 {eventType}
               </Space>
-              <Space size={"middle"}>
+              <Space size={"middle"} style={{ height: "100%" }}>
                 <LocationOnIcon />
                 {location}
               </Space>
-              <Space size={"middle"}>
+              <Space size={"middle"} style={{ height: "100%" }}>
                 <CalendarMonthIcon />
                 <Typography style={{ color: "white" }}>
                   {startDate ? dayjs(startDate).format("ddd, DD MMM YYYY") : ""}
@@ -286,6 +335,12 @@ const EventDetail: React.FC = () => {
                   {" - "}
                   {endTime}
                 </Typography>
+              </Space>
+              <Space size={"middle"} style={{ height: "100%" }}>
+                <ConfirmationNumberIcon
+                  style={{ transform: "rotateY(180deg) rotate(45deg)" }}
+                />
+                {`฿ ${ticketPrice}`}
               </Space>
             </Content>
             <Footer>{LayoutFooter()}</Footer>
@@ -308,6 +363,7 @@ const EventDetail: React.FC = () => {
           {DescriptionFooter()}
         </DescriptionFooterContainer>
       </DescriptionContainer>
+      {renderModal()}
     </EventDetailPageContainer>
   );
 };
@@ -391,6 +447,7 @@ const StyleTitle = {
   color: theme.color.white,
   fontSize: "2rem",
   fontWeight: "bold",
+  height: "100%",
 };
 
 const Header = styled.div`

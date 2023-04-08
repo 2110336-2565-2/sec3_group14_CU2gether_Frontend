@@ -20,6 +20,7 @@ import { useMediaQuery } from "react-responsive";
 import { getEventsRequestParams } from "api/events";
 import Link from "next/link";
 import userProfile from "api/user-profile";
+import { log } from "console";
 
 type JoinEventProps = {};
 
@@ -31,7 +32,7 @@ const { Group, Button } = Radio;
 const JoinEvent: React.FC<JoinEventProps> = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [myEvents, setMyEvents] = useState<Event[]>([]);
-  const [myEventsFinished, setJmyEventsFinished] = useState<Event[]>([]);
+  const [myEventsFinished, setMyEventsFinished] = useState<Event[]>([]);
 
   useEffect(() => {
     const fetchMyEvents = (params?: getEventsRequestParams) => {
@@ -41,7 +42,7 @@ const JoinEvent: React.FC<JoinEventProps> = () => {
       if (params) {
         userProfile
           .getMyEventsFinished(params)
-          .then((res: any) => setJmyEventsFinished(res));
+          .then((res: any) => setMyEventsFinished(res));
       }
     };
     const fetchData = async () => {
@@ -49,6 +50,7 @@ const JoinEvent: React.FC<JoinEventProps> = () => {
       try {
         await fetchMyEvents();
         await fetchMyEventsFinished();
+        console.log("OAT", myEventsFinished);
       } catch (e) {}
       setLoading(false);
     };

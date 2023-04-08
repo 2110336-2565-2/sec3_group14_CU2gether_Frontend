@@ -247,7 +247,7 @@ const EventDetail: React.FC = () => {
       );
     } else {
       if (credits && ticketPrice) {
-        if (credits < 1000) {
+        if (credits < ticketPrice) {
           return (
             <Modal
               open={isModalOpen}

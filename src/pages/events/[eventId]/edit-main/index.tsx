@@ -70,6 +70,7 @@ const defaultEventDetail = {
   endTime: "16:00",
   meetingType: MeetingType.ONSITE,
   location: "Chulalongkorn",
+  ticketPrice: 0,
   website: "www.exmaple.com",
   pictures: ["pictures"],
   description: "Tell us something",
@@ -91,7 +92,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
       events
         .getEventByID(eventId.toString())
         .then((data) => {
-          const newEvent = {
+          const thisEvent = {
             id: data.id,
             eventName: data.eventName,
             eventType: data.eventType,
@@ -105,11 +106,12 @@ const EditEventMain: React.FC<{}> = ({}) => {
             endTime: data.endTime,
             meetingType: data.meetingType,
             location: data.location,
+            ticketPrice: data.ticketPrice,
             website: data.website,
             pictures: data.pictures,
             description: data.description,
           };
-          setEventDetail(newEvent);
+          setEventDetail(thisEvent);
         })
         .catch((err) => {
           console.log(err);
@@ -139,6 +141,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
           dayjs(event.startTime, timeFormat),
           dayjs(event.endTime, timeFormat),
         ],
+        ticketPrice: event.ticketPrice,
         meetingType: event.meetingType,
         location: event.location,
         website: event.website,
@@ -168,6 +171,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
         requireParticipants,
         date,
         time,
+        ticketPrice,
         meetingType,
         location,
         website,
@@ -190,11 +194,11 @@ const EditEventMain: React.FC<{}> = ({}) => {
       );
       formData.append("startTime", dayjs(time[0]).format("HH:mm").toString());
       formData.append("endTime", dayjs(time[1]).format("HH:mm").toString());
+      formData.append("ticketPrice", ticketPrice);
       formData.append("meetingType", meetingType);
       formData.append("location", location);
       if (website) formData.append("website", website);
       formData.append("description", description);
-
       if (isImageChange)
         formData.append("pictures", picture.file.originFileObj);
 
@@ -308,6 +312,10 @@ const EditEventMain: React.FC<{}> = ({}) => {
     </FlexContainer>
   );
 
+  const ticketPriceForm = (
+    <Input placeholder="Ticket Price" defaultValue={event.ticketPrice} />
+  );
+
   const meetingTypeForm = (
     <Radio.Group
       defaultValue={event.meetingType}
@@ -328,6 +336,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
       </Radio.Button>
     </Radio.Group>
   );
+
   const locationForm = (
     <Input placeholder="Location" defaultValue={event.location} />
   );
@@ -496,6 +505,16 @@ const EditEventMain: React.FC<{}> = ({}) => {
                     rules={[{ required: true, message: "Please Enter Time" }]}
                   >
                     {timeForm}
+                  </FormInput>
+                  <FormInput
+                    title="Ticket Price"
+                    name="ticketPrice"
+                    isRequired={true}
+                    rules={[
+                      { required: true, message: "Please Enter Ticket Price" },
+                    ]}
+                  >
+                    {ticketPriceForm}
                   </FormInput>
                   <FormInput
                     title="Meeting Type"

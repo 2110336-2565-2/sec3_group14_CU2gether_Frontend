@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { OutlinedButton } from "@/common/button";
 import { useMediaQuery } from "react-responsive";
 import useTopupStore from "@/hooks/useTopupStore";
+import { useRouter } from "next/router";
 type TopupConfirmProps = {
   onNextStep: () => void;
   onPrevStep: () => void;
@@ -33,6 +34,7 @@ export const TopupConfirm: React.FC<TopupConfirmProps> = ({
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
   const [size, setSize] = useState<number>(280);
   const mobile = useMediaQuery({ query: "(max-width: 425px)" });
+  const router = useRouter();
 
   useEffect(() => {
     setIsMobileScreen(mobile);
@@ -43,7 +45,11 @@ export const TopupConfirm: React.FC<TopupConfirmProps> = ({
 
   useEffect(() => {
     const fetchData = async () => {
-      await getTransaction(transactionID);
+      try {
+        await getTransaction(transactionID);
+      } catch (error) {
+        router.push("/");
+      }
     };
     const intervalId = setInterval(async () => {
       await getTransaction(transactionID);
@@ -52,6 +58,18 @@ export const TopupConfirm: React.FC<TopupConfirmProps> = ({
     return () => clearInterval(intervalId);
   }, []);
 
+  useEffect(() => {
+    const handleBeforeUnload = async (event: any) => {
+      event.preventDefault();
+      if (transaction) {
+        await deleteTransaction(`${transaction.id}`);
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
   useEffect(() => {
     if (transaction) {
       if (transaction.isCompleted) onNextStep();
@@ -64,7 +82,7 @@ export const TopupConfirm: React.FC<TopupConfirmProps> = ({
 
   const handleBack = async () => {
     if (transaction) {
-      // await deleteTransaction(`${transaction.id}`);
+      await deleteTransaction(`${transaction.id}`);
     }
     onPrevStep();
   };

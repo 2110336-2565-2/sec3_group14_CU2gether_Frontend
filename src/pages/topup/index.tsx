@@ -7,9 +7,9 @@ import { TopupConfirm, TopupResult, TopupSelectAmount } from "@/views/topup";
 type TopupPageProps = {};
 
 const TopupPage: React.FC<TopupPageProps> = () => {
-  const [step, setStep] = useState<number>(1);
+  const [step, setStep] = useState<number>(0);
   const [amount, setAmount] = useState<number>();
-  const [transactionID, setTransactionID] = useState<number>(4);
+  const [transactionID, setTransactionID] = useState<number>(5);
   const [QRURL, setQRURL] = useState<string>("www.google.com");
   const onNextStep = () => {
     if (step < 2) setStep(step + 1);

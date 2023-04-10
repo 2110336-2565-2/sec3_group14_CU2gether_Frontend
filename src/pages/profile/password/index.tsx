@@ -117,7 +117,7 @@ const EditProfilePage: React.FC<{}> = ({}) => {
           <Form.Item>
             <OperationButtonContainer>
               <OperationButton type="default" onClick={() => router.back()}>
-                Cancle
+                Cancel
               </OperationButton>
               <OperationButton type="primary" htmlType="submit">
                 Save

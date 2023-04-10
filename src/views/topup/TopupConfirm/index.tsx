@@ -5,49 +5,71 @@ import theme from "@/utils/theme";
 import dayjs from "dayjs";
 import { OutlinedButton } from "@/common/button";
 import { useMediaQuery } from "react-responsive";
+import useTopupStore from "@/hooks/useTopupStore";
 type TopupConfirmProps = {
-  amount: number | undefined;
   onNextStep: () => void;
   onPrevStep: () => void;
+  QRURL: string;
+  transactionID: string;
 };
 
 const { Content } = Layout;
-const { Text, Title, Paragraph } = Typography;
-const mockvalue = {
+const { Text, Title } = Typography;
+let value = {
+  //default value
   Method: "QR Payment",
   CreateAt: dayjs().format("D MMMM YYYY, HH:mm"),
   Status: "Pending",
-  Amount: (300).toFixed(2),
+  Amount: (0).toFixed(2),
 };
 
 export const TopupConfirm: React.FC<TopupConfirmProps> = ({
-  amount,
   onNextStep,
   onPrevStep,
+  QRURL,
+  transactionID,
 }) => {
+  const { transaction, getTransaction, deleteTransaction } = useTopupStore();
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
   const [size, setSize] = useState<number>(280);
   const mobile = useMediaQuery({ query: "(max-width: 425px)" });
+
   useEffect(() => {
     setIsMobileScreen(mobile);
   }, [mobile]);
   useEffect(() => {
     isMobileScreen ? setSize(140) : setSize(280);
   }, [isMobileScreen]);
+
   useEffect(() => {
+    const fetchData = async () => {
+      await getTransaction(transactionID);
+    };
     const intervalId = setInterval(async () => {
-      console.log("polling");
-      //check status isSuccess then call on Next Step
-      //if (success){onNextStep}
+      await getTransaction(transactionID);
     }, 5000);
+    fetchData();
     return () => clearInterval(intervalId);
   }, []);
 
-  const handleBack = () => {
+  useEffect(() => {
+    if (transaction) {
+      if (transaction.isCompleted) onNextStep();
+      value.Amount = transaction.amount.toFixed(2);
+      value.CreateAt = dayjs(transaction.createdAt).format(
+        "D MMMM YYYY, HH:mm"
+      );
+    }
+  }, [transaction]);
+
+  const handleBack = async () => {
+    if (transaction) {
+      // await deleteTransaction(`${transaction.id}`);
+    }
     onPrevStep();
   };
   const renderInfo = () =>
-    Object.entries(mockvalue).map(([key, value]) => {
+    Object.entries(value).map(([key, value]) => {
       return (
         <DetailRow>
           <TitleContainer>
@@ -61,7 +83,7 @@ export const TopupConfirm: React.FC<TopupConfirmProps> = ({
     <TopUpContainer>
       <Content>
         <ContentContainer>
-          <QRCode value="www.google.com" size={size}></QRCode>
+          <QRCode value={QRURL} size={size}></QRCode>
           <InfoContainer>{renderInfo()}</InfoContainer>
           <ButtonContainer>
             <OutlinedButton

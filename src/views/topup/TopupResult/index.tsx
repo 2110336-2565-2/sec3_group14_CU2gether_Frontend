@@ -7,28 +7,46 @@ import styled from "styled-components";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { ContainedButton } from "@/common/button";
 import { useRouter } from "next/router";
-type TopupResultProps = {};
+import useTopupStore from "@/hooks/useTopupStore";
+type TopupResultProps = { transactionID: string };
 const { Content } = Layout;
 const { Text, Title, Paragraph } = Typography;
-const mockvalue = {
+const value = {
   Method: "QR Payment",
   CreateAt: dayjs().format("D MMMM YYYY, HH:mm"),
   Status: "Success",
   Amount: (300).toFixed(2),
 };
-export const TopupResult: React.FC<TopupResultProps> = () => {
+export const TopupResult: React.FC<TopupResultProps> = ({ transactionID }) => {
+  const { transaction, getTransaction } = useTopupStore();
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
   const [size, setSize] = useState<number>(280);
   const mobile = useMediaQuery({ query: "(max-width: 425px)" });
   const router = useRouter();
+
   useEffect(() => {
     setIsMobileScreen(mobile);
-  }, [mobile]);
-  useEffect(() => {
     isMobileScreen ? setSize(140) : setSize(280);
-  }, [isMobileScreen]);
+  }, [mobile]);
+
+  useEffect(() => {
+    console.log("start");
+    const fetchData = async () => {
+      await getTransaction(transactionID);
+    };
+    fetchData();
+  }, []);
+  useEffect(() => {
+    console.log(1);
+    if (transaction) {
+      value.Amount = transaction.amount.toFixed(2);
+      value.CreateAt = dayjs(transaction.createdAt).format(
+        "D MMMM YYYY, HH:mm"
+      );
+    }
+  }, []);
   const renderInfo = () =>
-    Object.entries(mockvalue).map(([key, value]) => {
+    Object.entries(value).map(([key, value]) => {
       return (
         <DetailRow>
           <TitleContainer>

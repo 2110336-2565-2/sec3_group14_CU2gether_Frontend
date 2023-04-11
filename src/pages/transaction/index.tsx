@@ -12,8 +12,6 @@ type TransactionPageProps = {};
 
 const TransactionPage: React.FC<TransactionPageProps> = () => {
   const [step, setStep] = useState<number>(0);
-  const [transactionID, setTransactionID] = useState<number>(5);
-  const [QRURL, setQRURL] = useState<string>("www.google.com");
   const onNextStep = () => {
     if (step < 2) setStep(step + 1);
   };
@@ -28,15 +26,10 @@ const TransactionPage: React.FC<TransactionPageProps> = () => {
         return <TransactionSelectAmount onNextStep={onNextStep} />;
       case 1:
         return (
-          <TransactionConfirm
-            QRURL={QRURL}
-            transactionID={`${transactionID}`}
-            onNextStep={onNextStep}
-            onPrevStep={onPrevStep}
-          />
+          <TransactionConfirm onNextStep={onNextStep} onPrevStep={onPrevStep} />
         );
       default:
-        return <TransactionResult transactionID={`${transactionID}`} />;
+        return <TransactionResult />;
     }
   };
 

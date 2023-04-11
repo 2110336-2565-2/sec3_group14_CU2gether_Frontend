@@ -10,8 +10,6 @@ import { useRouter } from "next/router";
 type TransactionConfirmProps = {
   onNextStep: () => void;
   onPrevStep: () => void;
-  QRURL: string;
-  transactionID: string;
 };
 
 const { Content } = Layout;
@@ -23,19 +21,22 @@ let value = {
   Status: "Pending",
   Amount: (0).toFixed(2),
 };
-
+type ShowInfo = {
+  Method: string;
+  CreateAt: string;
+  Status: string;
+  Amount: string;
+};
 export const TransactionConfirm: React.FC<TransactionConfirmProps> = ({
   onNextStep,
   onPrevStep,
-  QRURL,
-  transactionID,
 }) => {
-  const { transaction, getTransaction, deleteTransaction } =
+  const { transaction, QRUrl, getTransaction, deleteTransaction } =
     useTransactionStore();
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
   const [size, setSize] = useState<number>(280);
+  const [showInfo, setShowInfo] = useState<ShowInfo>(value);
   const mobile = useMediaQuery({ query: "(max-width: 425px)" });
-  const router = useRouter();
 
   useEffect(() => {
     setIsMobileScreen(mobile);
@@ -45,17 +46,18 @@ export const TransactionConfirm: React.FC<TransactionConfirmProps> = ({
   }, [isMobileScreen]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await getTransaction(transactionID);
-      } catch (error) {
-        router.push("/");
-      }
-    };
+    if (transaction) {
+      setShowInfo({
+        ...showInfo,
+        Amount: transaction.amount.toFixed(2),
+        CreateAt: dayjs(transaction.createdAt).format("D MMMM YYYY, HH:mm"),
+      });
+    }
     const intervalId = setInterval(async () => {
-      await getTransaction(transactionID);
+      if (transaction) {
+        await getTransaction(`${transaction.id}`);
+      }
     }, 5000);
-    fetchData();
     return () => clearInterval(intervalId);
   }, []);
 
@@ -71,13 +73,10 @@ export const TransactionConfirm: React.FC<TransactionConfirmProps> = ({
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
+
   useEffect(() => {
-    if (transaction) {
-      if (transaction.isCompleted) onNextStep();
-      value.Amount = transaction.amount.toFixed(2);
-      value.CreateAt = dayjs(transaction.createdAt).format(
-        "D MMMM YYYY, HH:mm"
-      );
+    if (transaction && transaction.isCompleted) {
+      onNextStep();
     }
   }, [transaction]);
 
@@ -88,7 +87,7 @@ export const TransactionConfirm: React.FC<TransactionConfirmProps> = ({
     onPrevStep();
   };
   const renderInfo = () =>
-    Object.entries(value).map(([key, value]) => {
+    Object.entries(showInfo).map(([key, value]) => {
       return (
         <DetailRow>
           <TitleContainer>
@@ -102,7 +101,7 @@ export const TransactionConfirm: React.FC<TransactionConfirmProps> = ({
     <TransactionContainer>
       <Content>
         <ContentContainer>
-          <QRCode value={QRURL} size={size}></QRCode>
+          <QRCode value={QRUrl ? QRUrl : ""} size={size}></QRCode>
           <InfoContainer>{renderInfo()}</InfoContainer>
           <ButtonContainer>
             <OutlinedButton

@@ -8,7 +8,7 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { ContainedButton } from "@/common/button";
 import { useRouter } from "next/router";
 import useTransactionStore from "@/hooks/useTransactionStore";
-type TransactionResultProps = { transactionID: string };
+type TransactionResultProps = {};
 const { Content } = Layout;
 const { Text, Title, Paragraph } = Typography;
 const value = {
@@ -17,10 +17,15 @@ const value = {
   Status: "Success",
   Amount: (300).toFixed(2),
 };
-export const TransactionResult: React.FC<TransactionResultProps> = ({
-  transactionID,
-}) => {
-  const { transaction, getTransaction } = useTransactionStore();
+type ShowInfo = {
+  Method: string;
+  CreateAt: string;
+  Status: string;
+  Amount: string;
+};
+export const TransactionResult: React.FC<TransactionResultProps> = ({}) => {
+  const { transaction } = useTransactionStore();
+  const [showInfo, setShowInfo] = useState<ShowInfo>(value);
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
   const [size, setSize] = useState<number>(280);
   const mobile = useMediaQuery({ query: "(max-width: 425px)" });
@@ -32,23 +37,17 @@ export const TransactionResult: React.FC<TransactionResultProps> = ({
   }, [mobile]);
 
   useEffect(() => {
-    console.log("start");
-    const fetchData = async () => {
-      await getTransaction(transactionID);
-    };
-    fetchData();
-  }, []);
-  useEffect(() => {
-    console.log(1);
     if (transaction) {
-      value.Amount = transaction.amount.toFixed(2);
-      value.CreateAt = dayjs(transaction.createdAt).format(
-        "D MMMM YYYY, HH:mm"
-      );
+      setShowInfo({
+        ...showInfo,
+        Amount: transaction.amount.toFixed(2),
+        CreateAt: dayjs(transaction.createdAt).format("D MMMM YYYY, HH:mm"),
+      });
     }
   }, []);
+
   const renderInfo = () =>
-    Object.entries(value).map(([key, value]) => {
+    Object.entries(showInfo).map(([key, value]) => {
       return (
         <DetailRow>
           <TitleContainer>

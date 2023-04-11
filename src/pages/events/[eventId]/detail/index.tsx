@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import dayjs, { Dayjs } from "dayjs";
-import { Space, Typography, Layout } from "antd";
+import { Space, Typography, Layout, Form } from "antd";
 import { useRouter } from "next/router";
 import { ContainedButton, OutlinedButton } from "@/common/button";
 import theme from "@/utils/theme";
@@ -10,6 +10,7 @@ import { Event, EventType, MeetingType, ROLE, Visibility } from "@/types";
 import FestivalIcon from "@mui/icons-material/Festival";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import { CU_API } from "@/config";
 import useProfileStore from "@/hooks/useProfileStore";
 import Link from "next/link";
@@ -227,6 +228,13 @@ const EventDetail: React.FC = () => {
     }
   };
 
+  const currency = (
+    <Form.Item name="currency" noStyle>
+      <>&#3647;</>
+    </Form.Item>
+  );
+
+
   return (
     <EventDetailPageContainer>
       <div ref={eventDetailRef} />
@@ -288,6 +296,10 @@ const EventDetail: React.FC = () => {
                   {" - "}
                   {endTime}
                 </Typography>
+              </Space>
+              <Space size={"middle"}>
+                <ConfirmationNumberIcon />
+                {ticketPrice}{currency}
               </Space>
             </Content>
             <Footer>{LayoutFooter()}</Footer>

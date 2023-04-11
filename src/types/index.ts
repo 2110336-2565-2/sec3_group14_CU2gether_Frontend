@@ -101,6 +101,7 @@ export type Student = {
   joinTimes: number;
   unjoinTimes: number;
   role: ROLE;
+  credits: number;
 };
 
 export type Organizer = {
@@ -115,6 +116,7 @@ export type Organizer = {
   imageUrl: string;
   coverImageUrl: string;
   role: ROLE;
+  credits: number;
 };
 
 export type Review = {

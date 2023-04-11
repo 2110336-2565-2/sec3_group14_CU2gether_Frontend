@@ -312,8 +312,14 @@ const EditEventMain: React.FC<{}> = ({}) => {
     </FlexContainer>
   );
 
+  const currency = (
+    <Form.Item name="currency" noStyle>
+      <>&#3647;</>
+    </Form.Item>
+  );
+
   const ticketPriceForm = (
-    <Input placeholder="Ticket Price" defaultValue={event.ticketPrice} />
+    <Input addonAfter={currency} placeholder="Ticket Price" defaultValue={event.ticketPrice} />
   );
 
   const meetingTypeForm = (
@@ -509,10 +515,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
                   <FormInput
                     title="Ticket Price"
                     name="ticketPrice"
-                    isRequired={true}
-                    rules={[
-                      { required: true, message: "Please Enter Ticket Price" },
-                    ]}
+                    isRequired={false}
                   >
                     {ticketPriceForm}
                   </FormInput>

@@ -38,6 +38,7 @@ const EventDetail: React.FC = () => {
     endTime: "",
     meetingType: MeetingType.ONSITE,
     location: "",
+    ticketPrice: 0,
     website: "",
     description: "",
     pictures: [""],
@@ -95,6 +96,7 @@ const EventDetail: React.FC = () => {
     startTime,
     endTime,
     pictures,
+    ticketPrice,
     description,
     ownerId,
   } = event;

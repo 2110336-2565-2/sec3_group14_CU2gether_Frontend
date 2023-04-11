@@ -7,6 +7,7 @@ import {
   Radio,
   DatePicker,
   TimePicker,
+  Form,
 } from "antd";
 import theme from "@/utils/theme";
 import { Visibility } from "@/types"
@@ -104,6 +105,12 @@ const BasicsForm: React.FC<{}> = ({}) => {
     );
   };
 
+  const currency = (
+    <Form.Item name="currency" noStyle>
+      <>&#3647;</>
+    </Form.Item>
+  );
+
   return (
     <FormContainer>
       <FormInput
@@ -161,6 +168,15 @@ const BasicsForm: React.FC<{}> = ({}) => {
       >
         {participantCountForm()}
       </FormInput>
+
+      <FormInput
+        title="Ticket Price"
+        name="ticketPrice"
+        isRequired={false}
+      >
+        <Input addonAfter={currency} placeholder="Ticket Price" />
+      </FormInput>
+
     </FormContainer>
   );
 };

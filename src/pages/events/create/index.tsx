@@ -105,6 +105,7 @@ const CreateEvent: React.FC<{}> = ({}) => {
       requireParticipantsMax,
       date,
       time,
+      ticketPrice,
       meetingType,
       location,
       website,
@@ -125,6 +126,7 @@ const CreateEvent: React.FC<{}> = ({}) => {
     formData.append("endDate", dayjs(date[1]).format("YYYY-MM-DD").toString());
     formData.append("startTime", dayjs(time[0]).format("HH:mm").toString());
     formData.append("endTime", dayjs(time[1]).format("HH:mm").toString());
+    formData.append("ticketPrice", ticketPrice);
     formData.append("meetingType", meetingType);
     formData.append("location", location);
     formData.append("pictures", picture.file.originFileObj);

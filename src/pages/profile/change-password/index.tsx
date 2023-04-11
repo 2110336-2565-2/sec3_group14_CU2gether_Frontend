@@ -12,19 +12,22 @@ import { OutlinedButton } from "@/common/button";
 
 const { Text } = Typography;
 
-const EditProfilePage: React.FC<{}> = ({}) => {
-  const [ form ] = Form.useForm();
+const ChangePasswordPage: React.FC<{}> = ({}) => {
+  const [form] = Form.useForm();
   const { id, role, resetPassword } = useProfileStore();
-  const [ isError, setError ] = useState<boolean>(false);
+  const [isError, setError] = useState<boolean>(false);
 
   const router = useRouter();
 
   const onFinish = async (values: any) => {
     const { oldPassword, newPassword } = values;
-    if(id) {
+    if (id) {
       try {
-        await resetPassword( id, role ? role : ROLE.STUDENT, { oldPassword, newPassword });
-        message.success('Password changed successfully!');
+        await resetPassword(id, role ? role : ROLE.STUDENT, {
+          oldPassword,
+          newPassword,
+        });
+        message.success("Password changed successfully!");
         router.back();
       } catch (error) {
         setError(true);
@@ -36,24 +39,20 @@ const EditProfilePage: React.FC<{}> = ({}) => {
   const onCloseModal = () => {
     setError(false);
     form.resetFields();
-  }
+  };
 
   const renderErrorResult = () => (
-    <CenteredModal 
-      open={isError}
-      footer={null}
-    >
+    <CenteredModal open={isError} footer={null}>
       <ModalContent>
         <Result
-          status = "error"
-          title = "Incorrect Password"
-          style = {{padding: 10}}  
-        >
-        </Result>
-        <OutlinedButton text="Close" onClick = {() => onCloseModal()}/>
+          status="error"
+          title="Incorrect Password"
+          style={{ padding: 10 }}
+        ></Result>
+        <OutlinedButton text="Close" onClick={() => onCloseModal()} />
       </ModalContent>
     </CenteredModal>
-  )
+  );
 
   return (
     <EditProfileContainer>
@@ -62,18 +61,16 @@ const EditProfilePage: React.FC<{}> = ({}) => {
       </ChangePasswordTitleWrapper>
       <ContentContainer>
         <FormContainer onFinish={onFinish} form={form}>
-          <FormInput 
-            title="Old Password" 
-            name="oldPassword" 
+          <FormInput
+            title="Old Password"
+            name="oldPassword"
             isRequired={true}
-            rules={[
-              { required: true, message: "Please enter a password" },
-            ]}
+            rules={[{ required: true, message: "Please enter a password" }]}
           >
-            <StyledInput placeholder="Old Password"/>
+            <StyledInput placeholder="Old Password" />
           </FormInput>
           <FormInput
-            title="New password" 
+            title="New password"
             name="newPassword"
             isRequired={true}
             rules={[
@@ -85,7 +82,7 @@ const EditProfilePage: React.FC<{}> = ({}) => {
               },
             ]}
           >
-            <StyledInput type="password" placeholder="New Password"/>
+            <StyledInput type="password" placeholder="New Password" />
           </FormInput>
           <FormInput
             title="Confirm new password"
@@ -109,15 +106,12 @@ const EditProfilePage: React.FC<{}> = ({}) => {
               }),
             ]}
           >
-            <StyledInput
-              type="password"
-              placeholder="Confirm New Password"
-            />
+            <StyledInput type="password" placeholder="Confirm New Password" />
           </FormInput>
           <Form.Item>
             <OperationButtonContainer>
               <OperationButton type="default" onClick={() => router.back()}>
-                Cancle
+                Cancel
               </OperationButton>
               <OperationButton type="primary" htmlType="submit">
                 Save
@@ -125,9 +119,15 @@ const EditProfilePage: React.FC<{}> = ({}) => {
             </OperationButtonContainer>
           </Form.Item>
         </FormContainer>
-        <LockReset sx={{ fontSize: 250, display:{xs: 'none', sm: 'none', md: 'block'} }} style={{marginTop: -70}}/>
-        </ContentContainer>
-        {renderErrorResult()}
+        <LockReset
+          sx={{
+            fontSize: 250,
+            display: { xs: "none", sm: "none", md: "block" },
+          }}
+          style={{ marginTop: -70 }}
+        />
+      </ContentContainer>
+      {renderErrorResult()}
     </EditProfileContainer>
   );
 };
@@ -214,4 +214,4 @@ const ModalContent = styled.div`
   height: fit-content;
 `;
 
-export default EditProfilePage;
+export default ChangePasswordPage;

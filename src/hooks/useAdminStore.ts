@@ -2,12 +2,12 @@ import { OrganizerRequest, RequestStatus } from "@/types";
 import admin from "api/admin";
 import { create } from "zustand";
 
-type EventStore = {
+type AdminStore = {
   organizerRequests: OrganizerRequest[];
   fetchOrganizerRequests: () => void;
 };
 
-const useAdminStore = create<EventStore>((set,get) => ({
+const useAdminStore = create<AdminStore>((set, get) => ({
   organizerRequests: [],
   fetchOrganizerRequests: async () => {
     try {
@@ -16,12 +16,12 @@ const useAdminStore = create<EventStore>((set,get) => ({
         organizerRequests: _organizerRequests,
       });
     } catch (error) {
-      throw new Error(error.message)
+      throw new Error(error.message);
     }
   },
   removeOrganizerRequest: async (idx: string) => {
-    set({organizerRequests:_organizer})
-  }
+    set({ organizerRequests: _organizer });
+  },
 }));
 
 export default useAdminStore;

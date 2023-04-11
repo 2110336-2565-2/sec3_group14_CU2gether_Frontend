@@ -11,7 +11,7 @@ const SearchInput = (props: any) => {
 
   return (
     <Input
-      prefix={<SearchIcon sx={{ color: theme.color.backgroundOnHover }} />}
+      prefix={<SearchIcon sx={{ color: theme.color.lightGray }} />}
       value={search}
       onChange={onChange}
       onPressEnter={onEnter}

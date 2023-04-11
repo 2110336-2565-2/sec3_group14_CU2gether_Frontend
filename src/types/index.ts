@@ -147,7 +147,9 @@ export type Transaction = {
   isCompleted: Boolean;
   createdAt: string;
   completedAt?: string;
+  QRUrl?: string;
 };
+
 export enum TransactionMode {
   DEPOSIT = "DEPOSIT",
   WITHDRAWAL = "WITHDRAWAL",

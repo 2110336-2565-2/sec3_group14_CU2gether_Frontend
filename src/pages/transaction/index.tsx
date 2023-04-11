@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import theme from "@/utils/theme";
-import { TopupConfirm, TopupResult, TopupSelectAmount } from "@/views/topup";
+import {
+  TransactionConfirm,
+  TransactionResult,
+  TransactionSelectAmount,
+} from "@/views/transaction";
 
-type TopupPageProps = {};
+type TransactionPageProps = {};
 
-const TopupPage: React.FC<TopupPageProps> = () => {
+const TransactionPage: React.FC<TransactionPageProps> = () => {
   const [step, setStep] = useState<number>(0);
-  const [amount, setAmount] = useState<number>();
   const [transactionID, setTransactionID] = useState<number>(5);
   const [QRURL, setQRURL] = useState<string>("www.google.com");
   const onNextStep = () => {
@@ -22,10 +25,10 @@ const TopupPage: React.FC<TopupPageProps> = () => {
   const paymentStep = () => {
     switch (step) {
       case 0:
-        return <TopupSelectAmount amount={amount} setAmount={setAmount} />;
+        return <TransactionSelectAmount onNextStep={onNextStep} />;
       case 1:
         return (
-          <TopupConfirm
+          <TransactionConfirm
             QRURL={QRURL}
             transactionID={`${transactionID}`}
             onNextStep={onNextStep}
@@ -33,7 +36,7 @@ const TopupPage: React.FC<TopupPageProps> = () => {
           />
         );
       default:
-        return <TopupResult transactionID={`${transactionID}`} />;
+        return <TransactionResult transactionID={`${transactionID}`} />;
     }
   };
 
@@ -51,4 +54,4 @@ const PaymentContainer = styled.div`
   }
 `;
 
-export default TopupPage;
+export default TransactionPage;

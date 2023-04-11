@@ -24,7 +24,6 @@ import theme from "@/utils/theme";
 import { ROLE } from "@/types";
 
 import { getImageURL } from "@/utils";
-import useTopupStore from "@/hooks/useTopupStore";
 
 type NavbarProps = {};
 
@@ -33,14 +32,13 @@ const { Paragraph, Text } = Typography;
 type MenuItem = Required<MenuProps>["items"][number];
 
 const Navbar: React.FC<NavbarProps> = () => {
-  const { id, role, name, imageUrl, checkStatus } = useProfileStore();
+  const { id, role, name, imageUrl, credits, checkStatus } = useProfileStore();
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false); // is the user logged in or not
   const [isLoggingIn, setLoggingIn] = useState<boolean>(true); // is the action is logging in or signing up
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
   const mobile = useMediaQuery({ query: "(max-width: 768px)" });
   const { isModalOpen, openModal, closeModal } = useModal();
-  const { cash } = useTopupStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -161,10 +159,10 @@ const Navbar: React.FC<NavbarProps> = () => {
         getItem(
           <Link
             href={{
-              pathname: "/topup",
+              pathname: "/transaction",
             }}
           >
-            Top up ฿{cash}
+            Top up ฿{credits}
           </Link>,
           "3",
           <PaymentIcon />

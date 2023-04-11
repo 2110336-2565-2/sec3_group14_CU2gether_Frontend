@@ -1,36 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { Layout, QRCode, Space, Typography } from "antd";
-import styled from "styled-components";
 import theme from "@/utils/theme";
+import { Layout, Typography } from "antd";
 import dayjs from "dayjs";
-import { OutlinedButton } from "@/common/button";
+import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import useTopupStore from "@/hooks/useTopupStore";
+import styled from "styled-components";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { ContainedButton } from "@/common/button";
 import { useRouter } from "next/router";
-type TopupConfirmProps = {
-  onNextStep: () => void;
-  onPrevStep: () => void;
-  QRURL: string;
-  transactionID: string;
-};
-
+import useTransactionStore from "@/hooks/useTransactionStore";
+type TransactionResultProps = { transactionID: string };
 const { Content } = Layout;
-const { Text, Title } = Typography;
-let value = {
-  //default value
+const { Text, Title, Paragraph } = Typography;
+const value = {
   Method: "QR Payment",
   CreateAt: dayjs().format("D MMMM YYYY, HH:mm"),
-  Status: "Pending",
-  Amount: (0).toFixed(2),
+  Status: "Success",
+  Amount: (300).toFixed(2),
 };
-
-export const TopupConfirm: React.FC<TopupConfirmProps> = ({
-  onNextStep,
-  onPrevStep,
-  QRURL,
+export const TransactionResult: React.FC<TransactionResultProps> = ({
   transactionID,
 }) => {
-  const { transaction, getTransaction, deleteTransaction } = useTopupStore();
+  const { transaction, getTransaction } = useTransactionStore();
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
   const [size, setSize] = useState<number>(280);
   const mobile = useMediaQuery({ query: "(max-width: 425px)" });
@@ -38,54 +28,25 @@ export const TopupConfirm: React.FC<TopupConfirmProps> = ({
 
   useEffect(() => {
     setIsMobileScreen(mobile);
-  }, [mobile]);
-  useEffect(() => {
     isMobileScreen ? setSize(140) : setSize(280);
-  }, [isMobileScreen]);
+  }, [mobile]);
 
   useEffect(() => {
+    console.log("start");
     const fetchData = async () => {
-      try {
-        await getTransaction(transactionID);
-      } catch (error) {
-        router.push("/");
-      }
-    };
-    const intervalId = setInterval(async () => {
       await getTransaction(transactionID);
-    }, 5000);
+    };
     fetchData();
-    return () => clearInterval(intervalId);
-  }, []);
-
-  useEffect(() => {
-    const handleBeforeUnload = async (event: any) => {
-      event.preventDefault();
-      if (transaction) {
-        await deleteTransaction(`${transaction.id}`);
-      }
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
   }, []);
   useEffect(() => {
+    console.log(1);
     if (transaction) {
-      if (transaction.isCompleted) onNextStep();
       value.Amount = transaction.amount.toFixed(2);
       value.CreateAt = dayjs(transaction.createdAt).format(
         "D MMMM YYYY, HH:mm"
       );
     }
-  }, [transaction]);
-
-  const handleBack = async () => {
-    if (transaction) {
-      await deleteTransaction(`${transaction.id}`);
-    }
-    onPrevStep();
-  };
+  }, []);
   const renderInfo = () =>
     Object.entries(value).map(([key, value]) => {
       return (
@@ -97,25 +58,30 @@ export const TopupConfirm: React.FC<TopupConfirmProps> = ({
         </DetailRow>
       );
     });
+  const handleBack = () => {
+    router.push("/");
+  };
   return (
-    <TopUpContainer>
+    <TransactionContainer>
       <Content>
         <ContentContainer>
-          <QRCode value={QRURL} size={size}></QRCode>
+          <CheckCircleOutlineIcon
+            style={{ fontSize: `${size}px`, color: `${theme.color.primary}` }}
+          ></CheckCircleOutlineIcon>
           <InfoContainer>{renderInfo()}</InfoContainer>
           <ButtonContainer>
-            <OutlinedButton
+            <ContainedButton
               onClick={handleBack}
-              text="Cancel"
+              text="Back to home"
               style={{ width: "100%" }}
             />
           </ButtonContainer>
         </ContentContainer>
       </Content>
-    </TopUpContainer>
+    </TransactionContainer>
   );
 };
-const TopUpContainer = styled(Layout)`
+const TransactionContainer = styled(Layout)`
   margin-left: auto;
   margin-right: auto;
   width: 90%;

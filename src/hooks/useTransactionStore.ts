@@ -2,17 +2,20 @@ import { Transaction } from "@/types";
 import transactions from "api/transactions";
 import { create } from "zustand";
 
-type TopupStore = {
-  cash: number;
+type TransactionStore = {
   transaction?: Transaction;
   getTransaction: (id: string) => Promise<void>;
+  createTransaction: (amount: number) => Promise<void>;
   deleteTransaction: (id: string) => Promise<void>;
 };
 
-const useTopupStore = create<TopupStore>((set, get) => ({
-  cash: 0,
+const useTransactionStore = create<TransactionStore>((set, get) => ({
   getTransaction: async (id: string) => {
     const transaction = await transactions.getTransactionupByID(id);
+    set({ transaction: transaction });
+  },
+  createTransaction: async (amount: number) => {
+    const transaction = await transactions.createTransaction(amount);
     set({ transaction: transaction });
   },
   deleteTransaction: async (id: string) => {
@@ -21,4 +24,4 @@ const useTopupStore = create<TopupStore>((set, get) => ({
   },
 }));
 
-export default useTopupStore;
+export default useTransactionStore;

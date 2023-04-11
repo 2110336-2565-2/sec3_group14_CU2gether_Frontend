@@ -145,7 +145,6 @@ export type Transaction = {
   mode: TransactionMode;
   amount: number;
   isCompleted: Boolean;
-  QRUrl: string;
   createdAt: string;
   completedAt?: string;
 };

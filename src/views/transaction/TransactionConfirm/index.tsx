@@ -7,6 +7,7 @@ import { OutlinedButton } from "@/common/button";
 import { useMediaQuery } from "react-responsive";
 import useTransactionStore from "@/hooks/useTransactionStore";
 import { useRouter } from "next/router";
+import useProfileStore from "@/hooks/useProfileStore";
 type TransactionConfirmProps = {
   onNextStep: () => void;
   onPrevStep: () => void;
@@ -31,6 +32,7 @@ export const TransactionConfirm: React.FC<TransactionConfirmProps> = ({
   onNextStep,
   onPrevStep,
 }) => {
+  const { checkStatus } = useProfileStore();
   const { transaction, QRUrl, getTransaction, deleteTransaction } =
     useTransactionStore();
   const [isMobileScreen, setIsMobileScreen] = useState<boolean>(false);
@@ -75,7 +77,11 @@ export const TransactionConfirm: React.FC<TransactionConfirmProps> = ({
   }, []);
 
   useEffect(() => {
+    const updateCredit = async () => {
+      await checkStatus();
+    };
     if (transaction && transaction.isCompleted) {
+      updateCredit();
       onNextStep();
     }
   }, [transaction]);

@@ -1,8 +1,7 @@
-import { Input, Typography } from "antd";
+import { Form, InputNumber, Typography } from "antd";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
-import PaymentIcon from "@mui/icons-material/Payment";
 
 import { ContainedButton, OutlinedButton } from "@/common/button";
 import useProfileStore from "@/hooks/useProfileStore";
@@ -18,20 +17,27 @@ const { Title, Text } = Typography;
 export const TransactionSelectAmount: React.FC<
   TransactionSelectAmountProps
 > = ({ onNextStep }) => {
+  const [form] = Form.useForm();
   const { credits } = useProfileStore();
   const { createTransaction } = useTransactionStore();
   const router = useRouter();
-  const [amount, setAmount] = useState<number>(0);
+  const amount = Form.useWatch("amount", form);
 
-  const onClickNext = async () => {
+  const onClickNext = async (values: { amount: number }) => {
+    const { amount } = values;
     try {
       await createTransaction(amount);
+      onNextStep();
     } catch (error) {}
-    onNextStep();
   };
 
   return (
-    <>
+    <Form
+      form={form}
+      onFinish={onClickNext}
+      initialValues={{ amount: 100 }}
+      autoComplete="off"
+    >
       <Title>Top up</Title>
       <DetailContainer>
         <DetailRow>
@@ -40,26 +46,58 @@ export const TransactionSelectAmount: React.FC<
         </DetailRow>
         <DetailRow>
           <Title level={5}>Amount</Title>
-          <Input
-            prefix="฿"
-            value={amount}
-            onChange={(e: any) => setAmount(+e.target.value)}
-          />
+          <Form.Item
+            name="amount"
+            rules={[
+              {
+                required: true,
+                message: "Please enter your amount",
+              },
+              {
+                type: "number",
+                min: 100,
+                message: "The minimum amount is 100 THB",
+              },
+            ]}
+            shouldUpdate={(prevValues, curValues) =>
+              prevValues.additional !== curValues.additional
+            }
+          >
+            <InputNumber
+              prefix="฿"
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
+              controls={false}
+            />
+          </Form.Item>
         </DetailRow>
         <OptionRow>
-          <OutlinedButton text="+100" onClick={() => setAmount(amount + 100)} />
-          <OutlinedButton text="+500" onClick={() => setAmount(amount + 500)} />
+          <OutlinedButton
+            text="+100"
+            onClick={() =>
+              form.setFieldsValue({ amount: amount ? amount + 100 : 100 })
+            }
+          />
+          <OutlinedButton
+            text="+500"
+            onClick={() =>
+              form.setFieldsValue({ amount: amount ? amount + 500 : 500 })
+            }
+          />
           <OutlinedButton
             text="+1000"
-            onClick={() => setAmount(amount + 1000)}
+            onClick={() =>
+              form.setFieldsValue({ amount: amount ? amount + 1000 : 1000 })
+            }
           />
         </OptionRow>
       </DetailContainer>
       <ButtonContainer>
         <OutlinedButton text="Cancel" onClick={router.back} />
-        <ContainedButton text="Next" onClick={onClickNext} />
+        <ContainedButton text="Next" htmlType="submit" />
       </ButtonContainer>
-    </>
+    </Form>
   );
 };
 
@@ -78,6 +116,12 @@ const DetailRow = styled.div`
   align-items: center;
   .ant-typography {
     margin: 0;
+  }
+  .ant-form-item {
+    margin: 0;
+  }
+  .ant-input-number-affix-wrapper {
+    width: 100%;
   }
 `;
 

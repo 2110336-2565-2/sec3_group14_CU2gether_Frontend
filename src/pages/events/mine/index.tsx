@@ -2,7 +2,7 @@ import EventCard from "@/components/event-card";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Card, Empty, Skeleton, Space, Typography } from "antd";
-import { ContainedButton, OutlinedButton } from "@/common/button";
+import { ContainedButton } from "@/common/button";
 import { Event } from "@/types";
 import Link from "next/link";
 import userProfile from "api/user-profile";

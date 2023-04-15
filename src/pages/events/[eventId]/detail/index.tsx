@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import dayjs, { Dayjs } from "dayjs";
-import { Space, Typography, Layout, Modal } from "antd";
+import dayjs from "dayjs";
+import { Space, Typography, Modal } from "antd";
 import { useRouter } from "next/router";
 import { ContainedButton, OutlinedButton } from "@/common/button";
 import theme from "@/utils/theme";
@@ -14,7 +14,6 @@ import { CU_API, CU_WEB } from "@/config";
 import useProfileStore from "@/hooks/useProfileStore";
 import Link from "next/link";
 import Image from "next/legacy/image";
-import { getEventsRequestParams } from "api/events";
 import userProfile from "api/user-profile";
 import ReportIcon from "@mui/icons-material/Report";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";

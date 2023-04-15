@@ -250,7 +250,7 @@ const EventDetail: React.FC = () => {
             <Modal
               open={isModalOpen}
               onCancel={closeModal}
-              okText={<Link href={`${CU_WEB}/topup`}>Top up</Link>}
+              okText={<Link href={`${CU_WEB}/transaction`}>Top up</Link>}
               closable={false}
             >
               <p>You don't have enough credit, please top up first.</p>

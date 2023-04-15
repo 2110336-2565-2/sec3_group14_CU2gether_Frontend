@@ -1,33 +1,17 @@
 import EventCard from "@/components/event-card";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import {
-  Card,
-  DatePicker,
-  Divider,
-  Empty,
-  MenuProps,
-  Radio,
-  Select,
-  Skeleton,
-  Space,
-  TimePicker,
-  Typography,
-} from "antd";
+import { Card, Empty, Skeleton, Space, Typography } from "antd";
 import { ContainedButton, OutlinedButton } from "@/common/button";
-import { Event, EventType, MeetingType } from "@/types";
-import { useMediaQuery } from "react-responsive";
-import { getEventsRequestParams } from "api/events";
+import { Event } from "@/types";
 import Link from "next/link";
 import userProfile from "api/user-profile";
-import { log } from "console";
 
 type JoinEventProps = {};
 
 const { Title } = Typography;
 const { Meta } = Card;
 const { Image } = Skeleton;
-const { Group, Button } = Radio;
 
 const JoinEvent: React.FC<JoinEventProps> = () => {
   const [loading, setLoading] = useState<boolean>(false);

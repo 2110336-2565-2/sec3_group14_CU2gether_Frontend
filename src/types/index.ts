@@ -84,6 +84,7 @@ export type Event = {
   ownerName?: string;
   ownerId?: number;
   finished?: boolean;
+  ticketPrice?: number;
 };
 
 export type Student = {
@@ -101,6 +102,7 @@ export type Student = {
   joinTimes: number;
   unjoinTimes: number;
   role: ROLE;
+  credits: number;
 };
 
 export type Organizer = {
@@ -115,6 +117,7 @@ export type Organizer = {
   imageUrl: string;
   coverImageUrl: string;
   role: ROLE;
+  credits: number;
 };
 
 export type Review = {

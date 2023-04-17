@@ -33,17 +33,6 @@ const checkStatus = async () => {
   }
 };
 
-const getJoinedEvents = async (params: getEventsRequestParams) => {
-  try {
-    const joinedEvents = await client.get(`${baseUrl}/joining-event`, {
-      ...params,
-    });
-    return joinedEvents.data;
-  } catch (err) {
-    console.log("Error fetching joinedEvents");
-  }
-};
-
 const checkStatusById = async (id: string) => {
   try {
     const res = await client.get(baseUrl + "/" + id);
@@ -73,20 +62,19 @@ const uploadCoverImage = async (params: FormData) => {
   }
 };
 
-const getMyEvents = async (params?: getEventsRequestParams) => {
+const getJoinedEvents = async () => {
   try {
-    const MyEvents = await client.get(`${baseUrl}/myevent`, params);
-    return MyEvents.data;
+    const joinedEvents = await client.get(`${baseUrl}/joining-event`);
+    return joinedEvents.data;
   } catch (err) {
-    throw new Error("Error getting my events");
+    console.log("Error fetching joinedEvents");
   }
 };
 
-const getJoinedEventsFinished = async (params: getEventsRequestParams) => {
+const getJoinedEventsFinished = async () => {
   try {
     const joinedEventsFinished = await client.get(
-      `${baseUrl}/joining-event/finished`,
-      params
+      `${baseUrl}/joining-event/finished`
     );
     return joinedEventsFinished.data;
   } catch (err) {
@@ -94,12 +82,18 @@ const getJoinedEventsFinished = async (params: getEventsRequestParams) => {
   }
 };
 
-const getMyEventsFinished = async (params: getEventsRequestParams) => {
+const getMyEvents = async () => {
   try {
-    const MyEventsFinished = await client.get(
-      `${baseUrl}/myevent/finished`,
-      params
-    );
+    const MyEvents = await client.get(`${baseUrl}/myevent`);
+    return MyEvents.data;
+  } catch (err) {
+    throw new Error("Error getting my events");
+  }
+};
+
+const getMyEventsFinished = async () => {
+  try {
+    const MyEventsFinished = await client.get(`${baseUrl}/myevent/finished`);
     return MyEventsFinished.data;
   } catch (err) {
     console.log("Error fetching MyEventsFinished");

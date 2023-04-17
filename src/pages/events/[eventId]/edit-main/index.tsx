@@ -228,7 +228,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
     if (eventId) {
       events.cancelRefundEvent(eventId.toString());
       events.cancelEvent(eventId.toString());
-      router.push(`/`);
+      router.push(`/events/mine`);
     }
   };
 
@@ -377,10 +377,10 @@ const EditEventMain: React.FC<{}> = ({}) => {
       </ButtonConfig>
       <Modal
         open={onCancelEvent}
-        width={"50vw"}
+        width={"40%"}
         centered={true}
         closable={true}
-        bodyStyle={{ minHeight: "50%", marginTop: "40" }}
+        bodyStyle={{ height:"50%", marginTop: "40" }}
         closeIcon={
           <FontAwesomeIcon
             onClick={toggleCancelEventModal}

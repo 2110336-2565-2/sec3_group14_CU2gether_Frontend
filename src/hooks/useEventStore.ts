@@ -40,6 +40,7 @@ const useEventStore = create<EventStore>((set) => ({
     meetingType: MeetingType.ONSITE,
     location: "",
     website: "",
+    ticketPrice: 0,
     description: "",
     pictures: [""],
     ownerName: "",

@@ -4,6 +4,7 @@ import client from "@/utils/client";
 import FormData from "form-data";
 
 const baseUrl = CU_API + "events";
+const cancelRefundUrl = CU_API + "payment/cancel-refund"
 
 export type getEventsRequestParams = {
   page?: number;
@@ -68,6 +69,14 @@ const updateEventImage = async (id: String, pictures: String[]) => {
   }
 };
 
+const cancelRefundEvent = async (id: string) => {
+  try {
+    await client.post(`${cancelRefundUrl}/${id}`);
+  } catch (err) {
+    throw new Error("Error cancel-refund event");
+  }
+};
+
 const cancelEvent = async (id: String) => {
   try {
     await client.delete(`${baseUrl}/${id}`);
@@ -129,6 +138,7 @@ const events = {
     getEventByID,
     updateEventDetail,
     updateEventDescription,
+    cancelRefundEvent,
     cancelEvent,
     joinEvent,
     unjoinEvent,

@@ -226,7 +226,9 @@ const EditEventMain: React.FC<{}> = ({}) => {
 
   const handleCancelEventSureClick = () => {
     if (eventId) {
+      events.cancelRefundEvent(eventId.toString());
       events.cancelEvent(eventId.toString());
+      router.push(`/`);
     }
   };
 

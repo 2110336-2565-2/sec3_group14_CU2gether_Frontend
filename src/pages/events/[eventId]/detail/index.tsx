@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
-import { Space, Typography, Modal } from "antd";
+import { Space, Typography, Modal, Form } from "antd";
 import { useRouter } from "next/router";
 import { ContainedButton, OutlinedButton } from "@/common/button";
 import theme from "@/utils/theme";
@@ -40,12 +40,12 @@ const EventDetail: React.FC = () => {
     endTime: "",
     meetingType: MeetingType.ONSITE,
     location: "",
+    ticketPrice: 0,
     website: "",
     description: "",
     pictures: [""],
     ownerName: "",
     finished: false,
-    ticketPrice: 0,
   });
   const [joinedEvents, setJoinedEvents] = useState<Event[]>([]);
   const [join, setJoin] = useState<boolean>(false);
@@ -97,9 +97,9 @@ const EventDetail: React.FC = () => {
     startTime,
     endTime,
     pictures,
+    ticketPrice,
     description,
     ownerId,
-    ticketPrice,
   } = event;
 
   const scrollToDescription = () => {

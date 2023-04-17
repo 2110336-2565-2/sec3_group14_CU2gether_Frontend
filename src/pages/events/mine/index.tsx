@@ -32,7 +32,6 @@ const JoinEvent: React.FC<JoinEventProps> = () => {
       try {
         await fetchMyEvents();
         await fetchMyEventsFinished();
-        console.log("OAT", myEventsFinished);
       } catch (e) {}
       setLoading(false);
     };

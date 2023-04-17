@@ -1,23 +1,8 @@
 import EventCard from "@/components/event-card";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import {
-  Card,
-  DatePicker,
-  Divider,
-  Empty,
-  MenuProps,
-  Radio,
-  Select,
-  Skeleton,
-  Space,
-  TimePicker,
-  Typography,
-} from "antd";
-import { ContainedButton, OutlinedButton } from "@/common/button";
-import { Event, EventType, MeetingType } from "@/types";
-import { useMediaQuery } from "react-responsive";
-import { getEventsRequestParams } from "api/events";
+import { Card, Empty, Skeleton, Space, Typography } from "antd";
+import { Event } from "@/types";
 import Link from "next/link";
 import userProfile from "api/user-profile";
 
@@ -26,7 +11,6 @@ type JoinEventProps = {};
 const { Title } = Typography;
 const { Meta } = Card;
 const { Image } = Skeleton;
-const { Group, Button } = Radio;
 
 const JoinEvent: React.FC<JoinEventProps> = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -34,19 +18,13 @@ const JoinEvent: React.FC<JoinEventProps> = () => {
   const [joinedEventsFinished, setJoinedEventsFinished] = useState<Event[]>([]);
 
   useEffect(() => {
-    const fetchJoinEvents = (params?: getEventsRequestParams) => {
-      if (params) {
-        userProfile
-          .getJoinedEvents(params)
-          .then((res: any) => setJoinedEvents(res));
-      }
+    const fetchJoinEvents = () => {
+      userProfile.getJoinedEvents().then((res: any) => setJoinedEvents(res));
     };
-    const fetchJoinEventsFinished = (params?: getEventsRequestParams) => {
-      if (params) {
-        userProfile
-          .getJoinedEventsFinished(params)
-          .then((res: any) => setJoinedEventsFinished(res));
-      }
+    const fetchJoinEventsFinished = () => {
+      userProfile
+        .getJoinedEventsFinished()
+        .then((res: any) => setJoinedEventsFinished(res));
     };
     const fetchData = async () => {
       setLoading(true);

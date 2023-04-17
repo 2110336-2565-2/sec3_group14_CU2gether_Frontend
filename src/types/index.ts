@@ -77,7 +77,6 @@ export type Event = {
   endTime: string;
   meetingType: MeetingType;
   location: string;
-  ticketPrice: number;
   website: string;
   pictures: string[];
   description: string;

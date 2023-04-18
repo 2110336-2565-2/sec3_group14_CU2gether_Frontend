@@ -293,9 +293,9 @@ const EventDetail: React.FC = () => {
               <Link href={`/reports/events/${event.id}`}>
                 <ReportContainer>
                   <Space>
-                    <Typography.Text style={{ color: theme.color.gray }}>
+                    <StyledTypographyReport>
                       Report problem
-                    </Typography.Text>
+                    </StyledTypographyReport>
                     <ReportIcon
                       style={{ color: theme.color.gray }}
                       fontSize="large"
@@ -303,27 +303,34 @@ const EventDetail: React.FC = () => {
                   </Space>
                 </ReportContainer>
               </Link>
-              <Title style={StyleTitle} level={1}>
-                {eventName}
-              </Title>
+              <StyleTitle>{eventName}</StyleTitle>
               <Link href={`/profile/${ownerId}`}>
-                <Typography style={{ color: "white", height: "100%" }}>
+                <StyledTypographyOwnerName>
                   Created by {ownerName}
-                </Typography>
+                </StyledTypographyOwnerName>
               </Link>
             </Header>
             <Content>
-              <Space size={"middle"} style={{ height: "100%" }}>
+              <Space
+                size={"middle"}
+                style={{ height: "100%", fontSize: "0.8rem" }}
+              >
                 <FestivalIcon />
                 {eventType}
               </Space>
-              <Space size={"middle"} style={{ height: "100%" }}>
+              <Space
+                size={"middle"}
+                style={{ height: "100%", fontSize: "0.8rem" }}
+              >
                 <LocationOnIcon />
                 {location}
               </Space>
-              <Space size={"middle"} style={{ height: "100%" }}>
+              <Space
+                size={"middle"}
+                style={{ height: "100%", fontSize: "0.8rem" }}
+              >
                 <CalendarMonthIcon />
-                <Typography style={{ color: "white" }}>
+                <Typography style={{ color: "white", fontSize: "0.8rem" }}>
                   {startDate ? dayjs(startDate).format("ddd, DD MMM YYYY") : ""}
                   {" - "}
                   {endDate
@@ -333,7 +340,10 @@ const EventDetail: React.FC = () => {
                   {endTime}
                 </Typography>
               </Space>
-              <Space size={"middle"} style={{ height: "100%" }}>
+              <Space
+                size={"middle"}
+                style={{ height: "100%", fontSize: "0.8rem" }}
+              >
                 <ConfirmationNumberIcon
                   style={{ transform: "rotateY(180deg) rotate(45deg)" }}
                 />
@@ -364,6 +374,22 @@ const EventDetail: React.FC = () => {
     </EventDetailPageContainer>
   );
 };
+
+const StyledTypographyReport = styled(Typography)`
+  color: ${theme.color.gray};
+  height: 100%;
+  :hover {
+    color: ${theme.color.primary};
+  }
+`;
+
+const StyledTypographyOwnerName = styled(Typography)`
+  color: ${theme.color.white};
+  height: 100%;
+  :hover {
+    color: ${theme.color.primary};
+  }
+`;
 
 const ReportContainer = styled.div`
   position: absolute;
@@ -401,6 +427,7 @@ const Description = styled.div`
   margin: 1rem auto;
   width: 80%;
   text-align: left;
+  font-size: 0.8rem;
 `;
 
 const DescriptionFooterContainer = styled.div`
@@ -438,14 +465,23 @@ const RightLayout = styled.div`
     height: 50%;
     width: 100%;
   }
+  ${theme.media.mobile} {
+    height: 60%;
+  }
 `;
 
-const StyleTitle = {
-  color: theme.color.white,
-  fontSize: "2rem",
-  fontWeight: "bold",
-  height: "100%",
-};
+const StyleTitle = styled.div`
+  color: ${theme.color.white};
+  font-size: 2rem;
+  font-weight: bold;
+  height: 100%;
+  ${theme.media.tablet} {
+    font-size: 1.7rem;
+  }
+  ${theme.media.mobile} {
+    font-size: 1.5rem;
+  }
+`;
 
 const Header = styled.div`
   position: relative;
@@ -461,6 +497,9 @@ const Header = styled.div`
   ${theme.media.tablet} {
     padding: 1rem 2.5rem;
     gap: 0.5rem;
+  }
+  ${theme.media.mobile} {
+    padding-top: 3rem;
   }
 `;
 
@@ -486,6 +525,9 @@ const Sider = styled.div`
   ${theme.media.tablet} {
     width: 100%;
     height: 50%;
+  }
+  ${theme.media.mobile} {
+    height: 40%;
   }
 `;
 

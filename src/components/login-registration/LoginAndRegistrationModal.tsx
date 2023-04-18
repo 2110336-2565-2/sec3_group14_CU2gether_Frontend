@@ -85,7 +85,7 @@ const LoginAndRegistrationModal: React.FC<LoginAndRegistrationModalProps> = ({
       onSelectRole={onSelectRole}
       mode={mode}
       onSelectMode={onSelectMode}
-      closeRegistrationModal={closeLoginAndRegistrationModal}
+      setLoggingIn={setLoggingIn}
     />
   );
 

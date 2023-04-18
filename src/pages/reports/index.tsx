@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Typography, Layout, ConfigProvider } from "antd";
+import { Typography, Layout, ConfigProvider, Empty } from "antd";
 import theme from "@/utils/theme";
 import ReportCard from "@/components/report/ReportCard";
 import { Report } from "@/types";
@@ -24,9 +24,18 @@ const MyReportHistory: React.FC<{}> = ({}) => {
     fetchData();
   }, []);
   const renderReportList = (reportList: Report[] = []) =>
-    reportList.map((report: Report, index) => (
-      <ReportCard report={report} key={`${report.topic}${index}`}></ReportCard>
-    ));
+    reportList.length > 0 ? (
+      reportList.map((report: Report, index) => (
+        <ReportCard
+          report={report}
+          key={`${report.topic}${index}`}
+        ></ReportCard>
+      ))
+    ) : (
+      <EmptyWrapper>
+        <Empty description={"No Reports"} />
+      </EmptyWrapper>
+    );
 
   return (
     <ReportProvider>
@@ -89,5 +98,9 @@ const LayoutContainer = styled(Layout)`
   align-content: start;
   width: 100%;
 `;
-
+const EmptyWrapper = styled.div`
+  display: flex;
+  height: 100%;
+  align-self: center;
+`;
 export default MyReportHistory;

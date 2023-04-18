@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Typography, Layout, ConfigProvider } from "antd";
+import { Typography, Layout, ConfigProvider, Empty } from "antd";
 import theme from "@/utils/theme";
 import ReportCard from "@/components/report/ReportCard";
-import { Report, ReportStatus } from "@/types";
+import { ROLE, Report, ReportStatus } from "@/types";
 import ReportProvider from "@/components/report/Provider";
 import { OutlinedButton } from "@/common/button";
 import useReportStore from "@/hooks/useReportStore";
+import useProfileStore from "@/hooks/useProfileStore";
+import { useModal } from "@/hooks";
+import { AdminLoginModal } from "@/components/login";
 const { Content } = Layout;
 const { Title } = Typography;
 
@@ -15,13 +18,16 @@ type EventReportsPageProps = {};
 const EventReportsPage: React.FC<EventReportsPageProps> = ({}) => {
   const { eventReports, fetchEventReports, updateEventReportStatus } =
     useReportStore();
+  const { openModal, closeModal, isModalOpen } = useModal();
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     const getData = async () => {
       try {
         setLoading(true);
         await fetchEventReports({});
-      } catch (err) {}
+      } catch (err) {
+        openModal();
+      }
       setLoading(false);
     };
     getData();
@@ -34,16 +40,23 @@ const EventReportsPage: React.FC<EventReportsPageProps> = ({}) => {
     await fetchEventReports({});
   };
   const renderReportList = (reportList: Report[] = []) =>
-    reportList.map((report: Report, index) => (
-      <ReportCard report={report} key={`${report.topic}${index}`}>
-        <ButtonContainer>
-          <OutlinedButton
-            text="Archive"
-            onClick={() => archiveReport(report.id.toString())}
-          />
-        </ButtonContainer>
-      </ReportCard>
-    ));
+    reportList.length > 0 ? (
+      reportList.map((report: Report, index) => (
+        <ReportCard report={report} key={`${report.topic}${index}`}>
+          <ButtonContainer>
+            <OutlinedButton
+              text="Archive"
+              style={{ width: "150px" }}
+              onClick={() => archiveReport(report.id.toString())}
+            />
+          </ButtonContainer>
+        </ReportCard>
+      ))
+    ) : (
+      <EmptyWrapper>
+        <Empty description={"No Event Reports"} />
+      </EmptyWrapper>
+    );
   return (
     <ReportProvider>
       <ReportContainer>
@@ -55,6 +68,7 @@ const EventReportsPage: React.FC<EventReportsPageProps> = ({}) => {
             {!loading && renderReportList(eventReports)}
           </ContentContainer>
         </Content>
+        <AdminLoginModal open={isModalOpen} closeModal={closeModal} />
       </ReportContainer>
     </ReportProvider>
   );
@@ -80,7 +94,6 @@ const ContentContainer = styled(Content)`
   margin-left: auto;
   margin-right: auto;
   flex-direction: column;
-  // outline: 1px solid red;
   font-size: 20px;
   width: 100%;
 `;
@@ -96,5 +109,10 @@ const ButtonContainer = styled.div`
   justify-content: center;
   width: 100%;
   // outline: 1px solid red;
+`;
+const EmptyWrapper = styled.div`
+  display: flex;
+  height: 100%;
+  align-self: center;
 `;
 export default EventReportsPage;

@@ -184,7 +184,6 @@ const EventImageContainer = styled.div`
 
 const EventImage = styled(Image)`
   object-fit: contain;
-  // width: 100%;
   margin: auto;
 `;
 

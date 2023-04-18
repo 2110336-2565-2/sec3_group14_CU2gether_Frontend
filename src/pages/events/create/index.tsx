@@ -58,9 +58,11 @@ const CreateEvent: React.FC<{}> = ({}) => {
       const {
         requireParticipantsMin: minimum,
         requireParticipantsMax: maximum,
+        ticketPrice: ticketPrice,
       } = form.getFieldsValue([
         "requireParticipantsMin",
         "requireParticipantsMax",
+        "ticketPrice"
       ]);
 
       if (minimum === undefined) {
@@ -74,6 +76,10 @@ const CreateEvent: React.FC<{}> = ({}) => {
       if (maximum < minimum) {
         form.setFieldValue("requireParticipantsMin", maximum);
         form.setFieldValue("requireParticipantsMax", minimum);
+      }
+
+      if (ticketPrice === undefined) {
+        form.setFieldValue("ticketPrice", 0);
       }
     }
     form

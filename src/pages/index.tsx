@@ -10,19 +10,25 @@ import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCi
 import { getImageURL } from "@/utils";
 import { useRouter } from "next/router";
 import useProfileStore from "@/hooks/useProfileStore";
+import theme from "@/utils/theme";
+import { useMediaQuery } from "react-responsive";
 
 const { Title, Paragraph } = Typography;
 
 type HomeProps = {};
 
+type CreateEventSectionProps = {};
+
 const Home: React.FC<HomeProps> = () => {
-  const createEventSectionRef: React.Ref<any> = useRef(null);
+  const createEventContentRef: React.Ref<any> = useRef(null);
   const [events, fetchEvents] = useEventStore((state) => [
     state.events,
     state.fetchEvents,
   ]);
   const router = useRouter();
   const role = useProfileStore((state) => state.role);
+  const isMobileScreen = useMediaQuery({ query: "(max-width: 425px)" });
+  const isTabletScreen = useMediaQuery({ query: "(max-width: 768px)" });
 
   useEffect(() => {
     fetchEvents({});
@@ -37,8 +43,8 @@ const Home: React.FC<HomeProps> = () => {
   };
 
   const scrollToBottom = () => {
-    createEventSectionRef && createEventSectionRef.current
-      ? createEventSectionRef.current.scrollIntoView({ behavior: "smooth" })
+    createEventContentRef && createEventContentRef.current
+      ? createEventContentRef.current.scrollIntoView({ behavior: "smooth" })
       : null;
   };
 
@@ -48,6 +54,34 @@ const Home: React.FC<HomeProps> = () => {
     } else {
       notification.open({ message: "Please login first." });
     }
+  };
+
+  const CreateEventSection: React.FC<CreateEventSectionProps> = () => {
+    return (
+      <CreateEventContent ref={createEventContentRef}>
+        <CreateEventSubSection>
+          <CreateEventTitle level={2}>Let's make some noise!</CreateEventTitle>
+          <CreateEventDescription>
+            You can create your own events <br></br> which will appear on this
+            website to find participants.
+          </CreateEventDescription>
+          <ContainedButton
+            text={"Create Event"}
+            onClick={handleClickCreateEvent}
+          />
+        </CreateEventSubSection>
+        <CreateEventSubSection>
+          <ExampleEventImage
+            src={"./example_events.svg"}
+            alt={"example events"}
+            loader={() => "./example_events.svg"}
+            crossOrigin="anonymous"
+            fill
+            sizes="10vw"
+          />
+        </CreateEventSubSection>
+      </CreateEventContent>
+    );
   };
 
   return (
@@ -82,35 +116,13 @@ const Home: React.FC<HomeProps> = () => {
           </EventCarousel>
           <DownArrowIconWrapper>
             <ArrowDropDownCircleOutlinedIcon
-              sx={{ fontSize: 100 }}
+              sx={isMobileScreen ? { fontSize: 50 } : { fontSize: 100 }}
               onClick={() => scrollToBottom()}
             />
           </DownArrowIconWrapper>
         </HomeContentContainer>
       </MainSection>
-      <CreateEventSection ref={createEventSectionRef}>
-        <CreateEventSubSection>
-          <CreateEventTitle level={2}>Let's make some noise!</CreateEventTitle>
-          <CreateEventDescription>
-            You can create your own events <br></br> which will appear on this
-            website to find participants.
-          </CreateEventDescription>
-          <ContainedButton
-            text={"Create Event"}
-            onClick={handleClickCreateEvent}
-          />
-        </CreateEventSubSection>
-        <CreateEventSubSection>
-          <ExampleEventImage
-            src={"./example_events.svg"}
-            alt={"example events"}
-            loader={() => "./example_events.svg"}
-            crossOrigin="anonymous"
-            fill
-            sizes="10vw"
-          />
-        </CreateEventSubSection>
-      </CreateEventSection>
+      <CreateEventSection />
     </>
   );
 };
@@ -142,6 +154,9 @@ const HomePageTitle = styled(Title)`
   text-align: center;
   position: relative;
   z-index: 1;
+  ${theme.media.mobile} {
+    font-size: 30px !important;
+  }
 `;
 
 const EventCarousel = styled(Carousel)`
@@ -149,6 +164,9 @@ const EventCarousel = styled(Carousel)`
   width: 600px;
   filter: drop-shadow(0 0 0.75rem black);
   z-index: 1;
+  ${theme.media.mobile} {
+    width: 370px;
+  }
 `;
 
 const EventImageContainer = styled.div`
@@ -159,11 +177,13 @@ const EventImageContainer = styled.div`
   &:hover {
     cursor: pointer;
   }
+  ${theme.media.mobile} {
+    min-width: 369px !important;
+  }
 `;
 
 const EventImage = styled(Image)`
   object-fit: contain;
-  // width: 100%;
   margin: auto;
 `;
 
@@ -172,17 +192,24 @@ const DownArrowIconWrapper = styled.div`
   width: 100px;
   opacity: 0.8;
   cursor: pointer;
+  ${theme.media.mobile} {
+    width: 50px;
+  }
 `;
 
-const CreateEventSection = styled.div`
+const CreateEventContent = styled.div`
   position: relative;
   height: 100%;
+  display: flex;
+  flex-direction: row;
+  ${theme.media.tablet} {
+    flex-direction: column;
+  }
 `;
 
 const CreateEventSubSection = styled.div`
   position: relative;
-  float: left;
-  width: 50%;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -190,11 +217,19 @@ const CreateEventSubSection = styled.div`
   justify-content: center;
 `;
 
-const CreateEventTitle = styled(Title)``;
+const CreateEventTitle = styled(Title)`
+  text-align: center;
+  ${theme.media.mobile} {
+    font-size: 20px !important;
+  }
+`;
 
 const CreateEventDescription = styled(Paragraph)`
   font-size: 24px;
   text-align: center;
+  ${theme.media.mobile} {
+    font-size: 16px !important;
+  }
 `;
 
 const ExampleEventImage = styled(Image)`

@@ -113,7 +113,7 @@ type RegistrationContentProps = {
   mode: MODE;
   onSelectRole(role: ROLE): void;
   onSelectMode(mode: MODE): void;
-  closeRegistrationModal(): void;
+  setLoggingIn(isLoggingIn: boolean): void;
 };
 
 const RegistrationContent: React.FC<RegistrationContentProps> = ({
@@ -121,10 +121,8 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
   mode,
   onSelectRole,
   onSelectMode,
-  closeRegistrationModal,
+  setLoggingIn,
 }) => {
-  const [form] = Form.useForm();
-
   const onFinish = async (registrationValues: any) => {
     console.log("Submitted:", registrationValues);
     if (role === ROLE.STUDENT) {
@@ -380,8 +378,8 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
         <DonePageContainer>
           <SubtitleText1>{subtitle1}</SubtitleText1>
           <SubtitleText2>{subtitle2}</SubtitleText2>
-          <Button type="primary" onClick={() => closeRegistrationModal()}>
-            Back to home
+          <Button type="primary" onClick={() => setLoggingIn(true)}>
+            Log in
           </Button>
         </DonePageContainer>
       ) : null}

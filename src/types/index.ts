@@ -141,3 +141,18 @@ export type OrganizerRequest = {
   description: string;
   status: RequestStatus;
 };
+
+export type Transaction = {
+  id: number;
+  userId: number;
+  mode: TransactionMode;
+  amount: number;
+  isCompleted: Boolean;
+  createdAt: string;
+  completedAt?: string;
+};
+
+export enum TransactionMode {
+  DEPOSIT = "DEPOSIT",
+  WITHDRAWAL = "WITHDRAWAL",
+}

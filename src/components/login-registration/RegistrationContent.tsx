@@ -399,7 +399,7 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
         <DonePageContainer>
           <SubtitleText1>{subtitle1}</SubtitleText1>
           <SubtitleText2>{subtitle2}</SubtitleText2>
-          <Button type="primary" onClick={() => setLoggingIn(true)}>
+          <Button id='login-button' type="primary" onClick={() => setLoggingIn(true)}>
             Log in
           </Button>
         </DonePageContainer>
@@ -412,6 +412,7 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
           </div>
           <OperationButtonContainer>
             <Button
+              id='try-again-button'
               onClick={() => onSelectMode(MODE.SIGNUP)}
               style={{ width: 150 }}
             >

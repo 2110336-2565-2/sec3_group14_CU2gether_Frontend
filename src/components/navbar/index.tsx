@@ -335,6 +335,7 @@ const Navbar: React.FC<NavbarProps> = () => {
               ) : (
                 <>
                   <ContainedButton
+                    id="joinus-button"
                     text={"Join Us"}
                     onClick={handleClickSignup}
                   />

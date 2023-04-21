@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.0.2 (Python 3.9.6 on darwin)" generated="20230421 13:43:04.220" rpa="false" schemaversion="3">
+<suite id="s1" name="testFile" source="/Users/pattanan/Year_3_2/se2/cu2gether/sec3_group14_CU2gether_Frontend/test/testFile.robot">
+<test id="s1-t1" name="Test Robot" line="8">
+<kw name="Open application" library="keywords">
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>${WEB_URL}</arg>
+<arg>${WEB_BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20230421 13:43:04.308" level="INFO">Opening browser 'chrome' to base url 'http://localhost:3000'.</msg>
+<status status="PASS" starttime="20230421 13:43:04.308" endtime="20230421 13:43:06.342"/>
+</kw>
+<kw name="Maximize Browser Window" library="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" starttime="20230421 13:43:06.342" endtime="20230421 13:43:06.791"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>1</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20230421 13:43:07.792" level="INFO">Slept 1 second</msg>
+<status status="PASS" starttime="20230421 13:43:06.791" endtime="20230421 13:43:07.792"/>
+</kw>
+<status status="PASS" starttime="20230421 13:43:04.307" endtime="20230421 13:43:07.793"/>
+</kw>
+<kw name="Click Signin Button" library="keywords">
+<kw name="Click Button" library="SeleniumLibrary">
+<arg>//*[@id='joinus-button']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<msg timestamp="20230421 13:43:07.796" level="INFO">Clicking button '//*[@id='joinus-button']'.</msg>
+<status status="PASS" starttime="20230421 13:43:07.795" endtime="20230421 13:43:07.866"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>1</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20230421 13:43:08.867" level="INFO">Slept 1 second</msg>
+<status status="PASS" starttime="20230421 13:43:07.866" endtime="20230421 13:43:08.869"/>
+</kw>
+<status status="PASS" starttime="20230421 13:43:07.794" endtime="20230421 13:43:08.869"/>
+</kw>
+<kw name="Click Student Button" library="keywords">
+<kw name="Click Button" library="SeleniumLibrary">
+<arg>//*[@id='cu-student']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<msg timestamp="20230421 13:43:08.871" level="INFO">Clicking button '//*[@id='cu-student']'.</msg>
+<status status="PASS" starttime="20230421 13:43:08.870" endtime="20230421 13:43:08.953"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>1</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20230421 13:43:09.955" level="INFO">Slept 1 second</msg>
+<status status="PASS" starttime="20230421 13:43:08.954" endtime="20230421 13:43:09.956"/>
+</kw>
+<status status="PASS" starttime="20230421 13:43:08.870" endtime="20230421 13:43:09.956"/>
+</kw>
+<kw name="Input And Verify Email" library="keywords">
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//*[@id='sr-email']</arg>
+<arg>${test_email}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20230421 13:43:09.957" level="INFO">Typing text 'test@test.com' into text field '//*[@id='sr-email']'.</msg>
+<status status="PASS" starttime="20230421 13:43:09.956" endtime="20230421 13:43:10.114"/>
+</kw>
+<kw name="Get Value" library="SeleniumLibrary">
+<var>${email}</var>
+<arg>//*[@id='sr-email']</arg>
+<doc>Returns the value attribute of the element identified by ``locator``.</doc>
+<msg timestamp="20230421 13:43:10.124" level="INFO">${email} = test@test.com</msg>
+<status status="PASS" starttime="20230421 13:43:10.114" endtime="20230421 13:43:10.124"/>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<arg>${test_email}</arg>
+<arg>${email}</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" starttime="20230421 13:43:10.124" endtime="20230421 13:43:10.124"/>
+</kw>
+<status status="PASS" starttime="20230421 13:43:09.956" endtime="20230421 13:43:10.124"/>
+</kw>
+<kw name="Input And Verify Password" library="keywords">
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//*[@id='sr-password']</arg>
+<arg>${test_password}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20230421 13:43:10.125" level="INFO">Typing text '@password12345' into text field '//*[@id='sr-password']'.</msg>
+<status status="PASS" starttime="20230421 13:43:10.125" endtime="20230421 13:43:10.209"/>
+</kw>
+<kw name="Get Value" library="SeleniumLibrary">
+<var>${password}</var>
+<arg>//*[@id='sr-password']</arg>
+<doc>Returns the value attribute of the element identified by ``locator``.</doc>
+<msg timestamp="20230421 13:43:10.218" level="INFO">${password} = @password12345</msg>
+<status status="PASS" starttime="20230421 13:43:10.210" endtime="20230421 13:43:10.218"/>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<arg>${test_password}</arg>
+<arg>${password}</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" starttime="20230421 13:43:10.218" endtime="20230421 13:43:10.218"/>
+</kw>
+<status status="PASS" starttime="20230421 13:43:10.124" endtime="20230421 13:43:10.219"/>
+</kw>
+<kw name="Input And Verify Confirm Password" library="keywords">
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//*[@id='sr-confirm-password']</arg>
+<arg>${test_password}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20230421 13:43:10.219" level="INFO">Typing text '@password12345' into text field '//*[@id='sr-confirm-password']'.</msg>
+<status status="PASS" starttime="20230421 13:43:10.219" endtime="20230421 13:43:10.294"/>
+</kw>
+<kw name="Get Value" library="SeleniumLibrary">
+<var>${password}</var>
+<arg>//*[@id='sr-confirm-password']</arg>
+<doc>Returns the value attribute of the element identified by ``locator``.</doc>
+<msg timestamp="20230421 13:43:10.301" level="INFO">${password} = @password12345</msg>
+<status status="PASS" starttime="20230421 13:43:10.295" endtime="20230421 13:43:10.301"/>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<arg>${test_password}</arg>
+<arg>${password}</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" starttime="20230421 13:43:10.301" endtime="20230421 13:43:10.301"/>
+</kw>
+<status status="PASS" starttime="20230421 13:43:10.219" endtime="20230421 13:43:10.302"/>
+</kw>
+<kw name="Input And Verify StudentId" library="keywords">
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//*[@id='sr-studentid']</arg>
+<arg>${test_studentid}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20230421 13:43:10.302" level="INFO">Typing text '6331329121' into text field '//*[@id='sr-studentid']'.</msg>
+<status status="PASS" starttime="20230421 13:43:10.302" endtime="20230421 13:43:10.361"/>
+</kw>
+<kw name="Get Value" library="SeleniumLibrary">
+<var>${studentid}</var>
+<arg>//*[@id='sr-studentid']</arg>
+<doc>Returns the value attribute of the element identified by ``locator``.</doc>
+<msg timestamp="20230421 13:43:10.367" level="INFO">${studentid} = 6331329121</msg>
+<status status="PASS" starttime="20230421 13:43:10.361" endtime="20230421 13:43:10.367"/>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<arg>${test_studentid}</arg>
+<arg>${studentid}</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" starttime="20230421 13:43:10.368" endtime="20230421 13:43:10.368"/>
+</kw>
+<status status="PASS" starttime="20230421 13:43:10.302" endtime="20230421 13:43:10.368"/>
+</kw>
+<kw name="Input And Verify Firstname" library="keywords">
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//*[@id='sr-firstname']</arg>
+<arg>${test_firstname}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20230421 13:43:10.368" level="INFO">Typing text 'Pattanan' into text field '//*[@id='sr-firstname']'.</msg>
+<status status="PASS" starttime="20230421 13:43:10.368" endtime="20230421 13:43:10.424"/>
+</kw>
+<kw name="Get Value" library="SeleniumLibrary">
+<var>${firstname}</var>
+<arg>//*[@id='sr-firstname']</arg>
+<doc>Returns the value attribute of the element identified by ``locator``.</doc>
+<msg timestamp="20230421 13:43:10.430" level="INFO">${firstname} = Pattanan</msg>
+<status status="PASS" starttime="20230421 13:43:10.424" endtime="20230421 13:43:10.431"/>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<arg>${test_firstname}</arg>
+<arg>${firstname}</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" starttime="20230421 13:43:10.431" endtime="20230421 13:43:10.431"/>
+</kw>
+<status status="PASS" starttime="20230421 13:43:10.368" endtime="20230421 13:43:10.431"/>
+</kw>
+<kw name="Input And Verify Lastname" library="keywords">
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//*[@id='sr-lastname']</arg>
+<arg>${test_lastname}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20230421 13:43:10.431" level="INFO">Typing text 'Piyachotinan' into text field '//*[@id='sr-lastname']'.</msg>
+<status status="PASS" starttime="20230421 13:43:10.431" endtime="20230421 13:43:10.486"/>
+</kw>
+<kw name="Get Value" library="SeleniumLibrary">
+<var>${lastname}</var>
+<arg>//*[@id='sr-lastname']</arg>
+<doc>Returns the value attribute of the element identified by ``locator``.</doc>
+<msg timestamp="20230421 13:43:10.492" level="INFO">${lastname} = Piyachotinan</msg>
+<status status="PASS" starttime="20230421 13:43:10.486" endtime="20230421 13:43:10.492"/>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<arg>${test_lastname}</arg>
+<arg>${lastname}</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" starttime="20230421 13:43:10.492" endtime="20230421 13:43:10.492"/>
+</kw>
+<status status="PASS" starttime="20230421 13:43:10.431" endtime="20230421 13:43:10.492"/>
+</kw>
+<kw name="Click Signup Button" library="keywords">
+<kw name="Click Button" library="SeleniumLibrary">
+<arg>//*[@id='sr-submit-button']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<msg timestamp="20230421 13:43:10.493" level="INFO">Clicking button '//*[@id='sr-submit-button']'.</msg>
+<status status="PASS" starttime="20230421 13:43:10.492" endtime="20230421 13:43:10.527"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>1</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20230421 13:43:11.528" level="INFO">Slept 1 second</msg>
+<status status="PASS" starttime="20230421 13:43:10.527" endtime="20230421 13:43:11.528"/>
+</kw>
+<status status="PASS" starttime="20230421 13:43:10.492" endtime="20230421 13:43:11.528"/>
+</kw>
+<kw name="Close All Browsers" library="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes all open browsers and resets the browser cache.</doc>
+<status status="PASS" starttime="20230421 13:43:11.529" endtime="20230421 13:43:11.610"/>
+</kw>
+<status status="PASS" starttime="20230421 13:43:04.307" endtime="20230421 13:43:11.610"/>
+</test>
+<status status="PASS" starttime="20230421 13:43:04.220" endtime="20230421 13:43:11.611"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" skip="0" id="s1" name="testFile">testFile</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

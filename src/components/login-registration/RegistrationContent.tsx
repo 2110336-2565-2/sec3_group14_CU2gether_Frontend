@@ -250,7 +250,7 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
             },
           ]}
         >
-          <Input placeholder="email" />
+          <Input id="sr-email" placeholder="email" />
         </Form.Item>
         <Form.Item
           name="password"
@@ -264,7 +264,10 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
           ]}
           hasFeedback
         >
-          <Input.Password placeholder="password" />
+          <Input.Password
+            id="sr-password"
+            placeholder="password"
+          />
         </Form.Item>
         <Form.Item
           name="confirm"
@@ -287,7 +290,10 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
             }),
           ]}
         >
-          <Input.Password placeholder="confirm password" />
+          <Input.Password
+            id="sr-confirm-password"
+            placeholder="confirm password"
+          />
         </Form.Item>
         <Form.Item
           name="studentId"
@@ -304,7 +310,7 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
             },
           ]}
         >
-          <Input placeholder="CU student ID" />
+          <Input id="sr-studentid" placeholder="CU student ID" />
         </Form.Item>
         <Form.Item
           name="firstName"
@@ -315,7 +321,10 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
             },
           ]}
         >
-          <Input placeholder="First name"></Input>
+          <Input
+            id="sr-firstname"
+            placeholder="First name"
+          ></Input>
         </Form.Item>
         <Form.Item
           name="lastName"
@@ -326,7 +335,7 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
             },
           ]}
         >
-          <Input placeholder="Last name"></Input>
+          <Input id="sr-lastname" placeholder="Last name"></Input>
         </Form.Item>
         <Form.Item>
           <OperationButtonContainer>
@@ -336,7 +345,12 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
             >
               Back
             </Button>
-            <Button type="primary" style={{ width: 150 }} htmlType="submit">
+            <Button
+              id="sr-submit-button"
+              type="primary"
+              style={{ width: 150 }}
+              htmlType="submit"
+            >
               Sign Up
             </Button>
           </OperationButtonContainer>
@@ -349,6 +363,7 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
       {mode === MODE.SELECTROLE ? (
         <SelectRoleButtonContainer>
           <SelectStudentRoleButton
+            id="cu-student"
             text={"CU Student"}
             onClick={() => onSelectRole(ROLE.STUDENT)}
           >

@@ -31,6 +31,7 @@ export enum MODE {
   SELECTROLE = "SELECTROLE",
   SIGNUP = "SIGNUP",
   DONE = "DONE",
+  FAIL = "FAIL",
 }
 
 type LoginAndRegistrationModalProps = {

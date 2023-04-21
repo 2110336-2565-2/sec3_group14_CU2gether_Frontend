@@ -126,6 +126,7 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
   const onFinish = async (registrationValues: any) => {
     console.log("Submitted:", registrationValues);
     if (role === ROLE.STUDENT) {
+      // todo: edit
       const { studentId, email, password, firstName, lastName } =
         registrationValues;
       try {
@@ -136,8 +137,10 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
           firstName,
           lastName,
         } as registerStudentParams);
+        onSelectMode(MODE.DONE);
       } catch (err) {
         console.log(err);
+        onSelectMode(MODE.FAIL);
       }
     } else if (role === ROLE.ORGANIZER) {
       const { organizerEmail, organizerName, coordinatorName, phone } =
@@ -149,15 +152,18 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
           coorName: coordinatorName,
           phone,
         } as registerOrganizerParams);
+        onSelectMode(MODE.DONE);
       } catch (err) {
         console.log(err);
+        onSelectMode(MODE.FAIL);
       }
     }
-    onSelectMode(MODE.DONE);
   };
 
   const subtitle1 =
-    role === ROLE.ORGANIZER
+    mode === MODE.FAIL
+      ? "Create failed"
+      : role === ROLE.ORGANIZER
       ? "Your request has been successfully summited"
       : "You are ready to dance!!";
 
@@ -381,6 +387,29 @@ const RegistrationContent: React.FC<RegistrationContentProps> = ({
           <Button type="primary" onClick={() => setLoggingIn(true)}>
             Log in
           </Button>
+        </DonePageContainer>
+      ) : mode === MODE.FAIL ? (
+        <DonePageContainer>
+          <SubtitleText1>{subtitle1}</SubtitleText1>
+          <div>
+            <SubtitleText2>This email or student id</SubtitleText2>
+            <SubtitleText2>has already been registered.</SubtitleText2>
+          </div>
+          <OperationButtonContainer>
+            <Button
+              onClick={() => onSelectMode(MODE.SIGNUP)}
+              style={{ width: 150 }}
+            >
+              Try again
+            </Button>
+            <Button
+              type="primary"
+              onClick={() => setLoggingIn(true)}
+              style={{ width: 150 }}
+            >
+              Log in
+            </Button>
+          </OperationButtonContainer>
         </DonePageContainer>
       ) : null}
     </>

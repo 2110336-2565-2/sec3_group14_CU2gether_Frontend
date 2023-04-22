@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Form, Input, message, Typography } from "antd";
 import { useModal } from "@/hooks";
 import { ContainedButton } from "@/common/button";
-import admin from "api/admin";
+import admin from "@/pages/api/admin";
 import { useRouter } from "next/router";
 
 type LoginModalProps = {

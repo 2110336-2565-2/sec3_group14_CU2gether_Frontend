@@ -1,7 +1,7 @@
 import client from "@/utils/client";
 import { Event, Report, ReportStatus } from "@/types";
 import { create } from "zustand";
-import report, { getReportsRequestParams } from "api/report";
+import report, { getReportsRequestParams } from "@/pages/api/report";
 import FormData from "form-data";
 type EventReportStore = {
   eventReports: Report[];

@@ -5,7 +5,7 @@ import { Card, Empty, Skeleton, Space, Typography } from "antd";
 import { ContainedButton } from "@/common/button";
 import { Event } from "@/types";
 import Link from "next/link";
-import userProfile from "api/user-profile";
+import userProfile from "@/pages/api/user-profile";
 
 type JoinEventProps = {};
 

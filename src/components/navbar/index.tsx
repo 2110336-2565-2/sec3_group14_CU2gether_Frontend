@@ -5,7 +5,7 @@ import { useModal } from "@/hooks";
 import { useMediaQuery } from "react-responsive";
 import styled from "styled-components";
 import Link from "next/link";
-import { auth } from "api";
+import { auth } from "@/pages/api";
 import { useRouter } from "next/router";
 
 import MenuIcon from "@mui/icons-material/Menu";

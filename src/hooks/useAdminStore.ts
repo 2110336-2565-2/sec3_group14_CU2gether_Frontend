@@ -1,5 +1,5 @@
 import { OrganizerRequest, RequestStatus } from "@/types";
-import admin from "api/admin";
+import admin from "@/pages/api/admin";
 import { create } from "zustand";
 
 type AdminStore = {

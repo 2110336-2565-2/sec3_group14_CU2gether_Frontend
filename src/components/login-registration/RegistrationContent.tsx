@@ -5,13 +5,13 @@ import styled from "styled-components";
 import { Form, Input, Button } from "antd";
 import { ROLE } from "@/types";
 import theme from "@/utils/theme";
-import { registration } from "api";
+import { registration } from "@/pages/api";
 import { MODE } from "./LoginAndRegistrationModal";
 import { ContainedButton, OutlinedButton } from "@/common/button";
 import {
   registerStudentParams,
   registerOrganizerParams,
-} from "api/registration";
+} from "@/pages/api/registration";
 
 const { TextArea } = Input;
 

@@ -19,7 +19,7 @@ import useEventStore from "@/hooks/useEventStore";
 import { Event, EventType, MeetingType } from "@/types";
 import { DropdownButton } from "@/common/dropdown";
 import { useMediaQuery } from "react-responsive";
-import { getEventsRequestParams } from "api/events";
+import { getEventsRequestParams } from "@/pages/api/events";
 import dayjs from "dayjs";
 import { RangePickerProps } from "antd/es/date-picker";
 import Link from "next/link";

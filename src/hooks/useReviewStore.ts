@@ -1,6 +1,6 @@
 import { Review } from "@/types";
 import { create } from "zustand";
-import reviews from "api/reviews";
+import reviews from "@/pages/api/reviews";
 
 export type ReviewDetail = {
   score: number;

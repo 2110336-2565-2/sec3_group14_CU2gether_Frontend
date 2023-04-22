@@ -7,7 +7,7 @@ import FestivalIcon from "@mui/icons-material/Festival";
 import { CU_API } from "@/config";
 // import Image from "next/legacy/image";
 import { Event, EventType, MeetingType, ROLE, Visibility } from "@/types";
-import { events } from "api";
+import { events } from "@/pages/api";
 
 import theme from "@/utils/theme";
 import useEventStore from "@/hooks/useEventStore";
@@ -70,7 +70,7 @@ const ReviewPage: React.FC<{}> = () => {
           <Image
             src={CU_API + pictures[pictures.length - 1]}
             alt={"Event Image"}
-            width={'50%'}
+            width={"50%"}
             crossOrigin="anonymous"
           />
         </InsertPictureContainer>

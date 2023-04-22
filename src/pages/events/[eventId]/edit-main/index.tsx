@@ -32,7 +32,7 @@ import useEventStore from "@/hooks/useEventStore";
 import { Event } from "@/types";
 import { CU_API } from "@/config";
 import FormData from "form-data";
-import events from "api/events";
+import events from "@/pages/api/events";
 
 import PictureForm from "@/components/edit-event/PictureForm";
 
@@ -321,7 +321,11 @@ const EditEventMain: React.FC<{}> = ({}) => {
   );
 
   const ticketPriceForm = (
-    <Input addonAfter={currency} placeholder="Ticket Price" defaultValue={event.ticketPrice} />
+    <Input
+      addonAfter={currency}
+      placeholder="Ticket Price"
+      defaultValue={event.ticketPrice}
+    />
   );
 
   const meetingTypeForm = (
@@ -380,7 +384,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
         width={"40%"}
         centered={true}
         closable={true}
-        bodyStyle={{ height:"50%", marginTop: "40" }}
+        bodyStyle={{ height: "50%", marginTop: "40" }}
         closeIcon={
           <FontAwesomeIcon
             onClick={toggleCancelEventModal}

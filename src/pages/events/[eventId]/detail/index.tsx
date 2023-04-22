@@ -5,7 +5,7 @@ import { Space, Typography, Modal, Form } from "antd";
 import { useRouter } from "next/router";
 import { ContainedButton, OutlinedButton } from "@/common/button";
 import theme from "@/utils/theme";
-import events from "api/events";
+import events from "@/pages/api/events";
 import { Event, EventType, MeetingType, ROLE, Visibility } from "@/types";
 import FestivalIcon from "@mui/icons-material/Festival";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -14,11 +14,11 @@ import { CU_API, CU_WEB } from "@/config";
 import useProfileStore from "@/hooks/useProfileStore";
 import Link from "next/link";
 import Image from "next/legacy/image";
-import userProfile from "api/user-profile";
+import userProfile from "@/pages/api/user-profile";
 import ReportIcon from "@mui/icons-material/Report";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import { useModal } from "@/hooks";
-import payment from "api/payment";
+import payment from "@/pages/api/payment";
 
 const { Title } = Typography;
 

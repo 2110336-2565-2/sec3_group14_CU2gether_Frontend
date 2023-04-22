@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import { Form, Input, Button, message } from "antd";
 import { MODE } from "./LoginAndRegistrationModal";
-import { auth } from "api";
+import { auth } from "@/pages/api";
 import theme from "@/utils/theme";
 
 const LoginContentContainer = styled.div`

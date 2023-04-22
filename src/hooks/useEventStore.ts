@@ -1,8 +1,8 @@
 import client from "@/utils/client";
 import { Event, EventType, Visibility, MeetingType } from "@/types";
 import { create } from "zustand";
-import events, { getEventsRequestParams } from "api/events";
-import userProfile from "api/user-profile";
+import events, { getEventsRequestParams } from "@/pages/api/events";
+import userProfile from "@/pages/api/user-profile";
 import FormData from "form-data";
 
 type EventStore = {

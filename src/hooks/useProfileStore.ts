@@ -1,9 +1,9 @@
 import { Organizer, Student } from "@/types";
 import { create } from "zustand";
-import userProfile from "api/user-profile";
+import userProfile from "@/pages/api/user-profile";
 import { ROLE } from "@/types";
-import student from "api/student";
-import organizer from "api/organizer";
+import student from "@/pages/api/student";
+import organizer from "@/pages/api/organizer";
 import FormData from "form-data";
 
 type ProfileStore = {
@@ -40,7 +40,7 @@ const studentProfile = {
   joinTimes: 3,
   unjoinTimes: 4,
   role: ROLE.STUDENT,
-  credits: 0
+  credits: 0,
 };
 
 const organizerProfile = {
@@ -55,7 +55,7 @@ const organizerProfile = {
   imageUrl: "",
   coverImageUrl: "",
   role: ROLE.ORGANIZER,
-  credits: 0
+  credits: 0,
 };
 
 const useProfileStore = create<ProfileStore>((set, get) => ({
@@ -72,7 +72,7 @@ const useProfileStore = create<ProfileStore>((set, get) => ({
             name: undefined,
             role: undefined,
             email: undefined,
-            imageUrl: undefined
+            imageUrl: undefined,
           });
           return;
         }

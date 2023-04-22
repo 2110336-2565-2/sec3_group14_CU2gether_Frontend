@@ -7,7 +7,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 import { ContainedButton, OutlinedButton } from "@/common/button";
 import { OrganizerRequest } from "@/types";
-import admin from "api/admin";
+import admin from "@/pages/api/admin";
 import useAdminStore from "@/hooks/useAdminStore";
 
 type OrganizerRequestCardProps = {

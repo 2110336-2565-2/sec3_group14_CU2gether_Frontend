@@ -1,5 +1,5 @@
 import { Transaction } from "@/types";
-import transactions from "api/transactions";
+import transactions from "@/pages/api/transactions";
 import { create } from "zustand";
 
 type TransactionStore = {

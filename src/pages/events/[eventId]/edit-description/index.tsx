@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { Form, Input, Button, Layout, Space, ConfigProvider } from "antd";
 import theme from "@/utils/theme";
 import styled from "styled-components";
-import events from "api/events";
+import events from "@/pages/api/events";
 import useEventStore from "@/hooks/useEventStore";
 
 const { TextArea } = Input;
@@ -48,7 +48,7 @@ const Description: React.FC<{}> = ({}) => {
         try {
           await getEventDetail(id);
         } catch (err) {
-          console.log(err)
+          console.log(err);
         }
       };
       getData(eventId.toString());
@@ -71,9 +71,7 @@ const Description: React.FC<{}> = ({}) => {
     }
   };
 
-  const handleSaveClick = () => [
-    router.push(`/events/${eventId}/edit-main`)
-  ]
+  const handleSaveClick = () => [router.push(`/events/${eventId}/edit-main`)];
 
   const handleCancelClick = () => {
     router.push(`/events/${eventId}/edit-main`);
@@ -89,7 +87,7 @@ const Description: React.FC<{}> = ({}) => {
         Cancel
       </Button>
       <Button
-        type="primary" 
+        type="primary"
         htmlType="submit"
         onClick={() => handleSaveClick()}
       >

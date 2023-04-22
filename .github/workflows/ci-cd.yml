@@ -1,0 +1,55 @@
+name: Automated testing for merging 
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  build-and-deploy:
+    name: Automated testing!
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Create env file
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+      - name: Install dependencies
+        run: yarn --frozen-lockfile --prefer-offline
+
+      - name: Unit testing 
+        run: yarn test
+
+      - name: Docker Login
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run:
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - name: Docker Push
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          REPO: main
+          TAG_NAME: cu2gether
+        run: |
+          docker build -t $REPO:$TAG_NAME .
+          docker tag $REPO:$TAG_NAME $DOCKER_USER/$REPO:$TAG_NAME
+          docker push $DOCKER_USER/$REPO:$TAG_NAME

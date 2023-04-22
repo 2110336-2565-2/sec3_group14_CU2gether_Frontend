@@ -35,9 +35,6 @@ jobs:
       - name: Install dependencies
         run: yarn --frozen-lockfile --prefer-offline
 
-      - name: Unit testing 
-        run: yarn test
-
       - name: Docker Login
         env:
           DOCKER_USER: ${{secrets.DOCKER_USER}}

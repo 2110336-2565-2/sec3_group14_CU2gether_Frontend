@@ -24,7 +24,14 @@ axios.interceptors.response.use(
   }
 );
 
-const request = (method, url, params, headers, auth, config) => {
+const request = (
+  method: any,
+  url: any,
+  params: any,
+  headers: any,
+  auth: any,
+  config: any
+) => {
   const req = [axios.post, axios.put, axios.patch].includes(method)
     ? method(url, params, { ...config, headers, auth }) // POST, PUT, PATCH
     : method(url, { ...config, params, headers, auth }); // GET, DELETE, HEAD, OPTIONS

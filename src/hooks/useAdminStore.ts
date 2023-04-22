@@ -15,12 +15,13 @@ const useAdminStore = create<AdminStore>((set, get) => ({
       set({
         organizerRequests: _organizerRequests,
       });
-    } catch (error) {
-      throw new Error(error.message);
+    } catch (error: any) {
+      throw new Error(error);
     }
   },
   removeOrganizerRequest: async (idx: string) => {
-    set({ organizerRequests: _organizer });
+    const { organizerRequests } = get();
+    set({ organizerRequests: organizerRequests });
   },
 }));
 

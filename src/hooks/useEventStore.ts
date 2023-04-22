@@ -71,11 +71,11 @@ const useEventStore = create<EventStore>((set) => ({
   },
   fetchJoinEvents: (params) => {
     userProfile
-      .getJoinedEvents(params)
+      .getJoinedEvents()
       .then((res: any) => set({ joinedEvents: res }));
   },
   fetchMyEvents: (params) => {
-    userProfile.getMyEvents(params).then((res: any) => set({ myEvents: res }));
+    userProfile.getMyEvents().then((res: any) => set({ myEvents: res }));
   },
   setEvent: (params) => {
     set({ event: params });

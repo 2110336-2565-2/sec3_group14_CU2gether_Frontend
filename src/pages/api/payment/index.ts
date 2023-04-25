@@ -1,7 +1,7 @@
 import { CU_API } from "@/config";
 import client from "@/utils/client";
 
-const baseUrl = CU_API + "payment";
+const baseUrl = CU_API + "payments";
 
 const createPaymentByEventId = async (eventId: string) => {
   try {

@@ -46,8 +46,8 @@ jobs:
           DOCKER_USER: ${{secrets.DOCKER_USER}}
           REPO: frontend
         run: |
-          docker build -t $REPO:$TAG_NAME .
-          docker tag $REPO:$TAG_NAME $DOCKER_USER/$REPO:$TAG_NAME
+          docker build -t $REPO .
+          docker tag $REPO $DOCKER_USER/$REPO
           docker push $DOCKER_USER/$REPO
       - name: Docker Pull and Run
         env:
@@ -63,4 +63,4 @@ jobs:
           sudo docker rm $CONTAINER_NAME
           sudo docker image rm
           sudo docker pull $DOCKER_USER/$REPO
-          sudo docker run --name $CONTAINER_NAME -p 3000:3000 $DOCKER_USER/$REPO:$TAG_NAME
+          sudo docker run --name $CONTAINER_NAME -p 3000:3000 $DOCKER_USER/$REPO

@@ -28,6 +28,7 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
+ENV NEXT_PUBLIC_CU_API http://ec2-13-55-19-175.ap-southeast-2.compute.amazonaws.com:3001/
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 

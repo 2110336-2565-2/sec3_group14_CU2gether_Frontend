@@ -4,16 +4,15 @@ const baseUrl = CU_API + "auth";
 const login = async (email: string, password: string) => {
   try {
     await client.post(`${baseUrl}/login`, { email, password });
-    return true
-  } catch (error) {
+    return true;
+  } catch (error: any) {
     throw new Error("Error logging in with this error: " + error);
-
   }
 };
 const logout = async () => {
   try {
     await client.delete(`${baseUrl}/logout`);
-    return true
+    return true;
   } catch (error) {
     throw new Error("Error logging out with this error: " + error);
   }

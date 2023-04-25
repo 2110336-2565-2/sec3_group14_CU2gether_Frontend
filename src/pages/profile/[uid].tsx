@@ -71,14 +71,12 @@ const ProfilePage: React.FC<{}> = ({}) => {
         if (id.toString() === uid.toString()) {
           setOwnUser(true);
           getProfile(id, profileRole ? profileRole : ROLE.STUDENT);
-          // await fetchOwnEvents();
         } else {
           setOwnUser(false);
           getProfile(
             uid.toString(),
             profileRole ? profileRole : ROLE.STUDENT
           );
-          // await fetchOwnEventsById(uid.toString());
         }
         setLoading(false);
       }

@@ -67,7 +67,7 @@ const ChangePasswordPage: React.FC<{}> = ({}) => {
             isRequired={true}
             rules={[{ required: true, message: "Please enter a password" }]}
           >
-            <StyledInput type="password" placeholder="Old Password"/>
+            <StyledInput placeholder="Old Password" />
           </FormInput>
           <FormInput
             title="New password"

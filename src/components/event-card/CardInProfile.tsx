@@ -64,13 +64,13 @@ const EventCardInProfile: React.FC<EventCardProps> = ({ event }) => {
           src={imgSrc}
           loader={() => imgSrc}
           fill
-          style={{ objectFit: "cover", objectPosition: "center" }}
+          style={{ objectFit: "cover" }}
         />
       </ImageWrapper>
       <TextContainer>
-        <Title style={{color: 'white'}} level={4}>{eventName}</Title>
+        <Title level={4}>{eventName}</Title>
         <Space>
-          <Typography style={{color: 'white'}}>{getDateTimeText()}</Typography>
+          <Typography>{getDateTimeText()}</Typography>
         </Space>
       </TextContainer>
     </EventCard>

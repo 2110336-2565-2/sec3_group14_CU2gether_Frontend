@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 import { ROLE, UPLOAD_MODE } from "@/types";
 import useEventStore from "@/hooks/useEventStore";
 import EventCardInProfile from "@/components/event-card/CardInProfile";
-import { CU_API, CU_WEB } from "@/config";
+import { CU_API } from "@/config";
 import useProfileStore from "@/hooks/useProfileStore";
 import { BorderColorRounded, CameraAltRounded } from "@mui/icons-material";
 import { useModal } from "@/hooks";
@@ -63,22 +63,21 @@ const ProfilePage: React.FC<{}> = ({}) => {
     const fetchData = async () => {
       setLoading(true);
       if (uid && id) {
-        checkStatus();
+        await checkStatus();
         const profileRole = await getRoleById(uid.toString());
-        getReviewsByUserID(uid.toString());
-        fetchOwnEventsById(uid.toString());
+        await getReviewsByUserID(uid.toString());
         setRole(profileRole);
         if (id.toString() === uid.toString()) {
           setOwnUser(true);
-          getProfile(id, profileRole ? profileRole : ROLE.STUDENT);
-          // await fetchOwnEvents();
+          await getProfile(id, profileRole ? profileRole : ROLE.STUDENT);
+          await fetchOwnEvents();
         } else {
           setOwnUser(false);
-          getProfile(
+          await getProfile(
             uid.toString(),
             profileRole ? profileRole : ROLE.STUDENT
           );
-          // await fetchOwnEventsById(uid.toString());
+          await fetchOwnEventsById(uid.toString());
         }
         setLoading(false);
       }
@@ -89,7 +88,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
   const editDescription = async () => {
     if (uid) {
       try {
-        updateProfile(uid.toString(), role ? role : ROLE.STUDENT, {
+        await updateProfile(uid.toString(), role ? role : ROLE.STUDENT, {
           description,
         });
         router.reload();
@@ -105,13 +104,13 @@ const ProfilePage: React.FC<{}> = ({}) => {
       try {
         switch (role) {
           case ROLE.STUDENT:
-            updateProfile(uid.toString(), role, {
+            await updateProfile(uid.toString(), role, {
               firstName: name,
               lastName: lastName,
             });
             break;
           case ROLE.ORGANIZER:
-            updateProfile(uid.toString(), role, { name });
+            await updateProfile(uid.toString(), role, { name });
             break;
         }
         router.reload();
@@ -135,22 +134,22 @@ const ProfilePage: React.FC<{}> = ({}) => {
     role === ROLE.STUDENT ? (
       <>
         <Input
-          maxLength={20}
+          maxLength={100}
           onChange={(e) => setName(e.target.value)}
           onPressEnter={() => editName()}
           defaultValue={student.firstName}
           bordered={false}
-          style={{ width: "35%", maxWidth: 200, overflow: 'hidden'}}
+          style={{ width: "36%" }}
           allowClear
         />
         <Space></Space>
         <Input
-          maxLength={20}
+          maxLength={100}
           onChange={(e) => setLastName(e.target.value)}
           onPressEnter={() => editName()}
           defaultValue={student.lastName}
           bordered={false}
-          style={{ width: "35%", maxWidth: 200 }}
+          style={{ width: "35%" }}
           allowClear
         />
       </>
@@ -225,8 +224,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
             {description ? description : student.description}
           </AboutSubTitle>
         ) : (
-          isOwnUser ? (<NoDescriptionSubTitle>Tell us about yourself</NoDescriptionSubTitle>)
-          : null
+          <NoDescriptionSubTitle>Tell us about yourself</NoDescriptionSubTitle>
         )}
       </AboutContentContainer>
     ) : role === ROLE.ORGANIZER ? (
@@ -236,8 +234,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
             {description ? description : organizer.description}
           </AboutSubTitle>
         ) : (
-          isOwnUser ? (<NoDescriptionSubTitle>Tell us about yourself</NoDescriptionSubTitle>)
-          : null
+          <AboutSubTitle>Tell us about yourself</AboutSubTitle>
         )}
       </AboutContentContainer>
     ) : null;
@@ -312,7 +309,6 @@ const ProfilePage: React.FC<{}> = ({}) => {
                 <BorderColorRounded
                   onClick={() => setEditingName(!isEditingName)}
                   fontSize="small"
-                  style={{zIndex: 1}}
                 />
               ) : null}
             </NameContainer>
@@ -345,15 +341,13 @@ const ProfilePage: React.FC<{}> = ({}) => {
           <PreviousEventCard>
             <CardTitleContainer>
               <CardTitle>Event</CardTitle>
-              <PreviousEventSubTital href="/events/mine">
+              <PreviousEventSubTital href="/events">
                 see all user's event {">"}
               </PreviousEventSubTital>
             </CardTitleContainer>
             <PreviousContentContainer>
               {events && events.length > 0 ? (
-                <Link href={`${CU_WEB}events/${events[0].id}/detail`}>
-                  <EventCardInProfile event={events[0]} />
-                </Link>
+                <EventCardInProfile event={events[0]} />
               ) : (
                 <EmptyData />
               )}
@@ -386,10 +380,6 @@ const CoverImageCard = styled(ProfileCard)`
   border-width: 0px;
   background-color: ${theme.color.primary};
 
-  ${theme.media.tablet} {
-    height: 150px;
-  }
-
   ${theme.media.mobile} {
     margin-top: 21px;
     width: 360px;
@@ -401,10 +391,6 @@ const CoverImage = styled.img`
   height: 200px;
   border-width: 0px;
   object-fit: cover;
-
-  ${theme.media.tablet} {
-    height: 150px;
-  }
 
   ${theme.media.mobile} {
     margin-top: 21px;
@@ -421,14 +407,14 @@ const EditCoverImageButton = styled(Button)`
   top: -65px;
   left: 730px;
   ${theme.media.pc} {
-    left: 67vw;
+    left: 70vw;
   }
 `;
 
 const ProfileInformationContainer = styled.div`
   display: flex;
   height: 84px;
-  ${theme.media.tablet} {
+  ${theme.media.mobile} {
     flex-direction: column;
   }
 `;
@@ -437,15 +423,10 @@ const EditProfileImageButton = styled(Button)`
   position: relative;
   top: 30px;
   left: 10px;
-
-  ${theme.media.tablet} {
-    position: absolute;
-    top: 205px;
-    left: 53vw;
-  }
-
   ${theme.media.mobile} {
+    position: absolute;
     top: 175px;
+    left: 50vw;
   }
 `;
 
@@ -459,18 +440,9 @@ const ProfilePicture = styled(Avatar)`
   background-color: ${theme.color.border};
   border-color: ${theme.color.border};
 
-  ${theme.media.tablet} {
-    width: 100px;
-    height: 100px;
-    top: -75px;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0px;
-    margin-bottom: -75px;
-  }
-
   ${theme.media.mobile} {
     top: -35px;
+    left: 140px;
     margin-bottom: -40px;
     width: 70px;
     height: 70px;
@@ -484,7 +456,7 @@ const InformationContainer = styled.div`
   gap: 5px;
   margin-left: 60px;
 
-  ${theme.media.tablet} {
+  ${theme.media.mobile} {
     align-items: center;
     margin-left: 0;
   }
@@ -493,15 +465,6 @@ const InformationContainer = styled.div`
 const InformationTitle = styled(Text)`
   font-size: 24px;
   font-weight: bold;
-  max-width: 300px;
-  white-space: nowrap;
-  overflow: hidden;
-  box-sizing: border-box;
-  text-overflow: ellipsis;
-
-  ${theme.media.tablet} {
-    font-size: 22px;
-  }
 
   ${theme.media.mobile} {
     font-size: 20px;

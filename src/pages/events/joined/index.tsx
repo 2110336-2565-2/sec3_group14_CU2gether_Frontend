@@ -29,8 +29,8 @@ const JoinEvent: React.FC<JoinEventProps> = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        await fetchJoinEvents();
-        await fetchJoinEventsFinished();
+        await fetchJoinEvents({});
+        await fetchJoinEventsFinished({});
       } catch (e) {}
       setLoading(false);
     };

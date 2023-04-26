@@ -179,15 +179,15 @@ const ProfilePage: React.FC<{}> = ({}) => {
   const renderRecord = () =>
     role === ROLE.STUDENT ? (
       <StatisticContainer>
-        <StatisticText>Join : {student.joinTimes}</StatisticText>
-        <StatisticText>Unjoin : {student.unjoinTimes}</StatisticText>
-        <StatisticText>Create : {student.createTimes}</StatisticText>
-        <StatisticText>Cancel : {student.cancelTimes}</StatisticText>
+        <StatisticText>Joined : {student.joinTimes}</StatisticText>
+        <StatisticText>Unjoined : {student.unjoinTimes}</StatisticText>
+        <StatisticText>Created : {student.createTimes}</StatisticText>
+        <StatisticText>Canceled : {student.cancelTimes}</StatisticText>
       </StatisticContainer>
     ) : role === ROLE.ORGANIZER ? (
       <StatisticContainer>
-        <StatisticText>Create : {organizer.createTimes}</StatisticText>
-        <StatisticText>Cancel : {organizer.cancelTimes}</StatisticText>
+        <StatisticText>Created : {organizer.createTimes}</StatisticText>
+        <StatisticText>Canceled : {organizer.cancelTimes}</StatisticText>
       </StatisticContainer>
     ) : null;
 
@@ -338,9 +338,9 @@ const ProfilePage: React.FC<{}> = ({}) => {
           </RecordCard>
           <PreviousEventCard>
             <CardTitleContainer>
-              <CardTitle>Event</CardTitle>
+              <CardTitle>Events</CardTitle>
               <PreviousEventSubTital href="/events">
-                see all user's event {">"}
+                see all user's events {">"}
               </PreviousEventSubTital>
             </CardTitleContainer>
             <PreviousContentContainer>
@@ -553,11 +553,11 @@ const PreviousContentContainer = styled.div`
 `;
 
 const PreviousEventSubTital = styled(Link)`
-  font-size: 20px;
+  font-size: 14px;
   color: ${theme.color.gray};
 
   ${theme.media.mobile} {
-    font-size: 16px;
+    font-size: 10px;
   }
 `;
 
@@ -603,13 +603,13 @@ const StatisticContainer = styled.div`
 `;
 
 const StatisticText = styled(Text)`
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
   ${theme.media.tablet} {
-    font-size: 16px;
+    font-size: 14px;
   }
   ${theme.media.mobile} {
-    font-size: 14px;
+    font-size: 12px;
   }
 `;
 

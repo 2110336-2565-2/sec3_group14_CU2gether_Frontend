@@ -25,9 +25,11 @@ const ImageWrapper = styled.div`
 
 const TextContainer = styled.div`
   margin-top: -80px;
-  margin-left: 20px;
+  width: 100%;
   position: relative;
   z-index: 1;
+  color: ${theme.color.white};
+  background: linear-gradient(0deg, black 40%, gray, white);
 `;
 
 type EventCardProps = {
@@ -68,9 +70,9 @@ const EventCardInProfile: React.FC<EventCardProps> = ({ event }) => {
         />
       </ImageWrapper>
       <TextContainer>
-        <Title level={4}>{eventName}</Title>
+        <Title level={4} style={{color: `${theme.color.white}`, marginLeft: 10}}>{eventName}</Title>
         <Space>
-          <Typography>{getDateTimeText()}</Typography>
+          <Typography style={{color: `${theme.color.white}`, marginLeft: 10}}>{getDateTimeText()}</Typography>
         </Space>
       </TextContainer>
     </EventCard>

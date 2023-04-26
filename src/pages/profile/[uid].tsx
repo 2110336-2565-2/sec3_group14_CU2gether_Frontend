@@ -347,7 +347,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
             </CardTitleContainer>
             <PreviousContentContainer>
               {events && events.length > 0 ? (
-                <Link href={`events/${events[0].id}/detail`}>
+                <Link href={`/events/${events[0].id}/detail`}>
                   <EventCardInProfile event={events[0]} />
                 </Link>
               ) : (

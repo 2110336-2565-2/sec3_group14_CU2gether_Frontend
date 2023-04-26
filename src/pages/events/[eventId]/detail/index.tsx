@@ -227,6 +227,7 @@ const EventDetail: React.FC = () => {
       }
     }
     closeModal();
+    router.reload();
   };
 
   const renderModal = () => {

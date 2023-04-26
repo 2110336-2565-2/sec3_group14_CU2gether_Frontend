@@ -359,13 +359,13 @@ const EditEventMain: React.FC<{}> = ({}) => {
 
   const title = (
     <CancelEventTitle>
-      <Title>Want to cancel event?</Title>
+      <Title>Want to cancel this event?</Title>
     </CancelEventTitle>
   );
 
   const content = (
     <CancelEventContent>
-      <Text style={{ fontSize: 20 }}>
+      <Text style={{ fontSize: 16 }}>
         If you cancel this event, ticket costs will be refunded back to the
         participants, are you sure?
       </Text>

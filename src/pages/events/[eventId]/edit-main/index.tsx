@@ -210,7 +210,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
   };
 
   const handleSaveClick = () => {
-    router.reload();
+    router.push(`/events/${eventId}/detail`);
   };
 
   const handleEditDescriptionClick = () => {
@@ -423,7 +423,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
         htmlType="button"
         onClick={() => handleBackClick()}
       >
-        Back
+        Cancel
       </ButtonConfig>
       <ButtonConfig
         type="primary"
@@ -433,7 +433,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
           handleSaveClick();
         }}
       >
-        Save
+        Submit
       </ButtonConfig>
     </ButtonContainer>
   );

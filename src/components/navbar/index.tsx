@@ -76,6 +76,7 @@ const Navbar: React.FC<NavbarProps> = () => {
   };
 
   const handleSuccessLogout = () => {
+    router.push("/");
     message.info("Logged out successfully");
   };
 

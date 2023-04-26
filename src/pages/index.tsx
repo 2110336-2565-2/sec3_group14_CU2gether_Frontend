@@ -36,7 +36,7 @@ const Home: React.FC<HomeProps> = () => {
 
   const redirectToEvent = (eventId: number) => {
     if (role) {
-      router.push(`/events/${eventId}/detail`);
+      router.push(`/events/${eventId}`);
     } else {
       notification.open({ message: "Please login first." });
     }

@@ -68,14 +68,16 @@ const LoginContent: React.FC<LoginContentProps> = ({
 
   const loginHandler = async (values: any) => {
     const { email, password } = values;
-    try {
-      await auth.login(email, password);
+    const res = await auth.login(email, password);
+    if (res) {
       setLoggedIn(true);
       onLogin();
       closeLoginModal();
-    } catch (err: any) {
-      if (err instanceof Error)
-        message.error("Email or password is incorrect.");
+    } else {
+      message.open({
+        type: "error",
+        content: "Email or password is incorrect.",
+      });
     }
   };
 

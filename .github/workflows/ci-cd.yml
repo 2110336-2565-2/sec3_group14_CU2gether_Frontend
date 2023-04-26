@@ -62,4 +62,4 @@ jobs:
           sudo docker pull $DOCKER_USER/$REPO
           sudo docker stop $CONTAINER_NAME || true
           sudo docker rm $CONTAINER_NAME || true
-          sudo docker run --name $CONTAINER_NAME -p 3000:3000 $DOCKER_USER/$REPO
+          sudo docker run --name $CONTAINER_NAME -p 3000:3000 -d $DOCKER_USER/$REPO

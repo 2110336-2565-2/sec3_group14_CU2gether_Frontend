@@ -34,7 +34,6 @@ import { CU_API } from "@/config";
 import FormData from "form-data";
 import events from "@/pages/api/events";
 import PictureForm from "@/components/edit-event/PictureForm";
-import { async } from "rxjs";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;

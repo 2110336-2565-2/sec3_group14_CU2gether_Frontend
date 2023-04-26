@@ -96,7 +96,7 @@ const getOwnEvents = async () => {
 
 const getOwnEventsById = async (id: string) => {
   try {
-    const events = await client.get(`${baseUrl}/${id}`);
+    const events = await client.get(`${CU_API}userProfile/events/${id}`);
     return events.data;
   } catch (error) {
     throw new Error("Error fetching event");

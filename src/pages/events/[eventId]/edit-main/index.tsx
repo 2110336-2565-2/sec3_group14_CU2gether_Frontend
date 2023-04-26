@@ -366,7 +366,8 @@ const EditEventMain: React.FC<{}> = ({}) => {
   const content = (
     <CancelEventContent>
       <Text style={{ fontSize: 20 }}>
-        If you cancel this event, I will kill you!!!
+        If you cancel this event, ticket costs will be refunded back to the
+        participants, are you sure?
       </Text>
     </CancelEventContent>
   );
@@ -376,7 +377,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
       <ButtonConfig htmlType="button" onClick={handleEditDescriptionClick}>
         Edit Description
       </ButtonConfig>
-      <ButtonConfig htmlType="button" onClick={toggleCancelEventModal}>
+      <ButtonConfig htmlType="button" onClick={toggleCancelEventModal} danger>
         Cancel Event
       </ButtonConfig>
       <Modal
@@ -399,14 +400,15 @@ const EditEventMain: React.FC<{}> = ({}) => {
         <ModalButtonContainer>
           <ButtonConfig
             htmlType="button"
+            type="primary"
             onClick={handleCancelEventCancelClick}
           >
-            Cancel
+            Back
           </ButtonConfig>
           <ButtonConfig
             htmlType="submit"
-            type="primary"
             onClick={handleCancelEventSureClick}
+            danger
           >
             Sure
           </ButtonConfig>
@@ -650,7 +652,7 @@ const NonFormButtonContainer = styled.div`
 `;
 
 const ButtonConfig = styled(Button)`
-  width: 100%;
+  // width: 100%;
 `;
 
 const ModalButtonContainer = styled.div`

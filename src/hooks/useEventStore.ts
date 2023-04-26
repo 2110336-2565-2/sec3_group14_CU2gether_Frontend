@@ -50,7 +50,7 @@ const useEventStore = create<EventStore>((set) => ({
   joinedEvents: [],
   myEvents: [],
   getEventDetail: (id: string) => {
-    events.getEventByID(id).then((res: any) => set({ event: res }));
+    events.getEventsByID(id).then((res: any) => set({ event: res }));
   },
   updateEventDetail: async (id: string, params: FormData) => {
     events.updateEventDetail(id, params);

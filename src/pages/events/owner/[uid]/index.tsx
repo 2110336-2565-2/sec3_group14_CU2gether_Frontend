@@ -6,32 +6,42 @@ import { ContainedButton } from "@/common/button";
 import { Event } from "@/types";
 import Link from "next/link";
 import userProfile from "@/pages/api/user-profile";
+import { useRouter } from "next/router";
 
-type MyEventsProps = {};
+type UserEventsProps = {};
 
 const { Title } = Typography;
 const { Meta } = Card;
 const { Image } = Skeleton;
 
-const MyEvents: React.FC<MyEventsProps> = () => {
+const UserEvents: React.FC<UserEventsProps> = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [myEvents, setMyEvents] = useState<Event[]>([]);
-  const [myEventsFinished, setMyEventsFinished] = useState<Event[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [eventsFinished, setEventsFinished] = useState<Event[]>([]);
+  const [name, setName] = useState<string>("");
+  const router = useRouter();
+  const { uid } = router.query;
 
   useEffect(() => {
     const fetchMyEvents = () => {
-      userProfile.getMyEvents().then((res: any) => setMyEvents(res));
+      userProfile
+        .getEventsByOwner(uid as string)
+        .then((res: any) => setEvents(res));
     };
     const fetchMyEventsFinished = () => {
       userProfile
         .getMyEventsFinished()
-        .then((res: any) => setMyEventsFinished(res));
+        .then((res: any) => setEventsFinished(res));
+    };
+    const setUserName = (uid: string) => {
+      userProfile.checkStatusById(uid).then((res: any) => setName(res.name));
     };
     const fetchData = async () => {
       setLoading(true);
       try {
         await fetchMyEvents();
         await fetchMyEventsFinished();
+        await setUserName(uid as string);
       } catch (e) {}
       setLoading(false);
     };
@@ -72,17 +82,12 @@ const MyEvents: React.FC<MyEventsProps> = () => {
   return (
     <EventContainer>
       <HeaderContainer>
-        <Title>My Events</Title>
+        <Title>{name}'s Events</Title>
       </HeaderContainer>
-      <ButtonContainer>
-        <Link href={`./create`}>
-          <ContainedButton text="Create New Event" />
-        </Link>
-      </ButtonContainer>
       <div>
         <Title level={3}>Upcoming events</Title>
-        {myEvents && myEvents.length > 0 ? (
-          <DetailContainer>{renderEventCardList(myEvents)}</DetailContainer>
+        {events && events.length > 0 ? (
+          <DetailContainer>{renderEventCardList(events)}</DetailContainer>
         ) : (
           <EmptyWrapper>
             <Empty description={"No event"} />
@@ -91,9 +96,9 @@ const MyEvents: React.FC<MyEventsProps> = () => {
       </div>
       <div>
         <Title level={3}>Past events</Title>
-        {myEventsFinished && myEventsFinished.length > 0 ? (
+        {eventsFinished && eventsFinished.length > 0 ? (
           <DetailContainer>
-            {renderEventCardList(myEventsFinished)}
+            {renderEventCardList(eventsFinished)}
           </DetailContainer>
         ) : (
           <EmptyWrapper>
@@ -104,12 +109,6 @@ const MyEvents: React.FC<MyEventsProps> = () => {
     </EventContainer>
   );
 };
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-`;
 
 const EventContainer = styled.div`
   padding: 2.5vh 5vw;
@@ -167,4 +166,4 @@ const RightAlignedRow = styled.div`
   justify-content: flex-end;
 `;
 
-export default MyEvents;
+export default UserEvents;

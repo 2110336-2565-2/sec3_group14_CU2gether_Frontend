@@ -4,7 +4,7 @@ import client from "@/utils/client";
 import FormData from "form-data";
 
 const baseUrl = CU_API + "events";
-const cancelRefundUrl = CU_API + "payment/cancel-refund"
+const cancelRefundUrl = CU_API + "payment/cancel-refund";
 
 export type getEventsRequestParams = {
   page?: number;
@@ -24,16 +24,16 @@ const getEvents = async (params: getEventsRequestParams) => {
     const events = await client.get(baseUrl, { ...params });
     return events.data;
   } catch (err) {
-    throw new Error("Error fetching events")
+    throw new Error("Error fetching events");
   }
 };
 
-const getEventByID = async (id: String) => {
+const getEventsByID = async (id: String) => {
   try {
     const event = await client.get(`${baseUrl}/${id}`);
     return event.data;
   } catch (err) {
-    throw new Error("Error fetching event detail")
+    throw new Error("Error fetching event detail");
   }
 };
 
@@ -82,7 +82,7 @@ const cancelEvent = async (id: String) => {
     await client.delete(`${baseUrl}/${id}`);
   } catch (err) {
     throw new Error("Error cancel event");
-  } 
+  }
 };
 
 const getOwnEvents = async () => {
@@ -134,17 +134,17 @@ const createEvent = async (params: FormData) => {
 };
 
 const events = {
-    getEvents,
-    getEventByID,
-    updateEventDetail,
-    updateEventDescription,
-    cancelRefundEvent,
-    cancelEvent,
-    joinEvent,
-    unjoinEvent,
-    getOwnEvents,
-    getOwnEventsById,
-    createEvent
-}
+  getEvents,
+  getEventsByID: getEventsByID,
+  updateEventDetail,
+  updateEventDescription,
+  cancelRefundEvent,
+  cancelEvent,
+  joinEvent,
+  unjoinEvent,
+  getOwnEvents,
+  getOwnEventsById,
+  createEvent,
+};
 
 export default events;

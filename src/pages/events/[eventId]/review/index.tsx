@@ -48,7 +48,7 @@ const ReviewPage: React.FC<{}> = () => {
     if (eventId) {
       const getData = async (eventId: string) => {
         try {
-          setEvent(await events.getEventByID(eventId.toString()));
+          setEvent(await events.getEventsByID(eventId.toString()));
           await getReviews(eventId);
         } catch (err) {
           console.log(err);

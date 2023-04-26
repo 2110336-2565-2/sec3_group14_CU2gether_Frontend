@@ -68,7 +68,7 @@ const EventDetail: React.FC = () => {
     const fetchData = async () => {
       if (eventId) {
         try {
-          setEvent(await events.getEventByID(eventId.toString()));
+          setEvent(await events.getEventsByID(eventId.toString()));
           await fetchJoinEvents();
           console.log(event);
         } catch (error) {

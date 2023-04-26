@@ -90,7 +90,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
   useEffect(() => {
     if (eventId) {
       events
-        .getEventByID(eventId.toString())
+        .getEventsByID(eventId.toString())
         .then((data) => {
           const thisEvent = {
             id: data.id,

@@ -100,6 +100,24 @@ const getMyEventsFinished = async () => {
   }
 };
 
+const getEventsByOwner = async (userId: String) => {
+  try {
+    const events = await client.get(`${baseUrl}/events/${userId}`);
+    return events.data;
+  } catch (err) {
+    throw new Error("Error fetching event detail");
+  }
+};
+
+const getEventsFinishedByOwner = async (userId: String) => {
+  try {
+    const events = await client.get(`${baseUrl}/events/finished/${userId}`);
+    return events.data;
+  } catch (err) {
+    throw new Error("Error fetching event detail");
+  }
+};
+
 const userProfile = {
   checkStatus,
   getJoinedEvents,
@@ -109,6 +127,8 @@ const userProfile = {
   getMyEvents,
   getJoinedEventsFinished,
   getMyEventsFinished,
+  getEventsByOwner,
+  getEventsFinishedByOwner,
 };
 
 export default userProfile;

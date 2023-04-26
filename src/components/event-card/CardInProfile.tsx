@@ -25,11 +25,12 @@ const ImageWrapper = styled.div`
 
 const TextContainer = styled.div`
   margin-top: -80px;
+  height: 80px;
   width: 100%;
   position: relative;
   z-index: 1;
   color: ${theme.color.white};
-  background: linear-gradient(0deg, black 40%, gray, white);
+  background: linear-gradient(0deg, black 40%, transparent);
 `;
 
 type EventCardProps = {

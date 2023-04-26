@@ -339,7 +339,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
           <PreviousEventCard>
             <CardTitleContainer>
               <CardTitle>Events</CardTitle>
-              <PreviousEventSubTital href={`/userProfile/events/${id}`}>
+              <PreviousEventSubTital href={`/events/owner/${id}`}>
                 see all user's events {">"}
               </PreviousEventSubTital>
             </CardTitleContainer>

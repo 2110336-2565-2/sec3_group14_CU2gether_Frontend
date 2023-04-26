@@ -34,6 +34,7 @@ import { CU_API } from "@/config";
 import FormData from "form-data";
 import events from "@/pages/api/events";
 import PictureForm from "@/components/edit-event/PictureForm";
+import { async } from "rxjs";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -202,8 +203,6 @@ const EditEventMain: React.FC<{}> = ({}) => {
         formData.append("pictures", picture.file.originFileObj);
 
       events.updateEventDetail(id, formData);
-
-      router.reload();
     }
   };
 
@@ -211,8 +210,8 @@ const EditEventMain: React.FC<{}> = ({}) => {
     router.push(`/events/${eventId}/detail`);
   };
 
-  const handleSaveClick = async () => {
-    // router.reload();
+  const handleSaveClick = () => {
+    router.reload();
   };
 
   const handleEditDescriptionClick = () => {
@@ -440,6 +439,11 @@ const EditEventMain: React.FC<{}> = ({}) => {
     </ButtonContainer>
   );
 
+  const onFinish = async () => {
+    await onFormFinish();
+    handleSaveClick();
+  };
+
   return (
     <ConfigProvider
       theme={{
@@ -451,7 +455,7 @@ const EditEventMain: React.FC<{}> = ({}) => {
       <EditEventContainer>
         <Title className="ant-typography-title">Edit Event Detail</Title>
         <ContentContainer>
-          <FormInputContainer form={form} onFinish={onFormFinish}>
+          <FormInputContainer form={form} onFinish={onFinish}>
             <Row>
               <LayoutContainer>
                 <LeftContentContainer>

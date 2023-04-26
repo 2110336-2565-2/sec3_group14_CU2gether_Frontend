@@ -33,7 +33,6 @@ import { Event } from "@/types";
 import { CU_API } from "@/config";
 import FormData from "form-data";
 import events from "@/pages/api/events";
-
 import PictureForm from "@/components/edit-event/PictureForm";
 
 const { Content } = Layout;
@@ -203,15 +202,17 @@ const EditEventMain: React.FC<{}> = ({}) => {
         formData.append("pictures", picture.file.originFileObj);
 
       events.updateEventDetail(id, formData);
+
+      router.reload();
     }
   };
 
-  const handleCancelClick = () => {
+  const handleBackClick = () => {
     router.push(`/events/${eventId}/detail`);
   };
 
-  const handleSubmitClick = () => {
-    router.push(`/events/${eventId}/detail`);
+  const handleSaveClick = async () => {
+    // router.reload();
   };
 
   const handleEditDescriptionClick = () => {
@@ -422,19 +423,19 @@ const EditEventMain: React.FC<{}> = ({}) => {
       <ButtonConfig
         type="default"
         htmlType="button"
-        onClick={() => handleCancelClick()}
+        onClick={() => handleBackClick()}
       >
-        Cancel
+        Back
       </ButtonConfig>
       <ButtonConfig
         type="primary"
         htmlType="submit"
         onClick={() => {
           success;
-          handleSubmitClick();
+          handleSaveClick();
         }}
       >
-        Submit
+        Save
       </ButtonConfig>
     </ButtonContainer>
   );

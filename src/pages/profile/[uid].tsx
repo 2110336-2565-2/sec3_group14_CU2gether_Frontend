@@ -66,6 +66,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
         await checkStatus();
         const profileRole = await getRoleById(uid.toString());
         await getReviewsByUserID(uid.toString());
+        await fetchOwnEventsById(uid.toString());
         setRole(profileRole);
         if (id.toString() === uid.toString()) {
           setOwnUser(true);
@@ -137,12 +138,12 @@ const ProfilePage: React.FC<{}> = ({}) => {
           onPressEnter={() => editName()}
           defaultValue={student.firstName}
           bordered={false}
-          style={{ width: "36%" }}
+          style={{ width: "35%" }}
           allowClear
         />
         <Space></Space>
         <Input
-          maxLength={100}
+          maxLength={20}
           onChange={(e) => setLastName(e.target.value)}
           onPressEnter={() => editName()}
           defaultValue={student.lastName}
@@ -153,7 +154,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
       </>
     ) : role === ROLE.ORGANIZER ? (
       <Input
-        maxLength={100}
+        maxLength={20}
         onChange={(e) => setName(e.target.value)}
         onPressEnter={() => editName()}
         defaultValue={organizer.name}
@@ -307,6 +308,7 @@ const ProfilePage: React.FC<{}> = ({}) => {
                 <BorderColorRounded
                   onClick={() => setEditingName(!isEditingName)}
                   fontSize="small"
+                  style={{zIndex: 1}}
                 />
               ) : null}
             </NameContainer>
@@ -345,7 +347,9 @@ const ProfilePage: React.FC<{}> = ({}) => {
             </CardTitleContainer>
             <PreviousContentContainer>
               {events && events.length > 0 ? (
-                <EventCardInProfile event={events[0]} />
+                <Link href={`events/${events[0].id}/detail`}>
+                  <EventCardInProfile event={events[0]} />
+                </Link>
               ) : (
                 <EmptyData />
               )}
@@ -378,6 +382,10 @@ const CoverImageCard = styled(ProfileCard)`
   border-width: 0px;
   background-color: ${theme.color.primary};
 
+  ${theme.media.tablet} {
+    height: 150px;
+  }
+
   ${theme.media.mobile} {
     margin-top: 21px;
     width: 360px;
@@ -389,6 +397,10 @@ const CoverImage = styled.img`
   height: 200px;
   border-width: 0px;
   object-fit: cover;
+
+  ${theme.media.tablet} {
+    height: 150px;
+  }
 
   ${theme.media.mobile} {
     margin-top: 21px;
@@ -405,14 +417,14 @@ const EditCoverImageButton = styled(Button)`
   top: -65px;
   left: 730px;
   ${theme.media.pc} {
-    left: 70vw;
+    left: 67vw;
   }
 `;
 
 const ProfileInformationContainer = styled.div`
   display: flex;
   height: 84px;
-  ${theme.media.mobile} {
+  ${theme.media.tablet} {
     flex-direction: column;
   }
 `;
@@ -421,10 +433,15 @@ const EditProfileImageButton = styled(Button)`
   position: relative;
   top: 30px;
   left: 10px;
-  ${theme.media.mobile} {
+
+  ${theme.media.tablet} {
     position: absolute;
+    top: 205px;
+    left: 53vw;
+  }
+
+  ${theme.media.mobile} {
     top: 175px;
-    left: 50vw;
   }
 `;
 
@@ -438,9 +455,18 @@ const ProfilePicture = styled(Avatar)`
   background-color: ${theme.color.border};
   border-color: ${theme.color.border};
 
+  ${theme.media.tablet} {
+    width: 100px;
+    height: 100px;
+    top: -75px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0px;
+    margin-bottom: -75px;
+  }
+
   ${theme.media.mobile} {
     top: -35px;
-    left: 140px;
     margin-bottom: -40px;
     width: 70px;
     height: 70px;
@@ -454,7 +480,7 @@ const InformationContainer = styled.div`
   gap: 5px;
   margin-left: 60px;
 
-  ${theme.media.mobile} {
+  ${theme.media.tablet} {
     align-items: center;
     margin-left: 0;
   }
@@ -463,6 +489,15 @@ const InformationContainer = styled.div`
 const InformationTitle = styled(Text)`
   font-size: 24px;
   font-weight: bold;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+
+  ${theme.media.tablet} {
+    font-size: 22px;
+  }
 
   ${theme.media.mobile} {
     font-size: 20px;

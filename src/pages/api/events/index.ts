@@ -4,7 +4,7 @@ import client from "@/utils/client";
 import FormData from "form-data";
 
 const baseUrl = CU_API + "events";
-const cancelRefundUrl = CU_API + "payment/cancel-refund";
+const cancelRefundUrl = CU_API + "payments/cancel-refund";
 
 export type getEventsRequestParams = {
   page?: number;

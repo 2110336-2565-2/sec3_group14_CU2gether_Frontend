@@ -28,7 +28,7 @@ const WebReport: React.FC<{}> = ({}) => {
     const { subject, description, attachments } = form.getFieldsValue(true);
     data.append("topic", subject);
     data.append("description", description);
-    if (attachments) {
+    if (attachments && attachments.fileList) {
       attachments.fileList.forEach((picture: any) => {
         data.append("imageUrl", picture.originFileObj);
       });

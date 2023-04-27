@@ -80,11 +80,12 @@ const EventDetail: React.FC = () => {
   }, [eventId]);
 
   useEffect(() => {
-    joinedEvents.forEach((event: Event) => {
-      if (event.id.toString() == eventId) {
-        setJoin(true);
-      }
-    });
+    if (joinedEvents)
+      joinedEvents.forEach((event: Event) => {
+        if (event.id.toString() == eventId) {
+          setJoin(true);
+        }
+      });
   }, [eventId, joinedEvents]);
 
   const {

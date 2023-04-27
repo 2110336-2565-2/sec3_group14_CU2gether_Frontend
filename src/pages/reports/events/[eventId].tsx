@@ -82,7 +82,7 @@ const ReportMain: React.FC<{}> = ({}) => {
       data.append("topic", subject);
       data.append("description", description);
       data.append("problemType", problemType);
-      if (attachments) {
+      if (attachments && attachments.fileList) {
         attachments.fileList.forEach((picture: any) => {
           data.append("imageUrl", picture.originFileObj);
         });
